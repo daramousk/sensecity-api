@@ -62,7 +62,7 @@ router.get('/issue', function(req, res){
 
 router.get('/last_3_days', function(req, res){
 	
-	var returnDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+	var returnDate = new Date(returnDate.getFullYear(), returnDate.getMonth(), returnDate.getDate()-3);
 	
 	return res.send(returnDate);
 		

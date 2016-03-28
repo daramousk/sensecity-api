@@ -62,11 +62,23 @@ router.get('/issue', function(req, res){
 
 router.get('/last_3_days', function(req, res){
 	
-	//return res.send({"message" : "last three days correct!!"});
+	 var interval = 30;
+    var startDate = new Date(Date.parse(formDate));
+    document.write('start: ' + startDate);
+    var expDate = startDate;
+    expDate.setDate(startDate.getDate() + interval);
+ 
+	return res.send(expDate);
+		
+
 	
-	Issue.find({_id: { $gt: create_at.createFromTimestamp(Date.now()*1000 - 3*24*60*60)}}, function(err, issue){
+	/*Issue.find({create_at:{$gt:ISODate("2016-03-22T13:18:38.658Z")}}, function(err, issue){
 		res.send(issue);
-	});
+	});*/
+	
+	
+	
+	
 });
 
 // Return router

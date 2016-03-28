@@ -22,7 +22,7 @@ Issue.register(router,'/issues');
 
 router.get('/issue', function(req, res){
 
-	return res.send(req.query.startdate);
+	//return res.send(req.query.startdate);
 	
 	
 	if (!req.query.hasOwnProperty('startdate') || !req.query.hasOwnProperty('enddate') || !req.query.hasOwnProperty('coordinates') || !req.query.hasOwnProperty('distance') || !req.query.hasOwnProperty('issue')) {

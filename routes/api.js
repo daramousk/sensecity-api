@@ -60,6 +60,12 @@ router.get('/issue', function(req, res){
   
 }); 
 
+router.get('/last_3_days', function(req, res){
+	
+	return res.send({"message" : "last three days correct!!"});
+	
+});
+
 // Return router
 module.exports = router;
   

@@ -41,13 +41,21 @@ router.get('/issue', function(req, res){
    console.log(enddate);
 
    
-   
+   /*
   Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
                      "create_at":{$gte:startdate,$lte:enddate},
                      "issue":req.query.issue
                     }, function(err, issue){
     res.send(issue);
+  });*/
+  
+  Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+                     "create_at":{$gte:startdate},
+                     "issue":req.query.issue
+                    }, function(err, issue){
+    res.send(err);
   });
+  
   /*
   collection('issues', function(err,collection) {
     collection.ensureIndex({position:"2dsphere"});

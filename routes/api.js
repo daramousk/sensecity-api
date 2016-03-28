@@ -54,7 +54,7 @@ router.get('/issue', function(req, res){
                      "create_at":{$gte:startdate},
                      "issue":req.query.issue
                     }, function(err, issue){
-    res.send(req.query.coordinates);
+    res.send(err);
   });
   
   /*

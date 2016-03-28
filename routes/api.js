@@ -65,7 +65,7 @@ router.get('/last_3_days', function(req, res){
 	var startDate = new Date();
 	var returnDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()-3);
 	
-	return res.send(returnDate);
+	//return res.send(returnDate);
 		
 
 	

@@ -62,8 +62,11 @@ router.get('/issue', function(req, res){
 
 router.get('/last_3_days', function(req, res){
 	
-	return res.send({"message" : "last three days correct!!"});
+	//return res.send({"message" : "last three days correct!!"});
 	
+	Issue.find({_id: { $gt: create_at.createFromTimestamp(Date.now()*1000 - 3*24*60*60)}}, function(err, issue){
+		res.send(issue);
+	});
 });
 
 // Return router

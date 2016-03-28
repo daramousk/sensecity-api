@@ -70,7 +70,7 @@ router.get('/last_3_days', function(req, res){
 
 	
 	Issue.find({create_at:{$gt:returnDate}}, function(err, issue){
-		res.send(err,issue);
+		res.send(issue);
 	});
 	
 	

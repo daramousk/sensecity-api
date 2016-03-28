@@ -22,10 +22,13 @@ Issue.register(router,'/issues');
 
 router.get('/issue', function(req, res){
 
-  if (!req.query.hasOwnProperty('startdate') || !req.query.hasOwnProperty('enddate') || !req.query.hasOwnProperty('coordinates') || !req.query.hasOwnProperty('distance') || !req.query.hasOwnProperty('issue')) {
-    res.statusCode = 400;
-    return res.send({"message" : "Error 400: Incorrect syntax"});
-  }
+	return res.send(req.query.hasOwnProperty('startdate'));
+	
+	
+	if (!req.query.hasOwnProperty('startdate') || !req.query.hasOwnProperty('enddate') || !req.query.hasOwnProperty('coordinates') || !req.query.hasOwnProperty('distance') || !req.query.hasOwnProperty('issue')) {
+		res.statusCode = 400;
+		return res.send({"message" : "Error 400: Incorrect syntax"});
+	}
   /*
   fs.readdirSync('./models').forEach(function(filename){
     if(~filename.indexOf('.js')) require('../models/' + filename)
@@ -60,6 +63,8 @@ router.get('/issue', function(req, res){
   
 }); 
 
+
+/*
 router.get('/last_3_days', function(req, res){
 	
 	var startDate = new Date();
@@ -77,6 +82,10 @@ router.get('/last_3_days', function(req, res){
 	
 	
 });
+*/
+
+
+
 
 // Return router
 module.exports = router;

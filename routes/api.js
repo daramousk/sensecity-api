@@ -62,7 +62,9 @@ router.get('/issue', function(req, res){
 
 router.get('/last_3_days', function(req, res){
 	
-	return res.send("dfgdfgd");
+	var returnDate = new Date();
+	
+	return res.send(returnDate);
 		
 
 	

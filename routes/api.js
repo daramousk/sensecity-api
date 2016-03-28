@@ -62,13 +62,7 @@ router.get('/issue', function(req, res){
 
 router.get('/last_3_days', function(req, res){
 	
-	 var interval = 30;
-    var startDate = new Date(Date.parse(formDate));
-    document.write('start: ' + startDate);
-    var expDate = startDate;
-    expDate.setDate(startDate.getDate() + interval);
- 
-	return res.send(expDate);
+	return res.send("dfgdfgd");
 		
 
 	

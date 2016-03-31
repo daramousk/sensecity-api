@@ -36,18 +36,18 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
-		_startdate = ISODate(newdate.getFullYear()+"-"+newdate.getMonth()+"-"+(newdate.getDate()-3)+"T00:00:00:000Z");
+		_startdate = newdate.getFullYear()+"-"+newdate.getMonth()+"-"+(newdate.getDate()-3)+"T00:00:00:000Z";
 	}
 	else{
-		_startdate = ISODate(req.query.startdate);
+		_startdate = req.query.startdate;
 	}
 	
 	if (!req.query.hasOwnProperty('enddate'))
 	{
-		_enddate = ISODate(newdate.getFullYear()+"-"+newdate.getMonth()+"-"+newdate.getDate()+"T23:59:59:000Z");
+		_enddate = newdate.getFullYear()+"-"+newdate.getMonth()+"-"+newdate.getDate()+"T23:59:59:000Z";
 	}
 	else{
-		_enddate = ISODate(req.query.enddate);
+		_enddate = req.query.enddate;
 	}
 	
 	if (!req.query.hasOwnProperty('coordinates'))

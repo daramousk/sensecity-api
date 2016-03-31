@@ -36,7 +36,7 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
-		_startdate = newdate.getFullYear()+'-'+newdate.getMonth()+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
+		_startdate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
 	}
 	else{
 		_startdate = req.query.startdate;
@@ -44,7 +44,7 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('enddate'))
 	{
-		_enddate = newdate.getFullYear()+'-'+newdate.getMonth()+'-'+newdate.getDate()+'T23:59:59:000Z';
+		_enddate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
 	}
 	else{
 		_enddate = req.query.enddate;
@@ -113,7 +113,7 @@ router.get('/issue', function(req, res){
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
 		  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 		  //{create_at:{$gte:_startdate, $lt:_enddate}}
-		  Issue.find({"create_at":{$gte:"2016-02-28T00:00:00:000Z", $lt:"2016-02-31T23:59:59:000Z"}
+		  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}
 							},function(err, issue){
 			res.send(err);
 		  });//.sort({create_at:_sort}).limit(_limit);
@@ -121,7 +121,7 @@ router.get('/issue', function(req, res){
 	  else{
 		console.log('_coordinates null 2');
 		//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-		Issue.find({"create_at":{$gte:req.query.startdate, $lt:req.query.enddate},
+		Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
 							 "issue":_issue
 							}, function(err, issue){
 			res.send(err);

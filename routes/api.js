@@ -24,8 +24,8 @@ router.get('/issue', function(req, res){
 
 	
 	//return res.send(req.query.startdate);
-	var _startdate=new Date();
-	var _enddate=new Date();
+	var _startdate="";
+	var _enddate=""();
 	var _coordinates;
 	var _distance;
 	var _issue;
@@ -130,7 +130,7 @@ router.get('/issue', function(req, res){
 	  else{
 		console.log('_coordinates null 2');
 		//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-		Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
+		Issue.find({"create_at":{$gte:'"'+_startdate+'"', $lt:'"'+_enddate+'"'},
 							 "issue":_issue
 							}, function(err, issue){
 			res.send(err);

@@ -29,10 +29,6 @@ router.get('/issue', function(req, res){
 		res.statusCode = 400;
 		return res.send({"message" : "Error 400: Incorrect syntax"});
 	}
-  /*
-  fs.readdirSync('./models').forEach(function(filename){
-    if(~filename.indexOf('.js')) require('../models/' + filename)
-  });*/
 
   var startdate = new Date(req.query.startdate);
   var enddate = new Date(req.query.enddate);
@@ -40,58 +36,30 @@ router.get('/issue', function(req, res){
    console.log(startdate);
    console.log(enddate);
 
-   
-   /*
-  Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-                     "create_at":{$gte:startdate,$lte:enddate},
-                     "issue":req.query.issue
-                    }, function(err, issue){
-    res.send(issue);
-  });*/
+   //db.issues.find().sort({create_at:-1}).limit(5)
+
+  if(!req.query.hasOwnProperty('issue') || req.query.issue==='all')
+  {
+	  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
+	  Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+						 "create_at":{$gte:startdate}
+						}, function(err, issue){
+		res.send(issue);
+	  }).sort({create_at:-1}).limit(5);
+  }
+  else{
+	Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+						 "create_at":{$gte:startdate},
+						 "issue":req.query.issue
+						}, function(err, issue){
+		res.send(issue);
+	  }).sort({create_at:-1}).limit(5);
+	  
+  }
   
-  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
-  Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-                     "create_at":{$gte:startdate}/*,
-                     "issue":req.query.issue*/
-                    }, function(err, issue){
-    res.send(issue);
-  });
-  
-  /*
-  collection('issues', function(err,collection) {
-    collection.ensureIndex({position:"2dsphere"});
-    collection.find({"position":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-                     "created_at":{$gte:startdate,$lte:enddate},
-                     "issue":req.query.issue
-                    }).toArray(function(err, item) {
-                                                    console.log(item);
-                                                    return res.send(item);
-                                                   });
-  });
-  */
   
 }); 
 
-
-/*
-router.get('/last_3_days', function(req, res){
-	
-	var startDate = new Date();
-	var returnDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()-5);
-	
-	//return res.send(returnDate);
-		
-
-	
-	Issue.find({create_at:{$gt:returnDate}}, function(err, issue){
-		res.send(issue);
-	});
-	
-	
-	
-	
-});
-*/
 
 
 

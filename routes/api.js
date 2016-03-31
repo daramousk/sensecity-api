@@ -24,8 +24,8 @@ router.get('/issue', function(req, res){
 
 	
 	//return res.send(req.query.startdate);
-	var _startdate="";
-	var _enddate="";
+	var _startdate=new Date();
+	var _enddate=new Date();
 	var _coordinates;
 	var _distance;
 	var _issue;
@@ -36,26 +36,14 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
-		if(newdate.getMonth()<10){
-			_startdate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
-		}else{
-			_startdate = newdate.getFullYear()+'-'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
-		}
+		_startdate.setDate(_startdate.getDate() -3); 
 	}
 	else{
 		_startdate = req.query.startdate;
 	}
 	
-	if (!req.query.hasOwnProperty('enddate'))
+	if (req.query.hasOwnProperty('enddate'))
 	{
-		if(newdate.getMonth()<10){
-			_enddate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
-		}
-		else{
-			_enddate = newdate.getFullYear()+'-'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
-		}
-	}
-	else{
 		_enddate = req.query.enddate;
 	}
 	
@@ -119,17 +107,17 @@ router.get('/issue', function(req, res){
   if(_coordinates === ''){
 	  if( _issue === '')
 	  {
-		  var xxxx= new Date();
+		  /*var xxxx= new Date();
 		  var yyyy= new Date();
 		  xxxx.setDate(xxxx.getDate() -50); 
-		  
-		  console.log('_coordinates null 1 '+xxxx+' - '+yyyy+' - '+_sort+' - '+_limit);
+		  */
+		  console.log('_coordinates null 1 '+_startdate+' - '+_enddate+' - '+_sort+' - '+_limit);
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
 		  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 		  //{create_at:{$gte:_startdate, $lt:_enddate}}
-		  Issue.find({"create_at":{$gte:xxxx, $lt:yyyy}},function(err, issue){
+		  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
 			res.send(issue);
-		  });//.sort({create_at:_sort}).limit(_limit);
+		  }).sort({create_at:_sort}).limit(_limit);
 	  }
 	  else{
 		console.log('_coordinates null 2');

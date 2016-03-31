@@ -39,12 +39,12 @@ router.get('/issue', function(req, res){
 		_startdate.setDate(_startdate.getDate() -3); 
 	}
 	else{
-		_startdate = Date(req.query.startdate);
+		_startdate = new Date(req.query.startdate);
 	}
 	
 	if (req.query.hasOwnProperty('enddate'))
 	{
-		_enddate = Date(req.query.enddate);
+		_enddate = new Date(req.query.enddate);
 	}
 	
 	if (!req.query.hasOwnProperty('coordinates'))

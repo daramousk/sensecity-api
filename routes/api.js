@@ -22,7 +22,7 @@ Issue.register(router,'/issues');
 
 router.get('/issue', function(req, res){
 
-	console.log('dfsf');
+	
 	//return res.send(req.query.startdate);
 	var _startdate;
 	var _enddate;
@@ -105,16 +105,14 @@ router.get('/issue', function(req, res){
 
    //db.issues.find().sort({create_at:-1}).limit(5)
    
- console.log('start');
    
   if(_coordinates === ''){
-	  console.log('_coordinates null');
 	  if( _issue === '')
 	  {
 		  console.log('_coordinates null 1');
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
 		  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-		  Issue.find({"create_at":{$gte:_startdate, $lte:_enddate}
+		  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}
 							}, function(err, issue){
 			res.send(issue);
 		  }).sort({"create_at":_sort}).limit(_limit);
@@ -122,7 +120,7 @@ router.get('/issue', function(req, res){
 	  else{
 		console.log('_coordinates null 2');
 		//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-		Issue.find({"create_at":{$gte:startdate, $lte:_enddate},
+		Issue.find({"create_at":{$gte:startdate, $lt:_enddate},
 							 "issue":_issue
 							}, function(err, issue){
 			res.send(issue);
@@ -138,14 +136,14 @@ router.get('/issue', function(req, res){
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
 		  Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 		  
-							 "create_at":{$gte:_startdate, $lte:_enddate}
+							 "create_at":{$gte:_startdate, $lt:_enddate}
 							}, function(err, issue){
 			res.send(issue);
 		  }).sort({"create_at":_sort}).limit(_limit);
 	  }
 	  else{
 		Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							 "create_at":{$gte:startdate, $lte:_enddate},
+							 "create_at":{$gte:startdate, $lt:_enddate},
 							 "issue":_issue
 							}, function(err, issue){
 			res.send(issue);

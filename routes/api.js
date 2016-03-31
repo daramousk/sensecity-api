@@ -65,7 +65,7 @@ router.get('/issue', function(req, res){
 		_distance = req.query.distance;
 	}
 	
-	if (!req.query.hasOwnProperty('issue'))
+	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
 	{
 		_issue = '';
 	}
@@ -103,10 +103,12 @@ router.get('/issue', function(req, res){
    console.log(enddate);*/
 
    //db.issues.find().sort({create_at:-1}).limit(5)
-
+   
+ console.log('start');
    
   if(_coordinates === ''){
-	  if(!req.query.hasOwnProperty('issue') || req.query.issue==='all' || _issue === '')
+	  console.log('_coordinates null');
+	  if( _issue === '')
 	  {
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
 		  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
@@ -125,8 +127,9 @@ router.get('/issue', function(req, res){
 		  
 	  }	  
   }
-  else{
-	  //_loc_var='"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(_coordinates)},$maxDistance:JSON.parse(_coordinates)}}';
+  else
+  {
+		 console.log('_coordinates not null');
 	  if(!req.query.hasOwnProperty('issue') || req.query.issue==='all' || _issue === '')
 	  {
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage

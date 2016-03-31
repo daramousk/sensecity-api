@@ -14,4 +14,10 @@
 | **limit** | Integer (5,10,20,30,100,...) <br>Returns records | 5<br>25 etc |  1000 |
 | **sort** | Integer (1,-1)<br>*1:oldest to newest<br>*-1:newest to oldest  |  |  newest to oldest |
   
+##Examples
 
+```
+
+http://api.sense.city:3000/api/issue?startdate=2016-03-22T00:00:00:000Z&enddate=2016-03-30T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=15000&sort=-1&limit=20&issue=garbage
+
+```

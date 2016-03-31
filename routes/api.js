@@ -111,6 +111,7 @@ router.get('/issue', function(req, res){
 	  console.log('_coordinates null');
 	  if( _issue === '')
 	  {
+		  console.log('_coordinates null 1');
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
 		  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 		  Issue.find({"create_at":{$gte:_startdate, $lte:_enddate}
@@ -119,6 +120,7 @@ router.get('/issue', function(req, res){
 		  }).sort({"create_at":_sort}).limit(_limit);
 	  }
 	  else{
+		console.log('_coordinates null 2');
 		//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 		Issue.find({"create_at":{$gte:startdate, $lte:_enddate},
 							 "issue":_issue

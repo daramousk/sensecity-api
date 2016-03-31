@@ -36,18 +36,18 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
-		_startdate = newdate.getFullYear()+"-"+newdate.getMonth()+"-"+(newdate.getDate()-3)+"T00:00:00:000Z";
+		_startdate = new ISODate(newdate.getFullYear()+"-"+newdate.getMonth()+"-"+(newdate.getDate()-3)+"T00:00:00:000Z");
 	}
 	else{
-		_startdate = req.query.startdate;
+		_startdate = new ISODate(req.query.startdate);
 	}
 	
 	if (!req.query.hasOwnProperty('enddate'))
 	{
-		_enddate = newdate.getFullYear()+"-"+newdate.getMonth()+"-"+newdate.getDate()+"T00:00:00:000Z";
+		_enddate = new ISODate(newdate.getFullYear()+"-"+newdate.getMonth()+"-"+newdate.getDate()+"T23:59:59:000Z");
 	}
 	else{
-		_enddate = req.query.enddate;
+		_enddate = new ISODate(req.query.enddate);
 	}
 	
 	if (!req.query.hasOwnProperty('coordinates'))
@@ -102,9 +102,9 @@ router.get('/issue', function(req, res){
    
    console.log(startdate);
    console.log(enddate);*/
-
-   //db.issues.find().sort({create_at:-1}).limit(5)
    
+   //db.issues.find({create_at:{$gt: new ISODate('2016-01-22T00:00:00:000Z'), $lt: new ISODate('2016-03-31T00:00:00:000Z')}}).sort({create_at:-1}).limit(5)
+
    
   if(_coordinates === ''){
 	  if( _issue === '')

@@ -24,8 +24,8 @@ router.get('/issue', function(req, res){
 
 	
 	//return res.send(req.query.startdate);
-	var _startdate;
-	var _enddate;
+	var _startdate=new Date();
+	var _enddate=new Date();
 	var _coordinates;
 	var _distance;
 	var _issue;
@@ -36,7 +36,11 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
-		_startdate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
+		if(newdate.getMonth()<10){
+			_startdate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
+		}else{
+			_startdate = newdate.getFullYear()+'-'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
+		}
 	}
 	else{
 		_startdate = req.query.startdate;
@@ -44,7 +48,12 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('enddate'))
 	{
-		_enddate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
+		if(newdate.getMonth()<10){
+			_enddate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
+		}
+		else{
+			_enddate = newdate.getFullYear()+'-'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
+		}
 	}
 	else{
 		_enddate = req.query.enddate;

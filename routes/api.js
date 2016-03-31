@@ -133,6 +133,7 @@ router.get('/issue', function(req, res){
 		Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
 							 "issue":_issue
 							}, function(err, issue){
+								console.log("--->");console.log(issue);
 			res.send(err);
 		  }).sort({"create_at":_sort}).limit(_limit);
 		  

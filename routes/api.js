@@ -37,14 +37,20 @@ router.get('/issue', function(req, res){
 	if (!req.query.hasOwnProperty('startdate'))
 	{
 		_startdate.setDate(_startdate.getDate() -3); 
+		_enddate.setHours(00);
+		_enddate.setMinutes(00,00);
 	}
 	else{
 		_startdate = new Date(req.query.startdate);
+		_enddate.setHours(00);
+		_enddate.setMinutes(00,00);
 	}
 	
 	if (req.query.hasOwnProperty('enddate'))
 	{
 		_enddate = new Date(req.query.enddate);
+		_enddate.setHours(23);
+		_enddate.setMinutes(59,59);
 	}
 	
 	if (!req.query.hasOwnProperty('coordinates'))

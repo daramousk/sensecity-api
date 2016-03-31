@@ -121,7 +121,7 @@ router.get('/issue', function(req, res){
 	  {
 		  var xxxx= new Date();
 		  var yyyy= new Date();
-		  xxxx.setDate(xxxx.getDate() -6); 
+		  xxxx.setDate(xxxx.getDate() -50); 
 		  
 		  console.log('_coordinates null 1 '+xxxx+' - '+yyyy+' - '+_sort+' - '+_limit);
 		  //http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage

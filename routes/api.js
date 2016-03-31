@@ -25,7 +25,7 @@ router.get('/issue', function(req, res){
 	
 	//return res.send(req.query.startdate);
 	var _startdate="";
-	var _enddate=""();
+	var _enddate="";
 	var _coordinates;
 	var _distance;
 	var _issue;

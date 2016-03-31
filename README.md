@@ -2,7 +2,7 @@
 
 Sensecity is an **API** that collect problem issues from a city about the Plumbing, Lighting, Roads , Cleanliness and the mood for people that live there.
 
-The purpose is to sent problems issues from people in real time .
+The purpose is to sent problems issues from people in real time through smart devices and other smart sencor.
 
 The data that we collect, until now is the avove problem issues, is open and everyone can get and processing them.
 

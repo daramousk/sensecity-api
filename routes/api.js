@@ -115,7 +115,7 @@ router.get('/issue', function(req, res){
 		  //{create_at:{$gte:_startdate, $lt:_enddate}}
 		  Issue.find({"create_at":{$gte:'2016-2-28T00:00:00:000Z', $lt:'2016-2-31T23:59:59:000Z'}
 							},function(err, issue){
-			res.send(issue);
+			res.send(err);
 		  });//.sort({create_at:_sort}).limit(_limit);
 	  }
 	  else{
@@ -124,7 +124,7 @@ router.get('/issue', function(req, res){
 		Issue.find({"create_at":{$gte:req.query.startdate, $lt:req.query.enddate},
 							 "issue":_issue
 							}, function(err, issue){
-			res.send(issue);
+			res.send(err);
 		  }).sort({"create_at":_sort}).limit(_limit);
 		  
 	  }	  

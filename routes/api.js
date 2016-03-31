@@ -128,7 +128,7 @@ router.get('/issue', function(req, res){
 		  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 		  //{create_at:{$gte:_startdate, $lt:_enddate}}
 		  Issue.find({"create_at":{$gte:xxxx, $lt:yyyy}},function(err, issue){
-			res.send(err);
+			res.send(issue);
 		  });//.sort({create_at:_sort}).limit(_limit);
 	  }
 	  else{

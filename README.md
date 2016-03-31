@@ -8,7 +8,7 @@
 | --- | :-------------: | :---: | :---: |
 | **startdate** | date time format  | YYYY-mm-DDTHH:MM:SS:msmsmsZ <br>```2016-03-22T11:23:39:151Z```| today minus 3 day |
 | **enddate** | date time format |  YYYY-mm-DDTHH:MM:SS:msmsmsZ <br>```2016-03-22T11:23:39:151Z```  | today |
-| **coordinates** |  |  |  with no specific coordinates |
+| **coordinates** | Latitude,Longitude] | [Longitude,Latitude]<br>```[21.734574,38.2466395]``` |  with no specific coordinates |
 | **distance** |  |  |  with no value of a distance |
 | **issues** |  |  |  all issues |
 | **limit** |  |  |  1000 |

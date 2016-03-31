@@ -37,7 +37,7 @@ router.get('/issue', function(req, res){
 	if (!req.query.hasOwnProperty('startdate'))
 	{
 		if(newdate.getMonth()<10){
-			_startdate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
+			_startdate = (newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z').toString();
 		}else{
 			_startdate = newdate.getFullYear()+'-'+(newdate.getMonth()+1)+'-'+(newdate.getDate()-3)+'T00:00:00:000Z';
 		}
@@ -49,7 +49,7 @@ router.get('/issue', function(req, res){
 	if (!req.query.hasOwnProperty('enddate'))
 	{
 		if(newdate.getMonth()<10){
-			_enddate = newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
+			_enddate = (newdate.getFullYear()+'-0'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z').toString();
 		}
 		else{
 			_enddate = newdate.getFullYear()+'-'+(newdate.getMonth()+1)+'-'+newdate.getDate()+'T23:59:59:000Z';
@@ -124,7 +124,6 @@ router.get('/issue', function(req, res){
 		  //{create_at:{$gte:_startdate, $lt:_enddate}}
 		  Issue.find({"create_at":{$gte:_startdate}
 							},function(err, issue){
-								console.log("--->");console.log(issue);
 			res.send(err);
 		  });//.sort({create_at:_sort}).limit(_limit);
 	  }

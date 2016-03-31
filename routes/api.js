@@ -22,6 +22,7 @@ Issue.register(router,'/issues');
 
 router.get('/issue', function(req, res){
 
+	console.log('dfsf');
 	//return res.send(req.query.startdate);
 	var _startdate;
 	var _enddate;

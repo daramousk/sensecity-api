@@ -52,6 +52,9 @@ router.get('/issue', function(req, res){
 		_enddate.setHours(23);
 		_enddate.setMinutes(59,59);
 	}
+	else{
+		_enddate=newdate;
+	}
 	
 	if (!req.query.hasOwnProperty('coordinates'))
 	{

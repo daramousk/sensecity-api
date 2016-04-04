@@ -155,8 +155,8 @@ router.get('/issue', function(req, res){
 	  }
 	  else{
 		  console.log("trhyrtytr");
-		Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							 "create_at":{$gte:startdate, $lt:_enddate},
+		Issue.find({/*"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							 "create_at":{$gte:startdate, $lt:_enddate},*/
 							 "issue":"garbage"
 							}, function(err, issue){
 			res.send(issue);

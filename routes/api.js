@@ -41,6 +41,7 @@ router.get('/issue', function(req, res){
 		_startdate.setMinutes(00,00);
 	}
 	else{
+		console.log(_startdate);
 		_startdate = new Date(req.query.startdate);
 		_startdate.setHours(00);
 		_startdate.setMinutes(00,00);

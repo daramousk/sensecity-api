@@ -30,6 +30,6 @@ API Endpoint : http://api.sense.city:3000/api/issue
 
 ```
 
-http://api.sense.city:3000/api/issue?startdate=2016-03-22T00:00:00:000Z&enddate=2016-03-30T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=15000&sort=-1&limit=20&issue=garbage
+http://api.sense.city:3000/api/issue?startdate=2016-03-22&enddate=2016-03-30&coordinates=[21.734574,38.2466395]&distance=15000&sort=-1&limit=20&issue=garbage
 
 ```

@@ -96,7 +96,7 @@ router.get('/issue', function(req, res){
 		_sort = req.query.sort;
 	}
 	
-	console.log(_issue);
+	console.log(_startdate);
 
 	/*
 	if (!req.query.hasOwnProperty('startdate') || !req.query.hasOwnProperty('enddate') || !req.query.hasOwnProperty('coordinates') || !req.query.hasOwnProperty('distance')  || !req.query.hasOwnProperty('issue')) {

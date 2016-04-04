@@ -77,7 +77,7 @@ router.get('/issue', function(req, res){
 		_issue = '';
 	}
 	else{
-		_issue = "'"+req.query.issue+"'";
+		_issue = '"'+req.query.issue+'"';
 	}
 	
 	if (!req.query.hasOwnProperty('limit'))
@@ -154,6 +154,7 @@ router.get('/issue', function(req, res){
 		  }).sort({"create_at":_sort}).limit(_limit);
 	  }
 	  else{
+		  console.log("trhyrtytr");
 		Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							 "create_at":{$gte:startdate, $lt:_enddate},
 							 "issue":_issue

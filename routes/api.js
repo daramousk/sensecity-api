@@ -77,7 +77,7 @@ router.get('/issue', function(req, res){
 		_issue = '';
 	}
 	else{
-		_issue = '"'+req.query.issue+'"';
+		_issue = req.query.issue;
 	}
 	
 	if (!req.query.hasOwnProperty('limit'))

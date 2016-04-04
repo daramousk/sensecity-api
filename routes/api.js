@@ -41,7 +41,6 @@ router.get('/issue', function(req, res){
 		_startdate.setMinutes(00,00);
 	}
 	else{
-		console.log(_startdate);
 		_startdate = new Date(req.query.startdate);
 		_startdate.setHours(00);
 		_startdate.setMinutes(00,00);
@@ -97,7 +96,6 @@ router.get('/issue', function(req, res){
 		_sort = req.query.sort;
 	}
 	
-	console.log(_startdate);
 
 	/*
 	if (!req.query.hasOwnProperty('startdate') || !req.query.hasOwnProperty('enddate') || !req.query.hasOwnProperty('coordinates') || !req.query.hasOwnProperty('distance')  || !req.query.hasOwnProperty('issue')) {
@@ -131,13 +129,12 @@ router.get('/issue', function(req, res){
 		  }).sort({create_at:_sort}).limit(_limit);
 	  }
 	  else{
-		console.log('_coordinates null 2');
+		  
 		//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 		Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
 							 "issue":_issue
 							}, function(err, issue){
-								console.log("--->");console.log(issue);
-			res.send(err);
+			res.send(issue);
 		  }).sort({"create_at":_sort}).limit(_limit);
 		  
 	  }	  

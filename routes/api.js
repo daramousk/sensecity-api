@@ -37,13 +37,13 @@ router.get('/issue', function(req, res){
 	if (!req.query.hasOwnProperty('startdate'))
 	{
 		_startdate.setDate(_startdate.getDate() -3); 
-		_enddate.setHours(00);
-		_enddate.setMinutes(00,00);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
 	}
 	else{
 		_startdate = new Date(req.query.startdate);
-		_enddate.setHours(00);
-		_enddate.setMinutes(00,00);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
 	}
 	
 	if (req.query.hasOwnProperty('enddate'))
@@ -155,8 +155,8 @@ router.get('/issue', function(req, res){
 	  }
 	  else{
 		  console.log("trhyrtytr");
-		Issue.find({"issue":"garbage","loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							 "create_at":{$gte:startdate, $lt:_enddate}							 
+		Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							 "create_at":{$gte:_startdate, $lt:_enddate}							 
 							}, function(err, issue){
 			res.send(issue);
 		  }).sort({"create_at":_sort}).limit(_limit);

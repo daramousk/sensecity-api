@@ -18,8 +18,8 @@ API Endpoint : http://api.sense.city:3000/api/issue
 
 | Variable | value | example | default value |
 | --- | :-------------: | :---: | :---: |
-| **startdate** | date time format  | YYYY-mm-DDTHH:MM:SS:msmsmsZ <br>```2016-03-22T11:23:39:151Z```| today minus 3 day |
-| **enddate** | date time format |  YYYY-mm-DDTHH:MM:SS:msmsmsZ <br>```2016-03-22T11:23:39:151Z```  | today |
+| **startdate** | date time format  | YYYY-mm-DD <br>```2016-03-22```| today minus 3 day |
+| **enddate** | date time format |  YYYY-mm-DD <br>```2016-03-22```  | today |
 | **coordinates** | Latitude,Longitude | [Longitude,Latitude]<br>```[21.734574,38.2466395]``` |  with no specific coordinates |
 | **distance** | meters | Integer<br>1km = ```1000```|  with no value of a distance |
 | **issue** | garbage,plumbing,lighting,road |  |  all issues |

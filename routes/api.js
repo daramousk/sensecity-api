@@ -98,11 +98,16 @@ router.get('/issue', function(req, res){
 	}
 	if (!req.query.hasOwnProperty('image_field'))
 	{
-		_image =1;
+		_image =true;
 	}
 	else{
+		if(req.query.image_field==0)
+		{
+			_image = false;
+		}else{
+			_image = true;
+		}
 		
-		_image = req.query.image_field;
 		console.log(_image);
 	}
 	

@@ -33,7 +33,7 @@ router.get('/issue', function(req, res){
 	var _sort;
 	var _loc_var;
 	var newdate = new Date();
-	var = _image;
+	var _image;
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{

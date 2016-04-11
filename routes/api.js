@@ -103,7 +103,7 @@ router.get('/issue', function(req, res){
 	else{
 		console.log("image = "+req.query.image_field);
 		console.log("--------------------------------");
-		_image = '{"image_name:"' + req.query.image_field + '}';
+		_image = {"image_name:"req.query.image_field};
 		console.log(_image);
 	}
 	

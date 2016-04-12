@@ -108,9 +108,9 @@ router.get('/issue', function(req, res){
 			_image = true;
 		}
 		
-		console.log(_image);
+		
 	}
-	
+	console.log(_image);
    
 	if(_coordinates === ''){
 	  if( _issue === '')

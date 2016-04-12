@@ -127,8 +127,8 @@ router.get('/issue', function(req, res){
 	}
 	
 	if(_list_issue){
-		
-		Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},{"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
+		//,{"create_at":{$gte:_startdate, $lt:_enddate}}
+		Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 	}

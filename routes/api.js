@@ -113,7 +113,7 @@ router.get('/issue', function(req, res){
 	
 	if (!req.query.hasOwnProperty('list_issue'))
 	{
-		_list_issue =true;
+		_list_issue =false;
 	}
 	else{
 		if(req.query.image_field==0)

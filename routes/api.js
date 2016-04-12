@@ -112,7 +112,7 @@ router.get('/issue', function(req, res){
 	}
 	
 	
-	if(!_image){
+	if(_image){
 		if(_coordinates === ''){
 		  if( _issue === '')
 		  {

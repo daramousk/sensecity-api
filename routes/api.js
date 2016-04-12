@@ -110,6 +110,7 @@ router.get('/issue', function(req, res){
 		
 		
 	}
+	
 	console.log(_image);
    
 	if(_coordinates === ''){

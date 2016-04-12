@@ -34,7 +34,7 @@ router.get('/issue', function(req, res){
 	var _loc_var;
 	var newdate = new Date();
 	var _image;
-	
+	var _list_issue;
 	if (!req.query.hasOwnProperty('startdate'))
 	{
 		_startdate.setDate(_startdate.getDate() -3); 
@@ -125,6 +125,7 @@ router.get('/issue', function(req, res){
 		
 		
 	}
+	console.log(_list_issue);
 	
 	if(_list_issue){
 		//,{"create_at":{$gte:_startdate, $lt:_enddate}}

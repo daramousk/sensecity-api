@@ -7,7 +7,7 @@ var fs = require('fs');
 
 
 
-mongoose.connect('mongodb://localhost/lighting_fixed_point');
+mongoose.connect('mongodb://localhost/sensecity');
  
 // Models
 
@@ -15,7 +15,7 @@ var LightingFixedPoint = require('../models/lighting_fixed_point');
 
 // Routes
 
-/*LightingFixedPoint.methods(['get', 'put', 'post', 'delete']);*/
+LightingFixedPoint.methods(['get', 'put', 'post', 'delete']);
 LightingFixedPoint.register(router,'/lighting_fixed_point');
 
 

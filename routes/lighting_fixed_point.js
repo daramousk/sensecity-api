@@ -8,7 +8,7 @@ var fs = require('fs');
 
 
 mongoose.connect('mongodb://localhost/lighting_fixed_point');
-
+ 
 // Models
 
 var LightingFixedPoint = require('../models/lighting_fixed_point');

@@ -14,9 +14,9 @@ mongoose.connect('mongodb://localhost/sensecity');
 var Lighting_model = require('../models/lighting');
 
 // Routes
-/*Issue.methods(['get', 'put', 'post', 'delete']);
-Issue.register(router,'/issues');
-*/
+Lighting_model.methods(['get', 'put', 'post', 'delete']);
+Lighting_model.register(router,'/issues');
+
 
 
 

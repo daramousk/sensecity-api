@@ -34,9 +34,6 @@ app.use(function (req, res, next) {
 // Routes
 app.use('/api', require('./routes/api'));
 
-app.use('/fixed-point', require('./routes/lighting_fixed_point'));
-
-
 // start server
 app.listen(3000);
 console.log('API is running on port 3000');

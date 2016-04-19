@@ -29,7 +29,7 @@ router.get('/:id', function(req, res){
 	var id = req.params.id;
 	
 	Issue.findOne({"_id":req.params.id},function(err, issue){
-		res.send(issue);
+		res.send(issue.image_name);
 	});
 }); 
 

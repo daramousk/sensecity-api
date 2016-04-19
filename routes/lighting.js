@@ -1,7 +1,7 @@
 // Dependencies
 
 var express = require('express');
-var router = express.Router();
+var router1 = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 
@@ -15,12 +15,12 @@ var Lighting_model = require('../models/lighting');
 
 // Routes
 Lighting_model.methods(['get', 'put', 'post', 'delete']);
-Lighting_model.register(router,'/issues');
+Lighting_model.register(router1,'/issues');
 
 
 
 
-router.get('/lighting', function(req, res){
+router1.get('/lighting', function(req, res){
 		console.log('sdfsdf');
 		Lighting_model.find();	
 }); 
@@ -30,5 +30,5 @@ router.get('/lighting', function(req, res){
 
 
 // Return router
-module.exports = router;
+module.exports = router1;
   

@@ -22,7 +22,9 @@ Lighting_model.register(router1,'/lights');
 
 router1.get('/lighting', function(req, res){
 		console.log('sdfsdf');
-		Lighting_model.find();	
+		Lighting_model.find({},function(err, issue){
+					res.send(issue);
+				  }).limit(2);	
 }); 
 
 

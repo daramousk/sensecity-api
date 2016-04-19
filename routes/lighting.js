@@ -15,7 +15,7 @@ var Lighting_model = require('../models/lighting');
 
 // Routes
 Lighting_model.methods(['get', 'put', 'post', 'delete']);
-Lighting_model.register(router1,'/issues');
+Lighting_model.register(router1,'/lights');
 
 
 

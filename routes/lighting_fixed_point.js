@@ -7,7 +7,7 @@ var fs = require('fs');
 
 
 
-mongoose.connect('mongodb://localhost/sensecity');
+mongoose.connect('mongodb://localhost/lighting_fixed_point');
 
 // Models
 

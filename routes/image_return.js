@@ -11,7 +11,7 @@ var fs = require('fs');
 
 // Models
 
-var Lighting_model = require('../models/issue');
+var Issue = require('../models/issue');
 
 // Routes
 /*Lighting_model.methods(['get', 'put', 'post', 'delete']);
@@ -26,7 +26,11 @@ router.get('/:id', function(req, res){
 				  }).limit(2);	
 				  
 				  */
-	console.log("sdfds");
+	var id = req.params.id;
+	
+	Issue.findOne({"_id":req.params.id},function(err, issue){
+		res.send(issue);
+	});
 }); 
 
 

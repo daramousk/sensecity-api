@@ -220,6 +220,12 @@ router.get('/issue', function(req, res){
 }); 
 
 
+app.get('/issue/:id', function (req, res, next) {
+	console.log("test");
+});
+
+
+
 
 
 

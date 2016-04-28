@@ -22,7 +22,7 @@ static_router.get('/static_data', function(req, res){
 }); 
 
 static_router.post('/static_data', function(req, res){		
-		console.log(req);
+		console.log(req.body);
 }); 
 
 // Return router

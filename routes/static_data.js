@@ -16,7 +16,9 @@ Static_data.methods(['get', 'put', 'post', 'delete']);
 Static_data.register(static_router,'/static_data');
 */
 static_router.get('/static_data', function(req, res){		
-		console.log("get");
+	Static_data.find({}, function(err, issue){
+		res.send(issue);
+  });
 }); 
 
 static_router.post('/static_data', function(req, res){		

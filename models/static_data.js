@@ -19,5 +19,5 @@ var static_dataSchema = new mongoose.Schema({
 static_dataSchema.index({loc: "2dsphere"});
 
 // Return model
-module.exports = restful.model('static_data', static_dataSchema);
+module.exports = restful.model('Static_data', static_dataSchema);
 

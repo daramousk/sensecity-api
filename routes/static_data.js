@@ -4,8 +4,6 @@ var static_router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 
-console.log("asdfghjkl");
-
 //mongoose.connect('mongodb://localhost/sensecity');
 
 // Models

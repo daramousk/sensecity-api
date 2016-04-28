@@ -15,13 +15,13 @@ var Static_data = require('../models/static_data');
 Static_data.methods(['get', 'put', 'post', 'delete']);
 Static_data.register(static_router,'/static_data');
 */
-static_router.get('/static_data', function(req, res){		
+static_router.get('/garbage', function(req, res){		
 	Static_data.find({}, function(err, issue){
 		res.send(issue);
   });
 }); 
 
-static_router.post('/static_data', function(req, res){		
+static_router.post('/insert', function(req, res){		
 		console.log(req.body.municipality);
 }); 
 

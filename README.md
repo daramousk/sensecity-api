@@ -6,7 +6,14 @@ The purpose is to sent problems issues from people in real time through smart de
 
 The data that we collect, until now is the avove problem issues, is open and everyone can get and processing them.
 
+##Installing
 
+Install dependencies
+```
+ npm install
+```
+
+##Defaule API Endpoint
 
 ```
 API Endpoint : http://api.sense.city:3000/api/issue

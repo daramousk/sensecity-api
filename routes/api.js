@@ -12,17 +12,67 @@ mongoose.connect('mongodb://localhost/sensecity');
 // Models
 
 var Issue = require('../models/issue');
+var Municipality = require('../models/municipality');
 
 // Routes
 Issue.methods(['get', 'put', 'post', 'delete']);
 Issue.register(router,'/issues');
 
 
+router.post('/issue', function (req,res){
+		if (!req.query.hasOwnProperty('issue') ||
+		 		!req.query.hasOwnProperty('coordinates') ||
+				!req.query.hasOwnProperty('value_desc') ||
+				!req.query.hasOwnProperty('device_id'))
+		{
+			res.statusCode = 403;
+			return res.send("Forbidden");
+		}
+		else
+		{
+			Municipality.find({boundaries:
+		                   {$geoIntersects:
+		                       {$geometry:{ "type" : "Point",
+		                            "coordinates" : JSON.parse(req.query.coordinates) }
+		                        }
+		                    }
+		               },function(err, response){
+			// console.log(err);
+			// console.log(response.length);
+					var entry = new Issue({
+						loc : {type:'Point', coordinates: JSON.parse(req.query.coordinates)},
+						issue: req.query.issue,
+						device_id: req.query.device_id,
+						value_desc: req.query.value_desc,
+					});
+
+					if (response.length>0)
+						{
+							entry.municipality = 'Patras';
+						}
+						else
+						{
+							entry.municipality = '';
+						}
+					// console.log(entry);
+					entry.save(function (err1,resp){
+						if (err1)
+						{
+							console.log(err1);
+						}
+						else
+						{
+							console.log('saved: ', resp);
+							res.send(resp);
+						}
+					});
+				});
+		}
+});
+
+router.get('/issue', function(req, res) {
 
 
-router.get('/issue', function(req, res){
-
-	
 	//return res.send(req.query.startdate);
 	var _startdate=new Date();
 	var _enddate=new Date();
@@ -37,7 +87,7 @@ router.get('/issue', function(req, res){
 	var _list_issue;
 	if (!req.query.hasOwnProperty('startdate'))
 	{
-		_startdate.setDate(_startdate.getDate() -3); 
+		_startdate.setDate(_startdate.getDate() -3);
 		_startdate.setHours(00);
 		_startdate.setMinutes(00,00);
 	}
@@ -46,7 +96,7 @@ router.get('/issue', function(req, res){
 		_startdate.setHours(00);
 		_startdate.setMinutes(00,00);
 	}
-	
+
 	if (req.query.hasOwnProperty('enddate'))
 	{
 		_enddate = new Date(req.query.enddate);
@@ -56,7 +106,7 @@ router.get('/issue', function(req, res){
 	else{
 		_enddate=newdate;
 	}
-	
+
 	if (!req.query.hasOwnProperty('coordinates'))
 	{
 		_coordinates = '';
@@ -64,7 +114,7 @@ router.get('/issue', function(req, res){
 	else{
 		_coordinates = req.query.coordinates;
 	}
-	
+
 	if (!req.query.hasOwnProperty('distance'))
 	{
 		_distance = '10000';
@@ -72,7 +122,7 @@ router.get('/issue', function(req, res){
 	else{
 		_distance = req.query.distance;
 	}
-	
+
 	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
 	{
 		_issue = '';
@@ -80,7 +130,7 @@ router.get('/issue', function(req, res){
 	else{
 		_issue = req.query.issue;
 	}
-	
+
 	if (!req.query.hasOwnProperty('limit'))
 	{
 		_limit = 1000;
@@ -88,7 +138,7 @@ router.get('/issue', function(req, res){
 	else{
 		_limit = req.query.limit;
 	}
-	
+
 	if (!req.query.hasOwnProperty('sort'))
 	{
 		_sort = -1;
@@ -107,10 +157,10 @@ router.get('/issue', function(req, res){
 		}else{
 			_image = true;
 		}
-		
-		
+
+
 	}
-	
+
 	if (!req.query.hasOwnProperty('list_issue'))
 	{
 		_list_issue =false;
@@ -122,11 +172,11 @@ router.get('/issue', function(req, res){
 		}else{
 			_list_issue = true;
 		}
-		
-		
+
+
 	}
 	console.log(_list_issue);
-	
+
 	if(_list_issue){
 		//,{"create_at":{$gte:_startdate, $lt:_enddate}}
 		Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
@@ -134,8 +184,8 @@ router.get('/issue', function(req, res){
 				  }).sort({create_at:_sort}).limit(_limit);
 	}
 	else{
-		
-		
+
+
 		if(_image){
 			if(_coordinates === ''){
 			  if( _issue === '')
@@ -145,15 +195,15 @@ router.get('/issue', function(req, res){
 				  }).sort({create_at:_sort}).limit(_limit);
 			  }
 			  else{
-				  
+
 				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 				Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
 									 "issue":_issue
 									}, function(err, issue){
 					res.send(issue);
 				  }).sort({"create_at":_sort}).limit(_limit);
-				  
-			  }	  
+
+			  }
 			}
 			else
 			{
@@ -166,9 +216,9 @@ router.get('/issue', function(req, res){
 						res.send(issue);
 					}).sort({"create_at":_sort}).limit(_limit);
 				}
-				else{			
+				else{
 					Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							"create_at":{$gte:_startdate, $lt:_enddate}							 
+							"create_at":{$gte:_startdate, $lt:_enddate}
 						}, function(err, issue){
 							res.send(issue);
 						}).sort({"create_at":_sort}).limit(_limit);
@@ -176,7 +226,7 @@ router.get('/issue', function(req, res){
 			}
 
 		}else{
-	   
+
 			if(_coordinates === ''){
 			  if( _issue === '')
 			  {
@@ -185,15 +235,15 @@ router.get('/issue', function(req, res){
 				  }).sort({create_at:_sort}).limit(_limit);
 			  }
 			  else{
-				  
+
 				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 				Issue.find({},{"image_name":_image},{"create_at":{$gte:_startdate, $lt:_enddate},
 									 "issue":_issue
 									}, function(err, issue){
 					res.send(issue);
 				  }).sort({"create_at":_sort}).limit(_limit);
-				  
-			  }	  
+
+			  }
 			}
 			else
 			{
@@ -206,18 +256,18 @@ router.get('/issue', function(req, res){
 						res.send(issue);
 					}).sort({"create_at":_sort}).limit(_limit);
 				}
-				else{			
+				else{
 					Issue.find({},{"image_name":_image},{"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							"create_at":{$gte:_startdate, $lt:_enddate}							 
+							"create_at":{$gte:_startdate, $lt:_enddate}
 						}, function(err, issue){
 							res.send(issue);
 						}).sort({"create_at":_sort}).limit(_limit);
 				}
 			}
-		
+
 		}
 	}
-}); 
+});
 
 
 
@@ -227,4 +277,3 @@ router.get('/issue', function(req, res){
 
 // Return router
 module.exports = router;
-  

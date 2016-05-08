@@ -8,11 +8,11 @@ var issueSchema = new mongoose.Schema({
 	issue: String,
 	create_at: {type: Date, default: Date.now},
 	device_id: String,
-	value_desc: String
+	value_desc: String,
+	municipality: String
 });
 
 issueSchema.index({loc: "2dsphere"});
 
 // Return model
 module.exports = restful.model('Issues', issueSchema);
-

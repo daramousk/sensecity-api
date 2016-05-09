@@ -4,7 +4,7 @@ var static_router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 
-mongoose.createConnection('mongodb://localhost/sensecity');
+
 
 // Models
 
@@ -24,8 +24,9 @@ static_router.get('/garbage', function(req, res){
 static_router.post('/insert', function(req, res){		
 		console.log(req.body);
 		
-		
-		Static_data.insert(req.body);
+		var actualObject = Static_data.build(req.body);
+		actualObject.save();
+		//Static_data.insert(req.body);
 		
 }); 
 

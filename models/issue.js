@@ -9,6 +9,7 @@ var issueSchema = new mongoose.Schema({
 	create_at: {type: Date, default: Date.now},
 	device_id: String,
 	value_desc: String,
+    image_name: String,
 	municipality: String
 });
 

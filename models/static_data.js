@@ -12,7 +12,7 @@ var static_dataSchema = new mongoose.Schema({
 		type: String,
 		coordinates:[Number], //[<longitude>,<lattitude>]
 	},
-	notes: String,
+	notes: [],
 	create_at: Date
 });
 

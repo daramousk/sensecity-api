@@ -22,7 +22,7 @@ static_router.get('/garbage', function(req, res){
 }); 
 
 static_router.post('/insert', function(req, res){		
-		console.log(req.body.municipality);
+		console.log(req.body);
 }); 
 
 // Return router

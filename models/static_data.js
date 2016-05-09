@@ -4,16 +4,16 @@ var mongoose = restful.mongoose;
 
 // Schema
 var static_dataSchema = new mongoose.Schema({
-	municipality:String,
-  type:String,
-  subtype:String,
-  dimos_item_id:String,
-  loc:{
+	Dimos:String,
+	type:String,
+	sub_type:String,
+	dimos_item_id:String,
+	loc:{
 		type: String,
 		coordinates:[Number], //[<longitude>,<lattitude>]
 	},
 	notes: [],
-	create_at: Date
+	create_at: {type: Date, default: Date.now}
 });
 
 static_dataSchema.index({loc: "2dsphere"});

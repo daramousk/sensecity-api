@@ -11,16 +11,16 @@ var fs = require('fs');
 var Static_data = require('../models/static_data');
 
 // Routes
-/*
+
 Static_data.methods(['get', 'put', 'post', 'delete']);
-Static_data.register(static_router,'/static_data');
-*/
+Static_data.register(static_router,'/data');
+
 static_router.get('/garbage', function(req, res){		
 	Static_data.find({}, function(err, issue){
 		res.send(issue);
   });
 }); 
-
+/*
 static_router.post('/insert', function(req, res){		
 		console.log(req.body);
 		
@@ -29,6 +29,8 @@ static_router.post('/insert', function(req, res){
 		//Static_data.insert(req.body);
 		
 }); 
+*/
+
 
 // Return router
 module.exports = static_router;

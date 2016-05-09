@@ -23,11 +23,11 @@ static_router.get('/garbage', function(req, res){
 
 static_router.post('/insert', function(req, res){		
 		console.log(req.body);
-		/*
+		
 		Static_data.insert(req.body, function(err, issue) {
 			console.log(issue);
 		}
-		*/
+		
 }); 
 
 // Return router

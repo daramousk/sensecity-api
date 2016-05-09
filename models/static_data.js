@@ -8,10 +8,7 @@ var static_dataSchema = new mongoose.Schema({
 	type:String,
 	sub_type:String,
 	dimos_item_id:String,
-	loc:{
-		type: String,
-		coordinates:[Number], //[<longitude>,<lattitude>]
-	},
+	loc:{ type: {type:String}, coordinates: [Number]},
 	notes: [],
 	create_at: {type: Date, default: Date.now}
 });

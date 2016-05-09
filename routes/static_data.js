@@ -26,7 +26,7 @@ static_router.post('/insert', function(req, res){
 		
 		Static_data.insert(req.body, function(err, issue) {
 			console.log(issue);
-		}
+		});
 		
 }); 
 

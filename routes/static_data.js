@@ -23,8 +23,10 @@ static_router.get('/garbage', function(req, res){
 
 static_router.post('/insert', function(req, res){		
 		console.log(req.body);
+		myCollection = db.collection('static_datas');
 		
-		Static_data.insert(req.body);
+		
+		myCollection.insert(req.body);
 		
 }); 
 

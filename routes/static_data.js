@@ -11,21 +11,21 @@ var static_data = require('../models/static_data');
 
 
 
-static_router.get('/data', function(req, res){		
-	static_data.find({}, function(err, issue){
+static_router.get('/:city/data', function(req, res){		
+	static_data.find({Dimos:req.params.city}, function(err, issue){
 		res.send(issue);
   });
 }); 
 
-static_router.get('/garbage', function(req, res){		
+static_router.get('/:city/garbage', function(req, res){		
 	console.log("garbage");
-	static_data.find({type:"garbage"},function(err, issue){
+	static_data.find({Dimos:req.params.city,type:"garbage"},function(err, issue){
 		res.send(issue);
   });
 }); 
 
-static_router.get('/fotistiko', function(req, res){		
-	static_data.find({type:"fotistiko"}, function(err, issue){
+static_router.get('/:city/fotistiko', function(req, res){		
+	static_data.find({Dimos:req.params.city,type:"fotistiko"}, function(err, issue){
 		res.send(issue);
   });
 }); 

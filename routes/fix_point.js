@@ -12,20 +12,20 @@ var static_data = require('../models/fix_point');
 
 
 static_router.get('/:long/:lat/:dist/data', function(req, res){		
-	static_data.find({}, function(err, issue){
+	static_data.find(function(err, issue){
 		res.send(issue);
   });
 }); 
 
 static_router.get('/:long/:lat/:dist/garbage', function(req, res){		
 	console.log("garbage");
-	static_data.find({},function(err, issue){
+	static_data.find(function(err, issue){
 		res.send(issue);
   });
 }); 
 
 static_router.get('/:long/:lat/:dist/fotistiko', function(req, res){		
-	static_data.find({}, function(err, issue){
+	static_data.find(function(err, issue){
 		res.send(issue);
   });
 }); 

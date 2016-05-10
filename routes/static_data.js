@@ -1,13 +1,13 @@
 
 var express = require('express');
-var static_router = express.Router();
+//var static_router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 
 
 // Models
 
-var static_data = require('../models/static_data');
+//var static_data = require('../models/static_data');
 
 
 
@@ -36,4 +36,4 @@ static_router.get('/fotistiko', function(req, res){
 
 
 // Return router
-module.exports = static_router;
+//module.exports = static_router;

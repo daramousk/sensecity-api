@@ -19,13 +19,13 @@ static_router.get('/data', function(req, res){
 
 static_router.get('/garbage', function(req, res){		
 	console.log("garbage");
-	static_data.find(function(err, issue){
+	static_data.find({type:"garbage"},function(err, issue){
 		res.send(issue);
   });
 }); 
 
 static_router.get('/fotistiko', function(req, res){		
-	static_data.find({}, function(err, issue){
+	static_data.find({type:"fotistiko"}, function(err, issue){
 		res.send(issue);
   });
 }); 

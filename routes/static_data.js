@@ -19,9 +19,12 @@ static_router.get('/data', function(req, res){
 
 static_router.get('/garbage', function(req, res){		
 	console.log("garbage");
-	static_data.find({type:"garbage"}, function(err, issue){
+	mongoose.model('satic_data').find({}, function(err, data){
+		res.send(data);
+	});
+	/*static_data.find({type:"garbage"}, function(err, issue){
 		res.send(issue);
-  });
+  });*/
 }); 
 
 static_router.get('/fotistiko', function(req, res){		

@@ -1,9 +1,10 @@
 // Dependencies
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
+var Schema=mongoose.Schema;
 
 // Schema
-var static_dataSchema = new mongoose.Schema({
+var static_dataSchema = new Schema({
 	Dimos:String,
 	type:String,
 	sub_type:String,
@@ -16,5 +17,5 @@ var static_dataSchema = new mongoose.Schema({
 static_dataSchema.index({loc: "2dsphere"});
 
 // Return model
-module.exports = restful.model('static_data', static_dataSchema);
+module.exports = restful.model('fix_point', static_dataSchema);
 

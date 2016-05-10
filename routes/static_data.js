@@ -7,7 +7,7 @@ var fs = require('fs');
 
 // Models
 
-var static_data = require(__dirname+'/models/static_data');
+var static_data = require('../models/static_data');
 
 
 

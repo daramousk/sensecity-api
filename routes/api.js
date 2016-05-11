@@ -4,11 +4,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
-var bodyParser = require('body-parser');
-
-
-router.use(express.bodyParser); // support json encoded bodies
-//router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
 mongoose.connect('mongodb://localhost/sensecity');

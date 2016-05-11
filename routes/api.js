@@ -4,10 +4,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
-var bodyParser = require('body-parser');
 
-router.post(bodyParser.urlencoded({extended: true}));
-router.post(bodyParser.json());
+
 
 mongoose.connect('mongodb://localhost/sensecity');
 
@@ -22,31 +20,30 @@ Issue.register(router,'/issues');
 
 
 router.post('/issue', function (req,res){
-		console.log(req);
-		if (!req.query.hasOwnProperty('issue') ||
-		 		!req.query.hasOwnProperty('coordinates') ||
-				!req.query.hasOwnProperty('value_desc') ||
-				!req.query.hasOwnProperty('device_id'))
+		if (!req.body.hasOwnProperty('issue') ||
+		 		!req.body.hasOwnProperty('loc') ||
+				!req.body.hasOwnProperty('value_desc') ||
+				!req.body.hasOwnProperty('device_id'))
 		{
 			res.statusCode = 403;
-			return res.send("Forbidden");
+			return res.send({"message":"Forbidden"});
 		}
 		else
 		{
 			Municipality.find({boundaries:
 		                   {$geoIntersects:
 		                       {$geometry:{ "type" : "Point",
-		                            "coordinates" : JSON.parse(req.query.coordinates) }
+		                            "coordinates" : req.body.loc.coordinates }
 		                        }
 		                    }
 		               },function(err, response){
-			 console.log(err);
-			 //console.log(response.length);
+			// console.log(err);
+			// console.log(response.length);
 					var entry = new Issue({
-						loc : {type:'Point', coordinates: JSON.parse(req.query.coordinates)},
-						issue: req.query.issue,
-						device_id: req.query.device_id,
-						value_desc: req.query.value_desc,
+						loc : {type:'Point', coordinates: req.body.loc.coordinates},
+						issue: req.body.issue,
+						device_id: req.body.device_id,
+						value_desc: req.body.value_desc,
 					});
 
 					if (response.length>0)

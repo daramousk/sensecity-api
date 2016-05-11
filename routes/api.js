@@ -7,8 +7,8 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 
 
-/*router.use(bodyParser.json()); // support json encoded bodies
-router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies*/
+router.use(express.bodyParser); // support json encoded bodies
+//router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
 mongoose.connect('mongodb://localhost/sensecity');

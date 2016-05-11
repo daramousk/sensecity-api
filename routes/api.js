@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());

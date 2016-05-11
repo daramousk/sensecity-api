@@ -38,8 +38,8 @@ router.post('/issue', function (req,res){
 		                        }
 		                    }
 		               },function(err, response){
-			// console.log(err);
-			 console.log(response.length);
+			 console.log(err);
+			 //console.log(response.length);
 					var entry = new Issue({
 						loc : {type:'Point', coordinates: JSON.parse(req.query.coordinates)},
 						issue: req.query.issue,

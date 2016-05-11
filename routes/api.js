@@ -20,6 +20,7 @@ Issue.register(router,'/issues');
 
 
 router.post('/issue', function (req,res){
+		console.log(req);
 		if (!req.query.hasOwnProperty('issue') ||
 		 		!req.query.hasOwnProperty('coordinates') ||
 				!req.query.hasOwnProperty('value_desc') ||

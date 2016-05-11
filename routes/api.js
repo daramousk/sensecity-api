@@ -6,8 +6,8 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 
-router.use(bodyParser.urlencoded({extended: true}));
-router.use(bodyParser.json());
+router.post(bodyParser.urlencoded({extended: true}));
+router.post(bodyParser.json());
 
 mongoose.connect('mongodb://localhost/sensecity');
 

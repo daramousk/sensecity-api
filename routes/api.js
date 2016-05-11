@@ -5,7 +5,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 
-
+router.use(bodyParser.urlencoded({extended: true}));
+router.use(bodyParser.json());
 
 mongoose.connect('mongodb://localhost/sensecity');
 

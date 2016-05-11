@@ -6,10 +6,10 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 
-var app = express();
+var app1 = express();
 
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app1.use(bodyParser.json()); // support json encoded bodies
+app1.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
 mongoose.connect('mongodb://localhost/sensecity');

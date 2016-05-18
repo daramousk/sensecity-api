@@ -8,8 +8,16 @@ var bodyParser = require('body-parser');
 
 // Express
 var app = express();
-app.use(bodyParser.urlencoded({limit: '20mb'},{extended: true}));
-app.use(bodyParser.json({limit: '20mb'}));
+
+app.use(bodyParser.json({limit: '10mb'}));
+
+app.use(bodyParser.urlencoded({     
+        extended: true,
+        keepExtensions: true,
+        limit: '10mb', 
+        defer: true
+    }));
+
 
 
 //headers

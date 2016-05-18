@@ -80,7 +80,7 @@ router.post('/issue', function (req,res){
 					var base64 = new Buffer(req.body.image_upload, 'binary').toString('base64');
 					var data = prefix + base64;*/
 					
-					console.log(req.body.image_upload);
+					
 					
 					
 					//entry.image_name = new Buffer(req.body.image_upload, "base64");
@@ -96,7 +96,7 @@ router.post('/issue', function (req,res){
 							entry.municipality = '';
 						}
 					
-					console.log("entry: %j", entry);
+					//console.log("entry: %j", entry);
 					
 					// console.log(entry);
 					entry.save(function (err1,resp){

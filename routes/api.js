@@ -75,7 +75,7 @@ router.post('/issue', function (req,res){
 					});
 
 					
-					console.log(util.inspect(entry, false, null));
+					console.log("entry: %j", entry);
 					
 					
 					if (response.length>0)

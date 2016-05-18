@@ -41,7 +41,7 @@ app.use(function (req, res, next) {
 });
 
 // Routes
-app.use('/api', express.bodyParser({keepExtensions: true, limit: 53000000000, defer: true }, require('./routes/api'));
+app.use('/api', require('./routes/api'));
 
 app.use('/fixed-point',require('./routes/lighting'));
 

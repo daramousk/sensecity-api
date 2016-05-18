@@ -75,7 +75,7 @@ router.post('/issue', function (req,res){
 					});
 
 					
-					console.log(entry['image_name']);
+					console.log(util.inspect(entry, false, null));
 					
 					
 					if (response.length>0)

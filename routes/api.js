@@ -47,7 +47,7 @@ request({
 //POST router
 router.post('/issue', function (req,res){
 		
-		console.log(req.body.image_upload);
+		console.log(req.body.image_name);
 		
 		if (!req.body.hasOwnProperty('issue') ||
 		 		!req.body.hasOwnProperty('loc') ||

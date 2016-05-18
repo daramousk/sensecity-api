@@ -73,8 +73,10 @@ router.post('/issue', function (req,res){
 						value_desc: req.body.value_desc,						
 					});
 
-					
-					entry.image_name = req.body.image_upload;
+					var prefix = "data:" + type + ";base64,";
+					var base64 = new Buffer(req.body.image_upload, 'binary').toString('base64'),
+					var data = prefix + base64;
+					entry.image_name = data;
 					
 					
 					if (response.length>0)

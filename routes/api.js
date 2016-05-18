@@ -44,6 +44,7 @@ router.post('/issue', function (req,res){
 						issue: req.body.issue,
 						device_id: req.body.device_id,
 						value_desc: req.body.value_desc,
+						image_name: req.body.image_upload,
 					});
 
 					if (response.length>0)

@@ -1,16 +1,15 @@
 // Dependencies
-
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
+var request = require('request');
 
 
 
 mongoose.connect('mongodb://localhost/sensecity');
 
 // Models
-
 var Issue = require('../models/issue');
 var Municipality = require('../models/municipality');
 
@@ -18,7 +17,34 @@ var Municipality = require('../models/municipality');
 Issue.methods(['get', 'put', 'post', 'delete']);
 Issue.register(router,'/issues');
 
+//Bugzilla login
+var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
+var loginData =
+{
+"method": "User.login",
+"params": [{"login":"info@sense.city","password":"1nf0sense"}],
+"id": 1
+};
+var bugToken="";
+request({
+    url: bugUrl,
+    method: "POST",
+    json: loginData
+}, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+						bugToken = body.result.token;
+						var test = loginData.params.login;
+						console.log("Login in bugzilla as: "+loginData.params[0].login);
+						console.log("And assigned token: "+body.result.token);
+        }
+        else {
+            console.log("error: " + error);
+            console.log("response.statusCode: " + response.statusCode);
+            console.log("response.statusText: " + response.statusText);
+        }
+});
 
+//POST router
 router.post('/issue', function (req,res){
 		if (!req.body.hasOwnProperty('issue') ||
 		 		!req.body.hasOwnProperty('loc') ||
@@ -63,6 +89,34 @@ router.post('/issue', function (req,res){
 						}
 						else
 						{
+							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing")
+							{
+									if (resp.municipality=="Patras")
+									{
+										var bugData=
+										{
+											"method": "Bug.create",
+											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"description":resp.value_desc,"product": "Δημος Πατρέων","component": "Τμήμα επίλυσης προβλημάτων","version": "unspecified","assigned_to":"kostisgtr@gmail.com","cc":"kostisgtr@gmail.com","op_sys":"All"}],
+											"id": 2
+										};
+										// console.log(bugData);
+										request({
+										    url: bugUrl,
+										    method: "POST",
+										    json: bugData
+										}, function (error, bugResponse, body) {
+										        if (!error && bugResponse.statusCode === 200) {
+																console.log("New Bugzilla Entry with id: "+body.result.id);
+																console.log(body);
+										        }
+										        else {
+										            console.log("error: " + error);
+										            console.log("bugResponse.statusCode: " + bugResponse.statusCode);
+										            console.log("bugResponse.statusText: " + bugResponse.statusText);
+										        }
+										});
+									}
+							}
 							console.log('saved: ', resp);
 							res.send(resp);
 						}

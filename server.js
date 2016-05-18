@@ -8,8 +8,8 @@ var bodyParser = require('body-parser');
 
 // Express
 var app = express();
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '10mb'},{extended: true}));
+app.use(bodyParser.json({limit: '10mb'}));
 
 
 //headers
@@ -39,6 +39,7 @@ app.use('/fixed-point',require('./routes/lighting'));
 
 app.use('/api/issue',require('./routes/image_return'));
 
+app.use('/fix_point', require('./routes/fix_point'));
 
 // start server
 app.listen(3000);

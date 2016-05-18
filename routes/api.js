@@ -79,7 +79,7 @@ router.post('/issue', function (req,res){
 					
 					console.log(req.body.image_upload);
 					
-					entry.image_name = req.body.image_upload;
+					entry.image_name = req.body.image_upload.toString('base64');
 					
 					
 					if (response.length>0)

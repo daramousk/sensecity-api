@@ -56,6 +56,8 @@ router.post('/issue', function (req,res){
 		}
 		else
 		{
+			console.log(req.body);
+			
 			Municipality.find({boundaries:
 		                   {$geoIntersects:
 		                       {$geometry:{ "type" : "Point",

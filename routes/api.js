@@ -78,12 +78,9 @@ router.post('/issue', function (req,res){
 					var data = prefix + base64;*/
 					
 					console.log(req.body.image_upload);
-					var data = querystring.stringify({
-					  image: new Buffer(req.body.image_upload, 'binary').toString('base64')
-					});
-					entry.image_name = data;
 					
-					console.log(data);
+					entry.image_name = new Buffer(req.body.image_upload, "base64");
+					
 					if (response.length>0)
 						{
 							entry.municipality = 'Patras';

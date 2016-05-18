@@ -55,8 +55,7 @@ router.post('/issue', function (req,res){
 			return res.send({"message":"Forbidden"});
 		}
 		else
-		{
-			console.log(req.body);
+		{			
 			
 			Municipality.find({boundaries:
 		                   {$geoIntersects:
@@ -72,9 +71,13 @@ router.post('/issue', function (req,res){
 						issue: req.body.issue,
 						device_id: req.body.device_id,
 						value_desc: req.body.value_desc,
-						image_name: req.body.image_upload,
+						image_name: req.body.image_upload
 					});
 
+					
+					console.log(entry);
+					
+					
 					if (response.length>0)
 						{
 							entry.municipality = 'Patras';

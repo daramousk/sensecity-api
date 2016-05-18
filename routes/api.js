@@ -70,12 +70,11 @@ router.post('/issue', function (req,res){
 						loc : {type:'Point', coordinates: req.body.loc.coordinates},
 						issue: req.body.issue,
 						device_id: req.body.device_id,
-						value_desc: req.body.value_desc,
-						image_name: req.body.image_upload
+						value_desc: req.body.value_desc,						
 					});
 
 					
-					console.log("entry: %j", entry);
+					entry.image_name = req.body.image_upload;
 					
 					
 					if (response.length>0)
@@ -86,6 +85,9 @@ router.post('/issue', function (req,res){
 						{
 							entry.municipality = '';
 						}
+					
+					console.log("entry: %j", entry);
+					
 					// console.log(entry);
 					entry.save(function (err1,resp){
 						if (err1)

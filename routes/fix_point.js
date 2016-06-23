@@ -18,8 +18,7 @@ static_router.get('/:_long/:_lat/:_dist/data', function(req, res){
   });
 }); 
 
-static_router.get('/:_long/:_lat/:_dist/garbage', function(req, res){		
-	console.log("garbage");
+static_router.get('/:_long/:_lat/:_dist/garbage', function(req, res){			
 	static_data.find({type:"garbage", loc:{$nearSphere:{$geometry:{type:"Point",coordinates:[parseFloat(req.params._long),parseFloat(req.params._lat)]},$maxDistance:parseFloat(req.params._dist)}}
 			},function(err, issue){
 		res.send(issue);

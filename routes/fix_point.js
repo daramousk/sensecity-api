@@ -21,7 +21,7 @@ static_router.get('/:_long/:_lat/:_dist/data', function(req, res){
 }); */
 
 static_router.get('/:_long/:_lat/:_dist/data', function(req, res){
-	static_data.find({}, { "loc.coordinates": 1, type: 1, "notes.ANAKIKLOSI": 1, _id: 0 } ,function(err, issue){
+	static_data.find({} ,function(err, issue){
 		res.send(issue);
   });
 }); 

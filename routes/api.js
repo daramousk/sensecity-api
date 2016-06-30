@@ -340,7 +340,7 @@ router.get('/issue', function(req, res) {
 	}
 });
 
-router.get('/issue/full/:id', function(req, res){
+router.get('/fullissue/:id', function(req, res){
 	var id = req.params.id;
 
 	Issue.findOne({"_id":req.params.id},function(err, issue){

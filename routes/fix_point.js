@@ -21,7 +21,7 @@ static_router.get('/:_long/:_lat/:_dist/data', function(req, res){
 }); */
 
 static_router.get('/:_long/:_lat/:_dist/data', function(req, res){		
-	static_data.createIndex({"coordinates":"2d"});
+	static_data.createIndex({ "loc" : "2dsphere"});
 	
 	static_data.find({ loc:{$nearSphere:{$geometry:{type:"Point",coordinates:[parseFloat(req.params._long),parseFloat(req.params._lat)]},$maxDistance:parseFloat(req.params._dist)}}
 			}, { "loc.coordinates": 1, type: 1, "notes.ANAKIKLOSI": 1, _id: 0 } ,function(err, issue){

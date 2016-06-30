@@ -46,9 +46,9 @@ request({
 
 //POST router
 router.post('/issue', function (req,res){
-		
+
 		console.log(req.body.image_name);
-		
+
 		if (!req.body.hasOwnProperty('issue') ||
 		 		!req.body.hasOwnProperty('loc') ||
 				!req.body.hasOwnProperty('value_desc') ||
@@ -58,8 +58,8 @@ router.post('/issue', function (req,res){
 			return res.send({"message":"Forbidden"});
 		}
 		else
-		{			
-			
+		{
+
 			Municipality.find({boundaries:
 		                   {$geoIntersects:
 		                       {$geometry:{ "type" : "Point",
@@ -73,20 +73,20 @@ router.post('/issue', function (req,res){
 						loc : {type:'Point', coordinates: req.body.loc.coordinates},
 						issue: req.body.issue,
 						device_id: req.body.device_id,
-						value_desc: req.body.value_desc,						
+						value_desc: req.body.value_desc,
 					});
 
 					/*var prefix = "data:image/jpeg;base64,";
 					var base64 = new Buffer(req.body.image_upload, 'binary').toString('base64');
 					var data = prefix + base64;*/
-					
-					
-					
-					
+
+
+
+
 					//entry.image_name = new Buffer(req.body.image_upload, "base64");
-					
+
 					entry.image_name = req.body.image_name;
-					
+
 					if (response.length>0)
 						{
 							entry.municipality = 'Patras';
@@ -95,9 +95,9 @@ router.post('/issue', function (req,res){
 						{
 							entry.municipality = '';
 						}
-					
+
 					//console.log("entry: %j", entry);
-					
+
 					// console.log(entry);
 					entry.save(function (err1,resp){
 						if (err1)
@@ -116,7 +116,6 @@ router.post('/issue', function (req,res){
 											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"description":resp.value_desc,"product": "Δημος Πατρέων","component": "Τμήμα επίλυσης προβλημάτων","version": "unspecified","assigned_to":"kostisgtr@gmail.com","cc":"kostisgtr@gmail.com","op_sys":"All"}],
 											"id": 2
 										};
-										// console.log(bugData);
 										request({
 										    url: bugUrl,
 										    method: "POST",
@@ -339,6 +338,14 @@ router.get('/issue', function(req, res) {
 
 		}
 	}
+});
+
+router.get('/issue/full/:id', function(req, res){
+	var id = req.params.id;
+
+	Issue.findOne({"_id":req.params.id},function(err, issue){
+		res.send(issue);
+	});
 });
 
 

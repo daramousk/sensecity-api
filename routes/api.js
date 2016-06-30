@@ -116,7 +116,6 @@ router.post('/issue', function (req,res){
 											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"description":resp.value_desc,"product": "Δημος Πατρέων","component": "Τμήμα επίλυσης προβλημάτων","version": "unspecified","assigned_to":"kostisgtr@gmail.com","cc":"kostisgtr@gmail.com","op_sys":"All"}],
 											"id": 2
 										};
-										// console.log(bugData);
 										request({
 										    url: bugUrl,
 										    method: "POST",

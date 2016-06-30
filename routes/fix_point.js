@@ -10,7 +10,7 @@ var fs = require('fs');
 var static_data = require('../models/fix_point');
 
 
-
+/*
 static_router.get('/:_long/:_lat/:_dist/data', function(req, res){		
 	static_data.createIndex({"loc.coordinates":1, "notes.ANAKIKLOSI":1});
 	
@@ -18,7 +18,14 @@ static_router.get('/:_long/:_lat/:_dist/data', function(req, res){
 			}, { "loc.coordinates": 1, type: 1, "notes.ANAKIKLOSI": 1, _id: 0 } ,function(err, issue){
 		res.send(issue);
   });
+}); */
+
+static_router.get('/:_long/:_lat/:_dist/data', function(req, res){
+	static_data.find({}, { "loc.coordinates": 1, type: 1, "notes.ANAKIKLOSI": 1, _id: 0 } ,function(err, issue){
+		res.send(issue);
+  });
 }); 
+
 
 static_router.get('/:_long/:_lat/:_dist/garbage', function(req, res){			
 	static_data.find({type:"garbage", loc:{$nearSphere:{$geometry:{type:"Point",coordinates:[parseFloat(req.params._long),parseFloat(req.params._lat)]},$maxDistance:parseFloat(req.params._dist)}}

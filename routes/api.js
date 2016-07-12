@@ -113,7 +113,7 @@ router.post('/issue', function (req,res){
 										var bugData=
 										{
 											"method": "Bug.create",
-											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": "Δημος Πατρέων","component": "Τμήμα επίλυσης προβλημάτων","version": "unspecified","assigned_to":"kostisgtr@gmail.com","cc":"kostisgtr@gmail.com","op_sys":"All"}],
+											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": "Δημος Πατρέων","component": "Τμήμα επίλυσης προβλημάτων","version": "unspecified","cc":"kostisgtr@gmail.com","op_sys":"All"}],
 											"id": 2
 										};
 										request({

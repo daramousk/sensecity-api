@@ -12,7 +12,7 @@ var app = express();
 app.use(bodyParser.urlencoded({limit: '50mb'},{extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
 
-var config = require('app-config');
+//var config = require('app-config');
 
 //headers
 app.use(function (req, res, next) {

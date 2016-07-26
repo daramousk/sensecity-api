@@ -2,6 +2,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var config = require('app-config');
 
 // Mongo Db
 //mongoose.connect('mongodb://localhost/sensecity');
@@ -42,5 +43,7 @@ app.use('/api/issue',require('./routes/image_return'));
 app.use('/fix_point', require('./routes/fix_point'));
 
 // start server
-app.listen(3000);
-console.log('API is running on port 3000');
+/*app.listen(3000);
+console.log('API is running on port 3000');*/
+app.listen(config.config.port);
+console.log('API is running on port '+config.config.port);

@@ -4,10 +4,10 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 var request = require('request');
-var config = require('app-config');
 
 
-mongoose.connect('mongodb://'+config.config.hostname+'/'+config.config.database);
+
+mongoose.connect('mongodb://localhost/sensecity');
 
 // Models
 var Issue = require('../models/issue');
@@ -22,7 +22,7 @@ var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 var loginData =
 {
 "method": "User.login",
-"params": [{"login":'"'+config.config.login+'"',"password":'"'+config.config.password+'"'}],
+"params": [{"login":"info@sense.city","password":"1nf0sense"}],
 "id": 1
 };
 var bugToken="";

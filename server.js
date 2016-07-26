@@ -41,7 +41,7 @@ app.use('/fixed-point',require('./routes/lighting'));
 app.use('/api/issue',require('./routes/image_return'));
 
 app.use('/fix_point', require('./routes/fix_point'));
-
+console.log(config.config.port);
 // start server
 /*app.listen(3000);
 console.log('API is running on port 3000');*/

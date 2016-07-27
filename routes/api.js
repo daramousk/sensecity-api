@@ -24,7 +24,7 @@ var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 var loginData =
 {
 "method": "User.login",
-"params": [{"login":xxx["login"],"password":xxx["pwd"]}],
+"params": [{"login":"ouou 22","password":"ouou"}],
 "id": 1
 };
 var xxx= loginData["params"];

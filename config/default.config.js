@@ -2,6 +2,6 @@ module.exports = {
     hostname: '',
 	database: '',
     port: 1234,
-	login:'',
-	pwd:''
+	login:'login-name',
+	pwd:'password'
 }

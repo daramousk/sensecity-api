@@ -20,15 +20,10 @@ Issue.register(router,'/issues');
 //Bugzilla login
 var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 
-var login_config = config.config.login;
-var pwd_config = config.config.pwd;
-
-console.log("---->"+login_config);
-
 var loginData =
 {
 "method": "User.login",
-"params": [{"login":login_config,"password":pwd_config}],
+"params": [{"login":config.config.login,"password":config.config.pwd}],
 "id": 1
 };
 /*

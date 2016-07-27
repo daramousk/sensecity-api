@@ -30,7 +30,7 @@ var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 var loginData =
 {
 "method": "User.login",
-"params": [{"login":"info@sense.city","password":"1nf0sensecity"}],
+"params": [{"login":"info@sense.city","password":"1nf0sense"}],
 "id": 1
 };
 

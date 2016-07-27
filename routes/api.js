@@ -7,7 +7,7 @@ var request = require('request');
 
 var config = require('app-config');
 
-mongoose.connect('mongodb://'+config.config.hostname+'/'+config.config.database);
+mongoose.connect('mongodb://'+config.config.my_hostname+'/'+config.config.database);
 
 // Models
 var Issue = require('../models/issue');

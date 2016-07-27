@@ -23,7 +23,7 @@ var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 var login1 = '"'+config.config.login+'"';
 var pwd1 = '"'+config.config.pwd+'"';
 
-console.log(login+pwd);
+console.log(login1+pwd1);
 
 var loginData =
 {

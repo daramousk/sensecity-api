@@ -46,7 +46,7 @@ app.use('/fix_point', require('./routes/fix_point'));
 console.log(config.config.port);
 
 // start server
-app.listen(4000);
-console.log('API is running on port 4000');
+app.listen(config.config.port);
+console.log('API is running on port '+config.config.port);
 /*app.listen(config.config.port);
 console.log('API is running on port '+config.config.port);*/

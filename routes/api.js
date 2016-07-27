@@ -20,27 +20,12 @@ Issue.register(router,'/issues');
 //Bugzilla login
 var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 
-/*var loginData =
-{
-"method": "User.login",
-"params": [{"login":config.config.login,"password":config.config.pwd}],
-"id": 1
-};*/
-
 var loginData =
 {
 "method": "User.login",
 "params": [{"login":config.config.login,"password":config.config.pwd}],
 "id": 1
 };
-
-
-/*
-loginData["params"]["0"]["login"] = eval(config.config.login);
-loginData["params"]["0"]["password"] = eval(config.config.pwd);*/
-
-console.log(loginData);
-
 
 var bugToken="";
 request({
@@ -50,7 +35,7 @@ request({
 }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
 						bugToken = body.result.token;
-						var test = loginData.params.login;
+						
 						console.log("Login in bugzilla as: "+loginData.params[0].login);
 						console.log("And assigned token: "+body.result.token);
         }

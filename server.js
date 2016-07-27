@@ -43,8 +43,6 @@ app.use('/api/issue',require('./routes/image_return'));
 
 app.use('/fix_point', require('./routes/fix_point'));
 
-console.log(config.config.port);
-
 // start server
 app.listen(config.config.port);
 console.log('API is running on port '+config.config.port);

@@ -24,11 +24,11 @@ var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 var loginData =
 {
 "method": "User.login",
-"params": [{"login":xxx[0]["login"],"password":xxx[0]["pwd"]}],
+"params": [{"login":xxx["login"],"password":xxx["pwd"]}],
 "id": 1
 };
 var xxx= loginData["params"];
-console.log(xxx[0]);
+console.log(xxx["0"]);
 console.log(loginData);
 
 

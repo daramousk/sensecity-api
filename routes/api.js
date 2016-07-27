@@ -20,12 +20,21 @@ Issue.register(router,'/issues');
 //Bugzilla login
 var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 
-var loginData =
+/*var loginData =
 {
 "method": "User.login",
 "params": [{"login":config.config.login,"password":config.config.pwd}],
 "id": 1
+};*/
+
+var loginData =
+{
+"method": "User.login",
+"params": [{"login":"info@sense.city","password":"1nf0sensecity"}],
+"id": 1
 };
+
+
 /*
 loginData["params"]["0"]["login"] = eval(config.config.login);
 loginData["params"]["0"]["password"] = eval(config.config.pwd);*/

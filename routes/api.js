@@ -28,7 +28,7 @@ var loginData =
 "id": 1
 };
 var xxx= loginData["params"];
-console.log(xxx["0"]);
+console.log(xxx["0"]["login"]);
 console.log(loginData);
 
 

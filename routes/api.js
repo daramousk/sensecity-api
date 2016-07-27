@@ -23,7 +23,6 @@ var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 var login1 = '"'+config.config.login+'"';
 var pwd1 = '"'+config.config.pwd+'"';
 
-console.log(login1+pwd1);
 
 var loginData =
 {
@@ -31,6 +30,9 @@ var loginData =
 "params": [{"login":login1,"password":pwd1}],
 "id": 1
 };
+
+console.log(loginData);
+
 var bugToken="";
 request({
     url: bugUrl,

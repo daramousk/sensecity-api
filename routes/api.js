@@ -27,8 +27,8 @@ var loginData =
 "params": [{"login":String(config.config.login),"password":String(config.config.pwd)}],
 "id": 1
 };
-
-console.log(loginData["params"].login);
+var xxx= loginData["params"];
+console.log(xxx["login"]);
 
 var bugToken="";
 request({

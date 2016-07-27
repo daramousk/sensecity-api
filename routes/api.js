@@ -28,7 +28,7 @@ var loginData =
 "id": 1
 };
 
-console.log(loginData["params"]["login"]);
+console.log(loginData["params"].login);
 
 var bugToken="";
 request({

@@ -27,8 +27,9 @@ var loginData =
 "params": [{"login":"ouou 22","password":"ouou"}],
 "id": 1
 };
-var xxx= loginData["params"];
-console.log(xxx["0"]["login"]);
+loginData["params"]["0"]["login"] = config.config.login;
+loginData["params"]["0"]["password"] = config.config.pwd;
+
 console.log(loginData);
 
 

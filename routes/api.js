@@ -5,9 +5,9 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 var request = require('request');
 
+var config = require('app-config');
 
-
-mongoose.connect('mongodb://localhost/sensecity');
+mongoose.connect('mongodb://'+config.config.hostname+'/'+config.config.database);
 
 // Models
 var Issue = require('../models/issue');
@@ -22,7 +22,7 @@ var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
 var loginData =
 {
 "method": "User.login",
-"params": [{"login":"info@sense.city","password":"1nf0sense"}],
+"params": [{"login":config.config.login,"password":config.config.pwd}],
 "id": 1
 };
 var bugToken="";

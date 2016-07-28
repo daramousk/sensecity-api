@@ -4,5 +4,8 @@ module.exports = {
     port: 1234,
 	login:'login-name',
 	pwd:'password',
-	bugUrl:''
+	bugUrl:'',
+	bug_product: '',
+	bug_component: '',
+	bug_cc:''
 }

@@ -110,8 +110,10 @@ router.post('/issue', function (req,res){
 						{
 							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing")
 							{
+							console.log("resp.issue OK");
 									if (resp.municipality=="Patras")
 									{
+							console.log("resp.municipality==Patras OK");
 										var bugData=
 										{
 											"method": "Bug.create",

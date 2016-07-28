@@ -18,7 +18,7 @@ Issue.methods(['get', 'put', 'post', 'delete']);
 Issue.register(router,'/issues');
 
 //Bugzilla login
-var bugUrl = "http://nam.ece.upatras.gr/bugzilla/jsonrpc.cgi";
+var bugUrl = config.config.bugUrl;
 
 var loginData =
 {
@@ -117,7 +117,7 @@ router.post('/issue', function (req,res){
 										var bugData=
 										{
 											"method": "Bug.create",
-											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": "Δημος Πατρέων","component": "Τμήμα επίλυσης προβλημάτων","version": "unspecified","cc":"kostisgtr@gmail.com","op_sys":"All"}],
+											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": config.config.bug_product,"component": config.config.bug_component,"version": "unspecified","cc":config.config.bug_cc,"op_sys":"All"}],
 											"id": 2
 										};
 										request({

@@ -1,0 +1,84 @@
+#!/bin/bash
+    ### BEGIN INIT INFO
+    # Provides: sensecityapi Required-Start: $local_fs $network $remote_fs Required-Stop: $local_fs $network $remote_fs Default-Start: 2 3 4 5 Default-Stop: 0 1 6
+    # Short-Description: sensecity api management service Description: sense city management API service
+    ### END INIT INFO
+    . /lib/lsb/init-functions
+    #set -e
+    NAME=sensecityapi-dev
+    DESC="sense.city api dev management service"
+    DAEMON=/opt/sensecity-api-dev/scripts/sensecityapistartdev.sh
+    DAEMONOPTS=""
+    PIDDIR=/var/run/${NAME}
+    PIDFILE=${PIDDIR}/${NAME}.pid
+    RUNASUSER=localadmin
+    RUNASGROUP=localadmin
+    RUNAS=$RUNASUSER
+        DATADIR=/home/${RUNASUSER}/
+        #DATADIR=/opt/sensecity-api/
+    if ! [ -r ${DAEMON} ]; then echo "Can't read: ${DAEMON}" 2>&1; exit 1; fi
+    if ! [ -d ${DATADIR} ]; then echo "No such directory: ${DATADIR}" 2>&1; exit 1; fi
+    if [ ! -d ${PIDDIR} ]; then
+            mkdir -p ${PIDDIR}; chown ${RUNASUSER}: ${PIDDIR}; chmod 0750 ${PIDDIR};
+    fi
+    do_start() {
+            RETVAL=1
+
+                        # Checked the PID file exists and check the actual status of process
+                          if [ -e $PIDFILE ]; then
+                           status_of_proc -p $PIDFILE $DAEMON "$NAME process" && status="0" || status="$?"
+                           # If the status is SUCCESS then don't need to start again.
+                           if [ $status = "0" ]; then
+                            exit # Exit
+                           fi
+                          fi
+
+            log_daemon_msg "Starting ${DESC}" "${NAME}"
+            if pgrep -f "^${DAEMON}" > /dev/null 2>&1; then
+                    log_progress_msg "(already running?)"
+            else
+                    start-stop-daemon -q -d ${DATADIR} --user $RUNAS --start --background --make-pidfile --pidfile $PIDFILE --exec $DAEMON
+                    RETVAL=$?
+            fi
+            chown -R ${RUNASUSER}: ${PIDDIR}
+            log_end_msg $RETVAL
+    }
+    do_stop() {
+            if [ -e $PIDFILE ]; then
+                           status_of_proc -p $PIDFILE $DAEMON "Stopping the $NAME process" && status="0" || status="$?"
+                           if [ "$status" = 0 ]; then
+                            start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+                            /bin/rm -rf $PIDFILE
+                                kill -9 `ps aux | grep 'node /opt/sensecity-api-develop/server.js' | awk '{print $2}'`
+                                kill -9 `ps aux | grep 'sensecity-api-develop' | awk '{print $2}'`
+                                kill -9 `ps aux | grep 'node /usr/bin/nodemon /opt/sensecity-api-develop/server.js' | awk '{print $2}'`
+								kill -9 `ps aux | grep 'bugzillaAPI_develop' | awk '{print $2}'`
+                                kill -9 `ps aux | grep 'bugzillaAPI_develop' | awk '{print $2}'`
+                                kill -9 `ps aux | grep 'bugzillaAPI_develop' | awk '{print $2}'`
+                           fi
+                          else
+                           log_daemon_msg "$NAME process is not running"
+                           log_end_msg 0
+                          fi
+    }
+    case "$1" in
+      start)
+            do_start
+       ;;
+      stop)
+            do_stop
+       ;;
+      status)
+            status_of_proc -p $PIDFILE $DAEMON $NAME && exit 0 || exit $?
+       ;;
+      restart|force-reload)
+            do_stop;
+            do_start;
+       ;;
+      *)
+            N=/etc/init.d/$NAME
+            echo "Usage: $0 {start|stop|status|restart|force-reload}" >&2
+            exit 1
+       ;;
+	esac
+    exit 0

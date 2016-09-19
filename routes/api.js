@@ -68,7 +68,7 @@ router.post('/issue', function (req,res){
 		                            "coordinates" : req.body.loc.coordinates }
 		                        }
 		                    }
-		               },function(err, response){
+		               },{"municipality":1},function(err, response){
 			// console.log(err);
 			// console.log(response.length);
 					var entry = new Issue({
@@ -82,7 +82,7 @@ router.post('/issue', function (req,res){
 					var base64 = new Buffer(req.body.image_upload, 'binary').toString('base64');
 					var data = prefix + base64;*/
 
-
+					console.log("municipality" + response.municipality);
 
 
 					//entry.image_name = new Buffer(req.body.image_upload, "base64");
@@ -343,6 +343,209 @@ router.get('/issue', function(req, res) {
 		}
 	}
 });
+
+router.get('/issue/:city', function(req, res) {
+
+
+	//return res.send(req.query.startdate);
+	var _startdate=new Date();
+	var _enddate=new Date();
+	var _coordinates;
+	var _distance;
+	var _issue;
+	var _limit;
+	var _sort;
+	var _loc_var;
+	var newdate = new Date();
+	var _image;
+	var _list_issue;
+	var city_name = req.params.city;
+	
+	
+	if (!req.query.hasOwnProperty('startdate'))
+	{
+		_startdate.setDate(_startdate.getDate() -3);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+	else{
+		_startdate = new Date(req.query.startdate);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+
+	if (req.query.hasOwnProperty('enddate'))
+	{
+		_enddate = new Date(req.query.enddate);
+		_enddate.setHours(23);
+		_enddate.setMinutes(59,59);
+	}
+	else{
+		_enddate=newdate;
+	}
+
+	if (!req.query.hasOwnProperty('coordinates'))
+	{
+		_coordinates = '';
+	}
+	else{
+		_coordinates = req.query.coordinates;
+	}
+
+	if (!req.query.hasOwnProperty('distance'))
+	{
+		_distance = '10000';
+	}
+	else{
+		_distance = req.query.distance;
+	}
+
+	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
+	{
+		_issue = '';
+	}
+	else{
+		_issue = req.query.issue;
+	}
+
+	if (!req.query.hasOwnProperty('limit'))
+	{
+		_limit = 1000;
+	}
+	else{
+		_limit = req.query.limit;
+	}
+
+	if (!req.query.hasOwnProperty('sort'))
+	{
+		_sort = -1;
+	}
+	else{
+		_sort = req.query.sort;
+	}
+	if (!req.query.hasOwnProperty('image_field'))
+	{
+		_image =true;
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_image = false;
+		}else{
+			_image = true;
+		}
+
+
+	}
+
+	if (!req.query.hasOwnProperty('list_issue'))
+	{
+		_list_issue =false;
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_list_issue = false;
+		}else{
+			_list_issue = true;
+		}
+
+
+	}
+	console.log(_list_issue);
+
+	if(_list_issue){
+		//,{"create_at":{$gte:_startdate, $lt:_enddate}}
+		Issue.find({'municipality':city_name, 'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+	}
+	else{
+
+
+		if(_image){
+			if(_coordinates === ''){
+			  if( _issue === '')
+			  {
+				  Issue.find({'municipality':city_name,'create_at':{$gte:_startdate, $lt:_enddate}},function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+			  }
+			  else{
+
+				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+				Issue.find({'municipality':city_name,'create_at':{$gte:_startdate, $lt:_enddate},
+									 "issue":_issue
+									}, function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+
+			  }
+			}
+			else
+			{
+				if(_issue === '')
+				{
+					//http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
+					Issue.find({'municipality':city_name, 'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							'create_at':{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+						res.send(issue);
+					}).sort({create_at:_sort}).limit(_limit);
+				}
+				else{
+					Issue.find({'municipality':city_name,'issue':_issue,'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							'create_at':{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+							res.send(issue);
+						}).sort({create_at:_sort}).limit(_limit);
+				}
+			}
+
+		}else{
+
+			if(_coordinates === ''){
+			  if( _issue === '')
+			  {
+				  Issue.find({},{'municipality':city_name, 'image_name':_image},{'create_at':{$gte:_startdate, $lt:_enddate}},function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+			  }
+			  else{
+
+				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+				Issue.find({},{'municipality':city_name, 'image_name':_image},{'create_at':{$gte:_startdate, $lt:_enddate},
+									 'issue':_issue
+									}, function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+
+			  }
+			}
+			else
+			{
+				if(_issue === '')
+				{
+					//http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
+					Issue.find({},{'municipality':city_name, 'image_name':_image},{'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							'create_at':{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+						res.send(issue);
+					}).sort({create_at:_sort}).limit(_limit);
+				}
+				else{
+					Issue.find({},{'municipality':city_name, 'image_name':_image},{'issue':_issue,'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							'create_at':{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+							res.send(issue);
+						}).sort({create_at:_sort}).limit(_limit);
+				}
+			}
+
+		}
+	}
+});
+
 
 router.get('/fullissue/:id', function(req, res){
 	var id = req.params.id;

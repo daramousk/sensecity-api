@@ -82,8 +82,8 @@ router.post('/issue', function (req,res){
 					var base64 = new Buffer(req.body.image_upload, 'binary').toString('base64');
 					var data = prefix + base64;*/
 
-					console.log("municipality = " + response.municipality);
-					console.log("response length = " + response.length);
+					console.log("municipality = " + response[0]["municipality"]);
+					console.log("response length = " + response);
 
 					//entry.image_name = new Buffer(req.body.image_upload, "base64");
 

@@ -68,7 +68,7 @@ router.post('/issue', function (req,res){
 		                            "coordinates" : req.body.loc.coordinates }
 		                        }
 		                    }
-		               },{"municipality":1},function(err, response){
+		               },function(err, response){
 			// console.log(err);
 			// console.log(response.length);
 					var entry = new Issue({

@@ -111,6 +111,7 @@ router.post('/issue', function (req,res){
 							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing")
 							{
 							console.log("resp.issue OK");
+							console.log("response length = -->" + response.length);
 									//if (resp.municipality=="Patras")
 									if (response.length>0)
 									{

@@ -91,7 +91,7 @@ router.post('/issue', function (req,res){
 
 					if (response.length>0)
 						{
-							entry.municipality = response.municipality;
+							entry.municipality = response[0]["municipality"];
 						}
 						else
 						{

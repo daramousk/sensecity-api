@@ -111,13 +111,14 @@ router.post('/issue', function (req,res){
 							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing")
 							{
 							console.log("resp.issue OK");
-									if (resp.municipality=="Patras")
+									//if (resp.municipality=="Patras")
+									if (response.length>0)
 									{
 							console.log("resp.municipality==Patras OK");
 										var bugData=
 										{
 											"method": "Bug.create",
-											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": config.config.bug_product,"component": config.config.bug_component,"version": "unspecified","cc":config.config.bug_cc,"op_sys":"All"}],
+											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": response[0]["municipality"],"component": config.config.bug_component,"version": "unspecified","cc":config.config.bug_cc,"op_sys":"All"}],
 											"id": 2
 										};
 										request({

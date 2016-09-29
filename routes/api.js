@@ -537,9 +537,9 @@ router.get('/issue/:city', function(req, res) {
 
 router.get('/mobilemap', function(req, res) {
 	
-	Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:2000}}}, {'image_name':-1}, function(err, issue){
+	Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:2000}}}, {'image_name':false}, function(err, issue){
 		res.send(issue);
-	}).sort({create_at:-1}).limit(40);
+	}).sort({create_at:1}).limit(40);
 	
 });
 

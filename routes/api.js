@@ -377,10 +377,9 @@ router.get('/issue', function(req, res) {
 						res.send(issue);
 					}).sort({create_at:_sort}).limit(_limit);*/
 					
-					Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-					"image_name":_image,
+					Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},					
 							"create_at":{$gte:_startdate, $lt:_enddate}
-						}, function(err, issue){
+						},{"image_name":_image}, function(err, issue){
 						res.send(issue);
 					}).sort({create_at:_sort}).limit(_limit);
 				}

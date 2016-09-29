@@ -345,7 +345,7 @@ router.get('/issue', function(req, res) {
 				 /* Issue.find({},{"image_name":_image},{"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);*/
-				  Issue.find({"image_name":_image},{"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
+				  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},{"image_name":_image},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 			  }
@@ -354,9 +354,9 @@ router.get('/issue', function(req, res) {
 			  
 				console.log("1m");
 				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-				Issue.find({},{"image_name":_image},{"create_at":{$gte:_startdate, $lt:_enddate},
+				Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
 									 "issue":_issue
-									}, function(err, issue){
+									},{"image_name":_image}, function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 
@@ -392,9 +392,9 @@ router.get('/issue', function(req, res) {
 							res.send(issue);
 						}).sort({create_at:_sort}).limit(_limit);*/
 						
-						Issue.find({},{"image_name":_image},{"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+						Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							"create_at":{$gte:_startdate, $lt:_enddate}
-						}, function(err, issue){
+						},{"image_name":_image}, function(err, issue){
 							res.send(issue);
 						}).sort({create_at:_sort}).limit(_limit);
 						

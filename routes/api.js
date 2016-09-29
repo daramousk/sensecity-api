@@ -537,8 +537,11 @@ router.get('/issue/:city', function(req, res) {
 
 router.get('/issue/mobilemap', function(req, res) {
 	
-	console.log("test11111");
+	console.log("6543");
 	
+	Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:2000}}}, function(err, issue){
+		res.send(issue);
+	}).sort({create_at:1}).limit(40);
 	
 });
 

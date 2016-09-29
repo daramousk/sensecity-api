@@ -535,7 +535,7 @@ router.get('/issue/:city', function(req, res) {
 	}
 });
 
-router.get('/issue/mobilemap', function(req, res) {
+router.get('/mobilemap', function(req, res) {
 	
 	console.log("6543");
 	

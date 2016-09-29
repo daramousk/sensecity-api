@@ -43,6 +43,8 @@ app.use('/api/issue',require('./routes/image_return'));
 
 app.use('/fix_point', require('./routes/fix_point'));
 
+app.use('/mobilemap', require('./routes/api'));
+
 // start server
 app.listen(config.config.port);
 console.log('API is running on port '+config.config.port);

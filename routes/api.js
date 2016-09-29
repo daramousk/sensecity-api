@@ -541,15 +541,11 @@ router.get('/issue/mobilemap', function(req, res) {
 		_coordinates = '';
 	}
 	else{
-		Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:0,$maxDistance:JSON.parse(req.query.distance)}},
-							'create_at':{$gte:_startdate, $lt:_enddate}, 'municipality':city_name
-						},{'image_name':_image} , function(err, issue){
+		Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:0,$maxDistance:JSON.parse(req.query.distance)}}
+						} , function(err, issue){
 						res.send(issue);
 					}).sort({create_at:-1}).limit(40);
 	}
-	
-	
-	
 }
 
 router.get('/fullissue/:id', function(req, res){

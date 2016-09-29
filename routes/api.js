@@ -258,38 +258,22 @@ router.get('/issue', function(req, res) {
 	console.log(_list_issue);
 
 	if(_list_issue){
-		
-		console.log("1a");
-		//,{"create_at":{$gte:_startdate, $lt:_enddate}}
+
 		Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 	}
 	else{
-		console.log("1b");
-
 		if(_image){
-			
-			console.log("1c");
-			
 			if(_coordinates === ''){
-				
-				console.log("1d");
-				
 			  if( _issue === '')
 			  {
-				  
-				  console.log("1e");
-				  
 				  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 			  }
 			  else{
-
-			  
-				console.log("1f");
-				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+				  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 				Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
 									 "issue":_issue
 									}, function(err, issue){
@@ -300,16 +284,8 @@ router.get('/issue', function(req, res) {
 			}
 			else
 			{
-				
-				console.log("1g");
-				
-				
 				if(_issue === '')
 				{
-					
-					console.log("1h");
-					
-					//http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
 					Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							"create_at":{$gte:_startdate, $lt:_enddate}
 						}, function(err, issue){
@@ -317,9 +293,6 @@ router.get('/issue', function(req, res) {
 					}).sort({create_at:_sort}).limit(_limit);
 				}
 				else{
-					
-					console.log("1i");
-					
 					Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							"create_at":{$gte:_startdate, $lt:_enddate}
 						}, function(err, issue){
@@ -329,31 +302,16 @@ router.get('/issue', function(req, res) {
 			}
 
 		}else{
-			
-			console.log("1j");
 
 			if(_coordinates === ''){
 				
-				console.log("1k");
-				
-				
 			  if( _issue === '')
 			  {
-				  
-				  console.log("1l");
-				  
-				 /* Issue.find({},{"image_name":_image},{"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
-					res.send(issue);
-				  }).sort({create_at:_sort}).limit(_limit);*/
 				  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},{"image_name":_image},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 			  }
 			  else{
-
-			  
-				console.log("1m");
-				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 				Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
 									 "issue":_issue
 									},{"image_name":_image}, function(err, issue){
@@ -364,19 +322,8 @@ router.get('/issue', function(req, res) {
 			}
 			else
 			{
-				console.log("1n");
 				if(_issue === '')
 				{
-					
-					console.log("1o");
-					
-					//http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
-					/*Issue.find({},{"image_name":_image},{"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							"create_at":{$gte:_startdate, $lt:_enddate}
-						}, function(err, issue){
-						res.send(issue);
-					}).sort({create_at:_sort}).limit(_limit);*/
-					
 					Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},					
 							"create_at":{$gte:_startdate, $lt:_enddate}
 						},{"image_name":_image}, function(err, issue){
@@ -384,14 +331,6 @@ router.get('/issue', function(req, res) {
 					}).sort({create_at:_sort}).limit(_limit);
 				}
 				else{
-					
-					console.log("1p");
-					/*Issue.find({},{"image_name":_image},{"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							"create_at":{$gte:_startdate, $lt:_enddate}
-						}, function(err, issue){
-							res.send(issue);
-						}).sort({create_at:_sort}).limit(_limit);*/
-						
 						Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							"create_at":{$gte:_startdate, $lt:_enddate}
 						},{"image_name":_image}, function(err, issue){
@@ -495,8 +434,6 @@ router.get('/issue/:city', function(req, res) {
 		}else{
 			_image = true;
 		}
-
-
 	}
 
 	if (!req.query.hasOwnProperty('list_issue'))
@@ -513,17 +450,13 @@ router.get('/issue/:city', function(req, res) {
 
 
 	}
-	console.log(_list_issue);
-
+	
 	if(_list_issue){
-		//,{"create_at":{$gte:_startdate, $lt:_enddate}}
 		Issue.find({'municipality':city_name, 'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 	}
 	else{
-
-
 		if(_image){
 			if(_coordinates === ''){
 			  if( _issue === '')
@@ -533,8 +466,6 @@ router.get('/issue/:city', function(req, res) {
 				  }).sort({create_at:_sort}).limit(_limit);
 			  }
 			  else{
-
-				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 				Issue.find({'municipality':city_name,'create_at':{$gte:_startdate, $lt:_enddate},
 									 "issue":_issue
 									}, function(err, issue){
@@ -547,7 +478,7 @@ router.get('/issue/:city', function(req, res) {
 			{
 				if(_issue === '')
 				{
-					//http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
+					
 					Issue.find({'municipality':city_name, 'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							'create_at':{$gte:_startdate, $lt:_enddate}
 						}, function(err, issue){
@@ -568,16 +499,14 @@ router.get('/issue/:city', function(req, res) {
 			if(_coordinates === ''){
 			  if( _issue === '')
 			  {
-				  Issue.find({},{'municipality':city_name, 'image_name':_image},{'create_at':{$gte:_startdate, $lt:_enddate}},function(err, issue){
+				  Issue.find({'create_at':{$gte:_startdate, $lt:_enddate},'municipality':city_name}, {'image_name':_image}, function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 			  }
 			  else{
-
-				//Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-				Issue.find({},{'municipality':city_name, 'image_name':_image},{'create_at':{$gte:_startdate, $lt:_enddate},
-									 'issue':_issue
-									}, function(err, issue){
+				Issue.find({'create_at':{$gte:_startdate, $lt:_enddate},
+									 'issue':_issue, 'municipality':city_name
+									},{'image_name':_image}, function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 
@@ -587,17 +516,16 @@ router.get('/issue/:city', function(req, res) {
 			{
 				if(_issue === '')
 				{
-					//http://api.sense.city:3005/api/issue?startdate=2016-01-22T00:00:00:000Z&enddate=2016-03-28T00:00:00:000Z&coordinates=[21.734574,38.2466395]&distance=1000&issue=garbage
-					Issue.find({},{'municipality':city_name, 'image_name':_image},{'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							'create_at':{$gte:_startdate, $lt:_enddate}
-						}, function(err, issue){
+					Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							'create_at':{$gte:_startdate, $lt:_enddate}, 'municipality':city_name
+						},{'image_name':_image} , function(err, issue){
 						res.send(issue);
 					}).sort({create_at:_sort}).limit(_limit);
 				}
 				else{
-					Issue.find({},{'municipality':city_name, 'image_name':_image},{'issue':_issue,'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-							'create_at':{$gte:_startdate, $lt:_enddate}
-						}, function(err, issue){
+					Issue.find({'issue':_issue,'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							'create_at':{$gte:_startdate, $lt:_enddate}, 'municipality':city_name
+						},{'image_name':_image}, function(err, issue){
 							res.send(issue);
 						}).sort({create_at:_sort}).limit(_limit);
 				}

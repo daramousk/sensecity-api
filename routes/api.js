@@ -549,7 +549,7 @@ router.get('/issue/mobilemap', function(req, res) {
 						res.send(issue);
 					}).sort({create_at:-1}).limit(40);
 	}
-}
+});
 
 router.get('/fullissue/:id', function(req, res){
 	var id = req.params.id;

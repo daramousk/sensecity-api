@@ -536,9 +536,12 @@ router.get('/issue/:city', function(req, res) {
 });
 
 router.get('/issue/mobilemap', function(req, res) {
+	
+	console.log("test11111");
+	
 	if (!req.query.hasOwnProperty('coordinates'))
 	{
-		_coordinates = '';
+		var _coordinates = '';
 	}
 	else{
 		Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:0,$maxDistance:JSON.parse(req.query.distance)}}

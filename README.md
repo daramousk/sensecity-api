@@ -21,6 +21,7 @@ Install dependencies
 ### Get Method
 ```
 API Endpoint : http://api.sense.city:3000/api/issue
+
 Results: The firt 1000 issues the last 3 days
 ```
 
@@ -44,12 +45,14 @@ Results: The firt 1000 issues the last 3 days
 
 http://api.sense.city:3000/api/issue?startdate=2016-03-22&enddate=2016-03-30&coordinates=[21.734574,38.2466395]&distance=15000&sort=-1&limit=20&issue=garbage
 
+Result : The last 20 garbage issues from 2016-03-22 to 2016-03-30 that reported in longtitude = 21.734574 and latitude = 38.2466395 and distance 15 km
 ```
 
 ## API Endpoint
 ### Get Method with specific city
 ```
 API Endpoint : http://api.sense.city:3000/api/issue/cityname
+
 Results: The firt 1000 issues the last 3 days from specific city
 ```
 
@@ -72,7 +75,8 @@ Results: The firt 1000 issues the last 3 days from specific city
 ```
 
 http://api.sense.city:3000/api/issue/patras?startdate=2016-03-22&enddate=2016-03-30&coordinates=[21.734574,38.2466395]&distance=15000&sort=-1&limit=20&issue=garbage
-Result : The last 20 garbage issues from 2016-03-22 to 2016-03-30 that reported in longtitude = 21.734574 and latitude = 38.2466395 and distance 15 km
+
+Result : The last 20 garbage issues from 2016-03-22 to 2016-03-30 that reported in longtitude = 21.734574 and latitude = 38.2466395 and distance 15 km that contains in city of Patras
 ```
 
 ## API Endpoint

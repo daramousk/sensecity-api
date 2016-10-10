@@ -17,7 +17,7 @@ Install dependencies
 
 
 
-##Defaule API Endpoint
+##Default API Endpoint
 
 ```
 API Endpoint : http://api.sense.city:3000/api/issue
@@ -45,7 +45,7 @@ http://api.sense.city:3000/api/issue?startdate=2016-03-22&enddate=2016-03-30&coo
 
 ```
 
-##Defaule API Endpoint
+## API Endpoint
 
 ```
 API Endpoint : http://api.sense.city:3000/api/issue/cityname

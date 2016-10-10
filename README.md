@@ -20,7 +20,7 @@ Install dependencies
 ##Default API Endpoint
 ### Get Method
 ```
-API Endpoint : [api.sense.city:3000/api/issue]:http://api.sense.city:3000/api/issue
+API Endpoint : http://api.sense.city:3000/api/issue
 Results: The firt 1000 issues the last 3 days
 ```
 

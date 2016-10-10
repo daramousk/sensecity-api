@@ -21,6 +21,7 @@ Install dependencies
 ### Get Method
 ```
 API Endpoint : http://api.sense.city:3000/api/issue
+Results: The firt 1000 issues from today minus 3 days to today 
 ```
 
 
@@ -29,7 +30,7 @@ API Endpoint : http://api.sense.city:3000/api/issue
 
 | Variable | value | example | default value |
 | --- | :-------------: | :---: | :---: |
-| **startdate** | date time format  | YYYY-mm-DD <br>```2016-03-22```| today minus 3 day |
+| **startdate** | date time format  | YYYY-mm-DD <br>```2016-03-22```| today minus 3 days|
 | **enddate** | date time format |  YYYY-mm-DD <br>```2016-03-22```  | today |
 | **coordinates** | Latitude,Longitude | [Longitude,Latitude]<br>```[21.734574,38.2466395]``` |  with no specific coordinates |
 | **distance** | meters | Integer<br>1km = ```1000```|  with no value of a distance |
@@ -70,7 +71,7 @@ API Endpoint : http://api.sense.city:3000/api/issue/cityname
 ```
 
 http://api.sense.city:3000/api/issue/patras?startdate=2016-03-22&enddate=2016-03-30&coordinates=[21.734574,38.2466395]&distance=15000&sort=-1&limit=20&issue=garbage
-
+Result : The last 20 garbage issues from 2016-03-22 to 2016-03-30 that reported in longtitude = 21.734574 and latitude = 38.2466395 and distance 15 km
 ```
 
 ## API Endpoint

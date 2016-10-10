@@ -21,7 +21,7 @@ Install dependencies
 ### Get Method
 ```
 API Endpoint : http://api.sense.city:3000/api/issue
-Results: The firt 1000 issues from today minus 3 days to today 
+Results: The firt 1000 issues from 3 days ago to today 
 ```
 
 

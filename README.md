@@ -73,3 +73,48 @@ http://api.sense.city:3000/api/issue/patras?startdate=2016-03-22&enddate=2016-03
 
 ```
 
+## API Endpoint
+### Post Method 
+```
+API Endpoint : http://api.sense.city:3000/api/issue
+```
+
+## Data
+
+ {"loc" : { 
+            "type" : "Point",  
+            "coordinates" : [longitude,lattitude] 
+            }, 
+   "issue" : "",
+   "device_id" : "String", 
+   "value_desc" : "String",
+   "image_name" : "image base64" 
+  }
+  
+  Issue Values :
+  
+      a) garbage
+      b) lighting
+      c) plumbing
+      d) road-contructor
+      e) happy (syntax with no value_desc & image_name)
+      f) neutral (syntax with no value_desc & image_name)
+      g) angry (syntax with no value_desc & image_name)
+
+## Example (jQuery) 
+
+...
+
+    $.ajax({
+            type: "POST",
+            url: "http://api.sense.city:3000/api/issue",
+            data: '{"loc" : { "type" : "Point",  "coordinates" : [21.256995,38.256695] }, "issue" : "happy","device_id" : "webapp", "value_desc" : "","image_name" : "no-image" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data){
+                //YOUR CODE HERE
+            }
+        });
+
+...
+

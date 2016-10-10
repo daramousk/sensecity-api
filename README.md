@@ -18,7 +18,7 @@ Install dependencies
 
 
 ##Default API Endpoint
-
+### Get Method
 ```
 API Endpoint : http://api.sense.city:3000/api/issue
 ```
@@ -46,7 +46,7 @@ http://api.sense.city:3000/api/issue?startdate=2016-03-22&enddate=2016-03-30&coo
 ```
 
 ## API Endpoint
-
+### Get Method with specific city
 ```
 API Endpoint : http://api.sense.city:3000/api/issue/cityname
 ```

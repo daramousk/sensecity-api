@@ -570,7 +570,7 @@ router.get('/issue_test', function(req, res) {
 		ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
-			ids +='mongoose.Types.ObjectId("'+body.result.bugs[14].alias+'")';
+			ids +='"'+body.result.bugs[14].alias+'"';
 			if(i_count<body.result.bugs.length-1)
 			{
 				ids +=' , ';
@@ -583,8 +583,8 @@ router.get('/issue_test', function(req, res) {
 		console.log("-------------------------");
 		console.log("=========================");
 
-		//Issue.find({'_id': {$in: ids}} , function(err, issue){
-		Issue.find({'_id': "57fc9524e52add47b514f85e" } , function(err, issue){
+		Issue.find({'_id': {$in: ids}} , function(err, issue){
+		//Issue.find({'_id': "57fc9524e52add47b514f85e" } , function(err, issue){
 				console.log(issue);
 				//res.send(issue);
 			});

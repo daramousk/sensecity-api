@@ -558,8 +558,8 @@ router.get('/issue_test', function(req, res) {
 		json: bugParams
 	}, function (error, response, body) {
 			
-			console.log("response ====> "+JSON.parse(JSON.stringify(response)));
-			console.log("body ==========>"+JSON.parse(JSON.stringify(body)));
+			console.log("response ====> "+JSON.parse(JSON.stringify(response.statusCode)));
+			console.log("body ==========>"+JSON.parse(JSON.stringify(body.result)));
 			
 			/*if (!error && response.statusCode === 200) {
 							bugToken = body.result.token;

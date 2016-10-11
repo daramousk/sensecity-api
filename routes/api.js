@@ -535,6 +535,214 @@ router.get('/issue/:city', function(req, res) {
 	}
 });
 
+
+
+
+/* ** Test ** */
+
+router.get('/issue_test', function(req, res) {
+
+
+	//return res.send(req.query.startdate);
+	var _startdate=new Date();
+	var _enddate=new Date();
+	var _coordinates;
+	var _distance;
+	var _issue;
+	var _limit;
+	var _sort;
+	var _loc_var;
+	var newdate = new Date();
+	var _image;
+	var _list_issue;
+	if (!req.query.hasOwnProperty('startdate'))
+	{
+		_startdate.setDate(_startdate.getDate() -3);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+	else{
+		_startdate = new Date(req.query.startdate);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+
+	if (req.query.hasOwnProperty('enddate'))
+	{
+		_enddate = new Date(req.query.enddate);
+		_enddate.setHours(23);
+		_enddate.setMinutes(59,59);
+	}
+	else{
+		_enddate=newdate;
+	}
+
+	if (!req.query.hasOwnProperty('coordinates'))
+	{
+		_coordinates = '';
+	}
+	else{
+		_coordinates = req.query.coordinates;
+	}
+
+	if (!req.query.hasOwnProperty('distance'))
+	{
+		_distance = '10000';
+	}
+	else{
+		_distance = req.query.distance;
+	}
+
+	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
+	{
+		_issue = '';
+	}
+	else{
+		_issue = req.query.issue;
+	}
+
+	if (!req.query.hasOwnProperty('limit'))
+	{
+		_limit = 1000;
+	}
+	else{
+		_limit = req.query.limit;
+	}
+
+	if (!req.query.hasOwnProperty('sort'))
+	{
+		_sort = -1;
+	}
+	else{
+		_sort = req.query.sort;
+	}
+	if (!req.query.hasOwnProperty('image_field'))
+	{
+		_image =true;
+		console.log("1 _image="+_image);
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_image = false;
+			console.log("2 _image="+_image);
+		}else{
+			_image = true;
+			console.log("2 _image="+_image);
+		}
+
+
+	}
+
+	if (!req.query.hasOwnProperty('list_issue'))
+	{
+		_list_issue =false;
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_list_issue = false;
+		}else{
+			_list_issue = true;
+		}
+
+
+	}
+	console.log(_list_issue);
+
+	if(_list_issue){
+
+		Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+	}
+	else{
+		if(_image){
+			if(_coordinates === ''){
+			  if( _issue === '')
+			  {
+				  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+			  }
+			  else{
+				  //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+				Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
+									 "issue":_issue
+									}, function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+
+			  }
+			}
+			else
+			{
+				if(_issue === '')
+				{
+					Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+						res.send(issue);
+					}).sort({create_at:_sort}).limit(_limit);
+				}
+				else{
+					Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+							res.send(issue);
+						}).sort({create_at:_sort}).limit(_limit);
+				}
+			}
+
+		}else{
+
+			if(_coordinates === ''){
+				
+			  if( _issue === '')
+			  {
+				  Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},{"image_name":_image},function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+			  }
+			  else{
+				Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
+									 "issue":_issue
+									},{"image_name":_image}, function(err, issue){
+					res.send(issue);
+				  }).sort({create_at:_sort}).limit(_limit);
+
+			  }
+			}
+			else
+			{
+				if(_issue === '')
+				{
+					Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},					
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						},{"image_name":_image}, function(err, issue){
+						res.send(issue);
+					}).sort({create_at:_sort}).limit(_limit);
+				}
+				else{
+						Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						},{"image_name":_image}, function(err, issue){
+							res.send(issue);
+						}).sort({create_at:_sort}).limit(_limit);
+						
+				}
+			}
+
+		}
+	}
+});
+
+
+/* ** End test ** */
+
+
+
+
 router.get('/mobilemap', function(req, res) {
 	
 	Issue.find({'loc':{$nearSphere:{$geometry:{type:'Point',coordinates:JSON.parse(req.query.coordinates)},$maxDistance:2000}}}, {'image_name':false}, function(err, issue){

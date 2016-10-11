@@ -554,7 +554,7 @@ router.get('/issue_test', function(req, res) {
 		"id": 1
 	};
 	
-	
+	var ids ='';
 	request({
 		url: bugUrl,
 		method: "POST",
@@ -566,7 +566,7 @@ router.get('/issue_test', function(req, res) {
 
 		console.dir(body.result.bugs[14].alias);
 		var i_count=0;
-		var ids ='';
+		
 		ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
@@ -580,7 +580,13 @@ router.get('/issue_test', function(req, res) {
 		
 		console.log(ids);
 		
-		
+		console.log("-------------------------");
+		console.log("=========================");
+
+		Issue.find({'_id': {$in: ids}} , function(err, issue){
+			console.log(issue);
+			res.send(issue);
+			});
 			
 			/*if (!error && response.statusCode === 200) {
 							bugToken = body.result.token;
@@ -595,12 +601,7 @@ router.get('/issue_test', function(req, res) {
 			}*/
 	});
 
-	console.log("-------------------------");
-	console.log("=========================");
-
-	Issue.find({'_id': {$in: ids}} , function(err, issue){
-		res.send(issue);
-		}).sort({create_at:_sort}).limit(_limit);
+	
 	
 	
 	

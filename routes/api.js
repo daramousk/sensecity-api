@@ -554,7 +554,7 @@ router.get('/issue_test', function(req, res) {
 		"id": 1
 	};
 	
-	var ids ='';
+	var ids =[];
 	request({
 		url: bugUrl,
 		method: "POST",
@@ -567,7 +567,7 @@ router.get('/issue_test', function(req, res) {
 		console.dir(body.result.bugs[14].alias);
 		var i_count=0;
 		
-		ids +='[';
+		//ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
 			ids +='ObjectId("'+body.result.bugs[14].alias+'")';
@@ -576,7 +576,7 @@ router.get('/issue_test', function(req, res) {
 				ids +=' , ';
 			}
 		}
-		ids+=']';
+		//ids+=']';
 		
 		console.log(ids);
 		
@@ -585,7 +585,7 @@ router.get('/issue_test', function(req, res) {
 		Issue.find({'_id': {$in: ids}} , function(err, issue){
 		//Issue.find({'_id': "57fc9524e52add47b514f85e" } , function(err, issue){
 				console.log(issue);
-				//res.send(issue);
+				res.send(issue);
 			});
 			
 		console.log("-------------------------");
@@ -609,7 +609,7 @@ router.get('/issue_test', function(req, res) {
 	
 	
 	
-	
+	/*
 	
 	
 	
@@ -806,7 +806,7 @@ router.get('/issue_test', function(req, res) {
 		}
 	}
 	
-	
+	*/
 	
 	
 	

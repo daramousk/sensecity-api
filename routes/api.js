@@ -546,7 +546,7 @@ router.get('/issue_test', function(req, res) {
 	var bugParams =
 	{
 	    "method": "Bug.get",
-	    "params": ["ids":704,{"include_fields":["component","cf_sensecityissue","status","id","alias","summary","creation_time","whiteboard","resolution","last_change_time"]}],
+	    "params": ["ids":"704",{"include_fields":["component","cf_sensecityissue","status","id","alias","summary","creation_time","whiteboard","resolution","last_change_time"]}],
 	    "id": 1
 	};
 	

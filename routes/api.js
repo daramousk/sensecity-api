@@ -554,7 +554,8 @@ router.get('/issue_test', function(req, res) {
 		"id": 1
 	};
 	
-	var ids =[];
+	var ids;
+	var id_collect ='';
 	request({
 		url: bugUrl,
 		method: "POST",
@@ -570,12 +571,14 @@ router.get('/issue_test', function(req, res) {
 		//ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
-			ids +='ObjectId("'+body.result.bugs[14].alias+'")';
+			id_collect +='ObjectID("'+body.result.bugs[14].alias+'")';
 			if(i_count<body.result.bugs.length-1)
 			{
-				ids +=' , ';
+				id_collect +=' , ';
 			}
 		}
+		
+		ids =[id_collect] ;
 		//ids+=']';
 		
 		console.log(ids);

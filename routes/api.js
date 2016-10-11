@@ -571,7 +571,7 @@ router.get('/issue_test', function(req, res) {
 		//ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
-			id_collect +='ObjectID("'+body.result.bugs[14].alias+'")';
+			id_collect += ObjectID('\''+body.result.bugs[14].alias+'\'');
 			if(i_count<body.result.bugs.length-1)
 			{
 				id_collect +=' , ';

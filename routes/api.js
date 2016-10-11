@@ -570,7 +570,7 @@ router.get('/issue_test', function(req, res) {
 		ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
-			ids +='"'+body.result.bugs[14].alias+'"';
+			ids +='ObjectId("'+body.result.bugs[14].alias+'")';
 			if(i_count<body.result.bugs.length-1)
 			{
 				ids +=' , ';

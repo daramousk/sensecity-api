@@ -566,10 +566,15 @@ router.get('/issue_test', function(req, res) {
 
 		console.dir(body.result.bugs[14].alias);
 		var i_count=0;
-		var ids ='[';
+		var ids ='';
+		ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
 			ids +=body.result.bugs[14].alias;
+			if(i_count<body.result.bugs.length-1)
+			{
+				ids +=' , ';
+			}
 		}
 		ids+=']';
 		

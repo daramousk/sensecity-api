@@ -560,9 +560,9 @@ router.get('/issue_test', function(req, res) {
 		method: "POST",
 		json: bugParams
 	}, function (error, response, body) {
-			
+			console.log(response);
 			console.dir(response);
-			console.dir(body);
+			console.dir(body.result);
 			
 			/*if (!error && response.statusCode === 200) {
 							bugToken = body.result.token;

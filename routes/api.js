@@ -561,7 +561,7 @@ router.get('/issue_test', function(req, res) {
 		json: bugParams
 	}, function (error, response, body) {
 			
-			console.log("response ====> " + JSON.parse(JSON.stringify(response.statusCode)));
+			console.dir(response);
 			console.dir(body);
 			
 			/*if (!error && response.statusCode === 200) {

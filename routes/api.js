@@ -542,7 +542,35 @@ router.get('/issue/:city', function(req, res) {
 
 router.get('/issue_test', function(req, res) {
 
-
+	
+	var bugParams =
+	{
+	    "method": "Bug.get",
+	    "params": [{"include_fields":["component","cf_sensecityissue","status","id","alias","summary","creation_time","whiteboard","resolution","last_change_time"]}],
+	    "id": 1
+	};
+	
+	
+	BugService.search(bugParams, function(result) {
+		
+		console.log(result);
+		/*switch (result[0].status) {
+			case 'CONFIRMED':
+				result.status = 'CONFIRMED';
+				break;
+			case 'IN_PROGRESS':
+				result.status = 'IN_PROGRESS';
+				break;
+			case 'RESOLVED':
+				result.status = 'RESOLVED';
+				break;
+		}
+		lastissue.status = result.status; */
+	});
+	
+	
+	
+	
 	//return res.send(req.query.startdate);
 	var _startdate=new Date();
 	var _enddate=new Date();

@@ -570,7 +570,7 @@ router.get('/issue_test', function(req, res) {
 		ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
-			ids +=body.result.bugs[14].alias;
+			ids +='mongoose.Types.ObjectId("'+body.result.bugs[14].alias+'")';
 			if(i_count<body.result.bugs.length-1)
 			{
 				ids +=' , ';
@@ -584,9 +584,12 @@ router.get('/issue_test', function(req, res) {
 		console.log("=========================");
 
 		Issue.find({'_id': {$in: ids}} , function(err, issue){
-			console.log(issue);
-			res.send(issue);
+				console.log(issue);
+				res.send(issue);
 			});
+			
+		console.log("-------------------------");
+		console.log("=========================");
 			
 			/*if (!error && response.statusCode === 200) {
 							bugToken = body.result.token;

@@ -550,7 +550,7 @@ router.get('/issue_test', function(req, res) {
 	    "params": [{"include_fields":["component","cf_sensecityissue","status","id","alias","summary","creation_time","whiteboard","resolution","last_change_time"]}],
 	    "id": 1*/
 		"method": "Bug.search",
-		"params": [{"product": "http://api.sense.city:4001/bugs/search","order":"bug_id DESC","status":["CONFIRMED","IN_PROGRESS","RESOLVED"],"resolution":["---","FIXED"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id"]}],
+		"params": [{"product": "testweb","order":"bug_id DESC","status":["CONFIRMED","IN_PROGRESS","RESOLVED"],"resolution":["---","FIXED"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias"]}],
 		"id": 1
 	};
 	

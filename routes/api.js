@@ -563,7 +563,7 @@ router.get('/issue_test', function(req, res) {
 		
 		console.log("-------------------------");
 		console.log("=========================");
-			console.dir(body);
+			console.dir(body.result.bugs);
 			
 			/*if (!error && response.statusCode === 200) {
 							bugToken = body.result.token;

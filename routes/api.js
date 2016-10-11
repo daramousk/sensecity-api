@@ -583,7 +583,8 @@ router.get('/issue_test', function(req, res) {
 		console.log("-------------------------");
 		console.log("=========================");
 
-		Issue.find({'_id': {$in: ids}} , function(err, issue){
+		//Issue.find({'_id': {$in: ids}} , function(err, issue){
+		Issue.find({'_id': "57fc9524e52add47b514f85e" } , function(err, issue){
 				console.log(issue);
 				res.send(issue);
 			});

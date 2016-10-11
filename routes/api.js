@@ -546,9 +546,12 @@ router.get('/issue_test', function(req, res) {
 	
 	var bugParams =
 	{
-	    "method": "Bug.get",
+	    /*"method": "Bug.get",
 	    "params": [{"include_fields":["component","cf_sensecityissue","status","id","alias","summary","creation_time","whiteboard","resolution","last_change_time"]}],
-	    "id": 1
+	    "id": 1*/
+		"method": "Bug.search",
+		"params": [{"product": "http://api.sense.city:4001/bugs/search","order":"bug_id DESC","status":["CONFIRMED","IN_PROGRESS","RESOLVED"],"resolution":["---","FIXED"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id"]}],
+		"id": 1
 	};
 	
 	
@@ -558,8 +561,8 @@ router.get('/issue_test', function(req, res) {
 		json: bugParams
 	}, function (error, response, body) {
 			
-			console.log("response ====> "+JSON.parse(JSON.stringify(response.statusCode)));
-			console.log("body ==========>"+JSON.parse(JSON.stringify(body.result)));
+			console.log("response ====> " + JSON.parse(JSON.stringify(response.statusCode)));
+			console.log("body ==========>" + JSON.parse(JSON.stringify(body)));
 			
 			/*if (!error && response.statusCode === 200) {
 							bugToken = body.result.token;

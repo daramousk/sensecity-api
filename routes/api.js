@@ -563,10 +563,17 @@ router.get('/issue_test', function(req, res) {
 		
 		console.log("-------------------------");
 		console.log("=========================");
-		console.dir(body.result.bugs.length);
+
 		console.dir(body.result.bugs[14].alias);
+		var i_count=0;
+		var ids ='[';
+		for(i_count=0;i_count<body.result.bugs.length)
+		{
+			ids +=body.result.bugs[14].alias;
+		}
+		ids+=']';
 		
-		
+		console.log(ids);
 		
 		
 			
@@ -583,7 +590,15 @@ router.get('/issue_test', function(req, res) {
 			}*/
 	});
 
+	console.log("-------------------------");
+	console.log("=========================");
 
+	Issue.find({'_id': {$in: ids}} , function(err, issue){
+		res.send(issue);
+		}).sort({create_at:_sort}).limit(_limit);
+	
+	
+	
 	
 	
 	
@@ -781,6 +796,12 @@ router.get('/issue_test', function(req, res) {
 
 		}
 	}
+	
+	
+	
+	
+	
+	
 });
 
 

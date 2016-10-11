@@ -541,7 +541,8 @@ router.get('/issue/:city', function(req, res) {
 /* ** Test ** */
 
 router.get('/issue_test', function(req, res) {
-
+	
+	
 	
 	var bugParams =
 	{
@@ -551,22 +552,29 @@ router.get('/issue_test', function(req, res) {
 	};
 	
 	
-	BugService.search(bugParams, function(result) {
-		
-		console.log(result);
-		/*switch (result[0].status) {
-			case 'CONFIRMED':
-				result.status = 'CONFIRMED';
-				break;
-			case 'IN_PROGRESS':
-				result.status = 'IN_PROGRESS';
-				break;
-			case 'RESOLVED':
-				result.status = 'RESOLVED';
-				break;
-		}
-		lastissue.status = result.status; */
+	request({
+		url: bugUrl,
+		method: "POST",
+		json: bugParams
+	}, function (error, response, body) {
+			
+			console.log(response);
+			
+			/*if (!error && response.statusCode === 200) {
+							bugToken = body.result.token;
+							
+							console.log("Login in bugzilla as: "+loginData.params[0].login);
+							console.log("And assigned token: "+body.result.token);
+			}
+			else {
+				console.log("error: " + error);
+				console.log("response.statusCode: " + response.statusCode);
+				console.log("response.statusText: " + response.statusText);
+			}*/
 	});
+
+
+	
 	
 	
 	

@@ -579,6 +579,12 @@ router.get('/issue_test', function(req, res) {
 		}
 		
 		
+		Issue.find({"_id": {$in : [ "57fe2f6659ed960e3c0cb850" , "57fe296459ed960e3c0cb84f" , "57fe235c59ed960e3c0cb84e"]}} , function(err, issue){
+				
+				console.log("err   =   "+err);
+				console.log(issue);
+				res.send(issue);
+			});
 		
 		//console.log(ids);
 		

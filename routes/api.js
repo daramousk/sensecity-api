@@ -554,7 +554,7 @@ router.get('/issue_test', function(req, res) {
 		"id": 1
 	};
 	
-	var ids='';
+	var ids=[];
 	
 	request({
 		url: bugUrl,

@@ -585,7 +585,7 @@ router.get('/issue_test', function(req, res) {
 		console.log("-------------------------");
 		console.log("=========================");
 		//Issue.find({'_id': {$in: [ids]}} , function(err, issue){
-		Issue.find({'_id': [ObjectId(body.result.bugs[14].alias), ObjectId(body.result.bugs[13].alias)]  } , function(err, issue){
+		Issue.find({'_id': [ObjectId(body.result.bugs[14].alias).str, ObjectId(body.result.bugs[13].alias).str]  } , function(err, issue){
 				
 				console.log("err   =   "+err);
 				console.log(issue);

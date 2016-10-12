@@ -571,6 +571,7 @@ router.get('/issue_test', function(req, res) {
 		ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
+			console.log(i_count + "<=====>" + body.result.bugs[14].alias);
 			ids +=body.result.bugs[14].alias;
 			if(i_count<body.result.bugs.length-1)
 			{

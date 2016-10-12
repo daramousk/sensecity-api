@@ -554,7 +554,7 @@ router.get('/issue_test', function(req, res) {
 		"id": 1
 	};
 	
-	var ids;
+	var ids='';
 	
 	request({
 		url: bugUrl,
@@ -570,7 +570,7 @@ router.get('/issue_test', function(req, res) {
 		ids +='[';
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
-			//console.log(i_count + "<=====>" + body.result.bugs[i_count].alias);
+			console.log(i_count + "<=====>" + body.result.bugs[i_count].alias);
 			ids +='"'+body.result.bugs[i_count].alias+'"';
 			if(i_count<body.result.bugs.length-1)
 			{
@@ -580,7 +580,7 @@ router.get('/issue_test', function(req, res) {
 		
 		ids+=']';
 		
-		console.log(ids);
+		//console.log(ids);
 		
 		console.log("-------------------------");
 		console.log("=========================");

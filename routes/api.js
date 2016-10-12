@@ -567,25 +567,25 @@ router.get('/issue_test', function(req, res) {
 
 		var i_count=0;
 		
-		ids +='[';
+		
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{
 			//console.log(i_count + "<=====>" + body.result.bugs[i_count].alias);
-			ids +=body.result.bugs[i_count].alias;
+			ids += body.result.bugs[i_count].alias.toString();
 			if(i_count<body.result.bugs.length-1)
 			{
 				ids +=' , ';
 			}
 		}
 		
-		ids+=']';
+		
 		
 		//console.log(ids);
 		
 		console.log("-------------------------");
 		console.log("=========================");
-		//Issue.find({'_id': {$in: [ids]}} , function(err, issue){
-		Issue.find({"_id": {$in : [ "57fe2f6659ed960e3c0cb850" , "57fe296459ed960e3c0cb84f" , "57fe235c59ed960e3c0cb84e"]}} , function(err, issue){
+		Issue.find({'_id': {$in: [ids]}} , function(err, issue){
+		//Issue.find({"_id": {$in : [ "57fe2f6659ed960e3c0cb850" , "57fe296459ed960e3c0cb84f" , "57fe235c59ed960e3c0cb84e"]}} , function(err, issue){
 				
 				console.log("err   =   "+err);
 				console.log(issue);

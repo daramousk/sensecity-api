@@ -584,7 +584,7 @@ router.get('/issue_test', function(req, res) {
 		
 		console.log("-------------------------");
 		console.log("=========================");
-		Issue.find({'_id': {$in: ids.map(function(o){ return mongoose.Types.ObjectId(o); })}} , function(err, issue){
+		Issue.find({'_id': {$in: [ids]}} , function(err, issue){
 		//Issue.find({'_id': "57fc9524e52add47b514f85e" } , function(err, issue){
 				
 				console.log("err   =   "+err);

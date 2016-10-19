@@ -852,7 +852,18 @@ router.get('/fullissue/:id', function(req, res){
 router.get('/active_users', function(req, res) {
 	
 	console.log("Active user!!");
+	var entry_active_user = new act_User({
+		uuid :  "manually_test",
+		name: "Kostas bakoulias",	
+		email: "kostas.bakoulias@gmail.com",
+		mobile_num: "6973020151",
+		permission :  { send_issues: "true" , communicate_with: {email : "true", sms : "false"}}
+	});
 	
+	entry_active_user.save(function (err1,resp){
+		console.log(resp);
+	}
+					
 	res.send({"name":"active_users"});
 	
 });

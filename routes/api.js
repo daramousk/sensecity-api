@@ -848,6 +848,13 @@ router.get('/fullissue/:id', function(req, res){
 
 
 
+router.get('/active_users', function(req, res) {
+	
+	console.log("Active user!!");
+	
+});
+
+
 
 
 

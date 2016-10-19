@@ -862,7 +862,7 @@ router.get('/active_users', function(req, res) {
 	
 	entry_active_user.save(function (err1,resp){
 		console.log(resp);
-	}
+	});
 					
 	res.send({"name":"active_users"});
 	

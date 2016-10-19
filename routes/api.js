@@ -852,6 +852,8 @@ router.get('/active_users', function(req, res) {
 	
 	console.log("Active user!!");
 	
+	res.send({"name":"active_users"});
+	
 });
 
 

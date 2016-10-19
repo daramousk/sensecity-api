@@ -849,9 +849,30 @@ router.get('/fullissue/:id', function(req, res){
 
 
 
-router.get('/active_users', function(req, res) {
+router.post('/active_users', function(req, res) {
 	
 	console.log("Active user!!");
+	
+	console.log(req.body.uuid);
+	console.log(req.body.name);
+	console.log(req.body.email);
+	console.log(req.body.mobile_num);
+	console.log(req.body.permission.send_issues);
+	console.log(req.body.permission.communicate_with.email);
+	console.log(req.body.permission.communicate_with.sms);
+	
+	/*
+!req.body.hasOwnProperty('issue') ||
+		 		!req.body.hasOwnProperty('loc') ||
+				!req.body.hasOwnProperty('value_desc') ||
+				!req.body.hasOwnProperty('device_id'))
+*/				
+					
+					
+					
+					
+					
+	/*			
 	var entry_active_user = new act_User({
 		uuid :  "manually_test",
 		name: "Kostas bakoulias",	
@@ -863,6 +884,8 @@ router.get('/active_users', function(req, res) {
 	entry_active_user.save(function (err1,resp){
 		console.log(resp);
 	});
+					*/
+					
 					
 	res.send({"name":"active_users"});
 	

@@ -869,7 +869,7 @@ router.post('/active_users', function(req, res) {
 */				
 					
 					
-	if(!req.body.hasOwnProperty('uuid') && !req.body.hasOwnProperty('name') && !req.body.hasOwnProperty('email'))
+	if(req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
 	{
 		var entry_active_user = new act_User({
 			uuid :  req.body.uuid,

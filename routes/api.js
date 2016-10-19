@@ -11,6 +11,7 @@ mongoose.connect('mongodb://'+config.config.my_hostname+'/'+config.config.databa
 
 // Models
 var Issue = require('../models/issue');
+var act_User = require('../models/active_user');
 var Municipality = require('../models/municipality');
 
 // Routes

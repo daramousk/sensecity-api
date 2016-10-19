@@ -869,22 +869,20 @@ router.post('/active_users', function(req, res) {
 */				
 					
 					
-					
-					
-					
-	/*			
-	var entry_active_user = new act_User({
-		uuid :  "manually_test",
-		name: "Kostas bakoulias",	
-		email: "kostas.bakoulias@gmail.com",
-		mobile_num: "6973020151",
-		permission :  { send_issues: "true" , communicate_with: {email : "true", sms : "false"}}
-	});
+	if(!req.body.hasOwnProperty('uuid') && !req.body.hasOwnProperty('name') && !req.body.hasOwnProperty('email'))
+	{
+		var entry_active_user = new act_User({
+			uuid :  req.body.uuid,
+			name: req.body.name,	
+			email: req.body.email,
+			mobile_num: req.body.mobile_num,
+			permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+		});
 	
-	entry_active_user.save(function (err1,resp){
-		console.log(resp);
-	});
-					*/
+		entry_active_user.save(function (err1,resp){
+			console.log(resp);
+		});
+	}
 					
 					
 	res.send({"name":"active_users"});

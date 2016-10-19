@@ -7,9 +7,9 @@ var active_userSchema = new mongoose.Schema({
 	uuid :  String,
 	name: String,	
 	email: String,
-	mobile_num: String,	
+	mobile_num: {type:String, default : ""},	
 	create_at: {type: Date, default: Date.now},
-	permission :  { send_issues: {type:String, default : ""}, communicate_with: {email : {type:String, default : ""}, sms : {type:String, default : ""}}}
+	permission :  { send_issues: {type:String, default : "false"}, communicate_with: {email : {type:String, default : "false"}, sms : {type:String, default : "false"}}}
 });
 
 // Return model

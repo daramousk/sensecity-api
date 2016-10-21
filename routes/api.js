@@ -889,6 +889,21 @@ router.post('/active_users', function(req, res) {
 	
 });
 
+router.get('/active_users', function(req, res) {
+	
+	console.log(req);
+	console.log(res);
+	
+	act_User.find({"uuid":req.params.uuid}, function(error, actice_user){
+		
+		res.send(actice_user);
+		
+	});
+	
+	
+	
+	
+});
 
 
 

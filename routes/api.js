@@ -864,12 +864,8 @@ router.post('/active_users', function(req, res) {
 	{
 		
 		act_User.find({"uuid":req.body.uuid}, function(error, resp){
-		
-			if(resp.email){
-				console.log("1. email  -> "+resp.email);
-			}
 			
-			if(resp){
+			if(resp != null){
 				console.log("2. email  => "+resp[0].email);
 			}
 			else{

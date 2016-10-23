@@ -851,15 +851,6 @@ router.get('/fullissue/:id', function(req, res){
 
 router.post('/active_users', function(req, res) {
 	
-	console.log("Active user!!");
-	
-	console.log(req.body.uuid);
-	console.log(req.body.name);
-	console.log(req.body.email);
-	console.log(req.body.mobile_num);
-	console.log(req.body.permission.send_issues);
-	console.log(req.body.permission.communicate_with.email);
-	console.log(req.body.permission.communicate_with.sms);
 	
 	/*
 !req.body.hasOwnProperty('issue') ||
@@ -871,6 +862,14 @@ router.post('/active_users', function(req, res) {
 					
 	if(req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
 	{
+		
+		act_User.find({"uuid":req.query.uuid}, function(error, resp){
+		
+			console.log(resp);
+			//res.send(actice_user);
+		
+		});
+		
 		var entry_active_user = new act_User({
 			uuid :  req.body.uuid,
 			name: req.body.name,	
@@ -879,9 +878,9 @@ router.post('/active_users', function(req, res) {
 			permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
 		});
 	
-		entry_active_user.save(function (err1,resp){
+		/*entry_active_user.save(function (err1,resp){
 			console.log(resp);
-		});
+		});*/
 	}
 					
 					

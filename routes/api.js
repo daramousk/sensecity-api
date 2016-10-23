@@ -863,7 +863,7 @@ router.post('/active_users', function(req, res) {
 	if(req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
 	{
 		
-		act_User.find({"uuid":req.query.uuid}, function(error, resp){
+		act_User.find({"uuid":req.body.uuid}, function(error, resp){
 		
 			console.log(resp);
 			//res.send(actice_user);

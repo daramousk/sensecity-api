@@ -867,26 +867,42 @@ router.post('/active_users', function(req, res) {
 			
 			if(resp.length > 0){
 				console.log("2. email  => "+resp[0].email);
+				var entry_active_user = new act_User({					
+					name: req.body.name,	
+					email: req.body.email,
+					mobile_num: req.body.mobile_num,
+					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+				});
+				
+				entry_active_user.save({"uuid" :  req.body.uuid}, {$set: {entry_active_user}}, function(err, resp){
+					console.log(resp);
+					res.send(resp);
+					
+				} );
+				
+				
 			}
 			else{
-				console.log("Kostas");
+				var entry_active_user = new act_User({
+					uuid :  req.body.uuid,
+					name: req.body.name,	
+					email: req.body.email,
+					mobile_num: req.body.mobile_num,
+					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+				});
+				
+				entry_active_user.save(function (err1,resp){
+					res.send(resp);
+				});
 			}
 			
 			//res.send(actice_user);
 		
 		});
 		
-		var entry_active_user = new act_User({
-			uuid :  req.body.uuid,
-			name: req.body.name,	
-			email: req.body.email,
-			mobile_num: req.body.mobile_num,
-			permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
-		});
+		
 	
-		/*entry_active_user.save(function (err1,resp){
-			console.log(resp);
-		});*/
+
 	}
 					
 					

@@ -866,7 +866,7 @@ router.post('/active_users', function(req, res) {
 		act_User.find({"uuid":req.body.uuid}, function(error, resp){
 		
 			console.log("1. email  -> "+resp.email);
-			console.log("2. email  => "+resp["email"]);
+			console.log("2. email  => "+resp[0].email);
 			//res.send(actice_user);
 		
 		});

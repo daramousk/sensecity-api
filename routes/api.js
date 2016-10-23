@@ -874,7 +874,7 @@ router.post('/active_users', function(req, res) {
 					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
 				});
 				
-				entry_active_user.save({"uuid" :  req.body.uuid}, {$set: {entry_active_user}}, function(err, resp){
+				entry_active_user.update({"uuid" :  req.body.uuid}, {$set: {entry_active_user}}, function(err, resp){
 					console.log(resp);
 					res.send(resp);
 					

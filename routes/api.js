@@ -869,7 +869,7 @@ router.post('/active_users', function(req, res) {
 				console.log("1. email  -> "+resp.email);
 			}
 			
-			if(resp[0].email){
+			if(resp){
 				console.log("2. email  => "+resp[0].email);
 			}
 			else{

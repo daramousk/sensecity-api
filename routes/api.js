@@ -864,14 +864,45 @@ router.post('/active_users', function(req, res) {
 	{
 		
 		act_User.find({"uuid":req.body.uuid}, function(error, resp){
-			
 			if(resp.length > 0){
 				console.log("2. email  => "+resp[0].email);
+				
 				var entry_active_user = new act_User({					
 					name: req.body.name,	
 					email: req.body.email,
 					mobile_num: req.body.mobile_num,
 					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+				});
+				
+				act_User.findOneAndUpdate({"uuid":req.body.uuid}, entry_active_user, function(err, active_user){
+					 if (err) throw err;
+
+					// we have the updated user returned to us
+					res.send(active_user);
+					console.log(active_user);
+					
+				});
+				
+				/*
+				resp[0].email = resp[0].email;
+				resp[0].name = req.body.name;
+				resp[0].mobile_num = req.body.mobile_num;
+				resp[0].permission.communicate_with.email = req.body.permission.communicate_with.email;
+				resp[0].permission.communicate_with.sms = req.body.permission.communicate_with.sms;
+				*/
+				/*
+				var entry_active_user = new act_User({					
+					name: req.body.name,	
+					email: req.body.email,
+					mobile_num: req.body.mobile_num,
+					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+				});
+				*/
+				/*
+				resp.save(function(err){
+					if (err) throw err;
+					console.log('User successfully updated!');
+					
 				});
 				
 				console.log(entry_active_user);
@@ -880,7 +911,7 @@ router.post('/active_users', function(req, res) {
 					res.send(resp);
 					
 				} );
-				
+				*/
 				
 			}
 			else{

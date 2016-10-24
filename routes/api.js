@@ -864,6 +864,9 @@ router.post('/active_users', function(req, res) {
 	{
 		
 		act_User.find({"uuid":req.body.uuid}, function(error, resp){
+			
+			if (error) throw error;
+			 
 			if(resp.length > 0){
 				console.log("2. email  => "+resp[0].email);
 				/*
@@ -930,6 +933,7 @@ router.post('/active_users', function(req, res) {
 				});
 				
 				entry_active_user.save(function (err1,resp){
+					if (err1) throw err1;
 					res.send(resp);
 				});
 			}

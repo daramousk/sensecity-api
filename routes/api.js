@@ -879,12 +879,13 @@ router.post('/active_users', function(req, res) {
 					email: req.body.email,
 					mobile_num: req.body.mobile_num,
 					permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
-				}, function(err, active_user){
+				}, function(err, resp){
 					 if (err) throw err;
 
 					// we have the updated user returned to us
-					res.send(active_user);
-					console.log(active_user);
+					console.log(resp);
+					
+					res.send({"description" : "update dane!"});
 					
 				});
 				
@@ -943,7 +944,7 @@ router.post('/active_users', function(req, res) {
 	}
 					
 					
-	res.send({"name":"active_users"});
+	//res.send({"name":"active_users"});
 	
 });
 

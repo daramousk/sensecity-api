@@ -866,15 +866,20 @@ router.post('/active_users', function(req, res) {
 		act_User.find({"uuid":req.body.uuid}, function(error, resp){
 			if(resp.length > 0){
 				console.log("2. email  => "+resp[0].email);
-				
+				/*
 				var entry_active_user = new act_User({					
 					name: req.body.name,	
 					email: req.body.email,
 					mobile_num: req.body.mobile_num,
-					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
-				});
+					permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+				});*/
 				
-				act_User.findOneAndUpdate({"uuid":req.body.uuid}, entry_active_user, function(err, active_user){
+				act_User.findOneAndUpdate({"uuid":req.body.uuid}, {					
+					name: req.body.name,	
+					email: req.body.email,
+					mobile_num: req.body.mobile_num,
+					permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+				}, function(err, active_user){
 					 if (err) throw err;
 
 					// we have the updated user returned to us

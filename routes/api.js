@@ -129,7 +129,7 @@ router.post('/issue', function (req,res){
 										    json: bugData
 										}, function (error, bugResponse, body) {
 										        if (!error && bugResponse.statusCode === 200) {
-																console.log("New Bugzilla Entry with id: "+body.result.id);
+																//console.log("New Bugzilla Entry with id: "+body.result.id);
 																console.log(body);
 										        }
 										        else {

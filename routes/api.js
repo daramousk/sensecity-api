@@ -149,9 +149,9 @@ router.post('/issue', function (req,res){
 });
 
 router.post('/issue/:id', function (req,res){
-	
+	console.log("------------------");
 	console.log(req.params.id);
-	
+	console.log(req.body.name);
 	Issue.findOneAndUpdate({"_id":req.params.id}, {	
 					uuid: req.body.uuid,	
 					name: req.body.name,	

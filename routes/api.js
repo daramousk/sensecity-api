@@ -148,6 +148,27 @@ router.post('/issue', function (req,res){
 		}
 });
 
+router.post('/issue/:id', function (req,res){
+	
+	console.log(req.params.id);
+	
+	db.issues.findOneAndUpdate({"_id":req.params.id}, {	
+					uuid: req.body.uuid,	
+					name: req.body.name,	
+					email: req.body.email,
+					mobile_num: req.body.mobile_num
+				}, function(err, resp){
+					 if (err) throw err;
+
+					// we have the updated user returned to us
+					console.log(resp);
+					
+					res.send({"description" : "update dane!"});
+					
+				});
+	
+});
+
 router.get('/issue', function(req, res) {
 
 

@@ -10,7 +10,8 @@ var issueSchema = new mongoose.Schema({
 	device_id: String,
 	value_desc: String,
     image_name: String,
-	municipality: String
+	municipality: String,
+	user :  { uuid: {type:String, default : ""}, name: {type:String, default : ""}, email: {type:String, default : ""}, phone : {type:String, default : ""}}
 });
 
 issueSchema.index({loc: "2dsphere"});

@@ -152,7 +152,7 @@ router.post('/issue/:id', function (req,res){
 	
 	console.log(req.params.id);
 	
-	db.issues.findOneAndUpdate({"_id":req.params.id}, {	
+	Issue.findOneAndUpdate({"_id":req.params.id}, {	
 					uuid: req.body.uuid,	
 					name: req.body.name,	
 					email: req.body.email,

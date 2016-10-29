@@ -152,11 +152,11 @@ router.post('/issue/:id', function (req,res){
 	console.log("------------------");
 	console.log(req.params.id);
 	console.log(req.body.name);
-	Issue.findOneAndUpdate({"_id":req.params.id}, {	
+	Issue.findOneAndUpdate({"_id":req.params.id}, {	user : {
 					uuid: req.body.uuid,	
 					name: req.body.name,	
 					email: req.body.email,
-					mobile_num: req.body.mobile_num
+					mobile_num: req.body.mobile_num}
 				}, function(err, resp){
 					 if (err) throw err;
 

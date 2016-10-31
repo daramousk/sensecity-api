@@ -190,16 +190,18 @@ router.post('/issue/:id', function (req,res){
 						"id": 1
 					};
 					
-			});
-			
-			
-			request({
+					request({
 						url: bugUrl,
 						method: "POST",
 						json: bodyParams
 						}, function (error, response, body) {	
 							console.log(body);
 					});						
+					
+			});
+			
+			
+			
 			res.send({"description" : "update dane!"});
 					
 	});

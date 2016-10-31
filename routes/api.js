@@ -168,7 +168,7 @@ router.post('/issue/:id', function (req,res){
 			var bugParams =
 			{
 				"method": "Bug.search",
-				"params": [{"alias": req.params.id, "include_fields": ["id","alias"]}],
+				"params": [{"alias": req.params.id, "include_fields": ["id","alias"], "token":bugToken}],
 				"id": 1
 			};
 					
@@ -186,7 +186,7 @@ router.post('/issue/:id', function (req,res){
                     bodyParams =
 					{
 						"method": "Bug.update",
-						"params": [{"ids": [body.result.bugs[0].id], "cc": {"add":[req.body.email]}}],
+						"params": [{"ids": [body.result.bugs[0].id], "cc": {"add":[req.body.email], "token":bugToken}}],
 						"id": 1
 					};
 					

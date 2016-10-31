@@ -149,24 +149,44 @@ router.post('/issue', function (req,res){
 });
 
 router.post('/issue/:id', function (req,res){
+	
 	console.log("------------------");
 	console.log(req.params.id);
 	console.log(req.body.uuid);
 	console.log(req.body.name);
-	Issue.findOneAndUpdate({"_id":req.params.id}, {	user : {
-					uuid: req.body.uuid,	
-					name: req.body.name,	
-					email: req.body.email,
-					phone: req.body.mobile_num}
-				}, function(err, resp){
-					 if (err) throw err;
+
+	Issue.findOneAndUpdate({"_id":req.params.id}, {	
+			user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
+		}, function(err, resp){
+			if (err) throw err;
 
 					// we have the updated user returned to us
-					console.log(resp);
+			console.log(resp);
 					
-					res.send({"description" : "update dane!"});
+			var bugParams =
+			{
+				"method": "Bug.search",
+				"params": [{"alias": req.params.id, "include_fields": ["id","alias"]}],
+				"id": 1
+			};
 					
-				});
+			request({
+				url: bugUrl,
+				method: "POST",
+				json: bugParams
+				}, function (error, response, body) {			
+						
+					console.log("-------------------------");
+					console.log("=========================");
+						
+					console.log(response);
+						
+						
+			});
+					
+			res.send({"description" : "update dane!"});
+					
+	});
 	
 });
 

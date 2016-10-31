@@ -154,7 +154,9 @@ router.post('/issue/:id', function (req,res){
 	console.log(req.params.id);
 	console.log(req.body.uuid);
 	console.log(req.body.name);
-
+	
+	var bodyParams;
+	
 	Issue.findOneAndUpdate({"_id":req.params.id}, {	
 			user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
 		}, function(err, resp){
@@ -181,25 +183,23 @@ router.post('/issue/:id', function (req,res){
 						
 					console.log(body.result.bugs[0].id);						
 
-                    var bodyParams =
+                    bodyParams =
 					{
 						"method": "Bug.update",
 						"params": [{"ids": [body.result.bugs[0].id], "cc": {"add":[req.body.email]}}],
 						"id": 1
 					};
 					
-					request({
-				url: bugUrl,
-				method: "POST",
-				json: bodyParams
-				}, function (error, response, body) {	
-					console.log(body);
-				});				
-					
-							
-						
 			});
-					
+			
+			
+			request({
+						url: bugUrl,
+						method: "POST",
+						json: bodyParams
+						}, function (error, response, body) {	
+							console.log(body);
+					});						
 			res.send({"description" : "update dane!"});
 					
 	});

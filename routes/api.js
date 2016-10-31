@@ -184,7 +184,7 @@ router.post('/issue/:id', function (req,res){
                     var body =
 					{
 						"method": "Bug.update",
-						"params": [{"ids": [panel.id], "cc": {"add":[req.body.email]}}],
+						"params": [{"ids": [body.result.bugs[0].id], "cc": {"add":[req.body.email]}}],
 						"id": 1
 					};
 					

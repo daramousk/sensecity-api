@@ -181,12 +181,20 @@ router.post('/issue/:id', function (req,res){
 						
 					console.log(body.result.bugs[0].id);						
 
-                    var body =
+                    var bodyParams =
 					{
 						"method": "Bug.update",
 						"params": [{"ids": [body.result.bugs[0].id], "cc": {"add":[req.body.email]}}],
 						"id": 1
 					};
+					
+					request({
+				url: bugUrl,
+				method: "POST",
+				json: bodyParams
+				}, function (error, response, body) {	
+					console.log(body);
+				});				
 					
 							
 						

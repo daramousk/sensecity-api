@@ -179,7 +179,7 @@ router.post('/issue/:id', function (req,res){
 					console.log("-------------------------");
 					console.log("=========================");
 						
-					console.log(response);
+					console.log(body.result.bugs[0].alias);
 						
 						
 			});

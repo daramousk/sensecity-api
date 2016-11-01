@@ -178,7 +178,7 @@ router.post('/issue/:id', function (req,res){
 			request({
 				url: bugUrl,
 				method: "POST",
-				json: bugParams
+				json: bugCreateuser
 				}, function (error, response, body) {	
 				
 				console.log(body);

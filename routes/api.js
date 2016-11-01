@@ -181,7 +181,7 @@ router.post('/issue/:id', function (req,res){
 					console.log("-------------------------");
 					console.log("=========================");
 					
-					console.log(body.result.bugs[0].id);
+					//console.log(body.result.bugs[0].id);
 					console.log(bugToken);
                     
 					bodyParams =

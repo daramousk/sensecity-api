@@ -146,13 +146,13 @@ router.post('/issue', function (req,res){
 							
 							//search the policy
 							
-							
-							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue},function(err, policy_response){
+							/*
+							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue}, function(err, policy_response){
 								
 								cosnole.log(policy_response);
 						   
 							});
-							
+							*/
 							
 							
 							

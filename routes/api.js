@@ -165,6 +165,8 @@ router.post('/issue/:id', function (req,res){
 	Issue.findOneAndUpdate({"_id":req.params.id}, {	
 			user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
 		}, function(err, resp){
+			
+			console.log(err);
 			if (err) throw err;
 
 					// we have the updated user returned to us
@@ -182,7 +184,9 @@ router.post('/issue/:id', function (req,res){
 				method: "POST",
 				json: bugParams
 				}, function (error, response, body) {			
-						
+					
+					console.log(error);
+					
 					console.log("-------------------------");
 					console.log("=========================");
 					

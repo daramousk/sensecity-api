@@ -13,6 +13,7 @@ mongoose.connect('mongodb://'+config.config.my_hostname+'/'+config.config.databa
 var Issue = require('../models/issue');
 var act_User = require('../models/active_user');
 var Municipality = require('../models/municipality');
+var cityPolicy = require('../models/city_policy');
 
 // Routes
 Issue.methods(['get', 'put', 'post', 'delete']);
@@ -140,6 +141,25 @@ router.post('/issue', function (req,res){
 										});
 									}
 							}
+							
+							
+							
+							//search the policy
+							
+							
+							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue},function(err, policy_response){
+								
+								cosnole.log(policy_response);
+						   
+							});
+							
+							
+							
+							
+							
+							//end search policy
+							
+							
 							console.log('saved: ', resp);
 							res.send([resp,{"test":"test1"}]);
 						}

@@ -166,15 +166,16 @@ router.post('/issue/:id', function (req,res){
 			user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
 		}, function(err, resp){
 			
+			console.log("email :  -"+req.body.email);
 			
 			
 			var bugCreateuser =
 			{
 				"method": "User.create",
-				"params": [{"token":bugToken, "email ": req.body.email}],
+				"params": [{"token":bugToken, "email ": req.body.email.toString()}],
 				"id": 1
 			};
-			
+			console.log("bugCreateuser :  -"+bugCreateuser);
 			request({
 				url: bugUrl,
 				method: "POST",

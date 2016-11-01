@@ -146,7 +146,7 @@ router.post('/issue', function (req,res){
 							//search the policy
 							
 							console.log('saved: ', resp);
-							res.send([resp,{"test":"test1"}]);
+							res.send(resp);
 						}
 					});
 				});

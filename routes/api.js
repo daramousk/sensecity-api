@@ -166,6 +166,43 @@ router.post('/issue/:id', function (req,res){
 			user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
 		}, function(err, resp){
 			
+			
+			
+			var bugCreateuser =
+			{
+				"method": "User.create",
+				"params": [{"token":bugToken, "email ": req.body.email}],
+				"id": 1
+			};
+			
+			request({
+				url: bugUrl,
+				method: "POST",
+				json: bugParams
+				}, function (error, response, body) {	
+				
+				console.log(body);
+				
+			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			/*
+			
+			
+			
+			
 			console.log(err);
 			if (err) throw err;
 
@@ -210,7 +247,7 @@ router.post('/issue/:id', function (req,res){
 					});						
 					
 			});
-			
+			*/
 			
 			
 			res.send({"description" : "update dane!"});

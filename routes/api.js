@@ -141,7 +141,7 @@ router.post('/issue', function (req,res){
 									}
 							}
 							console.log('saved: ', resp);
-							res.send(resp);
+							res.send([resp,{"test","test1"}]);
 						}
 					});
 				});

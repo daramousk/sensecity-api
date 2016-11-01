@@ -172,7 +172,7 @@ router.post('/issue/:id', function (req,res){
 			var bugCreateuser =
 			{
 				"method": "User.create",
-				"params": [{"token":bugToken, "email ": req.body.email.toString()}],
+				"params": [{"token":bugToken, "email": req.body.email.toString()}],
 				"id": 1
 			};
 			console.log("bugCreateuser :  -"+bugCreateuser);

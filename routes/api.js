@@ -141,26 +141,14 @@ router.post('/issue', function (req,res){
 							}
 							
 							///* Check the policy
+														
 							
-							var entry = new cityPolicy({
-								city :  "testcity1",
-								category: "garbage",	
-								policy_desc: "blabla",
-								anonymous: "false"
-							});
-							entry.save(function (err_2,result){
-								
-								console.log('result: ', result);
-								console.log('error: ', err_2);
-								
-							});
-							
-							/*cityPolicy.find({}, function(err_2, result){
+							cityPolicy.find({}, function(err_2, result){
 								console.log('result: ', result);
 								console.log('error: ', err_2);
 								res.send(result);	
 								
-							});*/
+							});
 							
 							console.log('saved: ', resp);
 							//res.send(resp);

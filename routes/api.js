@@ -945,29 +945,20 @@ router.post('/active_users', function(req, res) {
 	
 	
 	/*
-!req.body.hasOwnProperty('issue') ||
-		 		!req.body.hasOwnProperty('loc') ||
-				!req.body.hasOwnProperty('value_desc') ||
-				!req.body.hasOwnProperty('device_id'))
-*/				
-					
+		!req.body.hasOwnProperty('issue') ||
+						!req.body.hasOwnProperty('loc') ||
+						!req.body.hasOwnProperty('value_desc') ||
+						!req.body.hasOwnProperty('device_id'))
+		*/				
 					
 	if(req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
 	{
 		
-		act_User.find({"uuid":req.body.uuid}, function(error, resp){
+		act_User.find({"uuid":req.body.uuid, "email":req.body.email}, function(error, resp){
 			
 			if (error) throw error;
 			 
 			if(resp.length > 0){
-				console.log("2. email  => "+resp[0].email);
-				/*
-				var entry_active_user = new act_User({					
-					name: req.body.name,	
-					email: req.body.email,
-					mobile_num: req.body.mobile_num,
-					permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
-				});*/
 				
 				act_User.findOneAndUpdate({"uuid":req.body.uuid}, {					
 					name: req.body.name,	
@@ -982,37 +973,7 @@ router.post('/active_users', function(req, res) {
 					
 					res.send({"description" : "update dane!"});
 					
-				});
-				
-				/*
-				resp[0].email = resp[0].email;
-				resp[0].name = req.body.name;
-				resp[0].mobile_num = req.body.mobile_num;
-				resp[0].permission.communicate_with.email = req.body.permission.communicate_with.email;
-				resp[0].permission.communicate_with.sms = req.body.permission.communicate_with.sms;
-				*/
-				/*
-				var entry_active_user = new act_User({					
-					name: req.body.name,	
-					email: req.body.email,
-					mobile_num: req.body.mobile_num,
-					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
-				});
-				*/
-				/*
-				resp.save(function(err){
-					if (err) throw err;
-					console.log('User successfully updated!');
-					
-				});
-				
-				console.log(entry_active_user);
-				entry_active_user.update({"uuid" :  req.body.uuid}, {$set: entry_active_user}, function(err, resp){
-					console.log(resp);
-					res.send(resp);
-					
-				} );
-				*/
+				});			
 				
 			}
 			else{
@@ -1034,12 +995,8 @@ router.post('/active_users', function(req, res) {
 		
 		});
 		
-		
-	
-
 	}
-					
-					
+	
 	//res.send({"name":"active_users"});
 	
 });
@@ -1053,7 +1010,7 @@ router.get('/active_users', function(req, res) {
 		
 		res.send(actice_user);
 		
-	});
+	}).sort({create_at:-1}).limit(1);
 	
 	
 	

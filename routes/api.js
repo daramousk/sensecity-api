@@ -52,7 +52,7 @@ request({
 router.post('/issue', function (req,res){
 
 		console.log(req.body.image_name);
-
+		var return_var;
 		if (!req.body.hasOwnProperty('issue') ||
 		 		!req.body.hasOwnProperty('loc') ||
 				!req.body.hasOwnProperty('value_desc') ||
@@ -141,17 +141,14 @@ router.post('/issue', function (req,res){
 							}
 							
 							///* Check the policy
-														
+							var anonymous_status;							
 							
 							cityPolicy.find({}, function(err_2, result){
-								console.log('result: ', result);
-								console.log('error: ', err_2);
-								res.send(result);	
-								
+								anonymous_status = result.anonymous;
 							});
-							
-							console.log('saved: ', resp);
-							//res.send(resp);
+							return_var={"_id":resp._id,"anaonymous": anonymous_status};
+							console.log('saved: ', return_var);
+							res.send(return_var);
 						}
 					});
 				});

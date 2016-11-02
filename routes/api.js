@@ -977,12 +977,20 @@ router.post('/active_users', function(req, res) {
 				
 			}
 			else{
+				
+				var text_act = "";
+				var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+				for( var i=0; i < 16; i++ )
+					text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+	
 				var entry_active_user = new act_User({
 					uuid :  req.body.uuid,
 					name: req.body.name,	
 					email: req.body.email,
 					mobile_num: req.body.mobile_num,
-					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}},
+					activate : text_act
 				});
 				
 				entry_active_user.save(function (err1,resp){

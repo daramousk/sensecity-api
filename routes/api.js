@@ -154,10 +154,12 @@ router.post('/issue', function (req,res){
 								else{
 									return_var={"_id":resp._id,"anonymous": "true"};									
 								}
+								
+								console.log('saved: ', return_var);
+								res.send(return_var);
 							});
 							
-							console.log('saved: ', return_var);
-							res.send(return_var);
+							
 						}
 					});
 				});

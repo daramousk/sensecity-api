@@ -998,7 +998,7 @@ router.post('/active_users', function(req, res) {
 					if (err1) throw err1;
 					res.send(resp);
 					// create reusable transporter object using the default SMTP transport 
-					var transporter = nodemailer.createTransport('smtps://info%40sense.city:1nf0sensecity@mail.sense.city');
+					var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 					 
 					// setup e-mail data with unicode symbols 
 					var mailOptions = {

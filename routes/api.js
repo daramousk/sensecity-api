@@ -13,6 +13,7 @@ mongoose.connect('mongodb://'+config.config.my_hostname+'/'+config.config.databa
 var Issue = require('../models/issue');
 var act_User = require('../models/active_user');
 var Municipality = require('../models/municipality');
+var cityPolicy = require('../models/cityPolicy');
 
 // Routes
 Issue.methods(['get', 'put', 'post', 'delete']);
@@ -111,42 +112,41 @@ router.post('/issue', function (req,res){
 						{
 							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing")
 							{
-							console.log("resp.issue OK");
-							console.log("response length = -->" + response.length);
-									//if (resp.municipality=="Patras")
-									if (response.length>0)
+							
+								if (response.length>0)
+								{
+							
+									var bugData=
 									{
-							console.log("resp.municipality==Patras OK");
-										var bugData=
-										{
-											"method": "Bug.create",
-											"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": response[0]["municipality"],"component": config.config.bug_component,"version": "unspecified","cc":config.config.bug_cc,"op_sys":"All"}],
-											"id": 2
-										};
-										request({
-										    url: bugUrl,
-										    method: "POST",
-										    json: bugData
+										"method": "Bug.create",
+										"params": [{"token":bugToken ,"summary": resp.issue,"alias":resp._id,"url":resp.value_desc,"product": response[0]["municipality"],"component": config.config.bug_component,"version": "unspecified","cc":config.config.bug_cc,"op_sys":"All"}],
+										"id": 2
+									};
+							
+									request({
+									    url: bugUrl,
+									    method: "POST",
+									    json: bugData
 										}, function (error, bugResponse, body) {
-										        if (!error && bugResponse.statusCode === 200) {
-																//console.log("New Bugzilla Entry with id: "+body.result.id);
-																console.log(body);
-										        }
-										        else {
-										            console.log("error: " + error);
-										            console.log("bugResponse.statusCode: " + bugResponse.statusCode);
-										            console.log("bugResponse.statusText: " + bugResponse.statusText);
-										        }
-										});
-									}
+											if (!error && bugResponse.statusCode === 200) {
+												console.log(body);
+											}
+											else {
+												console.log("error: " + error);
+												console.log("bugResponse.statusCode: " + bugResponse.statusCode);
+												console.log("bugResponse.statusText: " + bugResponse.statusText);
+											}
+									});
+								}
 							}
 							
-							
-							
-							//search the policy
+							///* Check the policy
+							cityPolicy.find({}, function(err_2, result){
+								res.send(result);								
+							});
 							
 							console.log('saved: ', resp);
-							res.send(resp);
+							//res.send(resp);
 						}
 					});
 				});
@@ -155,19 +155,19 @@ router.post('/issue', function (req,res){
 
 router.post('/issue/:id', function (req,res){
 	
-	console.log("------------------");
-	console.log(req.params.id);
-	console.log(req.body.uuid);
-	console.log(req.body.name);
-	
 	var bodyParams;
+	
+	
+	
+	
 	
 	Issue.findOneAndUpdate({"_id":req.params.id}, {	
 			user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
 		}, function(err, resp){
 			
-			console.log("email :  -"+req.body.email);
+			if (err) throw err;			
 			
+			///* Create user acount to bugzilla
 			
 			var bugCreateuser =
 			{
@@ -186,29 +186,7 @@ router.post('/issue/:id', function (req,res){
 				
 			});
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			/*
-			
-			
-			
-			
-			console.log(err);
-			if (err) throw err;
-
-					// we have the updated user returned to us
-			console.log(resp);
+			///* Find to bugzilla the issue and return the id
 					
 			var bugParams =
 			{
@@ -223,18 +201,12 @@ router.post('/issue/:id', function (req,res){
 				json: bugParams
 				}, function (error, response, body) {			
 					
-					console.log(error);
-					
-					console.log("-------------------------");
-					console.log("=========================");
-					
-					//console.log(body.result.bugs[0].id);
-					console.log(bugToken);
-                    
+					///* Update the issue with a specific id 
+					///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ"
 					bodyParams =
 					{
 						"method": "Bug.update",
-						"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "cc": {"add":[req.body.email]}}],
+						"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add":[req.body.email]}}],
 						"id": 1
 					};
 					
@@ -247,9 +219,7 @@ router.post('/issue/:id', function (req,res){
 							console.log(body);
 					});						
 					
-			});
-			*/
-			
+			});						
 			
 			res.send({"description" : "update dane!"});
 					

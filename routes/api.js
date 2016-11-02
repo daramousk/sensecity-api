@@ -51,8 +51,11 @@ request({
 //POST router
 router.post('/issue', function (req,res){
 
+		var anonymous_status = "true";
+		
 		console.log(req.body.image_name);
 		var return_var;
+		
 		if (!req.body.hasOwnProperty('issue') ||
 		 		!req.body.hasOwnProperty('loc') ||
 				!req.body.hasOwnProperty('value_desc') ||
@@ -141,12 +144,12 @@ router.post('/issue', function (req,res){
 							}
 							
 							///* Check the policy
-							var anonymous_status = "true";						
+													
 							
 							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue}, function(err_2, result){
 								
-								if(result.length==1){
-									anonymous_status = result.anonymous;
+								if(result.length == 1){
+									anonymous_status = result[0].anonymous;
 								}
 								else{
 									anonymous_status = "true";

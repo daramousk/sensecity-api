@@ -11,4 +11,4 @@ var cityPolicy_Schema = new mongoose.Schema({
 });
 
 // Return model
-module.exports = restful.model('cityPolicy', cityPolicy_Schema);
+module.exports = restful.model('citypolicy', cityPolicy_Schema);

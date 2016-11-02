@@ -4,9 +4,9 @@ var mongoose = restful.mongoose;
 
 // Schema
 var cityPolicy_Schema = new mongoose.Schema({
-	municipality :  String,
+	city :  String,
 	category: String,	
-	description: String,
+	policy_desc: String,
 	anonymous: {type:String, default : "true"}
 });
 

@@ -144,7 +144,7 @@ router.post('/issue', function (req,res){
 							var anonymous_status;							
 							
 							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue}, function(err_2, result){
-								console.log(result.length);
+								console.log("length ====>    "+result.length);
 								
 								anonymous_status = result.anonymous;
 							});

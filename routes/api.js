@@ -142,7 +142,10 @@ router.post('/issue', function (req,res){
 							
 							///* Check the policy
 							cityPolicy.find({}, function(err_2, result){
-								res.send(result);								
+								console.log('result: ', result);
+								console.log('error: ', err_2);
+								res.send(result);	
+								
 							});
 							
 							console.log('saved: ', resp);

@@ -149,13 +149,13 @@ router.post('/issue', function (req,res){
 							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue}, function(err_2, result){
 								console.log('result: ', result);
 								if(result.length == 1){
-									anonymous_status = result[0].anonymous;
+									return_var={"_id":resp._id,"anonymous": result[0].anonymous};									
 								}
 								else{
-									anonymous_status = "true";
+									return_var={"_id":resp._id,"anonymous": "true"};									
 								}
 							});
-							return_var={"_id":resp._id,"anonymous": anonymous_status};
+							
 							console.log('saved: ', return_var);
 							res.send(return_var);
 						}

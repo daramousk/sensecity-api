@@ -13,7 +13,7 @@ mongoose.connect('mongodb://'+config.config.my_hostname+'/'+config.config.databa
 var Issue = require('../models/issue');
 var act_User = require('../models/active_user');
 var Municipality = require('../models/municipality');
-var cityPolicy = require('../models/cityPolicy');
+var cityPolicy = require('../models/citypolicy');
 
 // Routes
 Issue.methods(['get', 'put', 'post', 'delete']);

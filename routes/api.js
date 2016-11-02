@@ -144,11 +144,11 @@ router.post('/issue', function (req,res){
 							var anonymous_status;							
 							
 							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue}, function(err_2, result){
-								console.log(result[0].length);
+								console.log(result.length);
 								
 								anonymous_status = result.anonymous;
 							});
-							return_var={"_id":resp._id,"anaonymous": anonymous_status};
+							return_var={"_id":resp._id,"anonymous": anonymous_status};
 							console.log('saved: ', return_var);
 							res.send(return_var);
 						}

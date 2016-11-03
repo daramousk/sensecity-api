@@ -1038,7 +1038,7 @@ router.get('/active_users', function(req, res) {
 	console.log(res);
 	
 	act_User.find({"uuid":req.query.uuid}, function(error, actice_user){
-		
+		console.log(actice_user);
 		res.send(actice_user);
 		
 	}).sort({create_at:-1}).limit(1);

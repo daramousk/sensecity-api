@@ -1056,7 +1056,7 @@ router.post('/activate_users', function(req, res) {
 		}, function(error, activate_user){
 		
 		console.log(activate_user);
-	}
+	});
 	
 });
 

@@ -980,9 +980,9 @@ router.post('/active_users', function(req, res) {
 			else{
 				
 				var text_act = "";
-				var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+				var possible = "0123456789";
 
-				for( var i=0; i < 16; i++ )
+				for( var i=0; i < 4; i++ )
 					text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 	
 				var entry_active_user = new act_User({
@@ -1006,7 +1006,7 @@ router.post('/active_users', function(req, res) {
 						to: req.body.email, // list of receivers 
 						subject: 'Hello ', // Subject line 
 						text: 'Hello world ', // plaintext body 
-						html: '<b>Hello world </b>' // html body 
+						html: 'Κωδικός ενεργοποίησης :'+text_act // html body 
 					};
 					 
 					// send mail with defined transport object 
@@ -1048,7 +1048,17 @@ router.get('/active_users', function(req, res) {
 	
 });
 
+router.post('/activate_users', function(req, res) {
 
+	
+	act_User.findOneAndUpdate({"_id":req.query.id1, "uuid":req.query.id2, "activate" : req.query.id3 }, {	
+			activate : "1"
+		}, function(error, activate_user){
+		
+		console.log(activate_user);
+	}
+	
+});
 
 
 // Return router

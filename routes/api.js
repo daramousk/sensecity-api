@@ -1052,7 +1052,7 @@ router.post('/activate_users', function(req, res) {
 
 	
 	act_User.findOneAndUpdate({"_id":req.query.id1, "uuid":req.query.id2, "activate" : req.query.id3 }, {	
-			activate : "1"
+			"activate" : "1"
 		}, function(error, activate_user){
 		
 		console.log(activate_user);

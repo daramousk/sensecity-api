@@ -970,7 +970,7 @@ router.post('/active_users', function(req, res) {
 					 if (err) throw err;
 
 					// we have the updated user returned to us
-					console.log("resp ===> ":resp);
+					console.log("resp ===> "+resp);
 					
 					res.send(resp);
 					

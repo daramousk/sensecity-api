@@ -1050,11 +1050,11 @@ router.get('/active_users', function(req, res) {
 
 router.post('/activate_users', function(req, res) {
 
-	console.log("_id   - "+req.query.id1);
-	console.log("uuid   - "+req.query.id2);
-	console.log("activate    - " + req.query.id3);
+	console.log("_id   - " + req.body.id1);
+	console.log("uuid   - " + req.body.id2);
+	console.log("activate    - " + req.body.id3);
 	
-	act_User.findOneAndUpdate({"_id":req.query.id1, "uuid":req.query.id2, "activate" : req.query.id3 }, {	
+	act_User.findOneAndUpdate({"_id":req.body.id1, "uuid":req.body.id2, "activate" : req.body.id3 }, {	
 			"activate" : "1"
 		}, function(error, activate_user){
 		

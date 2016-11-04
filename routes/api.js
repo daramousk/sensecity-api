@@ -972,7 +972,7 @@ router.post('/active_users', function(req, res) {
 					// we have the updated user returned to us
 					console.log(resp);
 					
-					res.send({"description" : "update dane!"});
+					res.send(resp);
 					
 				});			
 				

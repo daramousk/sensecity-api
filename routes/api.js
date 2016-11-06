@@ -1057,7 +1057,7 @@ router.post('/activate_users', function(req, res) {
 	act_User.findOneAndUpdate({"_id":req.body.id1, "uuid":req.body.id2, "activate" : req.body.id3 }, {	
 			"activate" : "1"
 		}, function(error, activate_user){
-		
+		res.send(activate_user);
 		console.log(activate_user);
 	});
 	

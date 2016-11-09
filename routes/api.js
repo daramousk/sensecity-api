@@ -150,7 +150,7 @@ router.post('/issue', function (req,res){
 							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue}, function(err_2, result){
 								console.log('result: ', result);
 								if(result.length == 1){
-									return_var={"_id":resp._id,"anonymous": result[0].anonymous,"policy_description":result[0].policy_desc};
+									return_var={"_id":resp._id,"anonymous": result[0].anonymous,"policy_description": result[0].policy_desc};
 								}
 								else{
 									return_var={"_id":resp._id,"anonymous": "true","policy_description":""};

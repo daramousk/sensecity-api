@@ -935,6 +935,7 @@ router.get('/fullissue/:id', function(req, res){
 	var id = req.params.id;
 
 	Issue.findOne({"_id":req.params.id},function(err, issue){
+		console.log(issue);
 		res.send(issue);
 	});
 });

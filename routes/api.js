@@ -145,15 +145,15 @@ router.post('/issue', function (req,res){
 							}
 							
 							///* Check the policy
-													
+							
 							
 							cityPolicy.find({"city":response[0]["municipality"],"category":resp.issue}, function(err_2, result){
 								console.log('result: ', result);
 								if(result.length == 1){
-									return_var={"_id":resp._id,"anonymous": result[0].anonymous};									
+									return_var={"_id":resp._id,"anonymous": result[0].anonymous,"policy_description":result[0].policy_desc};
 								}
 								else{
-									return_var={"_id":resp._id,"anonymous": "true"};									
+									return_var={"_id":resp._id,"anonymous": "true","policy_description":""};
 								}
 								
 								console.log('saved: ', return_var);
@@ -353,7 +353,7 @@ router.get('/issue', function(req, res) {
 
 	if(_list_issue){
 
-		Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
+		Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green' ]}},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 	}
@@ -546,7 +546,7 @@ router.get('/issue/:city', function(req, res) {
 	}
 	
 	if(_list_issue){
-		Issue.find({'municipality':city_name, 'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
+		Issue.find({'municipality':city_name, 'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ,'protection-policy' , 'green']}},function(err, issue){
 					res.send(issue);
 				  }).sort({create_at:_sort}).limit(_limit);
 	}

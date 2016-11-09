@@ -114,7 +114,7 @@ router.post('/issue', function (req,res){
 						}
 						else
 						{
-							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing")
+							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing" || resp.issue =="protection-policy" || resp.issue =="green")
 							{
 							
 								if (response.length>0)

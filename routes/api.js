@@ -214,7 +214,7 @@ router.post('/issue/:id', function (req,res){
 												method: "POST",
 												json: bugComment
 											}, function (error1, bugResponse1, body1) {
-												console.log(body1);
+												console.log("Comments ====>>> "+body1);
 												
 											});
 											

@@ -202,21 +202,7 @@ router.post('/issue/:id', function (req,res){
 				json: bugCreateuser
 				}, function (error, response, body) {	
 				
-					var bugComment=
-											{
-												"method": "Bug.add_comment",
-												"params": [{"id":body.result.id ,"comment": "my new comment "}],
-												"id": 1
-											};
-											
-											request({
-												url: bugUrl,
-												method: "POST",
-												json: bugComment
-											}, function (error1, bugResponse1, body1) {
-												console.log("Comments ====>>> "+body1);
-												
-											});
+					
 											
 				console.log(body);
 				
@@ -251,6 +237,30 @@ router.post('/issue/:id', function (req,res){
 						method: "POST",
 						json: bodyParams
 						}, function (error1, response, body) {	
+						
+						
+						
+						
+						var bugComment=
+											{
+												"method": "Bug.add_comment",
+												"params": [{"token":bugToken, "id": [body.result.bugs[0].id] ,"comment": "my new comment "}],
+												"id": 1
+											};
+											
+											request({
+												url: bugUrl,
+												method: "POST",
+												json: bugComment
+											}, function (error1, bugResponse1, body1) {
+												console.log("Comments ====>>> "+body1);
+												
+											});
+											
+						
+						
+						
+						
 							console.log(error1);
 							console.log(body);
 					});						

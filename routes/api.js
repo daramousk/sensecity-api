@@ -253,7 +253,8 @@ router.post('/issue/:id', function (req,res){
 												method: "POST",
 												json: bugComment
 											}, function (error1, bugResponse1, body1) {
-												console.log("Comments ====>>> "+body1);
+												console.log("Comments ====>>> "+body1[0]);
+												console.log("Comments ====>>> "+body1[1]);
 												
 											});
 											

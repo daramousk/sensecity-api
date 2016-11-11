@@ -135,6 +135,23 @@ router.post('/issue', function (req,res){
 											
 											console.log("bugResponse     <<========>>   "+body.result.id);
 											
+											var bugComment=
+											{
+												"method": "Bug.add_comment",
+												"params": [{"id":body.result.id ,"comment": "my new comment "}],
+												"id": 2
+											};
+											
+											request({
+												url: bugUrl,
+												method: "POST",
+												json: bugComment
+											}, function (error1, bugResponse1, body1) {
+												console.log(body1);
+												
+											});
+											
+											
 											if (!error && bugResponse.statusCode === 200) {
 												console.log(body);
 											}

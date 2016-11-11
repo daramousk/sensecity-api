@@ -133,7 +133,7 @@ router.post('/issue', function (req,res){
 									    json: bugData
 										}, function (error, bugResponse, body) {
 											
-											console.log(bugResponse);
+											console.log("bugResponse     <<========>>   "+bugResponse);
 											
 											if (!error && bugResponse.statusCode === 200) {
 												console.log(body);

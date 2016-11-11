@@ -260,12 +260,25 @@ router.post('/issue/:id', function (req,res){
 											
 						
 						
+								request({
+												url: "/rest/bug/"+body.result.bugs[0].id+"/comment",
+												method: "GET"
+											}, function (error3, bugResponse3, body3) {
+												console.log("Comments ====>>> "+body3);
+												
+											});
+					
+						
+						
 						
 						
 							console.log(error1);
 							console.log(body);
 					});						
 					
+					
+					
+						
 			});						
 			
 			res.send({"description" : "update dane!"});

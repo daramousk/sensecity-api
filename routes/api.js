@@ -139,7 +139,7 @@ router.post('/issue', function (req,res){
 											{
 												"method": "Bug.add_comment",
 												"params": [{"id":body.result.id ,"comment": "my new comment "}],
-												"id": 2
+												"id": 1
 											};
 											
 											request({

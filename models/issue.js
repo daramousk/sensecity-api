@@ -9,6 +9,7 @@ var issueSchema = new mongoose.Schema({
 	create_at: {type: Date, default: Date.now},
 	device_id: String,
 	value_desc: String,
+	comments: {type:String, default : ""},
     image_name: String,
 	municipality: String,
 	user :  { uuid: {type:String, default : ""}, name: {type:String, default : ""}, email: {type:String, default : ""}, phone : {type:String, default : ""}}

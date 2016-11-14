@@ -82,6 +82,7 @@ router.post('/issue', function (req,res){
 						issue: req.body.issue,
 						device_id: req.body.device_id,
 						value_desc: req.body.value_desc,
+						comments: req.body.comments
 					});
 
 					/*var prefix = "data:image/jpeg;base64,";

@@ -799,7 +799,7 @@ router.get('/issue_test', function(req, res) {
 		//,"resolution":["---","FIXED"]
 		
 		"method": "Bug.search",
-		"params": [{"product": "testweb", "order": "bug_id DESC", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias"]}],
+		"params": [{"product": "testcity1", "component": config.config.bug_component, "order": "bug_id DESC", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias"]}],
 		"id": 1
 	};
 	

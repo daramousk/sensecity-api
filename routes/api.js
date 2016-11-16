@@ -716,7 +716,7 @@ router.get('/issue_test', function(req, res) {
 			//ids += '"'+body.result.bugs[i_count].alias+'"';
 			//if(i_count<body.result.bugs.length-1)
 			//{
-				ids.push(body.result.bugs[i_count].alias);
+				ids.push(body.result.bugs[i_count].alias[0]);
 			//}
 		}
 		

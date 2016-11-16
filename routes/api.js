@@ -720,7 +720,7 @@ router.get('/issue_test', function(req, res) {
 			//}
 		}
 		
-		cosnole.log(ids);
+		console.log(ids);
 		Issue.find({"_id": {$in :  ids}} , function(err, issue){
 				
 				console.log("err   =   "+err);

@@ -116,8 +116,7 @@ router.post('/issue', function (req,res){
 						else
 						{
 							if (resp.issue == "garbage" || resp.issue =="road-contructor" || resp.issue =="lighting" || resp.issue =="plumbing" || resp.issue =="protection-policy" || resp.issue =="green")
-							{
-								console.log()
+							{								
 							
 								if (response.length>0)
 								{
@@ -685,6 +684,110 @@ router.get('/issue/:city', function(req, res) {
 
 router.get('/issue_test', function(req, res) {
 	
+	var _startdate=new Date();
+	var _enddate=new Date();
+	var _coordinates;
+	var _distance;
+	var _issue;
+	var _limit;
+	var _sort;
+	var _loc_var;
+	var newdate = new Date();
+	var _image;
+	var _list_issue;
+	if (!req.query.hasOwnProperty('startdate'))
+	{
+		_startdate.setDate(_startdate.getDate() -3);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+	else{
+		_startdate = new Date(req.query.startdate);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+
+	if (req.query.hasOwnProperty('enddate'))
+	{
+		_enddate = new Date(req.query.enddate);
+		_enddate.setHours(23);
+		_enddate.setMinutes(59,59);
+	}
+	else{
+		_enddate=newdate;
+	}
+
+	if (!req.query.hasOwnProperty('coordinates'))
+	{
+		_coordinates = '';
+	}
+	else{
+		_coordinates = req.query.coordinates;
+	}
+
+	if (!req.query.hasOwnProperty('distance'))
+	{
+		_distance = '10000';
+	}
+	else{
+		_distance = req.query.distance;
+	}
+
+	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
+	{
+		_issue = '';
+	}
+	else{
+		_issue = req.query.issue;
+	}
+
+	if (!req.query.hasOwnProperty('limit'))
+	{
+		_limit = 1000;
+	}
+	else{
+		_limit = req.query.limit;
+	}
+
+	if (!req.query.hasOwnProperty('sort'))
+	{
+		_sort = -1;
+	}
+	else{
+		_sort = req.query.sort;
+	}
+	if (!req.query.hasOwnProperty('image_field'))
+	{
+		_image =true;
+		console.log("1 _image="+_image);
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_image = false;
+			console.log("2 _image="+_image);
+		}else{
+			_image = true;
+			console.log("2 _image="+_image);
+		}
+
+
+	}
+
+	if (!req.query.hasOwnProperty('list_issue'))
+	{
+		_list_issue =false;
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_list_issue = false;
+		}else{
+			_list_issue = true;
+		}
+
+
+	}
 	
 	
 	var bugParams =
@@ -692,8 +795,11 @@ router.get('/issue_test', function(req, res) {
 	    /*"method": "Bug.get",
 	    "params": [{"include_fields":["component","cf_sensecityissue","status","id","alias","summary","creation_time","whiteboard","resolution","last_change_time"]}],
 	    "id": 1*/
+		//"status":["CONFIRMED","IN_PROGRESS","RESOLVED"]
+		//,"resolution":["---","FIXED"]
+		
 		"method": "Bug.search",
-		"params": [{"product": "testweb","order":"bug_id DESC","status":["CONFIRMED","IN_PROGRESS","RESOLVED"],"resolution":["---","FIXED"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias"]}],
+		"params": [{"product": "testweb", "order": "bug_id DESC", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias"]}],
 		"id": 1
 	};
 	

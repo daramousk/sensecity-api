@@ -289,6 +289,8 @@ router.post('/issue/:id', function (req,res){
 	
 });
 
+
+/*
 router.get('/issue', function(req, res) {
 
 
@@ -677,12 +679,12 @@ router.get('/issue/:city', function(req, res) {
 	}
 });
 
-
+*/
 
 
 /* ** Test ** */
 
-router.get('/issue_test', function(req, res) {
+router.get('/issue', function(req, res) {
 	
 	var _startdate=new Date();
 	var _enddate=new Date();
@@ -1383,6 +1385,492 @@ router.get('/issue_test', function(req, res) {
 	
 	
 });
+
+
+
+router.get('/issue/:city', function(req, res) {
+	
+	var _startdate=new Date();
+	var _enddate=new Date();
+	var _coordinates;
+	var _distance;
+	var _issue;
+	var _limit;
+	var _sort;
+	var _loc_var;
+	var newdate = new Date();
+	var _image;
+	var _list_issue;
+	var _product=req.params.city;
+	
+	if (!req.query.hasOwnProperty('startdate'))
+	{
+		_startdate.setDate(_startdate.getDate() -3);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+	else{
+		_startdate = new Date(req.query.startdate);
+		_startdate.setHours(00);
+		_startdate.setMinutes(00,00);
+	}
+
+	if (req.query.hasOwnProperty('enddate'))
+	{
+		_enddate = new Date(req.query.enddate);
+		_enddate.setHours(23);
+		_enddate.setMinutes(59,59);
+	}
+	else{
+		_enddate=newdate;
+	}
+
+	if (!req.query.hasOwnProperty('coordinates'))
+	{
+		_coordinates = '';
+	}
+	else{
+		_coordinates = req.query.coordinates;
+	}
+
+	if (!req.query.hasOwnProperty('distance'))
+	{
+		_distance = '10000';
+	}
+	else{
+		_distance = req.query.distance;
+	}
+
+	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
+	{
+		_issue = '';
+	}
+	else{
+		_issue = req.query.issue;
+	}
+
+	if (!req.query.hasOwnProperty('limit'))
+	{
+		_limit = 1000;
+	}
+	else{
+		_limit = req.query.limit;
+	}
+
+	if (!req.query.hasOwnProperty('sort'))
+	{
+		_sort = -1;
+	}
+	else{
+		_sort = req.query.sort;
+	}
+	if (!req.query.hasOwnProperty('image_field'))
+	{
+		_image =true;
+		console.log("1 _image="+_image);
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_image = false;
+			console.log("2 _image="+_image);
+		}else{
+			_image = true;
+			console.log("2 _image="+_image);
+		}
+	}
+
+	if (!req.query.hasOwnProperty('list_issue'))
+	{
+		_list_issue =false;
+	}
+	else{
+		if(req.query.image_field==0)
+		{
+			_list_issue = false;
+		}else{
+			_list_issue = true;
+		}
+	}	
+	
+	
+	var bugParams =
+	{
+		"method": "Bug.search",
+		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"id": 1
+	};
+	
+	var ids=[];
+	var bugzilla_results=[];
+	var issue_return=[];
+	
+	request({
+		url: bugUrl,
+		method: "POST",
+		json: bugParams
+	}, function (error, response, body) {			
+		
+		var i_count=0;
+		
+		for(i_count=0;i_count<body.result.bugs.length;i_count++)
+		{			
+				console.log(body.result.bugs[i_count]);
+				ids.push(body.result.bugs[i_count].alias[0]);
+				bugzilla_results=body.result.bugs;
+		}
+		
+		
+		
+		
+		if(_list_issue){
+
+			Issue.find({'_id': {$in :  ids},'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
+				
+				//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+					//res.send(issue);
+				  });//.sort({create_at:_sort}).limit(_limit);
+		}
+		else{
+			if(_image){
+				if(_coordinates === ''){
+					if( _issue === '')
+					{
+						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							//res.send(issue);
+							
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+					else{
+						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
+								"issue":_issue
+						}, function(err, issue){
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							//res.send(issue);
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+				}
+				else
+				{
+					if(_issue === '')
+					{
+						Issue.find({"_id": {$in :  ids}, "loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+							
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							
+							//res.send(issue);
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+					else{
+						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						}, function(err, issue){
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							//res.send(issue);
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+				}
+
+			}else{
+				if(_coordinates === ''){
+					if( _issue === '')
+					{
+						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate}},{"image_name":_image},function(err, issue){
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							//res.send(issue);
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+					else{
+						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
+							"issue":_issue
+						},{"image_name":_image}, function(err, issue){
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							
+							//res.send(issue);
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+				}
+				else
+				{
+					if(_issue === '')
+					{
+						Issue.find({"_id": {$in :  ids}, "loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},					
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						},{"image_name":_image}, function(err, issue){
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							//res.send(issue);
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+					else{
+						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							"create_at":{$gte:_startdate, $lt:_enddate}
+						},{"image_name":_image}, function(err, issue){
+							
+							//new start
+							console.log("err   =   "+err);
+							issue_return +='[';
+							for(var i=0;i<issue.length;i++){
+								
+								var bug_id=0;
+								var bug_status="";
+								for(var j=0;j<bugzilla_results.length;j++){
+									if(bugzilla_results[j].alias[0] == issue[i]._id){
+										bug_id=bugzilla_results[j].id;
+										bug_status=bugzilla_results[j].status;
+									}
+								}
+								
+								issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if(i<issue.length-1){
+									issue_return +=',';
+								}
+							}
+							issue_return +=']';
+							console.log(issue_return);
+							
+							res.send(issue_return);
+							//new end
+							
+							
+							//res.send(issue);
+							
+						});//.sort({create_at:_sort}).limit(_limit);
+					}
+				}
+
+			}
+		}
+	
+		
+		
+
+		
+	});
+
+	
+	
+	
+	
+});
+
+
 
 
 /* ** End test ** */

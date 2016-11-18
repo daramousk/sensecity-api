@@ -799,7 +799,7 @@ router.get('/issue_test', function(req, res) {
 		//,"resolution":["---","FIXED"]
 		
 		"method": "Bug.search",
-		"params": [{"product": "testcity1", "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id ΔΕΣΨ", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias"]}],
+		"params": [{"product": "testcity1", "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias"]}],
 		"id": 1
 	};
 	
@@ -1107,81 +1107,157 @@ router.post('/active_users', function(req, res) {
 						!req.body.hasOwnProperty('value_desc') ||
 						!req.body.hasOwnProperty('device_id'))
 		*/				
-					
+	
 	if(req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
 	{
 		
-		act_User.find({"uuid":req.body.uuid, "email":req.body.email}, function(error, resp){
+		if(req.body.uuid==="web-site"){ //web use
 			
-			if (error) throw error;
-			 
-			if(resp.length > 0){
+			act_User.find({"email":req.body.email}, function(error, resp){
 				
-				act_User.findOneAndUpdate({"uuid":req.body.uuid}, {					
-					name: req.body.name,	
-					email: req.body.email,
-					mobile_num: req.body.mobile_num,
-					permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
-				}, function(err, resp){
-					 if (err) throw err;
-
-					// we have the updated user returned to us
-					console.log("resp ===> "+resp);
+				if (error) throw error;
+				 
+				if(resp.length > 0){
 					
-					res.send(resp);
-					
-				});			
-				
-			}
-			else{
-				
-				var text_act = "";
-				var possible = "0123456789";
+					act_User.findOneAndUpdate({"uuid":req.body.uuid}, {					
+						name: req.body.name,	
+						email: req.body.email,
+						mobile_num: req.body.mobile_num,
+						permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+					}, function(err, resp){
+						 if (err) throw err;
 
-				for( var i=0; i < 4; i++ )
-					text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-	
-				var entry_active_user = new act_User({
-					uuid :  req.body.uuid,
-					name: req.body.name,	
-					email: req.body.email,
-					mobile_num: req.body.mobile_num,
-					permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}},
-					activate : text_act
-				});
-				
-				entry_active_user.save(function (err1,resp){
-					if (err1) throw err1;
-					res.send(resp);
-					// create reusable transporter object using the default SMTP transport 
-					var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
-					 
-					// setup e-mail data with unicode symbols 
-					var mailOptions = {
-						from: '"Sense.City " <info@sense.city>', // sender address 
-						to: req.body.email, // list of receivers 
-						subject: 'Hello ', // Subject line 
-						text: 'Hello world ', // plaintext body 
-						html: 'Κωδικός ενεργοποίησης :'+text_act // html body 
-					};
-					 
-					// send mail with defined transport object 
-					transporter.sendMail(mailOptions, function(error, info){
-						if(error){
-							return console.log(error);
-						}
-						console.log('Message sent: ' + info.response);
+						// we have the updated user returned to us
+						console.log("resp ===> "+resp);
+						
+						res.send(resp);
+						
+					});			
+					
+				}
+				else{
+					
+					var text_act = "";
+					var possible = "0123456789";
+
+					for( var i=0; i < 4; i++ )
+						text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+		
+					var entry_active_user = new act_User({
+						uuid :  req.body.uuid,
+						name: req.body.name,	
+						email: req.body.email,
+						mobile_num: req.body.mobile_num,
+						permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}},
+						activate : text_act
 					});
+					
+					entry_active_user.save(function (err1,resp){
+						if (err1) throw err1;
+						res.send(resp);
+						// create reusable transporter object using the default SMTP transport 
+						var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+						 
+						// setup e-mail data with unicode symbols 
+						var mailOptions = {
+							from: '"Sense.City " <info@sense.city>', // sender address 
+							to: req.body.email, // list of receivers 
+							subject: 'Hello ', // Subject line 
+							text: 'Hello world ', // plaintext body 
+							html: 'Κωδικός ενεργοποίησης :'+text_act // html body 
+						};
+						 
+						// send mail with defined transport object 
+						transporter.sendMail(mailOptions, function(error, info){
+							if(error){
+								return console.log(error);
+							}
+							console.log('Message sent: ' + info.response);
+						});
 
 
 
-				});
-			}
+					});
+				}
 			
 			//res.send(actice_user);
 		
-		});
+			});
+			
+			
+		}
+		else{ // Mobile use
+			act_User.find({"uuid":req.body.uuid, "email":req.body.email}, function(error, resp){
+				
+				if (error) throw error;
+				 
+				if(resp.length > 0){
+					
+					act_User.findOneAndUpdate({"uuid":req.body.uuid}, {					
+						name: req.body.name,	
+						email: req.body.email,
+						mobile_num: req.body.mobile_num,
+						permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
+					}, function(err, resp){
+						 if (err) throw err;
+
+						// we have the updated user returned to us
+						console.log("resp ===> "+resp);
+						
+						res.send(resp);
+						
+					});			
+					
+				}
+				else{
+					
+					var text_act = "";
+					var possible = "0123456789";
+
+					for( var i=0; i < 4; i++ )
+						text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 		
+					var entry_active_user = new act_User({
+						uuid :  req.body.uuid,
+						name: req.body.name,	
+						email: req.body.email,
+						mobile_num: req.body.mobile_num,
+						permission :  { send_issues: req.body.permission.send_issues , communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}},
+						activate : text_act
+					});
+					
+					entry_active_user.save(function (err1,resp){
+						if (err1) throw err1;
+						res.send(resp);
+						// create reusable transporter object using the default SMTP transport 
+						var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+						 
+						// setup e-mail data with unicode symbols 
+						var mailOptions = {
+							from: '"Sense.City " <info@sense.city>', // sender address 
+							to: req.body.email, // list of receivers 
+							subject: 'Hello ', // Subject line 
+							text: 'Hello world ', // plaintext body 
+							html: 'Κωδικός ενεργοποίησης :'+text_act // html body 
+						};
+						 
+						// send mail with defined transport object 
+						transporter.sendMail(mailOptions, function(error, info){
+							if(error){
+								return console.log(error);
+							}
+							console.log('Message sent: ' + info.response);
+						});
+
+
+
+					});
+				}
+			
+			//res.send(actice_user);
+		
+			});
+		}
 	}
 	
 	//res.send({"name":"active_users"});

@@ -846,13 +846,13 @@ router.get('/issue_test', function(req, res) {
   
 					
 					for(var j=0;j<bugzilla_results.length;j++){
-						if(bugzilla_results[j].alias[0]===issue._id){
+						if(bugzilla_results[j].alias[0]===issue[i]._id){
 							console.log("id========>"+bugzilla_results[j].id);
 							console.log("status==============>"+bugzilla_results[j].status);
 						}
 					}
 					
-					issue_return.push('{"_id":"'+issue._id+'","municipality":"'+issue.municipality+'","image_name":"'+issue.image_name+'","issue":"'+issue.issue+'","device_id":"'+issue.device_id+'","value_desc":"'+issue.value_desc+'","user":{"phone":"'+issue.user.phone+'","email":"'+issue.user.email+'","name":"'+issue.user.name+'","uuid":"'+issue.user.uuid+'"},"comments":"'+issue.comments+'","create_at":"'+issue.create_at+'","loc":{"type":"Point","coordinates":['+issue.loc.coordinates+']},"status":"'+issue.user.email+'","bug_id":"'+issue.user.email+'"}');
+					issue_return.push('{"_id":"'+issue[i]._id+'","municipality":"'+issue[i].municipality+'","image_name":"'+issue[i].image_name+'","issue":"'+issue[i].issue+'","device_id":"'+issue[i].device_id+'","value_desc":"'+issue[i].value_desc+'","user":'+issue[i].user+',"email":"'+issue[i].user.email+'","name":"'+issue[i].user.name+'","uuid":"'+issue[i].user.uuid+'"},"comments":"'+issue[i].comments+'","create_at":"'+issue[i].create_at+'","loc":{"type":"Point","coordinates":['+issue[i].loc.coordinates+']},"status":"'+issue[i].user.email+'","bug_id":"'+issue[i].user.email+'"}');
 					
 				}
 				

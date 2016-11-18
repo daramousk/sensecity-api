@@ -1911,14 +1911,22 @@ router.get('/fullissue/:id', function(req, res){
 		console.log("one bug =======>" + body.result.bugs[0].alias[0]);
 		console.log("one bug =======>" + body.result.bugs[0].status);
 		
+		request({
+			url: "http://nam.ece.upatras.gr/bugzilla/rest/"+ id +"/comment",
+			method: "POST",
+			json: bugParams
+		}, function (error1, response1, body1) {
+			
+			console.log("one bug =======>" + body1);
 		
+			Issue.findOne({"_id":req.params.id},function(err, issue){
+				console.log(issue);
+				
+				
+				res.send(issue);
+				
+			});
 		
-		Issue.findOne({"_id":req.params.id},function(err, issue){
-			console.log(issue);
-			
-			
-			res.send(issue);
-			
 		});
 		
 		

@@ -867,7 +867,7 @@ router.get('/issue', function(req, res) {
 							
 							
 					//res.send(issue);
-				  });//.sort({create_at:_sort}).limit(_limit);
+				  }).sort({create_at:_sort});//.limit(_limit);
 		}
 		else{
 			if(_image){
@@ -905,7 +905,7 @@ router.get('/issue', function(req, res) {
 							//res.send(issue);
 							
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
@@ -940,7 +940,7 @@ router.get('/issue', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 				else
@@ -981,7 +981,7 @@ router.get('/issue', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
@@ -1016,7 +1016,7 @@ router.get('/issue', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 
@@ -1054,7 +1054,7 @@ router.get('/issue', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
@@ -1090,7 +1090,7 @@ router.get('/issue', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 				else
@@ -1129,7 +1129,7 @@ router.get('/issue', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
@@ -1164,7 +1164,7 @@ router.get('/issue', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 
@@ -1554,7 +1554,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							
 					//res.send(issue);
-				  });//.sort({create_at:_sort}).limit(_limit);
+				  }).sort({create_at:_sort});//.limit(_limit);
 		}
 		else{
 			if(_image){
@@ -1592,7 +1592,7 @@ router.get('/issue/:city', function(req, res) {
 							//res.send(issue);
 							
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
@@ -1627,7 +1627,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 				else
@@ -1668,7 +1668,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
@@ -1703,7 +1703,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 
@@ -1741,7 +1741,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
@@ -1777,7 +1777,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 				else
@@ -1816,7 +1816,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
@@ -1851,7 +1851,7 @@ router.get('/issue/:city', function(req, res) {
 							
 							//res.send(issue);
 							
-						});//.sort({create_at:_sort}).limit(_limit);
+						}).sort({create_at:_sort});//.limit(_limit);
 					}
 				}
 

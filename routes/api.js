@@ -825,7 +825,7 @@ router.get('/issue_test', function(req, res) {
 			//{
 				console.log(body.result.bugs[i_count]);
 				ids.push(body.result.bugs[i_count].alias[0]);
-				bugzilla_results.push({"alias":body.result.bugs[i_count].alias[0].toString()+"id":body.result.bugs[i_count].id+"status":body.result.bugs[i_count].status);
+				bugzilla_results.push('{"alias":"'+body.result.bugs[i_count].alias[0]+'","id":"'+body.result.bugs[i_count].id+'","status":"'+body.result.bugs[i_count].status+'}');
 			//}
 		}
 		

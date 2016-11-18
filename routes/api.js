@@ -1912,7 +1912,7 @@ router.get('/fullissue/:id', function(req, res){
 		console.log("one bug =======>" + body.result.bugs[0].status);
 		
 		request({
-			url: "http://nam.ece.upatras.gr/bugzilla/rest/"+ id +"/comment",
+			url: "http://nam.ece.upatras.gr/bugzilla/rest/"+ body.result.bugs[0].alias[0] +"/comment",
 			method: "POST",
 			json: bugParams
 		}, function (error1, response1, body1) {

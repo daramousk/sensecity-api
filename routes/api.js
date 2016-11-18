@@ -845,7 +845,7 @@ router.get('/issue_test', function(req, res) {
   
   
 					
-					console.log("test===========>"+lodash.filter(bugzilla_results, { 'alias': issue._id } ););
+					console.log("test===========>"+lodash.filter(bugzilla_results, { 'alias': issue._id } ));
 					
 					issue_return.push('{"_id":"'+issue._id+'","municipality":"'+issue.municipality+'","image_name":"'+issue.image_name+'","issue":"'+issue.issue+'","device_id":"'+issue.device_id+'","value_desc":"'+issue.value_desc+'","user":{"phone":"'+issue.user.phone+'","email":"'+issue.user.email+'","name":"'+issue.user.name+'","uuid":"'+issue.user.uuid+'"},"comments":"'+issue.comments+'","create_at":"'+issue.create_at+'","loc":{"type":"Point","coordinates":['+issue.loc.coordinates+']},"status":"'+issue.user.email+'","bug_id":"'+issue.user.email+'"}');
 					

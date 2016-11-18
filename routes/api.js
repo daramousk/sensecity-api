@@ -838,7 +838,7 @@ router.get('/issue_test', function(req, res) {
 				console.log( issue + "," + bugzilla_results );
 				
 				for(var i=0;i<issue.length;i++){
-					console.log(i+" ===========>   "+ issue.user);
+					console.log(i+" ===========>   "+ issue[i].user);
 					
 					
 

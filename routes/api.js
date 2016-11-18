@@ -836,7 +836,7 @@ router.get('/issue_test', function(req, res) {
 		Issue.find({"_id": {$in :  ids}} , function(err, issue){
 				
 				console.log("err   =   "+err);
-				
+				issue_return +='[';
 				for(var i=0;i<issue.length;i++){
 					
 					console.log("length=====" + bugzilla_results.length);
@@ -857,7 +857,7 @@ router.get('/issue_test', function(req, res) {
 						issue_return +=',';
 					}
 				}
-				
+				issue_return +=']';
 				console.log(issue_return);
 				
 				res.send(issue_return);

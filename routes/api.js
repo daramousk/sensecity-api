@@ -1917,7 +1917,8 @@ router.get('/fullissue/:id', function(req, res){
 			json: bugParams
 		}, function (error1, response1, body1) {
 			
-			console.log("one bug =======>" + body1);
+			console.log("comment =======>" + body1[0]);
+			console.log("comment =======>" + body1[1]);
 		
 			Issue.findOne({"_id":req.params.id},function(err, issue){
 				console.log(issue);

@@ -804,7 +804,7 @@ router.get('/issue_test', function(req, res) {
 	};
 	
 	var ids=[];
-	var bugzilla_results=[];
+	var bugzilla_results="";
 	var issue_return=[];
 	
 	request({

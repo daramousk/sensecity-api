@@ -847,8 +847,9 @@ router.get('/issue_test', function(req, res) {
   
 					console.log("length=====" + bugzilla_results.length);
 					for(var j=0;j<bugzilla_results.length;j++){
-						console.log("allias =====> " + issue[i]._id );
-						if(bugzilla_results[j].alias === issue[i]._id){
+						console.log("allias1 =====> " + bugzilla_results[j].alias[0] );
+						console.log("allias2 =====> " + issue[i]._id );
+						if(bugzilla_results[j].alias[0] === issue[i]._id){
 							console.log("id========>"+bugzilla_results[j].id);
 							console.log("status==============>"+bugzilla_results[j].status);
 						}

@@ -836,20 +836,15 @@ router.get('/issue_test', function(req, res) {
 		Issue.find({"_id": {$in :  ids}} , function(err, issue){
 				
 				console.log("err   =   "+err);
-				console.log( issue + "," + bugzilla_results );
 				
 				for(var i=0;i<issue.length;i++){
-					console.log(i+" ===========>   "+ issue[i].user);
 					
-					
-
-				
-  
 					console.log("length=====" + bugzilla_results.length);
+					
 					for(var j=0;j<bugzilla_results.length;j++){
 						console.log("allias1 =====> " + bugzilla_results[j].alias[0] );
 						console.log("allias2 =====> " + issue[i]._id );
-						if(bugzilla_results[j].alias[0] === issue[i]._id){
+						if(bugzilla_results[j].alias[0] == issue[i]._id){
 							console.log("id========>"+bugzilla_results[j].id);
 							console.log("status==============>"+bugzilla_results[j].status);
 						}
@@ -859,7 +854,9 @@ router.get('/issue_test', function(req, res) {
 					
 				}
 				
-				res.send(issue + "," + bugzilla_results);
+				console.log(issue_return);
+				
+				res.send(issue_return);
 				
 				
 			});

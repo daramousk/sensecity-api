@@ -1924,7 +1924,7 @@ router.get('/fullissue/:id', function(req, res){
 				console.log(issue);
 				
 				
-				res.send(issue);
+				res.send(issue+response1+body1);
 				
 			});
 		

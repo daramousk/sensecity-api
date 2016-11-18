@@ -834,7 +834,7 @@ router.get('/issue_test', function(req, res) {
 				
 				console.log("err   =   "+err);
 				console.log( issue + bugzilla_results );
-				res.send(issue + bugzilla_results);
+				res.send([issue + "," + bugzilla_results]);
 				
 				
 			});

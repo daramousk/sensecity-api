@@ -840,17 +840,19 @@ router.get('/issue_test', function(req, res) {
 				for(var i=0;i<issue.length;i++){
 					
 					console.log("length=====" + bugzilla_results.length);
-					
+					var bug_id=0;
+					var bug_status="";
 					for(var j=0;j<bugzilla_results.length;j++){
 						console.log("allias1 =====> " + bugzilla_results[j].alias[0] );
 						console.log("allias2 =====> " + issue[i]._id );
 						if(bugzilla_results[j].alias[0] == issue[i]._id){
-							console.log("id========>"+bugzilla_results[j].id);
-							console.log("status==============>"+bugzilla_results[j].status);
+							bug_id=bugzilla_results[j].id;
+							bug_status=bugzilla_results[j].status;
 						}
 					}
 					
-					issue_return.push('{"_id":"'+issue[i]._id+'","municipality":"'+issue[i].municipality+'","image_name":"'+issue[i].image_name+'","issue":"'+issue[i].issue+'","device_id":"'+issue[i].device_id+'","value_desc":"'+issue[i].value_desc+'","user":'+issue[i].user+',"email":"'+issue[i].user.email+'","name":"'+issue[i].user.name+'","uuid":"'+issue[i].user.uuid+'"},"comments":"'+issue[i].comments+'","create_at":"'+issue[i].create_at+'","loc":{"type":"Point","coordinates":['+issue[i].loc.coordinates+']},"status":"'+issue[i].user.email+'","bug_id":"'+issue[i].user.email+'"}');
+					//issue_return.push('{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}');
+					issue_return +='{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 					
 				}
 				

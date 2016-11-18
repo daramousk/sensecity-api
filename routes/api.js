@@ -1918,7 +1918,7 @@ router.get('/fullissue/:id', function(req, res){
 		}, function (error1, response1, body1) {
 			
 			console.log("comment =======>" + body1.bugs);
-			
+			console.log("comments ==============>>>>>>>>"+response1);
 		
 			Issue.findOne({"_id":req.params.id},function(err, issue){
 				console.log(issue);

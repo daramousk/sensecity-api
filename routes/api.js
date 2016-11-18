@@ -1513,6 +1513,8 @@ router.get('/issue/:city', function(req, res) {
 		
 		var i_count=0;
 		
+		console.log("count(ids) =======>" + body.result.bugs.length);
+		
 		for(i_count=0;i_count<body.result.bugs.length;i_count++)
 		{			
 				console.log(body.result.bugs[i_count]);

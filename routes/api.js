@@ -1890,12 +1890,40 @@ router.get('/mobilemap', function(req, res) {
 });
 
 router.get('/fullissue/:id', function(req, res){
+	
 	var id = req.params.id;
-
-	Issue.findOne({"_id":req.params.id},function(err, issue){
-		console.log(issue);
-		res.send(issue);
+	
+	var bugParams =
+	{
+		"method": "Bug.search",
+		"params": [{"alias": id,"include_fields":["id","component","alias","status"]}],
+		"id": 1
+	};
+	
+	request({
+		url: bugUrl,
+		method: "POST",
+		json: bugParams
+	}, function (error, response, body) {			
+		
+		console.log("one bug =======>" + body.result.bugs);
+		
+		
+		
+		Issue.findOne({"_id":req.params.id},function(err, issue){
+			console.log(issue);
+			
+			
+			res.send(issue);
+			
+		});
+		
+		
+		
 	});
+	
+	
+	
 });
 
 

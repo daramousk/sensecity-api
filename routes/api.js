@@ -832,8 +832,10 @@ router.get('/issue_test', function(req, res) {
 		Issue.find({"_id": {$in :  ids}} , function(err, issue){
 				
 				console.log("err   =   "+err);
-				console.log(issue);
-				res.send(issue);
+				console.log(issue+body.result.bugs);
+				res.send(issue+body.result.bugs);
+				
+				
 			});
 		
 		//console.log(ids);

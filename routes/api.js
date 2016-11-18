@@ -804,7 +804,7 @@ router.get('/issue_test', function(req, res) {
 	};
 	
 	var ids=[];
-	
+	var bugzilla_results=[];
 	request({
 		url: bugUrl,
 		method: "POST",
@@ -825,6 +825,7 @@ router.get('/issue_test', function(req, res) {
 			//{
 				console.log(body.result.bugs[i_count]);
 				ids.push(body.result.bugs[i_count].alias[0]);
+				bugzilla_results.push(body.result.bugs[i_count].alias[0] + body.result.bugs[i_count].id + body.result.bugs[i_count].status);
 			//}
 		}
 		
@@ -832,7 +833,7 @@ router.get('/issue_test', function(req, res) {
 		Issue.find({"_id": {$in :  ids}} , function(err, issue){
 				
 				console.log("err   =   "+err);
-				console.log(issue+body.result.bugs);
+				console.log( issue + bugzilla_results );
 				res.send(issue+body.result.bugs);
 				
 				

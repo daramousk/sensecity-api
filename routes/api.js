@@ -838,17 +838,17 @@ router.get('/issue_test', function(req, res) {
 				console.log( issue + "," + bugzilla_results );
 				
 				for(var i=0;i<issue.length;i++){
-					console.log(i);
+					console.log(i+" ===========>   "+issue.user.phone);
 					
 					
 
-  
+				
   
 					
 					for(var j=0;j<bugzilla_results.length;j++){
-						if(bugzilla_results.alias===issue._id){
-							console.log("id========>"+bugzilla_results.id);
-							console.log("status==============>"+bugzilla_results.status);
+						if(bugzilla_results[j].alias[0]===issue._id){
+							console.log("id========>"+bugzilla_results[j].id);
+							console.log("status==============>"+bugzilla_results[j].status);
 						}
 					}
 					

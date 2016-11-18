@@ -1527,7 +1527,7 @@ router.get('/issue/:city', function(req, res) {
 		
 		if(_list_issue){
 
-			Issue.find({'_id': {$in :  ids},'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
+			Issue.find({'_id': {$in :  ids},'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green' ]}},function(err, issue){
 				
 				//new start
 							console.log("err   =   "+err);

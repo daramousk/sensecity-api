@@ -1537,7 +1537,7 @@ router.get('/issue/:city', function(req, res) {
 								var bug_id=0;
 								var bug_status="";
 								
-								cosnole.log(" i ================>>>>>>>>>>>> " + i);
+								console.log(" i ================>>>>>>>>>>>> " + i);
 								
 								for(var j=0;j<bugzilla_results.length;j++){
 									if(bugzilla_results[j].alias[0] == issue[i]._id){										

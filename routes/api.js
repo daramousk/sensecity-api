@@ -1520,7 +1520,7 @@ router.get('/issue/:city', function(req, res) {
 				bugzilla_results=body.result.bugs;
 		}
 		
-		
+		cosnole.log(ids);
 		
 		
 		if(_list_issue){

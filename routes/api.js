@@ -834,6 +834,11 @@ router.get('/issue_test', function(req, res) {
 				
 				console.log("err   =   "+err);
 				console.log( issue + "," + bugzilla_results );
+				
+				for(var i=0;i<issue.length;i++){
+					console.log(i);
+				}
+				
 				res.send(issue + "," + bugzilla_results);
 				
 				

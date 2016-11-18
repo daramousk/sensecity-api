@@ -833,8 +833,8 @@ router.get('/issue_test', function(req, res) {
 		Issue.find({"_id": {$in :  ids}} , function(err, issue){
 				
 				console.log("err   =   "+err);
-				console.log( issue + bugzilla_results );
-				res.send([issue + "," + bugzilla_results]);
+				console.log( issue + "," + bugzilla_results );
+				res.send(issue + "," + bugzilla_results);
 				
 				
 			});

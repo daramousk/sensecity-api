@@ -804,7 +804,7 @@ router.get('/issue_test', function(req, res) {
 	};
 	
 	var ids=[];
-	var bugzilla_results="";
+	var bugzilla_results=[];
 	var issue_return=[];
 	
 	request({
@@ -827,10 +827,8 @@ router.get('/issue_test', function(req, res) {
 			//{
 				console.log(body.result.bugs[i_count]);
 				ids.push(body.result.bugs[i_count].alias[0]);
-				bugzilla_results += '{"alias":"'+body.result.bugs[i_count].alias[0]+'","id":"'+body.result.bugs[i_count].id+'","status":"'+body.result.bugs[i_count].status+'"}';
-				if(i_count < body.result.bugs.length-1){
-					bugzilla_results += ",";
-				}
+				bugzilla_results=body.result.bugs;
+				
 			//}
 		}
 		

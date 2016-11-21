@@ -1912,8 +1912,9 @@ router.get('/fullissue/:id', function(req, res){
 		console.log("error ========== >>>>>>> "+error);
 		/*console.log("one bug =======>" + body.result.bugs.status);
 		*/
-		if(body.result.bugs===""){
-			res.send([]);
+		if(body.result.bugs==="" || body.result.bugs===null){
+			console.log("dgdfgdfgfd");
+			res.send([""]);
 		}
 		else{
 			request({

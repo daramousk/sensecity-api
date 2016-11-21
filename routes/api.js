@@ -1912,7 +1912,7 @@ router.get('/fullissue/:id', function(req, res){
 		console.log("error ========== >>>>>>> "+error);
 		/*console.log("one bug =======>" + body.result.bugs.status);
 		*/
-		if(body.result.bugs==="" || body.result.bugs===null){
+		if(body.result.bugs==="" || body.result.bugs.length==0){
 			console.log("dgdfgdfgfd");
 			res.send([""]);
 		}

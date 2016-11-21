@@ -1909,6 +1909,7 @@ router.get('/fullissue/:id', function(req, res){
 		/*console.log("one bug =======>" + body.result.bugs.id);
 		console.log("one bug =======>" + body.result.bugs.component);*/
 		console.log("one bug =======>" + body.result.bugs[0].alias[0]);
+		console.log("error ========== >>>>>>> "+error);
 		/*console.log("one bug =======>" + body.result.bugs.status);
 		*/
 		
@@ -1916,26 +1917,14 @@ router.get('/fullissue/:id', function(req, res){
 			url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/"+ body.result.bugs[0].alias[0] +"/comment",			
 			method: "GET"
 		}, function (error1, response1, body1) {
-			
-			console.log("comment =======> : "+body1 );
-			console.log("comments ==============>>>>>>>>"+response1);
-		
 			Issue.findOne({"_id":req.params.id},function(err, issue){
-				console.log(issue);
+				console.log(issue+","+body1);
 				
-				
-				res.send([issue+","+body1]);
+				res.send(issue+","+body1);
 				
 			});
-		
 		});
-		
-		
-		
-	});
-	
-	
-	
+	});	
 });
 
 

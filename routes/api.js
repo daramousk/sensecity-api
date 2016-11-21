@@ -1905,18 +1905,24 @@ router.get('/fullissue/:id', function(req, res){
 		method: "POST",
 		json: bugParams
 	}, function (error, response, body) {			
-		console.log("one bug =======>" + body.result.bugs);
-		/*console.log("one bug =======>" + body.result.bugs.id);
-		console.log("one bug =======>" + body.result.bugs.component);*/
-		console.log("one bug =======>" + body.result.bugs[0].alias[0]);
-		console.log("error ========== >>>>>>> "+error);
-		/*console.log("one bug =======>" + body.result.bugs.status);
-		*/
+		
 		if(body.result.bugs==="" || body.result.bugs.length==0){
+			
 			console.log("dgdfgdfgfd");
 			res.send([""]);
+			
 		}
 		else{
+			
+			console.log("one bug =======>" + body.result.bugs);
+			/*console.log("one bug =======>" + body.result.bugs.id);
+			console.log("one bug =======>" + body.result.bugs.component);*/
+			console.log("one bug =======>" + body.result.bugs[0].alias[0]);
+			console.log("error ========== >>>>>>> "+error);
+			/*console.log("one bug =======>" + body.result.bugs.status);
+			*/
+			
+			
 			request({
 				url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/"+ body.result.bugs[0].alias[0] +"/comment",			
 				method: "GET"

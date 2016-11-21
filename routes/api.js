@@ -1905,11 +1905,12 @@ router.get('/fullissue/:id', function(req, res){
 		method: "POST",
 		json: bugParams
 	}, function (error, response, body) {			
-		
-		console.log("one bug =======>" + body.result.bugs.id);
+		console.log("one bug =======>" + body.result.bugs);
+		/*console.log("one bug =======>" + body.result.bugs.id);
 		console.log("one bug =======>" + body.result.bugs.component);
 		console.log("one bug =======>" + body.result.bugs.alias[0]);
 		console.log("one bug =======>" + body.result.bugs.status);
+		*/
 		
 		request({
 			url: "http://nam.ece.upatras.gr/bugzilla/rest/"+ body.result.bugs[0].alias[0] +"/comment",

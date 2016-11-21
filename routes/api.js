@@ -1907,7 +1907,7 @@ router.get('/fullissue/:id', function(req, res){
 		json: bugParams
 	}, function (error, response, body) {			
 		
-		if(body.result.bugs==="" || body.result.bugs.length==0){
+		if(body.result.bugs[0].length==0){
 			
 			console.log("dgdfgdfgfd");
 			res.send([""]);

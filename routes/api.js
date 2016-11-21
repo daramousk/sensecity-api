@@ -1912,18 +1912,23 @@ router.get('/fullissue/:id', function(req, res){
 		console.log("error ========== >>>>>>> "+error);
 		/*console.log("one bug =======>" + body.result.bugs.status);
 		*/
-		
-		request({
-			url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/"+ body.result.bugs[0].alias[0] +"/comment",			
-			method: "GET"
-		}, function (error1, response1, body1) {
-			Issue.findOne({"_id":req.params.id},function(err, issue){
-				console.log(issue+","+body1);
-				
-				res.send(issue+","+body1);
-				
+		if(body.result.bugs===""){
+			res.send([]);
+		}
+		else{
+			request({
+				url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/"+ body.result.bugs[0].alias[0] +"/comment",			
+				method: "GET"
+			}, function (error1, response1, body1) {
+				Issue.findOne({"_id":req.params.id},function(err, issue){
+					console.log(issue+","+body1);
+					
+					res.send(issue+","+body1);
+					
+				});
 			});
-		});
+		}
+		
 	});	
 });
 

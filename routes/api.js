@@ -1907,9 +1907,9 @@ router.get('/fullissue/:id', function(req, res){
 	}, function (error, response, body) {			
 		console.log("one bug =======>" + body.result.bugs);
 		/*console.log("one bug =======>" + body.result.bugs.id);
-		console.log("one bug =======>" + body.result.bugs.component);
-		console.log("one bug =======>" + body.result.bugs.alias[0]);
-		console.log("one bug =======>" + body.result.bugs.status);
+		console.log("one bug =======>" + body.result.bugs.component);*/
+		console.log("one bug =======>" + body.result.bugs[0].alias[0]);
+		/*console.log("one bug =======>" + body.result.bugs.status);
 		*/
 		
 		request({

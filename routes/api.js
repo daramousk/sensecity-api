@@ -1914,8 +1914,7 @@ router.get('/fullissue/:id', function(req, res){
 		
 		request({
 			url: "http://nam.ece.upatras.gr/bugzilla/rest/"+ body.result.bugs[0].alias[0] +"/comment",
-			method: "GET",
-			json: bugParams
+			method: "GET"
 		}, function (error1, response1, body1) {
 			
 			console.log("comment =======> : "+body1 );

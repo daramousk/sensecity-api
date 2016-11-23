@@ -781,11 +781,11 @@ router.get('/issue', function(req, res) {
 	
 	if (!req.query.hasOwnProperty('status'))
 	{
-		console.log(req.query.status);
+		console.log("den exei property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status);
 		_status=["CONFIRMED","IN_PROGRESS"];
 	}
 	else{
-		console.log(req.query.status);
+		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status);
 		_status = req.query.status;
 	}
 	

@@ -789,21 +789,8 @@ router.get('/issue', function(req, res) {
 		/*var arr_status =req.query.status.split("[");
 		arr_status = arr_status.split("[");
 		console.log(arr_status.split(","));*/
+		_status=req.query.status;
 		
-		switch(req.query.status.length){
-			case 1:
-				_status=[req.query.status.toString()];
-				break;
-			case 2:
-				_status=[req.query.status[0].toString(),req.query.status[1].toString()];
-				break;
-			case 3:
-				_status=[req.query.status[0].toString(),req.query.status[1].toString(),req.query.status[3].toString()];
-				break;
-			default:
-				_status=["CONFIRMED","IN_PROGRESS"];
-				break;
-		}
 		console.log(_status);
 	}
 	

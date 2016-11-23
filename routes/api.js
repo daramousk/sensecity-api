@@ -229,7 +229,7 @@ router.post('/issue/:id', function (req,res){
 					bodyParams =
 					{
 						"method": "Bug.update",
-						"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add":[req.body.email]},"cf_creator":{"add":req.body.name},"cf_email":{"add":req.body.email},"cf_mobile":{"add":req.body.mobile_num},"cf_comment":{"add":resp.comments},"cf_authedicated":{"add":1}}],
+						"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add":[req.body.email]},"cf_creator":req.body.name,"cf_email":req.body.email,"cf_mobile":req.body.mobile_num,"cf_comment":resp.comments,"cf_authedicated":1}],
 						"id": 1
 					};
 					

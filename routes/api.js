@@ -786,7 +786,24 @@ router.get('/issue', function(req, res) {
 	}
 	else{
 		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status);
-		_status = req.query.status;
+		var arr_status =req.query.status.split("[");
+		arr_status = arr_status.split("[");
+		console.log(arr_status.split(","));
+		switch(arr_status.length){
+			case 1:
+				_status=[arr_status.toString()];
+				break;
+			case 2:
+				_status=[arr_status[0].toString(),arr_status[1].toString()];
+				break;
+			case 3:
+				_status=[arr_status[0].toString(),arr_status[1].toString(),arr_status[3].toString()];
+				break;
+			default:
+				_status=["CONFIRMED","IN_PROGRESS"];
+				break;
+		}
+		console.log(_status);
 	}
 	
 	
@@ -843,7 +860,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -879,7 +895,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -915,7 +930,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -955,7 +969,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -991,7 +1004,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -1029,7 +1041,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -1064,7 +1075,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -1104,7 +1114,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end
@@ -1139,7 +1148,6 @@ router.get('/issue', function(req, res) {
 								}
 							}
 							issue_return +=']';
-							console.log(issue_return);
 							
 							res.send(issue_return);
 							//new end

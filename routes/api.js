@@ -189,7 +189,7 @@ router.post('/issue/:id', function (req,res){
 			if (err) throw err;			
 			
 			///* Create user acount to bugzilla
-			
+			console.log("myresp ==========-----------=======>>>>>>" + resp);
 			var bugCreateuser =
 			{
 				"method": "User.create",

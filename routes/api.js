@@ -786,9 +786,9 @@ router.get('/issue', function(req, res) {
 	}
 	else{
 		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status);
-		var arr_status =req.query.status.split("[");
+		/*var arr_status =req.query.status.split("[");
 		arr_status = arr_status.split("[");
-		console.log(arr_status.split(","));
+		console.log(arr_status.split(","));*/
 		switch(arr_status.length){
 			case 1:
 				_status=[arr_status.toString()];

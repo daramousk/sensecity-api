@@ -780,32 +780,30 @@ router.get('/issue', function(req, res) {
 	}
 	
 	if (!req.query.hasOwnProperty('status'))
-	{
-		console.log("den exei property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status);
+	{		
 		_status=["CONFIRMED","IN_PROGRESS"];
 	}
 	else{
-		var arrrrrr = req.query.status.split("|");
+		var status_split = req.query.status.split("|");
 		
 
-		switch(arrrrrr.length){
+		switch(status_split.length){
 			case 1:
-				_status.push(arrrrrr[0]);
+				_status.push(status_split[0]);
 				break;
 			case 2:
-				_status.push(arrrrrr[0]);
-				_status.push(arrrrrr[1]);
+				_status.push(status_split[0]);
+				_status.push(status_split[1]);
 				break;
 			case 3:
-				_status.push(arrrrrr[0]);
-				_status.push(arrrrrr[1]);
-				_status.push(arrrrrr[2]);				
+				_status.push(status_split[0]);
+				_status.push(status_split[1]);
+				_status.push(status_split[2]);				
 				break;
 			default:
 				_status=["CONFIRMED","IN_PROGRESS"];
 				break;
-		}
-		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+ _status);
+		}		
 	}
 	
 	
@@ -1395,6 +1393,7 @@ router.get('/issue/:city', function(req, res) {
 	var _image;
 	var _list_issue;
 	var _product=req.params.city;
+	var _status=[];
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
@@ -1486,11 +1485,38 @@ router.get('/issue/:city', function(req, res) {
 		}
 	}	
 	
+	if (!req.query.hasOwnProperty('status'))
+	{		
+		_status=["CONFIRMED","IN_PROGRESS"];
+	}
+	else{
+		var status_split = req.query.status.split("|");
+		
+
+		switch(status_split.length){
+			case 1:
+				_status.push(status_split[0]);
+				break;
+			case 2:
+				_status.push(status_split[0]);
+				_status.push(status_split[1]);
+				break;
+			case 3:
+				_status.push(status_split[0]);
+				_status.push(status_split[1]);
+				_status.push(status_split[2]);				
+				break;
+			default:
+				_status=["CONFIRMED","IN_PROGRESS"];
+				break;
+		}		
+	}
+	
 	
 	var bugParams =
 	{
 		"method": "Bug.search",
-		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
 		"id": 1
 	};
 	
@@ -1510,8 +1536,7 @@ router.get('/issue/:city', function(req, res) {
 		{
 			res.send([{}]);
 		}
-		else{
-			console.log("count(ids) =======>" + body.result.bugs.length);
+		else{			
 		
 			for(i_count=0;i_count<body.result.bugs.length;i_count++)
 			{			
@@ -1519,8 +1544,6 @@ router.get('/issue/:city', function(req, res) {
 					ids.push(body.result.bugs[i_count].alias[0]);
 					bugzilla_results=body.result.bugs;
 			}
-		
-			console.log(ids);
 		
 		
 			if(_list_issue){
@@ -1547,8 +1570,7 @@ router.get('/issue/:city', function(req, res) {
 										issue_return +=',';
 									}
 								}
-								issue_return +=']';
-								console.log(issue_return);
+								issue_return +=']';		
 								
 								res.send(issue_return);
 								//new end

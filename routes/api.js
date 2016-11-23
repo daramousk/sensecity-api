@@ -1923,8 +1923,9 @@ router.get('/fullissue/:id', function(req, res){
 				url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/"+ body.result.bugs[0].alias[0] +"/comment",			
 				method: "GET"
 			}, function (error1, response1, body1) {
-				
+				console.log("error ======= > -----------------"+error1);
 				console.log("Results ----------------------------------------");
+				console.log("_id =====>********** "+req.params.id);
 				Issue.findOne({"_id":req.params.id},function(err, issue){					
 					issue_rtrn ='[{"_id":"' + issue._id + '","municipality":"' + issue.municipality + '","image_name":"' + issue.image_name + '","issue":"' + issue.issue + '","device_id":"' + issue.device_id + '","value_desc":"' + issue.value_desc + '","user":{"phone":"' + issue.user.phone + '","email":"' + issue.user.email + '","name":"' + issue.user.name + '","uuid":"' + issue.user.uuid + '"},"comments":"' + issue.comments + '","create_at":"' + issue.create_at + '","loc":{"type":"Point","coordinates":[' + issue.loc.coordinates + ']},"status":"' + body.result.bugs[0].status + '","bug_id":"' + body.result.bugs[0].id + '"},'+body1+']'; 
 					
@@ -1942,14 +1943,7 @@ router.get('/fullissue/:id', function(req, res){
 
 
 router.post('/active_users', function(req, res) {
-	
-	
-	/*
-		!req.body.hasOwnProperty('issue') ||
-						!req.body.hasOwnProperty('loc') ||
-						!req.body.hasOwnProperty('value_desc') ||
-						!req.body.hasOwnProperty('device_id'))
-		*/				
+		
 	
 	if(req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
 	{

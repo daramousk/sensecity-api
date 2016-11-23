@@ -790,13 +790,16 @@ router.get('/issue', function(req, res) {
 
 		switch(arrrrrr.length){
 			case 1:
-				_status=['"'+arrrrrr[0]+'"'];
+				_status.push(arrrrrr[0]);
 				break;
 			case 2:
-				_status=['"'+arrrrrr[0]+'","'+arrrrrr[1]+'"'];
+				_status.push(arrrrrr[0]);
+				_status.push(arrrrrr[1]);
 				break;
 			case 3:
-				_status=['"'+arrrrrr[0]+'","'+arrrrrr[1]+'","'+arrrrrr[2]+'"'];
+				_status.push(arrrrrr[0]);
+				_status.push(arrrrrr[1]);
+				_status.push(arrrrrr[2]);				
 				break;
 			default:
 				_status=["CONFIRMED","IN_PROGRESS"];
@@ -809,7 +812,7 @@ router.get('/issue', function(req, res) {
 	var bugParams =
 	{
 		"method": "Bug.search",
-		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":[_status],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
 		"id": 1
 	};
 	

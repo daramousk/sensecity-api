@@ -670,7 +670,7 @@ router.get('/issue', function(req, res) {
 	var _image;
 	var _list_issue;
 	var _product;
-	var _status;
+	var _status=[];
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
@@ -787,8 +787,22 @@ router.get('/issue', function(req, res) {
 	else{
 		var arrrrrr = req.query.status.split("|");
 		
-		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+ arrrrrr.length);
-		_status=req.query.status;
+
+		switch(arrrrrr.length){
+			case 1:
+				_status=[arrrrrr[0].toString()];
+				break;
+			case 2:
+				_status=[arrrrrr[0].toString(),arrrrrr[1].toString()];
+				break;
+			case 3:
+				_status=[arrrrrr[0].toString(),arrrrrr[1].toString(),arrrrrr[2].toString()];
+				break;
+			default:
+				_status=["CONFIRMED","IN_PROGRESS"];
+				break;
+		}
+		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+ _status);
 	}
 	
 	

@@ -53,8 +53,7 @@ request({
 router.post('/issue', function (req,res){
 
 		var anonymous_status = "true";
-		
-		console.log(req.body.image_name);
+				
 		var return_var;
 		
 		if (!req.body.hasOwnProperty('issue') ||
@@ -103,9 +102,7 @@ router.post('/issue', function (req,res){
 						else
 						{
 							entry.municipality = '';
-						}
-
-					//console.log("entry: %j", entry);
+						}					
 
 					// console.log(entry);
 					entry.save(function (err1,resp){
@@ -134,11 +131,6 @@ router.post('/issue', function (req,res){
 									    json: bugData
 										}, function (error, bugResponse, body) {
 											
-											console.log("bugResponse     <<========>>   "+body.result.id);
-											
-											
-											
-											
 											if (!error && bugResponse.statusCode === 200) {
 												console.log(body);
 											}
@@ -161,9 +153,7 @@ router.post('/issue', function (req,res){
 								}
 								else{
 									return_var={"_id":resp._id,"anonymous": "true","policy_description":""};
-								}
-								
-								console.log('saved: ', return_var);
+								}								
 								res.send(return_var);
 							});
 							
@@ -180,112 +170,94 @@ router.post('/issue/:id', function (req,res){
 	
 	
 	
+	if(req.body.uuid!='' && req.body.name!='' && req.body.email!=''){
 	
-	
-	Issue.findOneAndUpdate({"_id":req.params.id}, {	
-			user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
-		}, function(err, resp){
-			
-			if (err) throw err;			
-			
-			///* Create user acount to bugzilla
-			console.log("myresp ==========-----------=======>>>>>>" + resp);
-			var bugCreateuser =
-			{
-				"method": "User.create",
-				"params": [{"token":bugToken, "email": req.body.email.toString()}],
-				"id": 1
-			};
-			console.log("bugCreateuser :  -"+bugCreateuser);
-			request({
-				url: bugUrl,
-				method: "POST",
-				json: bugCreateuser
-				}, function (error, response, body) {	
+		Issue.findOneAndUpdate({"_id":req.params.id}, {	
+				user : {uuid: req.body.uuid,	name: req.body.name,	email: req.body.email,	phone: req.body.mobile_num }
+			}, function(err, resp){
 				
-					
-											
-				console.log(body);
+				if (err) throw err;			
 				
-			});
-			
-			///* Find to bugzilla the issue and return the id
+				///* Create user acount to bugzilla			
+				var bugCreateuser =
+				{
+					"method": "User.create",
+					"params": [{"token":bugToken, "email": req.body.email.toString()}],
+					"id": 1
+				};
+				console.log("bugCreateuser :  -"+bugCreateuser);
+				request({
+					url: bugUrl,
+					method: "POST",
+					json: bugCreateuser
+					}, function (error, response, body) {	
 					
-			var bugParams =
-			{
-				"method": "Bug.search",
-				"params": [{"alias": req.params.id, "include_fields": ["id","alias"] }],
-				"id": 1
-			};
-					
-			request({
-				url: bugUrl,
-				method: "POST",
-				json: bugParams
-				}, function (error, response, body) {			
-					
-					///* Update the issue with a specific id 
-					///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ"
-					bodyParams =
-					{
-						"method": "Bug.update",
-						"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add":[req.body.email]},"cf_creator":req.body.name,"cf_email":req.body.email,"cf_mobile":req.body.mobile_num,"cf_comment":resp.comments,"cf_authedicated":1,"cf_sensecityissue":resp.issue}],
-						"id": 1
-					};
-					
-					request({
-						url: bugUrl,
-						method: "POST",
-						json: bodyParams
+				});
+				
+				///* Find to bugzilla the issue and return the id
+						
+				var bugParams =
+				{
+					"method": "Bug.search",
+					"params": [{"alias": req.params.id, "include_fields": ["id","alias"] }],
+					"id": 1
+				};
+						
+				request({
+					url: bugUrl,
+					method: "POST",
+					json: bugParams
+					}, function (error, response, body) {			
+						
+						///* Update the issue with a specific id 
+						///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
+						bodyParams =
+						{
+							"method": "Bug.update",
+							"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add":[req.body.email]},"cf_creator":req.body.name,"cf_email":req.body.email,"cf_mobile":req.body.mobile_num,"cf_authedicated":1,"cf_sensecityissue":resp.issue}],
+							"id": 1
+						};
+						
+						request({
+							url: bugUrl,
+							method: "POST",
+							json: bodyParams
 						}, function (error1, response1, body1) {	
-						
-						
-						
-						
-						var bugComment=
-											{
-												"method": "Bug.add_comment",
-												"params": [{"token":bugToken, "id": body.result.bugs[0].id ,"comment": resp.comments}],
-												"id": 1
-											};
-											
-											request({
-												url: bugUrl,
-												method: "POST",
-												json: bugComment
-											}, function (error1, bugResponse1, body1) {
-												console.log("Comments ====>>> "+body1[0]);
-												console.log("Comments ====>>> "+body1[1]);
+							
+							
+							
+							
+							var bugComment=
+							{
+								"method": "Bug.add_comment",
+								"params": [{"token":bugToken, "id": body.result.bugs[0].id ,"comment": resp.comments}],
+								"id": 1
+							};
 												
-											});
-											
+							request({
+								url: bugUrl,
+								method: "POST",
+								json: bugComment
+							}, function (error1, bugResponse1, body1) {
+							
+							});
+								
+							request({
+								url: "/rest/bug/"+body.result.bugs[0].id+"/comment",
+								method: "GET"
+							}, function (error3, bugResponse3, body3) {
+																	
+							});
+						});						
 						
-						
-								request({
-												url: "/rest/bug/"+body.result.bugs[0].id+"/comment",
-												method: "GET"
-											}, function (error3, bugResponse3, body3) {
-												console.log("Comments response ====>>> "+bugResponse3);
-												console.log("Comments result ====>>> "+body3);
-												
-											});
-					
-						
-						
-						
-						
-							console.log(error1);
-							console.log(body);
-					});						
-					
-					
-					
-						
-			});						
-			
-			res.send({"description" : "update dane!"});
-					
-	});
+				});						
+				
+				res.send({"description" : "ok"});
+
+		});
+	}else{
+		res.send({"description" : "no-update"});
+	}
 	
 });
 
@@ -698,6 +670,7 @@ router.get('/issue', function(req, res) {
 	var _image;
 	var _list_issue;
 	var _product;
+	var _status;
 	
 	if (!req.query.hasOwnProperty('startdate'))
 	{
@@ -806,11 +779,20 @@ router.get('/issue', function(req, res) {
 		});
 	}
 	
+	if (!req.query.hasOwnProperty('status'))
+	{
+		_status=["CONFIRMED","IN_PROGRESS"];
+	}
+	else{
+		console.log(req.query.status);
+		_status = req.query.status;
+	}
+	
 	
 	var bugParams =
 	{
 		"method": "Bug.search",
-		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":["CONFIRMED","IN_PROGRESS"],"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
 		"id": 1
 	};
 	

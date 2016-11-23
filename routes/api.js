@@ -237,7 +237,7 @@ router.post('/issue/:id', function (req,res){
 						url: bugUrl,
 						method: "POST",
 						json: bodyParams
-						}, function (error1, response, body) {	
+						}, function (error1, response1, body1) {	
 						
 						
 						

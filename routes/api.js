@@ -785,11 +785,8 @@ router.get('/issue', function(req, res) {
 		_status=["CONFIRMED","IN_PROGRESS"];
 	}
 	else{
-		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status+"------>>>>>>>>>>>>>"+req.query.status.length);
-		/*var arr_status =req.query.status.split("[");
-		arr_status = arr_status.split("[");
-		console.log(arr_status.split(","));*/
-		_status=req.query.status;
+		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status+"------>>>>>>>>>>>>>"+req.query.status.length);		
+		_status=req.query.status[0];
 		
 		console.log(_status);
 	}
@@ -826,7 +823,7 @@ router.get('/issue', function(req, res) {
 		
 		if(_list_issue){
 
-			Issue.find({'_id': {$in :  ids},'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
+			Issue.find({'_id': {$in :  ids},'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green' ]}},function(err, issue){
 				
 				//new start
 							console.log("err   =   "+err);

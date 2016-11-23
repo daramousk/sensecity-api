@@ -785,9 +785,8 @@ router.get('/issue', function(req, res) {
 		_status=["CONFIRMED","IN_PROGRESS"];
 	}
 	else{
-		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status);
+		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status.split("|"));
 		_status=req.query.status;
-				
 	}
 	
 	

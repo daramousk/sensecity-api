@@ -781,6 +781,7 @@ router.get('/issue', function(req, res) {
 	
 	if (!req.query.hasOwnProperty('status'))
 	{
+		console.log(req.query.status);
 		_status=["CONFIRMED","IN_PROGRESS"];
 	}
 	else{

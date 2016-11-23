@@ -785,19 +785,20 @@ router.get('/issue', function(req, res) {
 		_status=["CONFIRMED","IN_PROGRESS"];
 	}
 	else{
-		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status);
+		console.log("EXEI property ====================================>>>>>>>>>>>>>>>>>>>>>> "+req.query.status+"------>>>>>>>>>>>>>"+req.query.status.length);
 		/*var arr_status =req.query.status.split("[");
 		arr_status = arr_status.split("[");
 		console.log(arr_status.split(","));*/
-		switch(arr_status.length){
+		
+		switch(req.query.status.length){
 			case 1:
-				_status=[arr_status.toString()];
+				_status=[req.query.status.toString()];
 				break;
 			case 2:
-				_status=[arr_status[0].toString(),arr_status[1].toString()];
+				_status=[req.query.status[0].toString(),req.query.status[1].toString()];
 				break;
 			case 3:
-				_status=[arr_status[0].toString(),arr_status[1].toString(),arr_status[3].toString()];
+				_status=[req.query.status[0].toString(),req.query.status[1].toString(),req.query.status[3].toString()];
 				break;
 			default:
 				_status=["CONFIRMED","IN_PROGRESS"];

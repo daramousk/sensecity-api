@@ -1442,7 +1442,8 @@ router.get('/issue/:city', function(req, res) {
 
 		var issue_split = req.query.issue.split("|");
 		
-
+		console.log(issue_split.length);
+		
 		switch(issue_split.length){
 			case 1:
 				_issue.push(issue_split[0]);

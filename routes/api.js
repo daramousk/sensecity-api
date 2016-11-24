@@ -2025,7 +2025,7 @@ router.post('/active_users', function(req, res) {
 	if(req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
 	{
 		
-		if(req.body.uuid==="web-site"){ //web use
+		if(req.body.uuid=="web-site"){ //web use
 			
 			act_User.find({"email":req.body.email}, function(error, resp){
 				

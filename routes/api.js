@@ -214,7 +214,7 @@ router.post('/issue/:id', function (req,res){
 						bodyParams =
 						{
 							"method": "Bug.update",
-							"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add":[req.body.email]},"cf_creator":req.body.name,"cf_email":req.body.email,"cf_mobile":req.body.mobile_num,"cf_authedicated":1,"cf_sensecityissue":resp.issue}],
+							"params": [{"token":bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add":[req.body.email]},"cf_creator":req.body.name,"cf_email":req.body.email,"cf_mobile":req.body.mobile_num,"cf_authedicated":1,"cf_issues":resp.issue}],
 							"id": 1
 						};
 						
@@ -1435,12 +1435,12 @@ router.get('/issue/:city', function(req, res) {
 
 	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
 	{
-		//_issue = ["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
+		_issue = ["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
 	}
 	else{
 		
-		_issue = req.query.issue;
-		/*var issue_split = req.query.issue.split("|");
+
+		var issue_split = req.query.issue.split("|");
 		
 
 		switch(issue_split.length){
@@ -1459,7 +1459,7 @@ router.get('/issue/:city', function(req, res) {
 			default:
 				_issue=["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
 				break;
-		}		*/
+		}		
 	}
 
 	if (!req.query.hasOwnProperty('limit'))
@@ -1539,7 +1539,7 @@ router.get('/issue/:city', function(req, res) {
 	var bugParams =
 	{
 		"method": "Bug.search",
-		"params": [{"product": _product, "cf_sensecityissue": _issue, "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"params": [{"product": _product, "cf_issues": _issue, "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
 		"id": 1
 	};
 	

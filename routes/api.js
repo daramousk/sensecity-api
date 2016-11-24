@@ -1385,7 +1385,7 @@ router.get('/issue/:city', function(req, res) {
 	var _enddate=new Date();
 	var _coordinates;
 	var _distance;
-	var _issue;
+	var _issue=[];
 	var _limit;
 	var _sort;
 	var _loc_var;

@@ -1647,7 +1647,7 @@ router.get('/issue/:city', function(req, res) {
 							console.log("3");
 							
 							Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
-									"issue":_issue
+									"issue":{$in :_issue}
 							}, function(err, issue){
 								
 								//new start

@@ -1385,7 +1385,7 @@ router.get('/issue/:city', function(req, res) {
 	var _enddate=new Date();
 	var _coordinates;
 	var _distance;
-	var _issue=[];
+	var _issue;
 	var _limit;
 	var _sort;
 	var _loc_var;
@@ -1435,10 +1435,12 @@ router.get('/issue/:city', function(req, res) {
 
 	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
 	{
-		_issue = ["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
+		//_issue = ["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
 	}
 	else{
-		var issue_split = req.query.issue.split("|");
+		
+		_issue = req.query.issue;
+		/*var issue_split = req.query.issue.split("|");
 		
 
 		switch(issue_split.length){
@@ -1457,7 +1459,7 @@ router.get('/issue/:city', function(req, res) {
 			default:
 				_issue=["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
 				break;
-		}		
+		}		*/
 	}
 
 	if (!req.query.hasOwnProperty('limit'))

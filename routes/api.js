@@ -1385,7 +1385,7 @@ router.get('/issue/:city', function(req, res) {
 	var _enddate=new Date();
 	var _coordinates;
 	var _distance;
-	var _issue;
+	var _issue=[];
 	var _limit;
 	var _sort;
 	var _loc_var;
@@ -1435,10 +1435,29 @@ router.get('/issue/:city', function(req, res) {
 
 	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
 	{
-		_issue = '';
+		_issue = ["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
 	}
 	else{
-		_issue = req.query.issue;
+		var issue_split = req.query.issue.split("|");
+		
+
+		switch(issue_split.length){
+			case 1:
+				_issue.push(issue_split[0]);
+				break;
+			case 2:
+				_issue.push(issue_split[0]);
+				_issue.push(issue_split[1]);
+				break;
+			case 3:
+				_issue.push(issue_split[0]);
+				_issue.push(issue_split[1]);
+				_issue.push(issue_split[2]);				
+				break;
+			default:
+				_issue=["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
+				break;
+		}		
 	}
 
 	if (!req.query.hasOwnProperty('limit'))
@@ -1513,10 +1532,11 @@ router.get('/issue/:city', function(req, res) {
 	}
 	
 	
+	
 	var bugParams =
 	{
 		"method": "Bug.search",
-		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"params": [{"product": _product, "cf_sensecityissue": _issue, "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
 		"id": 1
 	};
 	

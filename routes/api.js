@@ -2027,7 +2027,7 @@ router.post('/active_users', function(req, res) {
 		
 		if(req.body.uuid=="web-site"){ //web use
 			
-			act_User.find({"email":req.body.email}, function(error, resp){
+			act_User.find({"email":req.body.email,"active":"1"}, function(error, resp){
 				
 				if (error) throw error;
 				 
@@ -2100,7 +2100,7 @@ router.post('/active_users', function(req, res) {
 			
 		}
 		else{ // Mobile use
-			act_User.find({"uuid":req.body.uuid, "email":req.body.email}, function(error, resp){
+			act_User.find({"uuid":req.body.uuid, "email":req.body.email, "active":"1"}, function(error, resp){
 				
 				if (error) throw error;
 				 

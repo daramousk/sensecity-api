@@ -1540,7 +1540,7 @@ router.get('/issue/:city', function(req, res) {
 	var bugParams =
 	{
 		"method": "Bug.search",
-		"params": [{"product": _product, "cf_issues": _issue, "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"params": [{"product": _product, "summary": _issue, "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
 		"id": 1
 	};
 	

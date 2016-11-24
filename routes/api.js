@@ -1529,9 +1529,10 @@ router.get('/issue/:city', function(req, res) {
 				_status=["CONFIRMED","IN_PROGRESS"];
 				break;
 		}		
+		
 	}
 	
-	
+	console.log(_issue);
 	
 	var bugParams =
 	{

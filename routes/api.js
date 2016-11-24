@@ -662,7 +662,7 @@ router.get('/issue', function(req, res) {
 	var _enddate=new Date();
 	var _coordinates;
 	var _distance;
-	var _issue;
+	var _issue=[];
 	var _limit;
 	var _sort;
 	var _loc_var;
@@ -712,10 +712,32 @@ router.get('/issue', function(req, res) {
 
 	if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
 	{
-		_issue = '';
+		_issue = ["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
 	}
 	else{
-		_issue = req.query.issue;
+		
+
+		var issue_split = req.query.issue.split("|");
+		
+		console.log(issue_split.length);
+		
+		switch(issue_split.length){
+			case 1:
+				_issue.push(issue_split[0]);
+				break;
+			case 2:
+				_issue.push(issue_split[0]);
+				_issue.push(issue_split[1]);
+				break;
+			case 3:
+				_issue.push(issue_split[0]);
+				_issue.push(issue_split[1]);
+				_issue.push(issue_split[2]);				
+				break;
+			default:
+				_issue=["garbage","plumbing","lighting","road-contructor","green","protection-policy"];
+				break;
+		}		
 	}
 
 	if (!req.query.hasOwnProperty('limit'))
@@ -810,7 +832,7 @@ router.get('/issue', function(req, res) {
 	var bugParams =
 	{
 		"method": "Bug.search",
-		"params": [{"product": _product, "component": "Τμήμα επίλυσης προβλημάτων", "order": "bug_id DESC", "limit": _limit,"status":_status,"f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
+		"params": [{"product": _product, "order": "bug_id DESC", "limit": _limit,"status":_status, "cf_issues": _issue, "f1":"creation_ts","o1":"greaterthan","v1":"2016-01-01","include_fields":["id","alias","status"]}],
 		"id": 1
 	};
 	
@@ -907,7 +929,7 @@ router.get('/issue', function(req, res) {
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
-								"issue":_issue
+								"issue": {$in : _issue}
 						}, function(err, issue){
 							
 							//new start
@@ -980,7 +1002,7 @@ router.get('/issue', function(req, res) {
 						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
-						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+						Issue.find({"_id": {$in :  ids}, "issue": {$in : _issue},"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							"create_at":{$gte:_startdate, $lt:_enddate}
 						}, function(err, issue){
 							
@@ -1052,7 +1074,7 @@ router.get('/issue', function(req, res) {
 					}
 					else{
 						Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
-							"issue":_issue
+							"issue": {$in : _issue}
 						},{"image_name":_image}, function(err, issue){
 							
 							//new start
@@ -1124,7 +1146,7 @@ router.get('/issue', function(req, res) {
 						}).sort({create_at:_sort});//.limit(_limit);
 					}
 					else{
-						Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+						Issue.find({"_id": {$in :  ids}, "issue": {$in : _issue},"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 							"create_at":{$gte:_startdate, $lt:_enddate}
 						},{"image_name":_image}, function(err, issue){
 							
@@ -1726,7 +1748,7 @@ router.get('/issue/:city', function(req, res) {
 						else{
 							console.log("5");
 							
-							Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							Issue.find({"_id": {$in :  ids}, "issue":{$in :  _issue},"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 								"create_at":{$gte:_startdate, $lt:_enddate}
 							}, function(err, issue){
 								
@@ -1804,7 +1826,7 @@ router.get('/issue/:city', function(req, res) {
 							console.log("7");
 							
 							Issue.find({"_id": {$in :  ids}, "create_at":{$gte:_startdate, $lt:_enddate},
-								"issue":_issue
+								"issue": {$in :  _issue}
 							},{"image_name":_image}, function(err, issue){
 								
 								//new start
@@ -1882,7 +1904,7 @@ router.get('/issue/:city', function(req, res) {
 						else{
 							console.log("9");
 							
-							Issue.find({"_id": {$in :  ids}, "issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
+							Issue.find({"_id": {$in :  ids}, "issue": {$in :_issue},"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
 								"create_at":{$gte:_startdate, $lt:_enddate}
 							},{"image_name":_image}, function(err, issue){
 								

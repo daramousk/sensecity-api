@@ -2033,9 +2033,8 @@ router.post('/active_users', function(req, res) {
 				 
 				if(resp.length > 0){
 					
-					act_User.findOneAndUpdate({"uuid":req.body.uuid}, {					
-						name: req.body.name,	
-						email: req.body.email,
+					act_User.findOneAndUpdate({"email":req.body.email}, {					
+						name: req.body.name,
 						mobile_num: req.body.mobile_num,
 						permission :  { communicate_with: {email : req.body.permission.communicate_with.email, sms : req.body.permission.communicate_with.sms}}
 					}, function(err, resp){

@@ -25,11 +25,13 @@ Issue.register(router, '/issues');
 
 //Authorization middleware
 function authorization(req, res, next) {
-	console.log(req.path);
+	
     Role.find({uuid: req.get('x-uuid')}, function (err, response) {
         if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
             if (req.path === '/admin/bugs/search' || req.path === '/admin/bugs/update' || req.path === '/admin/bugs/comment' || req.path === '/admin/bugs/comment/tags' || req.path === '/admin/bugs/comment/add') {
+				console.log(req.path);
                 if (req.get('x-role') === 'departmentAdmin' || req.get('x-role') === 'sensecityAdmin' || req.get('x-role') === 'departmentUser' || req.get('x-role') === 'cityAdmin') {
+					console.log("sdfsdffsdfsd========111111111111111111111111");
                     next();
                 } else {
                     res.send("failure");
@@ -2202,6 +2204,7 @@ router.post('/activate_users', function (req, res) {
 });
 
 router.post('/admin/bugs/search', authorization, function (req, res) {
+	console.log("sdfsdfsd");
     request({
         url: bugUrl + "/rest/bug?" + querystring.stringify(req.body),
         method: "GET"

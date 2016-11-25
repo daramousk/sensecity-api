@@ -15,7 +15,7 @@ mongoose.connect('mongodb://' + config.config.my_hostname + '/' + config.config.
 // Models
 var Issue = require('../models/issue');
 var act_User = require('../models/active_user');
-var Role = require('./models/roles.js');
+var Role = require('../models/roles.js');
 var Municipality = require('../models/municipality');
 var cityPolicy = require('../models/citypolicy');
 

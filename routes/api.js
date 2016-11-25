@@ -2304,6 +2304,8 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
 });
 
 router.post('/dashboard', function (req, res) {
+	console.log("dfdsgdfgfdg");
+	console.log(req);
     Role.find({username: req.body.username, password: req.body.password, city: req.body.city}, function (err, response) {
         if (response.length > 0) {
             var wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);

@@ -42,6 +42,16 @@ function authorization(req, res, next) {
     });
 }
 
+function authentication(req, res, next) {
+    Role.find({uuid: req.get('x-uuid')}, function (err, response) {
+        if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
+            next();
+        } else {
+            res.send("failure");
+        }
+    });
+}
+
 //Bugzilla login
 var bugUrl = config.config.bugUrl;
 
@@ -2290,6 +2300,30 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
             }
 
         }
+    });
+});
+
+router.post('/dashboard', function (req, res) {
+    Role.find({username: req.body.username, password: req.body.password, city: req.body.city}, function (err, response) {
+        if (response.length > 0) {
+            var wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);
+            var uuid = crypto.enc.Base64.stringify(wordArray);
+            Role.update({username: req.body.username, password: req.body.password}, {$set: {"uuid": uuid, "timestamp": Date.now() * 1000 * 3600}}, {multi: true}, function (err, doc) {});
+            return res.send(response[0]["city"] + ";" + response[0]["role"] + ";" + response[0]["department"] + ";" + response[0]["email"] + ";" + uuid + ";" + req.body.username);
+        } else {
+            return res.send("failure");
+        }
+    });
+}
+);
+
+router.get('/get', authentication, function (req, res) {
+    res.send("success");
+});
+
+router.get('/logout', authentication, function (req, res) {
+    Role.update({uuid: req.get('x-uuid')}, {$unset: {"uuid": 1, "timestamp": 1}}, function (err, response) {
+        res.send("logout");
     });
 });
 

@@ -2204,7 +2204,7 @@ router.post('/activate_users', function (req, res) {
 });
 
 router.post('/admin/bugs/search', authorization, function (req, res) {
-	console.log("sdfsdfsd======================================="+req.body);
+	console.log("sdfsdfsd======================================="+querystring.stringify(req.body));
     request({
         url: bugUrl + "/rest/bug?" + querystring.stringify(req.body),
         method: "GET"

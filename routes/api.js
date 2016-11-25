@@ -23,6 +23,8 @@ var cityPolicy = require('../models/citypolicy');
 Issue.methods(['get', 'put', 'post', 'delete']);
 Issue.register(router, '/issues');
 
+var bugUrlRest=config.config.bugUrlRest;
+
 //Authorization middleware
 function authorization(req, res, next) {
 	
@@ -2206,7 +2208,7 @@ router.post('/activate_users', function (req, res) {
 router.post('/admin/bugs/search', authorization, function (req, res) {
 	console.log("sdfsdfsd======================================="+querystring.stringify(req.body)+"------->>>>>"+bugUrl);
     request({
-        url: bugUrl + "/rest/bug?" + querystring.stringify(req.body),
+        url: bugUrlRest + "/rest/bug?" + querystring.stringify(req.body),
         method: "GET"
     }, function (error, response, body) {
 		console.log(JSON.parse(body).bugs);
@@ -2227,7 +2229,7 @@ router.post('/admin/bugs/search', authorization, function (req, res) {
 router.post('/admin/bugs/update', authorization, function (req, res) {
     req.body.token = bugToken;
     request({
-        url: bugUrl + "/rest/bug/" + req.body.ids[0],
+        url: bugUrlRest + "/rest/bug/" + req.body.ids[0],
         method: "PUT",
         json: req.body
     }, function (error, response, body) {
@@ -2248,7 +2250,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
 router.post('/admin/bugs/comment', authorization, function (req, res) {
     req.body.token = bugToken;
     request({
-        url: bugUrl + "/rest/bug/" + req.body.id + " /comment",
+        url: bugUrlRest + "/rest/bug/" + req.body.id + " /comment",
         method: "GET"
     }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -2268,7 +2270,7 @@ router.post('/admin/bugs/comment', authorization, function (req, res) {
 router.post('/admin/bugs/comment/add', authorization, function (req, res) {
     req.body.token = bugToken;
     request({
-        url: bugUrl + "/rest/bug/" + req.body.id + " /comment",
+        url: bugUrlRest + "/rest/bug/" + req.body.id + " /comment",
         method: "POST",
         json: req.body
     }, function (error, response, body) {
@@ -2290,7 +2292,7 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
     req.body.token = bugToken;
     console.log(req.body);
     request({
-        url: bugUrl + "/rest/bug/comment/" + req.body.id + "/tags",
+        url: bugUrlRest + "/rest/bug/comment/" + req.body.id + "/tags",
         method: "PUT",
         json: req.body
     }, function (error, response, body) {

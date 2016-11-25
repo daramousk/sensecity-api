@@ -25,6 +25,7 @@ Issue.register(router, '/issues');
 
 //Authorization middleware
 function authorization(req, res, next) {
+	console.log(req.path);
     Role.find({uuid: req.get('x-uuid')}, function (err, response) {
         if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
             if (req.path === '/admin/bugs/search' || req.path === '/admin/bugs/update' || req.path === '/admin/bugs/comment' || req.path === '/admin/bugs/comment/tags' || req.path === '/admin/bugs/comment/add') {

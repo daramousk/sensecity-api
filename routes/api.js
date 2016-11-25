@@ -154,7 +154,7 @@ router.post('/issue', function (req, res) {
                             var bugData =
                                     {
                                         "method": "Bug.create",
-                                        "params": [{"token": bugToken, "summary": resp.issue, "alias": resp._id.toString(), "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cc": config.config.bug_cc, "op_sys": "All"}],
+                                        "params": [{"token": bugToken, "summary": resp.issue, "alias": resp._id.toString(), "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "op_sys": "All"}],
                                         "id": 2
                                     };
 
@@ -246,7 +246,7 @@ router.post('/issue/:id', function (req, res) {
                 bodyParams =
                         {
                             "method": "Bug.update",
-                            "params": [{"token": bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add": [req.body.email]}, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num, "cf_authedicated": 1, "cf_issues": resp.issue}],
+                            "params": [{"token": bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add": [req.body.email]}, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num,"reset_assigned_to":true, "cf_authedicated": 1, "cf_issues": resp.issue}],
                             "id": 1
                         };
 

@@ -6,7 +6,7 @@ var fs = require('fs');
 var request = require('request');
 var nodemailer = require('nodemailer');
 var querystring = require('querystring');
-
+var crypto = require('crypto-js');
 
 var config = require('app-config');
 

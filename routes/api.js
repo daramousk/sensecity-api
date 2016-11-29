@@ -225,7 +225,11 @@ router.post('/issue/:id', function (req, res) {
                 method: "POST",
                 json: bugCreateuser
             }, function (error, response, body) {
-				console.log("body in issue/:id =>"+JSON.stringify(body));
+				if(error){
+					console.log("User doesnot created! Error : "+error);
+					return false;
+				}
+				console.log("User Created at bugzilla");
             });
 
             ///* Find to bugzilla the issue and return the id
@@ -242,7 +246,9 @@ router.post('/issue/:id', function (req, res) {
                 method: "POST",
                 json: bugParams
             }, function (error, response, body) {
-
+				
+				console.log("body bug.search in issue/:id =>"+JSON.stringify(body));
+				
                 ///* Update the issue with a specific id 
                 ///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
                 bodyParams =

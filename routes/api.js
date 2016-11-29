@@ -207,7 +207,7 @@ router.post('/issue/:id', function (req, res) {
             user: {uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num}
         }, function (err, resp) {
 			
-			console.log(JSON.stringify(resp));
+			console.log("Resp in issue/:id =>"+JSON.stringify(resp));
 			
             if (err)
                 throw err;
@@ -225,7 +225,7 @@ router.post('/issue/:id', function (req, res) {
                 method: "POST",
                 json: bugCreateuser
             }, function (error, response, body) {
-
+				console.log("body in issue/:id =>"+JSON.stringify(body));
             });
 
             ///* Find to bugzilla the issue and return the id

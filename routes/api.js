@@ -203,15 +203,13 @@ router.post('/issue/:id', function (req, res) {
 
     var bodyParams;
 
-	console.log("req ====>"+req);
-
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
 
         Issue.findOneAndUpdate({"_id": req.params.id}, {
             user: {uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num}
         }, function (err, resp) {
 			
-			console.log("Resp in issue/:id =>"+resp);
+			console.log("Update Issue with name,email & mobile num!");
 			
             if (err)
                 throw err;
@@ -223,7 +221,7 @@ router.post('/issue/:id', function (req, res) {
                         "params": [{"token": bugToken, "email": req.body.email.toString()}],
                         "id": 1
                     };
-            console.log("bugCreateuser :  -" + bugCreateuser);
+            
             request({
                 url: bugUrl,
                 method: "POST",

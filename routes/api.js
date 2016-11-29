@@ -229,7 +229,7 @@ router.post('/issue/:id', function (req, res) {
 					console.log("User doesnot created! Error : "+error);
 					return false;
 				}
-				console.log("User Created at bugzilla");
+				console.log("User Created/already exist at bugzilla");
             });
 
             ///* Find to bugzilla the issue and return the id
@@ -264,7 +264,7 @@ router.post('/issue/:id', function (req, res) {
                     json: bodyParams
                 }, function (error1, response1, body1) {
 
-
+					console.log("body 1 =======================>>>>>>>>>>"+JSON.stringify(body2));
 
 
                     var bugComment =
@@ -279,13 +279,12 @@ router.post('/issue/:id', function (req, res) {
                         method: "POST",
                         json: bugComment
                     }, function (error2, bugResponse2, body2) {
-						console.log(JSON.stringify(body2));
+						console.log("body 2 =======================>>>>>>>>>>"+JSON.stringify(body2));
 						
 						if(body2.result != null)
 						{
-						console.log(body2.result.id);
-						
-						
+						console.log(body2.result.id);						
+							
 						request({
 							url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
 							method: "PUT",

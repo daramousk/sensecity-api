@@ -2058,7 +2058,11 @@ router.post('/active_users', function (req, res) {
 
                 if (error)
                     throw error;
-
+				
+				
+				console.log("==============================================>>>>>>>>>>>>>>>>>>"+JSON.stringify(resp));
+				
+				
                 if (resp.length > 0) {
 
                     act_User.findOneAndUpdate({"email": req.body.email}, {

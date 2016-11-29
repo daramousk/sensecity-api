@@ -198,7 +198,7 @@ router.post('/issue', function (req, res) {
 router.post('/issue/:id', function (req, res) {
 
     var bodyParams;
-
+	var commentID=0;
 
 
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
@@ -271,7 +271,8 @@ router.post('/issue/:id', function (req, res) {
                         method: "POST",
                         json: bugComment
                     }, function (error2, bugResponse2, body2) {
-						console.log(body2.result.id);
+						commentID = body2.result.id;						
+						
                     });
 
                     request({
@@ -284,7 +285,7 @@ router.post('/issue/:id', function (req, res) {
 
             });
 
-            res.send({"description": "ok"});
+            res.send({"description": "ok","comment_id":commentID});
 
         });
     } else {

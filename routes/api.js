@@ -31,9 +31,9 @@ function authorization(req, res, next) {
     Role.find({uuid: req.get('x-uuid')}, function (err, response) {
         if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
             if (req.path === '/admin/bugs/search' || req.path === '/admin/bugs/update' || req.path === '/admin/bugs/comment' || req.path === '/admin/bugs/comment/tags' || req.path === '/admin/bugs/comment/add') {
-				console.log(req.path);
+				
                 if (req.get('x-role') === 'departmentAdmin' || req.get('x-role') === 'sensecityAdmin' || req.get('x-role') === 'departmentUser' || req.get('x-role') === 'cityAdmin') {
-					console.log("sdfsdffsdfsd========111111111111111111111111");
+					
                     next();
                 } else {
                     res.send("failure");
@@ -119,14 +119,6 @@ router.post('/issue', function (req, res) {
                 comments: req.body.comments
             });
 
-            /*var prefix = "data:image/jpeg;base64,";
-             var base64 = new Buffer(req.body.image_upload, 'binary').toString('base64');
-             var data = prefix + base64;*/
-
-            //console.log("municipality = " + response[0]["municipality"]);
-            console.log("response length = " + response.length);
-
-            //entry.image_name = new Buffer(req.body.image_upload, "base64");
 
             entry.image_name = req.body.image_name;
 
@@ -165,7 +157,7 @@ router.post('/issue', function (req, res) {
                             }, function (error, bugResponse, body) {
 
                                 if (!error && bugResponse.statusCode === 200) {
-                                    console.log(body);
+                                   // console.log(body);
                                 } else {
                                     console.log("error: " + error);
                                     console.log("bugResponse.statusCode: " + bugResponse.statusCode);
@@ -180,7 +172,7 @@ router.post('/issue', function (req, res) {
 					if (response.length > 0){
 						cityPolicy.find({"city": response[0]["municipality"], "category": resp.issue}, function (err_2, result) {
 							console.log('err2: '+ err_2);
-							console.log('result: '+ result);
+							//console.log('result: '+ result);
 							if (result.length == 1) {
 								return_var = {"_id": resp._id, "anonymous": result[0].anonymous, "policy_description": result[0].policy_desc};
 							} else {

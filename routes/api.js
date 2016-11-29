@@ -279,6 +279,7 @@ router.post('/issue/:id', function (req, res) {
 						}, function (error, response, body) {
 							console.log(error);
 							console.log(JSON.stringify(response));
+							console.log(JSON.stringify(body));
 							/*
 							if (!error && response.statusCode === 200) {
 

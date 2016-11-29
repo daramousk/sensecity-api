@@ -199,7 +199,7 @@ router.post('/issue/:id', function (req, res) {
 
     var bodyParams;
 
-	console.log("req ====>"+JSON.stringify(req));
+	console.log("req ====>"+req);
 
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
 

@@ -206,7 +206,9 @@ router.post('/issue/:id', function (req, res) {
         Issue.findOneAndUpdate({"_id": req.params.id}, {
             user: {uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num}
         }, function (err, resp) {
-
+			
+			console.log(JSON.stringify(resp));
+			
             if (err)
                 throw err;
 

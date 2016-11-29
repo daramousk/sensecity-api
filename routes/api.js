@@ -177,19 +177,22 @@ router.post('/issue', function (req, res) {
 
                     ///* Check the policy
 
-
-                    cityPolicy.find({"city": response[0]["municipality"], "category": resp.issue}, function (err_2, result) {
-						console.log('err2: '+ err_2);
-                        console.log('result: '+ result);
-                        if (result.length == 1) {
-                            return_var = {"_id": resp._id, "anonymous": result[0].anonymous, "policy_description": result[0].policy_desc};
-                        } else {
-                            return_var = {"_id": resp._id, "anonymous": "true", "policy_description": ""};
-                        }
-                        res.send(return_var);
-                    });
-
-
+					if (response.length > 0){
+						cityPolicy.find({"city": response[0]["municipality"], "category": resp.issue}, function (err_2, result) {
+							console.log('err2: '+ err_2);
+							console.log('result: '+ result);
+							if (result.length == 1) {
+								return_var = {"_id": resp._id, "anonymous": result[0].anonymous, "policy_description": result[0].policy_desc};
+							} else {
+								return_var = {"_id": resp._id, "anonymous": "true", "policy_description": ""};
+							}
+							res.send(return_var);
+						});
+					}
+					else{
+						return_var = {"_id": resp._id, "anonymous": "true", "policy_description": ""};
+						res.send(return_var);
+					}
                 }
             });
         });

@@ -262,7 +262,7 @@ router.post('/issue/:id', function (req, res) {
                     var bugComment =
                             {
                                 "method": "Bug.add_comment",
-                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments,""}],
+                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
                                 "id": 1
                             };
 

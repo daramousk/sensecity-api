@@ -776,8 +776,6 @@ router.get('/issue', function (req, res) {
 
         var issue_split = req.query.issue.split("|");
 
-        console.log(issue_split.length);
-
         switch (issue_split.length) {
             case 1:
                 _issue.push(issue_split[0]);
@@ -858,7 +856,6 @@ router.get('/issue', function (req, res) {
     } else {
         var status_split = req.query.status.split("|");
 
-
         switch (status_split.length) {
             case 1:
                 _status.push(status_split[0]);
@@ -896,11 +893,12 @@ router.get('/issue', function (req, res) {
         json: bugParams
     }, function (error, response, body) {
 
-        var i_count = 0;
-
+        console.log("Get from bugzilla issues!");
+		
+		var i_count = 0;
+		
         for (i_count = 0; i_count < body.result.bugs.length; i_count++)
-        {
-            console.log(body.result.bugs[i_count]);
+        {            
             ids.push(body.result.bugs[i_count].alias[0]);
             bugzilla_results = body.result.bugs;
         }
@@ -1502,8 +1500,6 @@ router.get('/issue/:city', function (req, res) {
 
         var issue_split = req.query.issue.split("|");
 
-        console.log(issue_split.length);
-
         switch (issue_split.length) {
             case 1:
                 _issue.push(issue_split[0]);
@@ -1539,15 +1535,15 @@ router.get('/issue/:city', function (req, res) {
     if (!req.query.hasOwnProperty('image_field'))
     {
         _image = true;
-        console.log("1 _image=" + _image);
+        
     } else {
         if (req.query.image_field == 0)
         {
             _image = false;
-            console.log("2 _image=" + _image);
+        
         } else {
             _image = true;
-            console.log("2 _image=" + _image);
+        
         }
     }
 
@@ -1590,7 +1586,7 @@ router.get('/issue/:city', function (req, res) {
 
     }
 
-    console.log(_issue);
+    
 
     var bugParams =
             {
@@ -1608,8 +1604,10 @@ router.get('/issue/:city', function (req, res) {
         method: "POST",
         json: bugParams
     }, function (error, response, body) {
-
-        var i_count = 0;
+		
+		console.log("Get issues from bugzilla with city in the url!");
+        
+		var i_count = 0;
 
         if (body.length < 1)
         {
@@ -1618,14 +1616,13 @@ router.get('/issue/:city', function (req, res) {
 
             for (i_count = 0; i_count < body.result.bugs.length; i_count++)
             {
-                console.log(body.result.bugs[i_count]);
                 ids.push(body.result.bugs[i_count].alias[0]);
                 bugzilla_results = body.result.bugs;
             }
 
 
             if (_list_issue) {
-                console.log("1");
+                
                 Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green']}}, function (err, issue) {
 
                     //new start
@@ -1661,8 +1658,7 @@ router.get('/issue/:city', function (req, res) {
                     if (_coordinates === '') {
                         if (_issue === '')
                         {
-                            console.log("2");
-
+                          
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, function (err, issue) {
 
                                 //new start
@@ -1685,8 +1681,7 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
-
+								
                                 res.send(issue_return);
                                 //new end
 
@@ -1696,8 +1691,7 @@ router.get('/issue/:city', function (req, res) {
 
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-                            console.log("3");
-
+                           
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
                             }, function (err, issue) {
@@ -1722,7 +1716,6 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
 
                                 res.send(issue_return);
                                 //new end
@@ -1736,7 +1729,6 @@ router.get('/issue/:city', function (req, res) {
                     {
                         if (_issue === '')
                         {
-                            console.log("4");
 
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
@@ -1763,7 +1755,6 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
 
                                 res.send(issue_return);
                                 //new end
@@ -1774,7 +1765,6 @@ router.get('/issue/:city', function (req, res) {
 
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-                            console.log("5");
 
                             Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
@@ -1800,7 +1790,6 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
 
                                 res.send(issue_return);
                                 //new end
@@ -1816,7 +1805,6 @@ router.get('/issue/:city', function (req, res) {
                     if (_coordinates === '') {
                         if (_issue === '')
                         {
-                            console.log("6");
 
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image}, function (err, issue) {
 
@@ -1840,7 +1828,6 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
 
                                 res.send(issue_return);
                                 //new end
@@ -1850,7 +1837,6 @@ router.get('/issue/:city', function (req, res) {
 
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-                            console.log("7");
 
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
@@ -1876,7 +1862,6 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
 
                                 res.send(issue_return);
                                 //new end
@@ -1891,7 +1876,6 @@ router.get('/issue/:city', function (req, res) {
                     {
                         if (_issue === '')
                         {
-                            console.log("8");
 
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
@@ -1917,7 +1901,6 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
 
                                 res.send(issue_return);
                                 //new end
@@ -1927,7 +1910,6 @@ router.get('/issue/:city', function (req, res) {
 
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-                            console.log("9");
 
                             Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
@@ -1953,7 +1935,6 @@ router.get('/issue/:city', function (req, res) {
                                     }
                                 }
                                 issue_return += ']';
-                                console.log(issue_return);
 
                                 res.send(issue_return);
                                 //new end
@@ -2024,13 +2005,12 @@ router.get('/fullissue/:id', function (req, res) {
                 url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/" + body.result.bugs[0].alias[0] + "/comment",
                 method: "GET"
             }, function (error1, response1, body1) {
-                console.log("error ======= > -----------------" + error1);
-                console.log("Results ----------------------------------------");
-                console.log("_id =====>********** " + req.params.id);
+				if(error1)
+					cosnole.log("/fullissue/:id error :"+error1);
+				
                 Issue.findOne({"_id": req.params.id}, function (err, issue) {
                     issue_rtrn = '[{"_id":"' + issue._id + '","municipality":"' + issue.municipality + '","image_name":"' + issue.image_name + '","issue":"' + issue.issue + '","device_id":"' + issue.device_id + '","value_desc":"' + issue.value_desc + '","user":{"phone":"' + issue.user.phone + '","email":"' + issue.user.email + '","name":"' + issue.user.name + '","uuid":"' + issue.user.uuid + '"},"comments":"' + issue.comments + '","create_at":"' + issue.create_at + '","loc":{"type":"Point","coordinates":[' + issue.loc.coordinates + ']},"status":"' + body.result.bugs[0].status + '","bug_id":"' + body.result.bugs[0].id + '"},' + body1 + ']';
 
-                    console.log(issue_rtrn);
                     res.send(issue_rtrn);
 
                 });
@@ -2068,7 +2048,7 @@ router.post('/active_users', function (req, res) {
                             throw err;
 
                         // we have the updated user returned to us
-                        console.log("resp ===> " + resp);
+
 
                         res.send({"user_exist": "1"});
 
@@ -2143,8 +2123,6 @@ router.post('/active_users', function (req, res) {
                             throw err;
 
                         // we have the updated user returned to us
-                        console.log("resp ===> " + resp);
-
                         res.send(resp);
 
                     });
@@ -2207,8 +2185,6 @@ router.post('/active_users', function (req, res) {
 
 router.get('/active_users', function (req, res) {
 
-    console.log(req.query.uuid);
-    console.log(res);
 
     act_User.find({"uuid": req.query.uuid}, function (error, actice_user) {
         console.log(actice_user);

@@ -2064,7 +2064,7 @@ router.post('/active_users', function (req, res) {
 				
 				
                 if (resp.length > 0) {
-
+					console.log("==============================================>>>>>>>>>>>>>>>>>>"+req.body.email);
                     act_User.findOneAndUpdate({"email": req.body.email}, {
                         name: req.body.name,
                         mobile_num: req.body.mobile_num,

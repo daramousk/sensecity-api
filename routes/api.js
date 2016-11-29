@@ -207,7 +207,7 @@ router.post('/issue/:id', function (req, res) {
             user: {uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num}
         }, function (err, resp) {
 			
-			console.log("Resp in issue/:id =>"+JSON.stringify(resp));
+			console.log("Resp in issue/:id =>"+resp);
 			
             if (err)
                 throw err;

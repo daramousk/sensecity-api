@@ -264,7 +264,7 @@ router.post('/issue/:id', function (req, res) {
                     json: bodyParams
                 }, function (error1, response1, body1) {
 
-					console.log("body 1 =======================>>>>>>>>>>"+JSON.stringify(body2));
+					console.log("body 1 =======================>>>>>>>>>>"+JSON.stringify(body1));
 
 
                     var bugComment =

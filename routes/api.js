@@ -264,61 +264,51 @@ router.post('/issue/:id', function (req, res) {
                     json: bodyParams
                 }, function (error1, response1, body1) {
 
-					console.log("body 1 =======================>>>>>>>>>>"+JSON.stringify(body1));
-
-
-                    var bugComment =
+					if(resp.comments!=null){
+						var bugComment =
                             {
                                 "method": "Bug.add_comment",
                                 "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
                                 "id": 1
                             };
 
-                    request({
-                        url: bugUrl,
-                        method: "POST",
-                        json: bugComment
-                    }, function (error2, bugResponse2, body2) {
-						console.log("body 2 =======================>>>>>>>>>>"+JSON.stringify(body2));
-						
-						if(body2.result != null)
-						{
-						console.log(body2.result.id);						
-							
 						request({
-							url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
-							method: "PUT",
-							json: {"add": ["all", "CONFIRMED"], "id": body2.result.id,"token": bugToken}
-						}, function (error4, response4, body4) {
-							console.log(error4);
-							console.log(JSON.stringify(response4));
-							console.log(JSON.stringify(body4));
-							/*
-							if (!error && response.statusCode === 200) {
-
-								if (response.body.result !== null)
-								{
-									res.send(body);
-								} else
-								{
-									res.send([response.body.error]);
-								}
-
+							url: bugUrl,
+							method: "POST",
+							json: bugComment
+						}, function (error2, bugResponse2, body2) {
+							console.log("Insert comments to bugzilla");
+							
+							if(body2.result != null)
+							{
+															
+							request({
+								url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
+								method: "PUT",
+								json: {"add": ["all", "CONFIRMED"], "id": body2.result.id,"token": bugToken}
+							}, function (error4, response4, body4) {
+								
+								console.log("Insert Tags to comment");
+								
+							});
 							}
-							*/
 						});
-						}
-                    });
 
-                    request({
-                        url: "/rest/bug/" + body.result.bugs[0].id + "/comment",
-                        method: "GET"
-                    }, function (error3, bugResponse3, body3) {
+						request({
+							url: "/rest/bug/" + body.result.bugs[0].id + "/comment",
+							method: "GET"
+						}, function (error3, bugResponse3, body3) {
 
-                    });
+						});
 					
-					
+					}
+					else{
+						console.log("No comments availiable");
+					}
                 });
+				
+				
+				
 
             });
 

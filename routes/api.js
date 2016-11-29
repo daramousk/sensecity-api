@@ -271,6 +271,7 @@ router.post('/issue/:id', function (req, res) {
                         method: "POST",
                         json: bugComment
                     }, function (error2, bugResponse2, body2) {
+						console.log(JSON.stringify(body2));
 						console.log(body2.result.id);
 						
 						

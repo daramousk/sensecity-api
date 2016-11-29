@@ -2054,17 +2054,14 @@ router.post('/active_users', function (req, res) {
 
         if (req.body.uuid == "web-site") { //web use
 
-            act_User.find({"email": req.body.email, "active": "1"}, function (error, resp) {
+            act_User.find({"email": req.body.email, "activate": "1"}, function (error, resp) {
 
                 if (error)
                     throw error;
-				
-				
-				console.log("==============================================>>>>>>>>>>>>>>>>>>"+JSON.stringify(resp));
-				
+
 				
                 if (resp.length > 0) {
-					console.log("==============================================>>>>>>>>>>>>>>>>>>"+req.body.email);
+					
                     act_User.findOneAndUpdate({"email": req.body.email}, {
                         name: req.body.name,
                         mobile_num: req.body.mobile_num,

@@ -272,14 +272,17 @@ router.post('/issue/:id', function (req, res) {
                         json: bugComment
                     }, function (error2, bugResponse2, body2) {
 						console.log(body2.result.id);
+						
+						req.body4.token = bugToken;
+						
 						request({
 							url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
 							method: "PUT",
 							json: {"add": ["all", "CONFIRMED"], "id": body2.result.id}
-						}, function (error, response, body) {
-							console.log(error);
-							console.log(JSON.stringify(response));
-							console.log(JSON.stringify(body));
+						}, function (error4, response4, body4) {
+							console.log(error4);
+							console.log(JSON.stringify(response4));
+							console.log(JSON.stringify(body4));
 							/*
 							if (!error && response.statusCode === 200) {
 

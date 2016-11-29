@@ -274,6 +274,9 @@ router.post('/issue/:id', function (req, res) {
                         json: bugComment
                     }, function (error2, bugResponse2, body2) {
 						console.log(JSON.stringify(body2));
+						
+						if(body2.result != null)
+						{
 						console.log(body2.result.id);
 						
 						
@@ -299,7 +302,7 @@ router.post('/issue/:id', function (req, res) {
 							}
 							*/
 						});
-						
+						}
                     });
 
                     request({
@@ -308,6 +311,8 @@ router.post('/issue/:id', function (req, res) {
                     }, function (error3, bugResponse3, body3) {
 
                     });
+					
+					
                 });
 
             });

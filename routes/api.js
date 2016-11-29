@@ -273,7 +273,7 @@ router.post('/issue/:id', function (req, res) {
                     }, function (error2, bugResponse2, body2) {
 						console.log(body2.result.id);
 						
-						req.body4.token = bugToken;
+						req.body.token = bugToken;
 						
 						request({
 							url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",

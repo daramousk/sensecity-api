@@ -262,7 +262,7 @@ router.post('/issue/:id', function (req, res) {
                     var bugComment =
                             {
                                 "method": "Bug.add_comment",
-                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
+                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments,""}],
                                 "id": 1
                             };
 
@@ -270,8 +270,8 @@ router.post('/issue/:id', function (req, res) {
                         url: bugUrl,
                         method: "POST",
                         json: bugComment
-                    }, function (error1, bugResponse1, body1) {
-
+                    }, function (error2, bugResponse2, body2) {
+						console.log(JSON.stringify(body2));
                     });
 
                     request({

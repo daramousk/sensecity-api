@@ -2199,6 +2199,7 @@ router.post('/activate_users', function (req, res) {
         "activate": "1"
     }, function (error, activate_user) {
         console.log(activate_user);
+		console.log(error);
         res.send(activate_user);
     });
 

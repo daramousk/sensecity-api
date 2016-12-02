@@ -259,10 +259,15 @@ router.post('/issue/:id', function (req, res) {
                 }, function (error1, response1, body1) {
 
 					if(resp.comments!=null){
+						_iss_comments = resp.comments;
+					}
+					else{
+						_iss_comments = "undefined";
+					}
 						var bugComment =
                             {
                                 "method": "Bug.add_comment",
-                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
+                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": _iss_comments}],
                                 "id": 1
                             };
 
@@ -295,10 +300,10 @@ router.post('/issue/:id', function (req, res) {
 
 						});
 					
-					}
+					/*}
 					else{
 						console.log("No comments availiable");
-					}
+					}*/
                 });
 				
 				

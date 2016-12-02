@@ -270,7 +270,7 @@ router.post('/issue/:id', function (req, res) {
                                 "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
                                 "id": 1
                             };
-
+						console.log("bugComment  ====>>>>>  " + bugComment);
 						request({
 							url: bugUrl,
 							method: "POST",

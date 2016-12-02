@@ -257,8 +257,9 @@ router.post('/issue/:id', function (req, res) {
                     method: "POST",
                     json: bodyParams
                 }, function (error1, response1, body1) {
-					var _iss_comments="undefined";
-					console.log("resp.comments  ====>>>>>  "+resp.comments);
+					var _iss_comments;
+					_iss_comments = "undefined";
+					console.log("resp.comments  ====>>>>>  " + _iss_comments);
 					if(resp.comments!=null){
 						
 						_iss_comments = resp.comments;

@@ -258,7 +258,7 @@ router.post('/issue/:id', function (req, res) {
                     json: bodyParams
                 }, function (error1, response1, body1) {
 					var _iss_comments;
-					_iss_comments = String("undefined");
+					_iss_comments = "undefined";
 					console.log("resp.comments  ====>>>>>  " + _iss_comments);
 					if(resp.comments!=null){
 						
@@ -270,7 +270,7 @@ router.post('/issue/:id', function (req, res) {
 						var bugComment =
                             {
                                 "method": "Bug.add_comment",
-                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": _iss_comments}],
+                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": _iss_comments.toString()}],
                                 "id": 1
                             };
 

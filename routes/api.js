@@ -258,16 +258,16 @@ router.post('/issue/:id', function (req, res) {
                     json: bodyParams
                 }, function (error1, response1, body1) {
 
-					console.log("resp.comments  ====>>>>>  " + resp.comments);
+					
 					if(resp.comments == null){
 						
 						resp.comments = "undefined";
 					}
-					
+					console.log("resp.comments  ====>>>>>  " + resp.comments);
 						var bugComment =
                             {
                                 "method": "Bug.add_comment",
-                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": String(resp.comments)}],
+                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
                                 "id": 1
                             };
 

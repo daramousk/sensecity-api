@@ -263,14 +263,14 @@ router.post('/issue/:id', function (req, res) {
 						
 						resp.comments = "undefined";
 					}
-					console.log("resp.comments  ====>>>>>  " + resp.comments);
+					
 						var bugComment =
                             {
                                 "method": "Bug.add_comment",
                                 "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
                                 "id": 1
                             };
-						console.log("bugComment  ====>>>>>  " + JSON.stringify(bugComment));
+						
 						request({
 							url: bugUrl,
 							method: "POST",

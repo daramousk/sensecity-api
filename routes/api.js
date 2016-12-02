@@ -279,7 +279,7 @@ router.post('/issue/:id', function (req, res) {
 							method: "POST",
 							json: bugComment
 						}, function (error2, bugResponse2, body2) {
-							console.log("error2"+error2);
+							console.log("body2" + JSON.stringify(body2));
 							console.log("Insert comments to bugzilla");
 							
 							if(body2.result != null)

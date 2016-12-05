@@ -251,7 +251,7 @@ router.post('/issue/:id', function (req, res) {
                             "params": [{"token": bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add": [req.body.email]}, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num,"reset_assigned_to":true, "cf_authedicated": 1, "cf_issues": resp.issue}],
                             "id": 1
                         };
-
+				console.log("bodyParams ====== > "+bodyParams);
                 request({
                     url: bugUrl,
                     method: "POST",

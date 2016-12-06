@@ -2104,7 +2104,7 @@ router.post('/active_users', function (req, res) {
 
 
         } else { // Mobile use
-            act_User.find({"uuid": req.body.uuid, "email": req.body.email, "activate": "1"}, function (error, resp) {
+            act_User.find({"uuid": req.body.uuid, "email": req.body.email}, function (error, resp) {
 				
                 if (error)
                     throw error;

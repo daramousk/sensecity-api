@@ -2124,9 +2124,9 @@ router.post('/active_users', function (req, res) {
 							text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 					}
 						console.log(" Mobile use    =============>>>>>>>>  " + JSON.stringify(resp));
+						console.log(" text_act    =============>>>>>>>>  " + text_act);
 						
-						
-						act_User.findOneAndUpdate({"uuid": req.body.uuid}, {
+						act_User.findOneAndUpdate({"uuid": req.body.uuid, "email": req.body.email}, {
 							name: req.body.name,
 							email: req.body.email,
 							mobile_num: req.body.mobile_num,

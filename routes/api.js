@@ -2116,7 +2116,7 @@ router.post('/active_users', function (req, res) {
 				
                 if (resp.length > 0) {
 					
-					if (resp.activate == "1") {
+					if (resp.activate == 1) {
 						text_act="1";
 					}
 					else{

@@ -2256,7 +2256,7 @@ router.post('/admin/bugs/search', authorization, function (req, res) {
         url: bugUrlRest + "/rest/bug?" + querystring.stringify(req.body),
         method: "GET"
     }, function (error, response, body) {
-		console.log(JSON.parse(body).bugs);
+		
         if (!error && response.statusCode === 200) {
 
             if (response.body.result !== null)

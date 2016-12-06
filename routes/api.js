@@ -2115,8 +2115,8 @@ router.post('/active_users', function (req, res) {
 				
 				
                 if (resp.length > 0) {
-					
-					if (resp.activate == 1) {
+					console.log(" activate    =============>>>>>>>>  " + resp.activate);
+					if (resp.activate == "1") {
 						text_act="1";
 					}
 					else{
@@ -2224,7 +2224,7 @@ router.get('/active_users', function (req, res) {
         console.log(actice_user);
         res.send(actice_user);
 
-    }).sort({create_at: -1}).limit(1);
+    }).sort({"create_at": -1}).limit(1);
 
 
 

@@ -2108,70 +2108,105 @@ router.post('/active_users', function (req, res) {
 				
                 if (error)
                     throw error;
-
+				
+				var text_act = "";
+				var possible = "0123456789";
+				
+				
+				
                 if (resp.length > 0) {
-					
-					console.log(" Mobile use    =============>>>>>>>>  " + JSON.stringify(resp));
-					
-                    act_User.findOneAndUpdate({"uuid": req.body.uuid}, {
-                        name: req.body.name,
-                        email: req.body.email,
-                        mobile_num: req.body.mobile_num,
-                        permission: {communicate_with: {email: req.body.permission.communicate_with.email, sms: req.body.permission.communicate_with.sms}}
-                    }, function (err, resp) {
-                        if (err)
-                            throw err;
+					if (resp.activate === "1") {
+						text_act="1";
+					}
+					else{
+						for (var i = 0; i < 4; i++)
+							text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+					}
+						console.log(" Mobile use    =============>>>>>>>>  " + JSON.stringify(resp));
+						
+						if(resp.activate != "1"){
+							
+						}
+						
+						act_User.findOneAndUpdate({"uuid": req.body.uuid}, {
+							name: req.body.name,
+							email: req.body.email,
+							mobile_num: req.body.mobile_num,
+							permission: {communicate_with: {email: req.body.permission.communicate_with.email, sms: req.body.permission.communicate_with.sms}}
+						}, function (err, resp1) {
+							if (err)
+								throw err;
+							if(resp1.activate != "1"){
+								
+								var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 
-                        // we have the updated user returned to us
-                        res.send(resp);
+								// setup e-mail data with unicode symbols 
+								var mailOptions = {
+									from: '"Sense.City " <info@sense.city>', // sender address 
+									to: req.body.email, // list of receivers 
+									subject: ' Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+									text: 'Κωδικός ενεργοποίησης :' + text_act, // plaintext body 
+									html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
+								};
 
-                    });
+								// send mail with defined transport object 
+								transporter.sendMail(mailOptions, function (error, info) {
+									if (error) {
+										return console.log(error);
+									}
+									console.log('Message sent: ' + info.response);
+								});
+							
+							}
+							// we have the updated user returned to us
+							res.send(resp1);
 
-                } else {
+						});					
+				}else {
 
-                    var text_act = "";
-                    var possible = "0123456789";
+						var text_act = "";
+						var possible = "0123456789";
 
-                    for (var i = 0; i < 4; i++)
-                        text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+						for (var i = 0; i < 4; i++)
+							text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
-                    var entry_active_user = new act_User({
-                        uuid: req.body.uuid,
-                        name: req.body.name,
-                        email: req.body.email,
-                        mobile_num: req.body.mobile_num,
-                        permission: {send_issues: req.body.permission.send_issues, communicate_with: {email: req.body.permission.communicate_with.email, sms: req.body.permission.communicate_with.sms}},
-                        activate: text_act
-                    });
+						var entry_active_user = new act_User({
+							uuid: req.body.uuid,
+							name: req.body.name,
+							email: req.body.email,
+							mobile_num: req.body.mobile_num,
+							permission: {send_issues: req.body.permission.send_issues, communicate_with: {email: req.body.permission.communicate_with.email, sms: req.body.permission.communicate_with.sms}},
+							activate: text_act
+						});
 
-                    entry_active_user.save(function (err1, resp) {
-                        if (err1)
-                            throw err1;
-                        res.send(resp);
-                        // create reusable transporter object using the default SMTP transport 
-                        var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+						entry_active_user.save(function (err1, resp) {
+							if (err1)
+								throw err1;
+							res.send(resp);
+							// create reusable transporter object using the default SMTP transport 
+							var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 
-                        // setup e-mail data with unicode symbols 
-                        var mailOptions = {
-                            from: '"Sense.City " <info@sense.city>', // sender address 
-                            to: req.body.email, // list of receivers 
-                            subject: ' Αποστολή κωδικού ενεργοποίησης ', // Subject line 
-                            text: 'Κωδικός ενεργοποίησης :' + text_act, // plaintext body 
-                            html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
-                        };
+							// setup e-mail data with unicode symbols 
+							var mailOptions = {
+								from: '"Sense.City " <info@sense.city>', // sender address 
+								to: req.body.email, // list of receivers 
+								subject: ' Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+								text: 'Κωδικός ενεργοποίησης :' + text_act, // plaintext body 
+								html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
+							};
 
-                        // send mail with defined transport object 
-                        transporter.sendMail(mailOptions, function (error, info) {
-                            if (error) {
-                                return console.log(error);
-                            }
-                            console.log('Message sent: ' + info.response);
-                        });
+							// send mail with defined transport object 
+							transporter.sendMail(mailOptions, function (error, info) {
+								if (error) {
+									return console.log(error);
+								}
+								console.log('Message sent: ' + info.response);
+							});
 
 
 
-                    });
-                }
+						});
+					}
 
                 //res.send(actice_user);
 

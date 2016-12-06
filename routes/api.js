@@ -2175,7 +2175,7 @@ router.post('/active_users', function (req, res) {
 
                 //res.send(actice_user);
 
-            });
+            }).sort({"create_at":-1}).limit(1);
         }
     }
 

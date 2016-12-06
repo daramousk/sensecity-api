@@ -100,6 +100,8 @@ mongoose.connection.once('open', function () {
 	});
 
                     app.post('/admin/bugs/search', authorization, function (req, res) {
+						console.log("bug search");
+                        console.log("req    ========>>>>>>> " + JSON.stringify(req));
                         var bugToken = "";
                         var loginData = {"method": "User.login", "params": [{"login": config.config.login, "password": config.config.pwd}],"id": 1 };
                         request({

@@ -2155,8 +2155,8 @@ router.post('/active_users', function (req, res) {
                         var mailOptions = {
                             from: '"Sense.City " <info@sense.city>', // sender address 
                             to: req.body.email, // list of receivers 
-                            subject: 'Hello ', // Subject line 
-                            text: 'Hello world ', // plaintext body 
+                            subject: ' Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+                            text: 'Κωδικός ενεργοποίησης :' + text_act, // plaintext body 
                             html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
                         };
 

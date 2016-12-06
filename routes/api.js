@@ -2115,8 +2115,10 @@ router.post('/active_users', function (req, res) {
 				
 				
                 if (resp.length > 0) {
-					console.log(" activate    =============>>>>>>>>  " + resp.activate);
-					if (resp.activate == "1") {
+					
+					console.log(" activate    =============>>>>>>>>  " + resp[0].activate);
+					
+					if (resp[0].activate == "1") {
 						text_act="1";
 					}
 					else{

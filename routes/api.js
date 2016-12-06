@@ -2115,6 +2115,7 @@ router.post('/active_users', function (req, res) {
 				
 				
                 if (resp.length > 0) {
+					
 					if (resp.activate === "1") {
 						text_act="1";
 					}
@@ -2124,14 +2125,12 @@ router.post('/active_users', function (req, res) {
 					}
 						console.log(" Mobile use    =============>>>>>>>>  " + JSON.stringify(resp));
 						
-						if(resp.activate != "1"){
-							
-						}
 						
 						act_User.findOneAndUpdate({"uuid": req.body.uuid}, {
 							name: req.body.name,
 							email: req.body.email,
 							mobile_num: req.body.mobile_num,
+							activate:text_act,
 							permission: {communicate_with: {email: req.body.permission.communicate_with.email, sms: req.body.permission.communicate_with.sms}}
 						}, function (err, resp1) {
 							if (err)

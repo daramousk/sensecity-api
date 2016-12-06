@@ -2137,7 +2137,7 @@ router.post('/active_users', function (req, res) {
 						}, function (err, resp1) {
 							if (err)
 								throw err;
-							if(resp1.activate != "1"){
+							if(resp1[0].activate != "1"){
 								
 								var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 

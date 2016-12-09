@@ -2229,7 +2229,7 @@ router.post('/active_users', function (req, res) {
 });
 
 router.get('/policy', function (req, res) {
-	res.send({"policy":"<p style=\"font-size:18px\"><b>Coming soon</b><\p>"});
+	res.send({"policy":"<p style=\"font-size:18px\"><b>Coming</b></p<p> soon<\p>"});
 });
 
 

@@ -2228,6 +2228,12 @@ router.post('/active_users', function (req, res) {
 
 });
 
+router.get('/policy', function (req, res) {
+	res.send({"policy":"<p style=\"font-size:18px\"><b>Coming soon</b><\p>"});
+});
+
+
+
 router.get('/active_users', function (req, res) {
 
 

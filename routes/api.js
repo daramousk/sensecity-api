@@ -1646,9 +1646,9 @@ router.get('/issue/:city', function (req, res) {
                     
 					//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -1699,12 +1699,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -1727,16 +1727,16 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
 						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));				
 					}
                     
                     //new end
@@ -1750,17 +1750,17 @@ router.get('/issue/:city', function (req, res) {
 				console.log("km0================>"+_kml);
                 if (_image) {
 					console.log("kml1================>"+_kml);
-                    if (_coordinates === '') {
+                    if (_coordinates == '') {
 						console.log("kml2================>"+_kml);
-                        if (_issue === '')
+                        if (_issue == '')
                         {
                           console.log("kml3================>"+_kml);
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, function (err, issue) {
 								//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -1811,12 +1811,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -1839,16 +1839,16 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
 						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));			
 					}
                     //new end
 					
@@ -1981,10 +1981,9 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));		
 					}
                     //new end
 					
@@ -2020,7 +2019,7 @@ router.get('/issue/:city', function (req, res) {
                     } else
                     {
 						console.log("kml4================>"+_kml);
-                        if (_issue === '')
+                        if (_issue == '')
                         {
 								console.log("kml5================>"+_kml);
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
@@ -2031,9 +2030,9 @@ router.get('/issue/:city', function (req, res) {
 	
 								//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -2084,12 +2083,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -2112,16 +2111,15 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));			
 					}
                     //new end
 					
@@ -2165,9 +2163,9 @@ router.get('/issue/:city', function (req, res) {
 							
 							//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -2218,12 +2216,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -2246,14 +2244,14 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						
-						res.set('Content-Type', 'text/xml');
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
 						res.send(xml(issue_return));
 						console.log(issue_return);						
 					}
@@ -2293,17 +2291,17 @@ router.get('/issue/:city', function (req, res) {
                     }
 
                 } else {
-                    if (_coordinates === '') {
-                        if (_issue === '')
+                    if (_coordinates == '') {
+                        if (_issue == '')
                         {
 
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image}, function (err, issue) {
 
 							//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -2354,12 +2352,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -2382,16 +2380,15 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));					
 					}
                     //new end
 					
@@ -2434,9 +2431,9 @@ router.get('/issue/:city', function (req, res) {
                                 
 								//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -2487,12 +2484,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -2515,16 +2512,15 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));	
 					}
                     //new end
 					
@@ -2562,7 +2558,7 @@ router.get('/issue/:city', function (req, res) {
                         }
                     } else
                     {
-                        if (_issue === '')
+                        if (_issue == '')
                         {
 
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
@@ -2571,9 +2567,9 @@ router.get('/issue/:city', function (req, res) {
 
 								//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -2624,12 +2620,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -2652,16 +2648,15 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));	
 					}
                     //new end
 					
@@ -2706,9 +2701,9 @@ router.get('/issue/:city', function (req, res) {
 							
 								//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
@@ -2759,12 +2754,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -2787,16 +2782,15 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						
-						res.set('Content-Type', 'text/xml');
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml');
+						res.set('Content-Type', 'text/xml');						
+						res.send(xml(issue_return));	
 					}
                     //new end
 					

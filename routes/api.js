@@ -1641,7 +1641,7 @@ router.get('/issue/:city', function (req, res) {
                 
                 Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green']}}, function (err, issue) {
 
-					
+					console.log("================================>"+_kml);
                     //new start
                     console.log("err   =   " + err);
 					if(_kml===0){

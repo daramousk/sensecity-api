@@ -1644,7 +1644,7 @@ router.get('/issue/:city', function (req, res) {
 
 					
                     
-					create_json_kml();
+					create_json_kml(issue,bug_status,bug_id);
 					
 					
 					
@@ -1658,7 +1658,7 @@ router.get('/issue/:city', function (req, res) {
                         {
                           
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, function (err, issue) {
-								create_json_kml();
+								create_json_kml(issue,bug_status,bug_id);
                                 //new start
                                 /*console.log("err   =   " + err);
                                 issue_return += '[';
@@ -1960,7 +1960,7 @@ router.get('/issue/:city', function (req, res) {
 });
 
 
-function create_json_kml(){
+function create_json_kml(var issue[],var bug_status,var bug_id){
 	
 	//new start
                     console.log("err   =   " + err);

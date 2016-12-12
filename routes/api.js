@@ -1747,7 +1747,7 @@ router.get('/issue/:city', function (req, res) {
                     //res.send(issue);
                 }).sort({create_at: _sort});//.limit(_limit);
             } else {
-				console.log("kml================>"+_kml);
+				console.log("km0================>"+_kml);
                 if (_image) {
 					console.log("kml1================>"+_kml);
                     if (_coordinates === '') {

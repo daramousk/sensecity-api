@@ -1734,8 +1734,8 @@ router.get('/issue/:city', function (req, res) {
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
 						
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
 						res.send(xml(issue_return));				
 					}
                     
@@ -1846,9 +1846,9 @@ router.get('/issue/:city', function (req, res) {
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
 						
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
-						res.send(xml(issue_return));			
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
+						res.send(xml(issue_return));	
 					}
                     //new end
 					
@@ -1981,9 +1981,9 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
-						res.send(xml(issue_return));		
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
+						res.send(xml(issue_return));	
 					}
                     //new end
 					
@@ -2117,9 +2117,9 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
-						res.send(xml(issue_return));			
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
+						res.send(xml(issue_return));	
 					}
                     //new end
 					
@@ -2250,10 +2250,9 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
-						res.send(xml(issue_return));
-						console.log(issue_return);						
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
+						res.send(xml(issue_return));				
 					}
                     //new end
 					
@@ -2386,9 +2385,9 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
-						res.send(xml(issue_return));					
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
+						res.send(xml(issue_return));		
 					}
                     //new end
 					
@@ -2518,8 +2517,8 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
 						res.send(xml(issue_return));	
 					}
                     //new end
@@ -2654,8 +2653,8 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
 						res.send(xml(issue_return));	
 					}
                     //new end
@@ -2788,8 +2787,8 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml');
-						res.set('Content-Type', 'text/xml');						
+						res.header('Content-Type', 'text/xml; charset=utf-8');
+						res.set('Content-Type', 'text/xml; charset=utf-8');						
 						res.send(xml(issue_return));	
 					}
                     //new end

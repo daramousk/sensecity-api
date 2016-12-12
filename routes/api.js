@@ -1749,10 +1749,12 @@ router.get('/issue/:city', function (req, res) {
             } else {
 				console.log("kml================>"+_kml);
                 if (_image) {
+					console.log("kml1================>"+_kml);
                     if (_coordinates === '') {
+						console.log("kml2================>"+_kml);
                         if (_issue === '')
                         {
-                          
+                          console.log("kml3================>"+_kml);
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, function (err, issue) {
 								//new start
                     console.log("err   =   " + err);
@@ -2014,9 +2016,10 @@ router.get('/issue/:city', function (req, res) {
                         }
                     } else
                     {
+						console.log("kml4================>"+_kml);
                         if (_issue === '')
                         {
-
+								console.log("kml5================>"+_kml);
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
                             }, function (err, issue) {
@@ -2151,7 +2154,7 @@ router.get('/issue/:city', function (req, res) {
 
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-
+							console.log("kml6================>"+_kml);
                             Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
                             }, function (err, issue) {

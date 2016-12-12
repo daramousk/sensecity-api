@@ -1601,7 +1601,7 @@ router.get('/issue/:city', function (req, res) {
 	else{
 		_kml = req.query.kml_test;
 	}
-	console.log(_kml);
+	console.log("kml================>"+_kml);
 	
     var bugParams =
             {
@@ -1613,7 +1613,7 @@ router.get('/issue/:city', function (req, res) {
     var ids = [];
     var bugzilla_results = [];
     var issue_return = [];
-
+	console.log("kml================>"+_kml);
     request({
         url: bugUrl,
         method: "POST",
@@ -1621,7 +1621,7 @@ router.get('/issue/:city', function (req, res) {
     }, function (error, response, body) {
 		
 		console.log("Get issues from bugzilla with city in the url!");
-        
+		console.log("kml================>"+_kml);
 		var i_count = 0;
 		
 		//console.log(JSON.stringify(body));
@@ -1639,7 +1639,7 @@ router.get('/issue/:city', function (req, res) {
 
 
             if (_list_issue) {
-                
+                console.log("kml================>"+_kml);
                 Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green','enviroment']}}, function (err, issue) {
 
 					
@@ -1747,6 +1747,7 @@ router.get('/issue/:city', function (req, res) {
                     //res.send(issue);
                 }).sort({create_at: _sort});//.limit(_limit);
             } else {
+				console.log("kml================>"+_kml);
                 if (_image) {
                     if (_coordinates === '') {
                         if (_issue === '')

@@ -1981,9 +1981,9 @@ router.get('/issue/:city', function (req, res) {
 					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						res.header('Content-Type', 'text/xml; charset=utf-8');
-						res.set('Content-Type', 'text/xml; charset=utf-8');						
-						res.send(xml(issue_return));	
+						//res.header('Content-Type', 'text/xml; charset=utf-8');
+						//res.set('Content-Type', 'text/xml; charset=utf-8');						
+						res.send(issue_return);	
 					}
                     //new end
 					

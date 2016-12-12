@@ -1947,12 +1947,12 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-						if(_kml===0){
+						if(_kml==0){
 							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
-						}else if(_kml===1){
+						}else if(_kml==1){
 							console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 							issue_return +='<Placemark>'+
 								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
@@ -1975,10 +1975,10 @@ router.get('/issue/:city', function (req, res) {
 							console.log(issue_return);
 						}
                     }
-					if(_kml===0){
+					if(_kml==0){
 						issue_return += ']';
 						res.send(issue_return);
-					}else if(_kml===1){
+					}else if(_kml==1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
 						

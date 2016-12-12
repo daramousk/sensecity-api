@@ -1887,6 +1887,8 @@ router.get('/issue/:city', function (req, res) {
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
                             }, function (err, issue) {
+								
+								console.log(JSON.stringify(issue));
 
 							
 								//new start
@@ -1894,6 +1896,7 @@ router.get('/issue/:city', function (req, res) {
 					if(_kml===0){
 						issue_return += '[';
 					}else if(_kml===1){
+						console.log("kml232================>"+_kml);
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+

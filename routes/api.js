@@ -1729,12 +1729,16 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
+                    
                     //new end
 					
 					
@@ -1834,12 +1838,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
 					
@@ -1964,12 +1971,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
                                 //new start
@@ -2097,12 +2107,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
 					
@@ -2228,12 +2241,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
 					
@@ -2361,12 +2377,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
 					
@@ -2491,12 +2510,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
 					
@@ -2625,12 +2647,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
 							
@@ -2757,12 +2782,15 @@ router.get('/issue/:city', function (req, res) {
                     }
 					if(_kml===0){
 						issue_return += ']';
+						res.send(issue_return);
 					}else if(_kml===1){
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '</Folder> </Document> </kml>';
-						console.log(issue_return);
+						
+						res.set('Content-Type', 'text/xml');
+						res.send(xml(issue_return));
+						console.log(issue_return);						
 					}
-                    res.send(issue_return);
                     //new end
 					
 					

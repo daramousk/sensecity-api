@@ -7,7 +7,7 @@ var request = require('request');
 var nodemailer = require('nodemailer');
 var querystring = require('querystring');
 var crypto = require('crypto-js');
-var xml = require('xml');
+//var xml = require('xml');
 
 var config = require('app-config');
 

@@ -1598,7 +1598,7 @@ router.get('/issue/:city', function (req, res) {
 	else{
 		_kml = req.query.hasOwnProperty('kml');
 	}
-	
+	console.log(_kml);
 	
     var bugParams =
             {

@@ -1,1 +1,7 @@
 /nbproject/private/
+/node_modules
+/obj
+/typings
+/bin
+/sensecity-api-dev.njsproj
+/typings.json

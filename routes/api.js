@@ -1960,7 +1960,7 @@ router.get('/issue/:city', function (req, res) {
 });
 
 
-function create_json_kml(var issue,var bug_status,var bug_id){
+function create_json_kml(issue, bug_status, bug_id){
 	
 	//new start
                     console.log("err   =   " + err);

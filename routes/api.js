@@ -1455,7 +1455,8 @@ router.get('/issue/:city', function (req, res) {
     var _list_issue;
     var _product = req.params.city;
     var _status = [];
-
+	var _cf_authedicated=1;
+	var _kml=0;
     if (!req.query.hasOwnProperty('startdate'))
     {
         _startdate.setDate(_startdate.getDate() - 3);
@@ -1492,7 +1493,7 @@ router.get('/issue/:city', function (req, res) {
 
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
-        _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy"];
+        _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
     } else {
 
 
@@ -1512,7 +1513,7 @@ router.get('/issue/:city', function (req, res) {
                 _issue.push(issue_split[2]);
                 break;
             default:
-                _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy"];
+                _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
                 break;
         }
     }
@@ -1583,13 +1584,26 @@ router.get('/issue/:city', function (req, res) {
         }
 
     }
-
+	
+	if (!req.query.hasOwnProperty('includeAnonymous')){
+		_cf_authedicated = 1;
+	}
+	else{
+		_cf_authedicated = req.query.hasOwnProperty('includeAnonymous');
+	}
     
-
+	if (!req.query.hasOwnProperty('kml')){
+		_kml = 0;
+	}
+	else{
+		_kml = req.query.hasOwnProperty('kml');
+	}
+	
+	
     var bugParams =
             {
                 "method": "Bug.search",
-                "params": [{"product": _product, "order": "bug_id DESC", "limit": _limit, "status": _status, "cf_issues": _issue, "f1": "creation_ts", "o1": "greaterthan", "v1": "2016-01-01", "include_fields": ["id", "alias", "status"]}],
+                "params": [{"product": _product, "order": "bug_id DESC", "limit": _limit, "status": _status, "cf_issues": _issue,"cf_authedicated":_cf_authedicated, "f1": "creation_ts", "o1": "greaterthan", "v1": "2016-01-01", "include_fields": ["id", "alias", "status"]}],
                 "id": 1
             };
 
@@ -1625,9 +1639,49 @@ router.get('/issue/:city', function (req, res) {
                 
                 Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green']}}, function (err, issue) {
 
+					
                     //new start
                     console.log("err   =   " + err);
-                    issue_return += '[';
+					if(_kml=0){
+						issue_return += '[';
+					}else{
+						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
+						'<name>sensecity.kml</name>'+
+						'<Style id="s_ylw-pushpin_hl">'+
+						'<IconStyle>'+
+						'<color>ff7fffff</color>'+
+						'<scale>1.3</scale>'+
+						'<Icon>'+
+						'<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>'+
+						'</Icon>'+
+						'<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>'+
+						'</IconStyle>'+
+						'</Style>'+
+						'<StyleMap id="m_ylw-pushpin">'+
+						'<Pair>'+
+						'<key>normal</key>'+
+						'<styleUrl>#s_ylw-pushpin</styleUrl>'+
+						'</Pair>'+
+						'<Pair>'+
+						'<key>highlight</key>'+
+						'<styleUrl>#s_ylw-pushpin_hl</styleUrl>'+
+						'</Pair>'+
+						'</StyleMap>'+
+						'<Style id="s_ylw-pushpin">'+
+						'<IconStyle>'+
+						'<color>ff7fffff</color>'+
+						'<scale>1.1</scale>'+
+						'<Icon>'+
+						'<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>'+
+						'</Icon>'+
+						'<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>'+
+						'</IconStyle>'+
+						'</Style>'+
+						'<Folder>'+
+						'<name>sensecity</name>'+
+						'<open>1</open>';
+					}
+					
                     for (var i = 0; i < issue.length; i++) {
 
                         var bug_id = 0;
@@ -1639,18 +1693,40 @@ router.get('/issue/:city', function (req, res) {
                                 bug_status = bugzilla_results[j].status;
                             }
                         }
-
-                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
-                        if (i < issue.length - 1) {
-                            issue_return += ',';
-                        }
+						if(_kml=0){
+							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+							if (i < issue.length - 1) {
+								issue_return += ',';
+							}
+						}else if(_kml=1){
+							issue_return +='<Placemark>'+
+								'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
+								'<description><![CDATA[<img src="'+issue[i].image_name+'"/><a href="http://'+issue[i].municipality+'.sense.city/scissuemap.html#?issue_id='+issue[i]._id+'">http://'+issue[i].municipality+'.sense.city/scissuemap.html#?issue_id='+issue[i]._id+'</a>]]></description>'+
+								'<LookAt>'+
+									'<longitude>'+issue[i].loc.coordinates[0]+'</longitude>'+
+									'<latitude>'+issue[i].loc.coordinates[1]+'</latitude>'+
+									'<altitude>0</altitude>'+
+									'<heading>-176.4101948194351</heading>'+
+									'<tilt>70.72955317497231</tilt>'+
+									'<range>1952.786634342951</range>'+
+									'<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>'+
+								'</LookAt>'+
+								'<styleUrl>#m_ylw-pushpin</styleUrl>'+
+								'<Point>'+
+									'<gx:drawOrder>1</gx:drawOrder>'+
+									'<coordinates>'+issue[i].loc.coordinates[0]+','+issue[i].loc.coordinates[1]+',0</coordinates>'+
+								'</Point>'+
+							'</Placemark>';
+						}
                     }
-                    issue_return += ']';
-
+					if(_kml=0){
+						issue_return += ']';
+					}else if(_kml=1){
+						issue_return += '</Folder> </Document> </kml>';
+					}
                     res.send(issue_return);
                     //new end
-
-
+					
                     //res.send(issue);
                 }).sort({create_at: _sort});//.limit(_limit);
             } else {
@@ -2088,8 +2164,8 @@ router.post('/active_users', function (req, res) {
                         var mailOptions = {
                             from: '"Sense.City " <info@sense.city>', // sender address 
                             to: req.body.email, // list of receivers 
-                            subject: 'Hello ', // Subject line 
-                            text: 'Hello world ', // plaintext body 
+                            subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+                            text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
                             html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
                         };
 

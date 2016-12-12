@@ -1645,6 +1645,7 @@ router.get('/issue/:city', function (req, res) {
 					if(_kml==0){
 						issue_return += '[';
 					}else if(_kml==1){
+						
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
 						'<name>sensecity.kml</name>'+
 						'<Style id="s_ylw-pushpin_hl">'+
@@ -1680,6 +1681,7 @@ router.get('/issue/:city', function (req, res) {
 						'<Folder>'+
 						'<name>sensecity</name>'+
 						'<open>1</open>';
+						console.log(issue_return);
 					}
 					
                     for (var i = 0; i < issue.length; i++) {
@@ -1717,12 +1719,14 @@ router.get('/issue/:city', function (req, res) {
 									'<coordinates>'+issue[i].loc.coordinates[0]+','+issue[i].loc.coordinates[1]+',0</coordinates>'+
 								'</Point>'+
 							'</Placemark>';
+							console.log(issue_return);
 						}
                     }
 					if(_kml==0){
 						issue_return += ']';
 					}else if(_kml==1){
 						issue_return += '</Folder> </Document> </kml>';
+						console.log(issue_return);
 					}
                     res.send(issue_return);
                     //new end

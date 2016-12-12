@@ -1596,7 +1596,7 @@ router.get('/issue/:city', function (req, res) {
 		_kml = 0;
 	}
 	else{
-		_kml = req.query.hasOwnProperty('kml');
+		_kml = req.query.kml;
 	}
 	console.log(_kml);
 	

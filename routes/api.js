@@ -1893,9 +1893,9 @@ router.get('/issue/:city', function (req, res) {
 							
 								//new start
                     console.log("err   =   " + err);
-					if(_kml===0){
+					if(_kml == 0){
 						issue_return += '[';
-					}else if(_kml===1){
+					}else if(_kml == 1){
 						console.log("kml232================>"+_kml);
 						console.log("+++++++++++++++++++++++++++++++++\n++++++++++++++++++++++++++++++\n++++++++++++++");
 						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+

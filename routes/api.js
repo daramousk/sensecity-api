@@ -1883,7 +1883,7 @@ router.get('/issue/:city', function (req, res) {
 
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-                           
+							console.log("kml22================>"+_kml);
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
                             }, function (err, issue) {

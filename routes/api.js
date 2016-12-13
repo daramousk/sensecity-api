@@ -536,7 +536,7 @@ router.get('/issue', function (req, res) {
 
         if (_list_issue) {
 
-            Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}},{"user":0}, function (err, issue) {
+            Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}},{"user":false}, function (err, issue) {
 
                 //new start
                 console.log("err   =   " + err);
@@ -637,7 +637,7 @@ router.get('/issue', function (req, res) {
                 if (_coordinates === '') {
                     if (_issue === '')
                     {
-                        Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}},{"user":0}, function (err, issue) {
+                        Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}},{"user":false}, function (err, issue) {
 
                             //new start
                             console.log("err   =   " + err);
@@ -738,7 +738,7 @@ router.get('/issue', function (req, res) {
                     } else {
                         Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                             "issue": {$in: _issue}
-                        },{"user":0}, function (err, issue) {
+                        },{"user":false}, function (err, issue) {
 
                             //new start
                             console.log("err   =   " + err);
@@ -844,7 +844,7 @@ router.get('/issue', function (req, res) {
                     {
                         Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                             "create_at": {$gte: _startdate, $lt: _enddate}
-                        },{"user":0}, function (err, issue) {
+                        },{"user":false}, function (err, issue) {
 
 
                             //new start
@@ -947,7 +947,7 @@ router.get('/issue', function (req, res) {
                     } else {
                         Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                             "create_at": {$gte: _startdate, $lt: _enddate}
-                        },{"user":0}, function (err, issue) {
+                        },{"user":false}, function (err, issue) {
 
                             //new start
                             console.log("err   =   " + err);
@@ -1052,7 +1052,7 @@ router.get('/issue', function (req, res) {
                 if (_coordinates === '') {
                     if (_issue === '')
                     {
-                        Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image,"user":0}, function (err, issue) {
+                        Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image,"user":false}, function (err, issue) {
 
                             //new start
                             console.log("err   =   " + err);
@@ -1153,7 +1153,7 @@ router.get('/issue', function (req, res) {
                     } else {
                         Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                             "issue": {$in: _issue}
-                        }, {"image_name": _image,"user":0}, function (err, issue) {
+                        }, {"image_name": _image,"user":false}, function (err, issue) {
 
                             //new start
                             console.log("err   =   " + err);
@@ -1259,7 +1259,7 @@ router.get('/issue', function (req, res) {
                     {
                         Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                             "create_at": {$gte: _startdate, $lt: _enddate}
-                        }, {"image_name": _image,"user":0}, function (err, issue) {
+                        }, {"image_name": _image,"user":false}, function (err, issue) {
 
                             //new start
                             console.log("err   =   " + err);
@@ -1360,7 +1360,7 @@ router.get('/issue', function (req, res) {
                     } else {
                         Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                             "create_at": {$gte: _startdate, $lt: _enddate}
-                        }, {"image_name": _image,"user":0}, function (err, issue) {
+                        }, {"image_name": _image, "user":false}, function (err, issue) {
 
                             //new start
                             console.log("err   =   " + err);

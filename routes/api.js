@@ -2671,7 +2671,7 @@ router.get('/feelings', function (req, res) {
     var _feeling = [];
     var _limit;
     var _sort;
-    var _city = req.params.city;
+    var _city; 
 	var newdate = new Date();
     var _coordinates_query;
 	    
@@ -2749,17 +2749,40 @@ router.get('/feelings', function (req, res) {
     } else {
         _sort = req.query.sort;
     }
+	
+	if (!req.query.hasOwnProperty('city'))
+    {
+        _city = '';
+    } else {
+        _city = req.query.sort;
+    }
+	
+	if(_city!=''){
+		if(_coordinates!=''){
+			Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} },{"user":false}, function (err, issue) {
+				console.log("1");
+				res.send(issue);
+			}).sort({"create_at": _sort}).limit(_limit);
+		}else{	
+			Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} },{"user":false}, function (err, issue) {
+				console.log("2");
+				res.send(issue);
+			}).sort({"create_at": _sort}).limit(_limit);
+		}
 		
-	if(_coordinates!=''){
-		Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
-			console.log("1");
-			res.send(issue);
-		}).sort({"create_at": _sort}).limit(_limit);
-	}else{	
-		Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
-			console.log("2");
-			res.send(issue);
-		}).sort({"create_at": _sort}).limit(_limit);
+	}
+	else{
+		if(_coordinates!=''){
+			Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate}, "municipality":_city },{"user":false}, function (err, issue) {
+				console.log("1");
+				res.send(issue);
+			}).sort({"create_at": _sort}).limit(_limit);
+		}else{	
+			Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} },{"user":false}, function (err, issue) {
+				console.log("2");
+				res.send(issue);
+			}).sort({"create_at": _sort}).limit(_limit);
+		}
 	}
 	
 });

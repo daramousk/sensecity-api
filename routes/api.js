@@ -2757,7 +2757,7 @@ router.get('/feelings', function (req, res) {
         _city = req.query.city;
     }
 	
-	if(_city!=''){
+	if(_city==''){
 		if(_coordinates!=''){
 			Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} },{"user":false}, function (err, issue) {
 				console.log("1");

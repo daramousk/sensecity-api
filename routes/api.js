@@ -2754,7 +2754,7 @@ router.get('/feelings', function (req, res) {
     {
         _city = '';
     } else {
-        _city = req.query.sort;
+        _city = req.query.city;
     }
 	
 	if(_city!=''){

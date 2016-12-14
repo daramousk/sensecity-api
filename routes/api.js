@@ -2755,7 +2755,7 @@ router.get('/feelings', function (req, res) {
 			res.send(issue);
 		}).sort({"create_at": _sort}).limit(_limit);
 	}else{	
-		Issue.find({ _coordinates_query "issue": {$in:{_feeling}},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
+		Issue.find({ "issue": {$in:{_feeling}},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
 			res.send(issue);
 		}).sort({"create_at": _sort}).limit(_limit);
 	}

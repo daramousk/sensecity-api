@@ -2751,15 +2751,17 @@ router.get('/feelings', function (req, res) {
     }
 		
 	if(_coordinates!=''){
-		Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:{_feeling}},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
+		Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
+			console.log("1");
 			res.send(issue);
 		}).sort({"create_at": _sort}).limit(_limit);
 	}else{	
-		Issue.find({ "issue": {$in:{_feeling}},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
+		Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
+			console.log("2");
 			res.send(issue);
 		}).sort({"create_at": _sort}).limit(_limit);
 	}
-
+	
 });
 
 

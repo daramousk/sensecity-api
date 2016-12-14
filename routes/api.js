@@ -1663,7 +1663,7 @@ router.get('/issue/:city', function (req, res) {
 		
 		console.log(JSON.stringify(body));
 		
-        if (body.length < 1)
+        if (body.length < 1 || body==null)
         {
             res.send([{}]);
         } else {

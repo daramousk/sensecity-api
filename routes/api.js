@@ -2774,12 +2774,12 @@ router.get('/feelings', function (req, res) {
 	else{
 		if(_coordinates!=''){
 			Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate}, "municipality":_city },{"user":false}, function (err, issue) {
-				console.log("1");
+				console.log("3");
 				res.send(issue);
 			}).sort({"create_at": _sort}).limit(_limit);
 		}else{	
-			Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} },{"user":false}, function (err, issue) {
-				console.log("2");
+			Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate}, "municipality":_city  },{"user":false}, function (err, issue) {
+				console.log("4");
 				res.send(issue);
 			}).sort({"create_at": _sort}).limit(_limit);
 		}

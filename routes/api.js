@@ -1468,214 +1468,6 @@ router.get('/issue', function (req, res) {
 
 
     });
-
-
-
-
-
-
-    /*
-     
-     
-     
-     //return res.send(req.query.startdate);
-     var _startdate=new Date();
-     var _enddate=new Date();
-     var _coordinates;
-     var _distance;
-     var _issue;
-     var _limit;
-     var _sort;
-     var _loc_var;
-     var newdate = new Date();
-     var _image;
-     var _list_issue;
-     if (!req.query.hasOwnProperty('startdate'))
-     {
-     _startdate.setDate(_startdate.getDate() -3);
-     _startdate.setHours(00);
-     _startdate.setMinutes(00,00);
-     }
-     else{
-     _startdate = new Date(req.query.startdate);
-     _startdate.setHours(00);
-     _startdate.setMinutes(00,00);
-     }
-     
-     if (req.query.hasOwnProperty('enddate'))
-     {
-     _enddate = new Date(req.query.enddate);
-     _enddate.setHours(23);
-     _enddate.setMinutes(59,59);
-     }
-     else{
-     _enddate=newdate;
-     }
-     
-     if (!req.query.hasOwnProperty('coordinates'))
-     {
-     _coordinates = '';
-     }
-     else{
-     _coordinates = req.query.coordinates;
-     }
-     
-     if (!req.query.hasOwnProperty('distance'))
-     {
-     _distance = '10000';
-     }
-     else{
-     _distance = req.query.distance;
-     }
-     
-     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
-     {
-     _issue = '';
-     }
-     else{
-     _issue = req.query.issue;
-     }
-     
-     if (!req.query.hasOwnProperty('limit'))
-     {
-     _limit = 1000;
-     }
-     else{
-     _limit = req.query.limit;
-     }
-     
-     if (!req.query.hasOwnProperty('sort'))
-     {
-     _sort = -1;
-     }
-     else{
-     _sort = req.query.sort;
-     }
-     if (!req.query.hasOwnProperty('image_field'))
-     {
-     _image =true;
-     console.log("1 _image="+_image);
-     }
-     else{
-     if(req.query.image_field==0)
-     {
-     _image = false;
-     console.log("2 _image="+_image);
-     }else{
-     _image = true;
-     console.log("2 _image="+_image);
-     }
-     
-     
-     }
-     
-     if (!req.query.hasOwnProperty('list_issue'))
-     {
-     _list_issue =false;
-     }
-     else{
-     if(req.query.image_field==0)
-     {
-     _list_issue = false;
-     }else{
-     _list_issue = true;
-     }
-     
-     
-     }
-     console.log(_list_issue);
-     
-     if(_list_issue){
-     
-     Issue.find({'issue': { $in: [ 'garbage', 'lighting', 'road-contructor', 'plumbing' ]}},function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     }
-     else{
-     if(_image){
-     if(_coordinates === ''){
-     if( _issue === '')
-     {
-     Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     }
-     else{
-     //Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-     Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
-     "issue":_issue
-     }, function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     
-     }
-     }
-     else
-     {
-     if(_issue === '')
-     {
-     Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-     "create_at":{$gte:_startdate, $lt:_enddate}
-     }, function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     }
-     else{
-     Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-     "create_at":{$gte:_startdate, $lt:_enddate}
-     }, function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     }
-     }
-     
-     }else{
-     
-     if(_coordinates === ''){
-     
-     if( _issue === '')
-     {
-     Issue.find({"create_at":{$gte:_startdate, $lt:_enddate}},{"image_name":_image},function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     }
-     else{
-     Issue.find({"create_at":{$gte:_startdate, $lt:_enddate},
-     "issue":_issue
-     },{"image_name":_image}, function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     
-     }
-     }
-     else
-     {
-     if(_issue === '')
-     {
-     Issue.find({"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},					
-     "create_at":{$gte:_startdate, $lt:_enddate}
-     },{"image_name":_image}, function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     }
-     else{
-     Issue.find({"issue":_issue,"loc":{$nearSphere:{$geometry:{type:"Point",coordinates:JSON.parse(req.query.coordinates)},$maxDistance:JSON.parse(req.query.distance)}},
-     "create_at":{$gte:_startdate, $lt:_enddate}
-     },{"image_name":_image}, function(err, issue){
-     res.send(issue);
-     }).sort({create_at:_sort}).limit(_limit);
-     
-     }
-     }
-     
-     }
-     }
-     
-     */
-
-
-
-
 });
 
 
@@ -1697,7 +1489,7 @@ router.get('/issue/:city', function (req, res) {
     var _status = [];
 	var _cf_authedicated=1;
 	var _kml;
-	
+	var _user = false;
 	
     if (!req.query.hasOwnProperty('startdate'))
     {
@@ -1846,6 +1638,8 @@ router.get('/issue/:city', function (req, res) {
 		_kml = req.query.kml;
 	}	
 	
+	_user = false;
+	
     var bugParams =
             {
                 "method": "Bug.search",
@@ -1867,7 +1661,7 @@ router.get('/issue/:city', function (req, res) {
 		
 		var i_count = 0;
 		
-		//console.log(JSON.stringify(body));
+		console.log(JSON.stringify(body));
 		
         if (body.length < 1)
         {
@@ -1883,7 +1677,7 @@ router.get('/issue/:city', function (req, res) {
 
             if (_list_issue) {
                 
-                Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green','enviroment']}}, function (err, issue) {
+                Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green','enviroment']}}, {"user":_user}, function (err, issue) {
 
 					//new start
                     console.log("err   =   " + err);
@@ -1939,7 +1733,7 @@ router.get('/issue/:city', function (req, res) {
                             }
                         }
 						if(_kml==0){
-							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}
@@ -1982,7 +1776,7 @@ router.get('/issue/:city', function (req, res) {
                     if (_coordinates == '') {						
                         if (_issue == '')
                         {                          
-                            Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, function (err, issue) {
+                            Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"user":_user}, function (err, issue) {
 								//new start
 								console.log("err   =   " + err);
 								
@@ -2039,7 +1833,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 									
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 										if (i < issue.length - 1) {
 											issue_return += ',';
 										}
@@ -2081,7 +1875,7 @@ router.get('/issue/:city', function (req, res) {
 							
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
-                            }, function (err, issue) {
+                            }, {"user":_user}, function (err, issue) {
 								
 								//new start
 								console.log("err   =   " + err);
@@ -2141,7 +1935,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 									
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 										if (i < issue.length - 1) {
 											issue_return += ',';
 										}
@@ -2184,7 +1978,7 @@ router.get('/issue/:city', function (req, res) {
                         {								
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
-                            }, function (err, issue) {
+                            }, {"user":_user}, function (err, issue) {
 
 								//new start
 								console.log("err   =   " + err);
@@ -2243,7 +2037,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 									
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 										
 										if (i < issue.length - 1) {
 											issue_return += ',';
@@ -2286,7 +2080,7 @@ router.get('/issue/:city', function (req, res) {
 							
                             Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
-                            }, function (err, issue) {
+						}, {"user":_user}, function (err, issue) {
 
 								//new start
 								console.log("err   =   " + err);
@@ -2345,7 +2139,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 										if (i < issue.length - 1) {
 											issue_return += ',';
 										}
@@ -2387,7 +2181,7 @@ router.get('/issue/:city', function (req, res) {
                     if (_coordinates == '') {
                         if (_issue == '')
                         {
-                            Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image}, function (err, issue) {
+                            Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image, "user":_user}, function (err, issue) {
 
 								//new start
 								console.log("err   =   " + err);
@@ -2444,7 +2238,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 									
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 								
 										if (i < issue.length - 1) {
 											issue_return += ',';
@@ -2484,7 +2278,7 @@ router.get('/issue/:city', function (req, res) {
 
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
-                            }, {"image_name": _image}, function (err, issue) {
+                            }, {"image_name": _image, "user":_user}, function (err, issue) {
 
                                 
 								//new start
@@ -2542,7 +2336,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 									
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 										
 										if (i < issue.length - 1) {
 											issue_return += ',';
@@ -2588,7 +2382,7 @@ router.get('/issue/:city', function (req, res) {
 
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
-                            }, {"image_name": _image}, function (err, issue) {
+                            }, {"image_name": _image, "user":_user}, function (err, issue) {
 
 								//new start
 								console.log("err   =   " + err);
@@ -2647,7 +2441,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 											
 										if (i < issue.length - 1) {
 											issue_return += ',';
@@ -2688,7 +2482,7 @@ router.get('/issue/:city', function (req, res) {
 
                             Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
-                            }, {"image_name": _image}, function (err, issue) {
+                            }, {"image_name": _image, "user":_user}, function (err, issue) {
 
 								//new start
 								console.log("err   =   " + err);
@@ -2747,7 +2541,7 @@ router.get('/issue/:city', function (req, res) {
 									}
 									
 									if(_kml==0){
-										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","user":{"phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","name":"' + issue[i].user.name + '","uuid":"' + issue[i].user.uuid + '"},"comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+										issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 										
 										if (i < issue.length - 1) {
 											issue_return += ',';

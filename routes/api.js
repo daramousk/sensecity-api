@@ -398,8 +398,38 @@ router.get('/issue', function (req, res) {
                 _issue.push(issue_split[1]);
                 _issue.push(issue_split[2]);
                 break;
+			case 4:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+                break;
+            case 5:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+				_issue.push(issue_split[4]);
+                break;
+            case 6:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+				_issue.push(issue_split[4]);
+				_issue.push(issue_split[5]);
+                break;
+            case 7:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+				_issue.push(issue_split[4]);
+				_issue.push(issue_split[5]);
+				_issue.push(issue_split[6]);
+                break;
             default:
-                _issue = ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment'];
+                _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
                 break;
         }
     }
@@ -1546,6 +1576,36 @@ router.get('/issue/:city', function (req, res) {
                 _issue.push(issue_split[1]);
                 _issue.push(issue_split[2]);
                 break;
+			case 4:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+                break;
+            case 5:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+				_issue.push(issue_split[4]);
+                break;
+            case 6:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+				_issue.push(issue_split[4]);
+				_issue.push(issue_split[5]);
+                break;
+            case 7:
+                _issue.push(issue_split[0]);
+                _issue.push(issue_split[1]);
+                _issue.push(issue_split[2]);
+				_issue.push(issue_split[3]);
+				_issue.push(issue_split[4]);
+				_issue.push(issue_split[5]);
+				_issue.push(issue_split[6]);
+                break;
             default:
                 _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
                 break;
@@ -2602,6 +2662,103 @@ router.get('/issue/:city', function (req, res) {
 /* ** End test ** */
 
 
+router.get('/feelings', function (req, res) {
+	
+	var _startdate = new Date();
+    var _enddate = new Date();
+    var _coordinates;
+    var _distance;
+    var _feeling = [];
+    var _limit;
+    var _sort;
+    var _city = req.params.city;
+	var newdate = new Date();
+    var _coordinates_query;
+	    
+    if (!req.query.hasOwnProperty('startdate'))
+    {
+        _startdate.setDate(_startdate.getDate() - 3);
+        _startdate.setHours(00);
+        _startdate.setMinutes(00, 00);
+    } else {
+        _startdate = new Date(req.query.startdate);
+        _startdate.setHours(00);
+        _startdate.setMinutes(00, 00);
+    }
+
+    if (req.query.hasOwnProperty('enddate'))
+    {
+        _enddate = new Date(req.query.enddate);
+        _enddate.setHours(23);
+        _enddate.setMinutes(59, 59);
+    } else {
+        _enddate = newdate;
+    }
+
+    if (!req.query.hasOwnProperty('coordinates'))
+    {
+        _coordinates = '';
+    } else {
+        _coordinates = req.query.coordinates;
+    }
+
+    if (!req.query.hasOwnProperty('distance'))
+    {
+        _distance = '10000';
+    } else {
+        _distance = req.query.distance;
+    }
+
+    if (!req.query.hasOwnProperty('feeling') || req.query.feeling === 'all')
+    {
+        _feeling = ["happy", "neutral", "angry"];
+    } else {
+
+
+        var feeling_split = req.query.feeling.split("|");
+
+        switch (feeling_split.length) {
+            case 1:
+                _feeling.push(feeling_split[0]);
+                break;
+            case 2:
+                _feeling.push(feeling_split[0]);
+                _feeling.push(feeling_split[1]);
+                break;
+            case 3:
+                _feeling.push(feeling_split[0]);
+                _feeling.push(feeling_split[1]);
+                _feeling.push(feeling_split[2]);
+                break;
+            default:
+                _feeling = ["happy", "neutral", "angry"];
+                break;
+        }
+    }
+
+    if (!req.query.hasOwnProperty('limit'))
+    {
+        _limit = 1000;
+    } else {
+        _limit = req.query.limit;
+    }
+
+    if (!req.query.hasOwnProperty('sort'))
+    {
+        _sort = -1;
+    } else {
+        _sort = req.query.sort;
+    }
+		
+	if(_coordinates!=0){
+		_coordinates_query = "'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}},";
+	}
+	
+    Issue.find({ _coordinates_query "issue": {$in:{_feeling}},"create_at": {$gte: _startdate, $lt: _enddate} }, function (err, issue) {
+        res.send(issue);
+    }).sort({"create_at": _sort}).limit(_limit);
+
+});
 
 
 router.get('/mobilemap', function (req, res) {

@@ -2661,6 +2661,59 @@ router.get('/issue/:city', function (req, res) {
 
 /* ** End test ** */
 
+//POST router
+router.post('/feelings', function (req, res) {    
+
+    var return_var;
+
+    if (!req.body.hasOwnProperty('issue') ||
+            !req.body.hasOwnProperty('loc') ||
+            !req.body.hasOwnProperty('value_desc') ||
+            !req.body.hasOwnProperty('device_id'))
+    {
+        res.statusCode = 403;
+        return res.send({"message": "Forbidden"});
+    } else
+    {
+
+        Municipality.find({boundaries:
+                    {$geoIntersects:
+                                {$geometry: {"type": "Point",
+                                        "coordinates": req.body.loc.coordinates}
+                                }
+                    }
+        }, function (err, response) {
+            
+            var entry = new Issue({
+                loc: {type: 'Point', coordinates: req.body.loc.coordinates},
+                issue: req.body.issue,
+                device_id: req.body.device_id,
+                value_desc: req.body.value_desc,
+                comments: ""
+            });
+
+            if (response.length > 0)
+            {
+                entry.municipality = response[0]["municipality"];
+            } else
+            {
+                entry.municipality = '';
+            }
+
+            // console.log(entry);
+            entry.save(function (err1, resp) {
+                if (err1)
+                {
+                    console.log(err1);
+                } else
+                {
+                   
+                }
+            });
+        });
+    }
+});
+
 
 router.get('/feelings', function (req, res) {
 	

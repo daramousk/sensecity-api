@@ -2688,8 +2688,7 @@ router.post('/feelings', function (req, res) {
                 loc: {type: 'Point', coordinates: req.body.loc.coordinates},
                 issue: req.body.issue,
                 device_id: req.body.device_id,
-                value_desc: req.body.value_desc,
-                comments: ""
+                value_desc: req.body.value_desc
             });
 
             if (response.length > 0)
@@ -2707,7 +2706,7 @@ router.post('/feelings', function (req, res) {
                     console.log(err1);
                 } else
                 {
-                   
+                   res.send(resp);	
                 }
             });
         });

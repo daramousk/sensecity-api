@@ -2866,10 +2866,7 @@ router.get('/fullissue/:id', function (req, res) {
         json: bugParams
     }, function (error, response, body) {
 			
-			console.log(JSON.stringify(body.result.bugs));
 			if( body.result.bugs.length !== 0){
-				
-			console.log(" id=alias============>>>>>  " + id);
 			
 			if (body.length < 1) {
 
@@ -2897,6 +2894,9 @@ router.get('/fullissue/:id', function (req, res) {
 					});
 				});
 			}
+		}
+		else{
+			res.send([]);
 		}
 	});
 	

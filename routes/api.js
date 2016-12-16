@@ -2866,6 +2866,7 @@ router.get('/fullissue/:id', function (req, res) {
         json: bugParams
     }, function (error, response, body) {
 			
+			console.log(JSON.stringify(body));
 			if(body != null || body!=undefined){
 				
 			console.log(" id=alias============>>>>>  " + id);

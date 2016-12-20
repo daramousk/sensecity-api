@@ -147,7 +147,7 @@ router.post('/issue', function (req, res) {
                             var bugData =
                                     {
                                         "method": "Bug.create",
-                                        "params": [{"token": bugToken, "summary": resp.issue, "alias": resp._id.toString(), "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "op_sys": "All"}],
+                                        "params": [{"token": bugToken, "summary": resp.issue, "bug_severity": "normal" , "alias": resp._id.toString(), "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "op_sys": "All"}],
                                         "id": 2
                                     };
 

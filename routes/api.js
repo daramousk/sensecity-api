@@ -515,16 +515,17 @@ router.get('/issue', function (req, res) {
     }
 
 	if (!req.query.hasOwnProperty('includeAnonymous')){
-		_cf_authedicated = '"cf_authedicated":1';
+		_cf_authedicated = 1;
 	}
 	else{
 		if(req.query.includeAnonymous==1){
-			_cf_authedicated = '';
+			_cf_authedicated = [0,1];
 		}else{
-			_cf_authedicated = '"cf_authedicated":1';
+			_cf_authedicated = 1;
 		}
 		
 	}
+		
     
 	if (!req.query.hasOwnProperty('kml')){
 		_kml = 0;
@@ -537,7 +538,7 @@ router.get('/issue', function (req, res) {
     var bugParams =
             {
                 "method": "Bug.search",
-                "params": [{"product": _product, "order": "bug_id DESC", "limit": _limit, "status": _status, _cf_authedicated, "cf_issues": _issue, "f1": "creation_ts", "o1": "greaterthan", "v1": "2016-01-01", "include_fields": ["id", "alias", "status"]}],
+                "params": [{"product": _product, "order": "bug_id DESC", "limit": _limit, "status": _status, "cf_authedicated":_cf_authedicated, "cf_issues": _issue, "f1": "creation_ts", "o1": "greaterthan", "v1": "2016-01-01", "include_fields": ["id", "alias", "status"]}],
                 "id": 1
             };
 

@@ -342,6 +342,8 @@ router.get('/issue', function (req, res) {
 	var _cf_authedicated=1;
 	var _kml;
 	var _user=false;
+	var _default_issue="";
+	
 	
     if (!req.query.hasOwnProperty('startdate'))
     {
@@ -377,9 +379,26 @@ router.get('/issue', function (req, res) {
         _distance = req.query.distance;
     }
 
+    if (!req.query.hasOwnProperty('includeAnonymous')){
+		_cf_authedicated = 1;
+	}
+	else{
+		if(req.query.includeAnonymous==1){
+			_cf_authedicated = [0,1];
+			_default_issue = "---";
+		}else{
+			_cf_authedicated = 1;
+		}
+		
+	}
+	
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
-        _issue = ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment'];
+		if(_default_issue=="---"){
+			_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+		}else{
+			_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+		}
     } else {
 
 
@@ -387,24 +406,39 @@ router.get('/issue', function (req, res) {
 
         switch (issue_split.length) {
             case 1:
+				if(_default_issue=="---"){
+					_issue.push("---");
+				}
                 _issue.push(issue_split[0]);
                 break;
             case 2:
+				if(_default_issue=="---"){
+					_issue.push("---");
+				}
                 _issue.push(issue_split[0]);
                 _issue.push(issue_split[1]);
                 break;
             case 3:
+				if(_default_issue=="---"){
+					_issue.push("---");
+				}
                 _issue.push(issue_split[0]);
                 _issue.push(issue_split[1]);
                 _issue.push(issue_split[2]);
                 break;
 			case 4:
+				if(_default_issue=="---"){
+					_issue.push("---");
+				}
                 _issue.push(issue_split[0]);
                 _issue.push(issue_split[1]);
                 _issue.push(issue_split[2]);
 				_issue.push(issue_split[3]);
                 break;
             case 5:
+				if(_default_issue=="---"){
+					_issue.push("---");
+				}
                 _issue.push(issue_split[0]);
                 _issue.push(issue_split[1]);
                 _issue.push(issue_split[2]);
@@ -412,6 +446,10 @@ router.get('/issue', function (req, res) {
 				_issue.push(issue_split[4]);
                 break;
             case 6:
+				if(_default_issue=="---"){
+					_issue.push("---");
+				}
+				
                 _issue.push(issue_split[0]);
                 _issue.push(issue_split[1]);
                 _issue.push(issue_split[2]);
@@ -420,6 +458,9 @@ router.get('/issue', function (req, res) {
 				_issue.push(issue_split[5]);
                 break;
             case 7:
+				if(_default_issue=="---"){
+					_issue.push("---");
+				}
                 _issue.push(issue_split[0]);
                 _issue.push(issue_split[1]);
                 _issue.push(issue_split[2]);
@@ -429,7 +470,11 @@ router.get('/issue', function (req, res) {
 				_issue.push(issue_split[6]);
                 break;
             default:
-                _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+                if(_default_issue=="---"){
+					_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+				}else{
+					_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+				}
                 break;
         }
     }
@@ -513,18 +558,6 @@ router.get('/issue', function (req, res) {
                 break;
         }
     }
-
-	if (!req.query.hasOwnProperty('includeAnonymous')){
-		_cf_authedicated = 1;
-	}
-	else{
-		if(req.query.includeAnonymous==1){
-			_cf_authedicated = [0,1];
-		}else{
-			_cf_authedicated = 1;
-		}
-		
-	}
 		
     
 	if (!req.query.hasOwnProperty('kml')){

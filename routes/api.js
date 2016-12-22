@@ -1947,6 +1947,18 @@ router.get('/issue/:city', function (req, res) {
 								console.log("");
 								console.log("");
 								console.log("");
+								console.log(ids);
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log(_issue);
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
 								console.log(issue);
 								console.log("");
 								console.log("");

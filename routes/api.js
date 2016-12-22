@@ -1681,13 +1681,13 @@ router.get('/issue/:city', function (req, res) {
     }
 	
 	if (!req.query.hasOwnProperty('includeAnonymous')){
-		_cf_authedicated = 1;
+		_cf_authedicated = [1];
 	}
 	else{
 		if(req.query.includeAnonymous==1){
 			_cf_authedicated = [0,1];
 		}else{
-			_cf_authedicated = 1;
+			_cf_authedicated = [1];
 		}
 		
 	}

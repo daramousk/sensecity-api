@@ -1681,13 +1681,13 @@ router.get('/issue/:city', function (req, res) {
     }
 	
 	if (!req.query.hasOwnProperty('includeAnonymous')){
-		_cf_authedicated = [1];
+		_cf_authedicated = 1;
 	}
 	else{
 		if(req.query.includeAnonymous==1){
 			_cf_authedicated = [0,1];
 		}else{
-			_cf_authedicated = [1];
+			_cf_authedicated = 1;
 		}
 		
 	}
@@ -1938,7 +1938,7 @@ router.get('/issue/:city', function (req, res) {
 							}).sort({create_at: _sort});//.limit(_limit);
                         } else {
 							console.log("3");
-                            Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
+                            Issue.find({"_id": {$in: ids},
                                 "issue": {$in: _issue}
                             }, {"user":_user}, function (err, issue) {
 								console.log("");

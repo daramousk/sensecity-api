@@ -1972,9 +1972,7 @@ router.get('/issue/:city', function (req, res) {
 							}).sort({create_at: _sort});//.limit(_limit);
                         } else {
 							console.log("3");
-                            Issue.find({"_id": {$in: ids},
-                                "issue": {$in: _issue}
-                            }, {"user":_user}, function (err, issue) {
+                            Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"user":_user}, function (err, issue) {
 								console.log("");
 								console.log("");
 								console.log(_startdate);

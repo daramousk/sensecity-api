@@ -1521,6 +1521,7 @@ router.get('/issue/:city', function (req, res) {
 	var _cf_authedicated=1;
 	var _kml;
 	var _user = false;
+	var _default_issue='';
 	
     if (!req.query.hasOwnProperty('startdate'))
     {
@@ -1556,9 +1557,22 @@ router.get('/issue/:city', function (req, res) {
         _distance = req.query.distance;
     }
 
+	if (!req.query.hasOwnProperty('includeAnonymous')){
+		_cf_authedicated = 1;
+	}
+	else{
+		if(req.query.includeAnonymous==1){
+			_cf_authedicated = 0;
+			_default_issue = "---";
+		}else{
+			_cf_authedicated = 1;
+		}
+		
+	}
+	
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
-        _issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+        _issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
     } else {
 
 
@@ -1680,17 +1694,7 @@ router.get('/issue/:city', function (req, res) {
 
     }
 	
-	if (!req.query.hasOwnProperty('includeAnonymous')){
-		_cf_authedicated = 1;
-	}
-	else{
-		if(req.query.includeAnonymous==1){
-			_cf_authedicated = 0;
-		}else{
-			_cf_authedicated = 1;
-		}
-		
-	}
+	
     
 	if (!req.query.hasOwnProperty('kml')){
 		_kml = 0;

@@ -1726,7 +1726,9 @@ router.get('/issue/:city', function (req, res) {
 		
         if (body.length < 1 || body==null)
         {
+			console.log("-1");
             res.send([{}]);
+			
         } else {
 
             for (i_count = 0; i_count < body.result.bugs.length; i_count++)
@@ -1735,7 +1737,7 @@ router.get('/issue/:city', function (req, res) {
                 bugzilla_results = body.result.bugs;
             }
 
-
+			console.log("0");
             if (_list_issue) {
                 
 				console.log("1");

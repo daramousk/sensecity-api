@@ -1941,6 +1941,18 @@ router.get('/issue/:city', function (req, res) {
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
                             }, {"user":_user}, function (err, issue) {
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log(issue);
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
+								console.log("");
 								
 								//new start
 								console.log("err   =   " + err);

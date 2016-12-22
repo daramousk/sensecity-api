@@ -1572,7 +1572,11 @@ router.get('/issue/:city', function (req, res) {
 	
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
-        _issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+		if(_default_issue=="---"){
+			_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+		}else{
+			_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+		}
     } else {
 
 
@@ -1644,7 +1648,11 @@ router.get('/issue/:city', function (req, res) {
 				_issue.push(issue_split[6]);
                 break;
             default:
-                _issue = [_default_issue, "garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+                if(_default_issue=="---"){
+					_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+				}else{
+					_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+				}
                 break;
         }
     }

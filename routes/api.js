@@ -1943,8 +1943,8 @@ router.get('/issue/:city', function (req, res) {
                             }, {"user":_user}, function (err, issue) {
 								console.log("");
 								console.log("");
-								console.log("");
-								console.log("");
+								console.log(_startdate);
+								console.log(_enddate);
 								console.log("");
 								console.log("");
 								console.log(ids);

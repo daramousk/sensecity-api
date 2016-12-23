@@ -2756,7 +2756,43 @@ router.get('/issue/:city', function (req, res) {
 
 
 /* ** End test ** */
+//POST router
+router.post('/send_email', function (req, res) {    
+	
+	act_User.find({"name":req.body.name,"email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
+		
+		if(response.active==1){
+			
+			var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 
+			// setup e-mail data with unicode symbols 
+			var mailOptions = {
+				from: '"Sense.City " <info@sense.city>', // sender address 
+				to: 'info@sense.city', // list of receivers 
+				subject: ' Αποστολή Αναφοράς από πολίτη '+req.body.subject, // Subject line 
+				text: 'Όνομα :' + req.body.name + ' \n με email : ' + req.body.email + ' \n κινητό τηλέφωνο :' +  req.body.phonenumber + ' \n μήνυμα :'+req.body.comments, // plaintext body 
+				html: 'Όνομα :' + req.body.name + ' \n με email : ' + req.body.email + ' \n κινητό τηλέφωνο :' +  req.body.phonenumber + ' \n μήνυμα :'+req.body.comments // html body 
+			};
+
+			// send mail with defined transport object 
+			transporter.sendMail(mailOptions, function (error, info) {
+				if (error) {
+					res.send({"error"})
+					return console.log(error);
+					
+				}
+				res.send({"ok"})
+				console.log('Message sent: ' + info.response);
+			});
+							
+			
+		}else{
+			
+		}
+		
+	});
+	
+});
 //POST router
 router.post('/feelings', function (req, res) {    
 

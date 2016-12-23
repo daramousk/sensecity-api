@@ -2758,7 +2758,8 @@ router.get('/issue/:city', function (req, res) {
 /* ** End test ** */
 //POST router
 router.post('/send_email', function (req, res) {    
-	console.log("1111=====>>>> " + req.body);
+
+	console.log("1111=====>>>> " + JSON.stringify(req.body));
 	act_User.find({"name":req.body.name,"email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
 		
 		if(response.active==1){

@@ -128,7 +128,7 @@ router.post('/issue', function (req, res) {
             if (response.length > 0)
             {
                 entry.municipality = response[0]["municipality"];
-				console.log(JSON.stringify(response));
+				console.log(JSON.stringify(response[0]));
 				city_name = response[0].municipality_desc;
             } else
             {

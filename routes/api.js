@@ -2758,8 +2758,11 @@ router.get('/issue/:city', function (req, res) {
 /* ** End test ** */
 //POST router
 router.post('/send_email', function (req, res) {    
-
+	
+	console.log("sdfsdfds");
+	
 	console.log("1111=====>>>> " + JSON.stringify(req.body));
+	
 	act_User.find({"uuid":req.body.uuid, "name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
 		
 		console.log(response[0].activate);

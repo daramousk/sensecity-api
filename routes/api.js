@@ -145,7 +145,7 @@ router.post('/issue', function (req, res) {
                 {
                     if (resp.issue == "garbage" || resp.issue == "road-contructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "enviroment")
                     {
-
+						console.log("city_name ===||||||||||||||||||||= " + city_name);
                         if (response.length > 0)
                         {
 

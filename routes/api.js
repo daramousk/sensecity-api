@@ -2764,7 +2764,7 @@ router.post('/send_email', function (req, res) {
 		
 		console.log(JSON.stringify(response[0].activate));
 		
-		if(response.active[0]=="1"){
+		if(response[0].active=="1"){
 			
 			var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 

@@ -2762,6 +2762,8 @@ router.post('/send_email', function (req, res) {
 	console.log("1111=====>>>> " + JSON.stringify(req.body));
 	act_User.find({"name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
 		
+		console.log(req.body.active);
+		
 		if(req.body.active==1){
 			
 			var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
@@ -2786,15 +2788,18 @@ router.post('/send_email', function (req, res) {
 				console.log('Message sent: ' + info.response);
 			});*/
 			
-			console.log(response);
+			console.log("response="+response);
 			
 		}else{
-			
+			console.log("response13456");
 		}
 		
 	});
 	
 });
+
+
+
 //POST router
 router.post('/feelings', function (req, res) {    
 

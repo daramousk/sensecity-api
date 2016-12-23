@@ -92,7 +92,9 @@ router.post('/issue', function (req, res) {
     var anonymous_status = "true";
 
     var return_var;
-
+	var city_name='';
+	
+	
     if (!req.body.hasOwnProperty('issue') ||
             !req.body.hasOwnProperty('loc') ||
             !req.body.hasOwnProperty('value_desc') ||
@@ -126,9 +128,11 @@ router.post('/issue', function (req, res) {
             if (response.length > 0)
             {
                 entry.municipality = response[0]["municipality"];
+				city_name = response[0]["municipality_desc"];
             } else
             {
                 entry.municipality = '';
+				city_name ='';
             }
 
             // console.log(entry);
@@ -147,7 +151,7 @@ router.post('/issue', function (req, res) {
                             var bugData =
                                     {
                                         "method": "Bug.create",
-                                        "params": [{"token": bugToken, "summary": resp.issue, "bug_severity": "normal" , "alias": resp._id.toString(), "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "op_sys": "All"}],
+                                        "params": [{"token": bugToken, "summary": resp.issue, "bug_severity": "normal" ,"cf_city_name" : city_name, "alias": resp._id.toString(), "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "op_sys": "All"}],
                                         "id": 2
                                     };
 

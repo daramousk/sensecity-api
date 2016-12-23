@@ -2783,24 +2783,24 @@ router.post('/send_email', function (req, res) {
 				// send mail with defined transport object 
 				transporter.sendMail(mailOptions, function (error, info) {
 					if (error) {
-						res.send("error");
+						console.log('error');
+						res.send(["error"]);
 						return console.log(error);
 						
 					}
-					res.send("ok");
+					res.send(["ok"]);
 					console.log('Message sent: ' + info.response);
 				});
 				
-				console.log("response="+response);
 				
 			}else{
-				res.send("no");
+				res.send(["no"]);
 				console.log("response13456");
 			}
 			
 		});
 	}else{
-		res.send("no");
+		res.send(["no"]);
 		console.log("response13456");
 	}
 });

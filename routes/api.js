@@ -2763,43 +2763,46 @@ router.post('/send_email', function (req, res) {
 	
 	console.log("1111=====>>>> " + JSON.stringify(req.body));
 	
-	act_User.find({"uuid":req.body.uuid, "name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
-		
-		console.log(response[0].activate);
-		
-		if(response[0].activate == "1" ){
+	if( req.body.uuid!=undefined && req.body.name!=undefined && req.body.email!=undefined && req.body.phonenumber!=undefined ){
+		act_User.find({"uuid":req.body.uuid, "name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
 			
-			var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+			console.log(response[0].activate);		
+			if(response[0].activate == "1" ){
+				
+				var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 
-			// setup e-mail data with unicode symbols 
-			var mailOptions = {
-				from: '"Sense.City " <info@sense.city>', // sender address 
-				to: 'info@sense.city', // list of receivers 
-				subject: ' Αποστολή Αναφοράς από πολίτη '+req.body.subject, // Subject line 
-				text: 'Όνομα :' + req.body.name + ' \n\n\n με email : ' + req.body.email + ' \n\n\n κινητό τηλέφωνο :' +  req.body.phonenumber + ' \n\n\n μήνυμα :'+req.body.comments, // plaintext body 
-				html: 'Όνομα :' + req.body.name + ' \n\n<br /> με email : ' + req.body.email + ' \n\n<br /> κινητό τηλέφωνο :' +  req.body.phonenumber + '\n\n<br /> μήνυμα :'+req.body.comments // html body 
-			};
+				// setup e-mail data with unicode symbols 
+				var mailOptions = {
+					from: '"Sense.City " <info@sense.city>', // sender address 
+					to: 'info@sense.city', // list of receivers 
+					subject: ' Αποστολή Αναφοράς από πολίτη '+req.body.subject, // Subject line 
+					text: 'Όνομα :' + req.body.name + ' \n\n\n με email : ' + req.body.email + ' \n\n\n κινητό τηλέφωνο :' +  req.body.phonenumber + ' \n\n\n μήνυμα :'+req.body.comments, // plaintext body 
+					html: 'Όνομα :' + req.body.name + ' \n\n<br /> με email : ' + req.body.email + ' \n\n<br /> κινητό τηλέφωνο :' +  req.body.phonenumber + '\n\n<br /> μήνυμα :'+req.body.comments // html body 
+				};
 
-			// send mail with defined transport object 
-			transporter.sendMail(mailOptions, function (error, info) {
-				if (error) {
-					res.send("error");
-					return console.log(error);
-					
-				}
-				res.send("ok");
-				console.log('Message sent: ' + info.response);
-			});
+				// send mail with defined transport object 
+				transporter.sendMail(mailOptions, function (error, info) {
+					if (error) {
+						res.send("error");
+						return console.log(error);
+						
+					}
+					res.send("ok");
+					console.log('Message sent: ' + info.response);
+				});
+				
+				console.log("response="+response);
+				
+			}else{
+				res.send("no");
+				console.log("response13456");
+			}
 			
-			console.log("response="+response);
-			
-		}else{
-			res.send("no");
-			console.log("response13456");
-		}
-		
-	});
-	
+		});
+	}else{
+		res.send("no");
+		console.log("response13456");
+	}
 });
 
 

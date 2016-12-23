@@ -134,7 +134,7 @@ router.post('/issue', function (req, res) {
                 entry.municipality = '';
 				city_name ='';
             }
-
+			console.log("city_name ==== " + city_name);
             // console.log(entry);
             entry.save(function (err1, resp) {
                 if (err1)

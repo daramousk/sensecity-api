@@ -2767,7 +2767,7 @@ router.post('/send_email', function (req, res) {
 			var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 
 			// setup e-mail data with unicode symbols 
-			var mailOptions = {
+			/*var mailOptions = {
 				from: '"Sense.City " <info@sense.city>', // sender address 
 				to: 'info@sense.city', // list of receivers 
 				subject: ' Αποστολή Αναφοράς από πολίτη '+req.body.subject, // Subject line 
@@ -2784,8 +2784,9 @@ router.post('/send_email', function (req, res) {
 				}
 				res.send("ok");
 				console.log('Message sent: ' + info.response);
-			});
-							
+			});*/
+			
+			console.log(response);
 			
 		}else{
 			

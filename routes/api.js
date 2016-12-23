@@ -2760,7 +2760,7 @@ router.get('/issue/:city', function (req, res) {
 router.post('/send_email', function (req, res) {    
 
 	console.log("1111=====>>>> " + JSON.stringify(req.body));
-	act_User.find({"name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
+	act_User.find({"uuid":req.body.uuid, "name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
 		
 		console.log(response[0].activate);
 		

@@ -2760,7 +2760,7 @@ router.get('/issue/:city', function (req, res) {
 router.post('/send_email', function (req, res) {    
 
 	console.log("1111=====>>>> " + JSON.stringify(req.body));
-	act_User.find({"uuid":req.body.uuid, "name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
+	act_User.find({"name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
 		
 		console.log(response[0].activate);
 		
@@ -2773,8 +2773,8 @@ router.post('/send_email', function (req, res) {
 				from: '"Sense.City " <info@sense.city>', // sender address 
 				to: 'info@sense.city', // list of receivers 
 				subject: ' Αποστολή Αναφοράς από πολίτη '+req.body.subject, // Subject line 
-				text: 'Όνομα :' + req.body.name + ' \n με email : ' + req.body.email + ' \n κινητό τηλέφωνο :' +  req.body.phonenumber + ' \n μήνυμα :'+req.body.comments, // plaintext body 
-				html: 'Όνομα :' + req.body.name + ' \n με email : ' + req.body.email + ' \n κινητό τηλέφωνο :' +  req.body.phonenumber + ' \n μήνυμα :'+req.body.comments // html body 
+				text: 'Όνομα :' + req.body.name + ' \n\n\n με email : ' + req.body.email + ' \n\n\n κινητό τηλέφωνο :' +  req.body.phonenumber + ' \n\n\n μήνυμα :'+req.body.comments, // plaintext body 
+				html: 'Όνομα :' + req.body.name + ' \n\n<br /> με email : ' + req.body.email + ' \n\n<br /> κινητό τηλέφωνο :' +  req.body.phonenumber + '\n\n<br /> μήνυμα :'+req.body.comments // html body 
 			};
 
 			// send mail with defined transport object 

@@ -1799,7 +1799,7 @@ router.get('/issue/:city', function (req, res) {
 		
 		console.log(JSON.stringify(body));
 		
-        if (body.length < 1 || body==null)
+        if (body==null || body.length < 1 || body==null )
         {
 			console.log("-1");
             res.send([{}]);

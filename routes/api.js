@@ -250,7 +250,7 @@ router.post('/issue/:id', function (req, res) {
                 json: bugParams
             }, function (error, response, body) {
 				
-				if( body.result.bugs[0] == undefined ) {
+				if( body.result.bugs[0] != undefined ) {
 					console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0]));
 					
 					///* Update the issue with a specific id 

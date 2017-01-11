@@ -249,75 +249,75 @@ router.post('/issue/:id', function (req, res) {
                 method: "POST",
                 json: bugParams
             }, function (error, response, body) {
-				
-				console.log("body bug.search in issue/:id =>"+JSON.stringify(body));
-				
-                ///* Update the issue with a specific id 
-                ///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
-                bodyParams =
-                        {
-                            "method": "Bug.update",
-                            "params": [{"token": bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add": [req.body.email]}, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num,"reset_assigned_to":true, "cf_authedicated": 1, "cf_issues": resp.issue}],
-                            "id": 1
-                        };
-				console.log("bodyParams ====== > " + JSON.stringify(bodyParams));
-                request({
-                    url: bugUrl,
-                    method: "POST",
-                    json: bodyParams
-                }, function (error1, response1, body1) {
-
+				if( body.result.bugs[0].id==undefined ) {
+					console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0].id));
 					
-					if(resp.comments === null || resp.comments ===""){
-						
-						resp.comments = "undefined";
-					}
-					
-						var bugComment =
-                            {
-                                "method": "Bug.add_comment",
-                                "params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
-                                "id": 1
-                            };
-						
-						request({
-							url: bugUrl,
-							method: "POST",
-							json: bugComment
-						}, function (error2, bugResponse2, body2) {
-							console.log("body2" + JSON.stringify(body2));
-							console.log("Insert comments to bugzilla");
-							
-							if(body2.result != null)
+					///* Update the issue with a specific id 
+					///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
+					bodyParams =
 							{
-															
+								"method": "Bug.update",
+								"params": [{"token": bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add": [req.body.email]}, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num,"reset_assigned_to":true, "cf_authedicated": 1, "cf_issues": resp.issue}],
+								"id": 1
+							};
+					console.log("bodyParams ====== > " + JSON.stringify(bodyParams));
+					request({
+						url: bugUrl,
+						method: "POST",
+						json: bodyParams
+					}, function (error1, response1, body1) {
+
+						
+						if(resp.comments === null || resp.comments ===""){
+							
+							resp.comments = "undefined";
+						}
+						
+							var bugComment =
+								{
+									"method": "Bug.add_comment",
+									"params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
+									"id": 1
+								};
+							
 							request({
-								url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
-								method: "PUT",
-								json: {"add": ["all", "CONFIRMED"], "id": body2.result.id,"token": bugToken}
-							}, function (error4, response4, body4) {
+								url: bugUrl,
+								method: "POST",
+								json: bugComment
+							}, function (error2, bugResponse2, body2) {
+								console.log("body2" + JSON.stringify(body2));
+								console.log("Insert comments to bugzilla");
 								
-								console.log("Insert Tags to comment");
-								
+								if(body2.result != null)
+								{
+																
+								request({
+									url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
+									method: "PUT",
+									json: {"add": ["all", "CONFIRMED"], "id": body2.result.id,"token": bugToken}
+								}, function (error4, response4, body4) {
+									
+									console.log("Insert Tags to comment");
+									
+								});
+								}
 							});
-							}
-						});
 
-						request({
-							url: "/rest/bug/" + body.result.bugs[0].id + "/comment",
-							method: "GET"
-						}, function (error3, bugResponse3, body3) {
+							request({
+								url: "/rest/bug/" + body.result.bugs[0].id + "/comment",
+								method: "GET"
+							}, function (error3, bugResponse3, body3) {
 
-						});
-					
-					/*}
-					else{
-						console.log("No comments availiable");
-					}*/
-                });
+							});
+						
+						/*}
+						else{
+							console.log("No comments availiable");
+						}*/
+					});
 				
 				
-				
+				}
 
             });
 

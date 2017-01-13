@@ -146,7 +146,7 @@ router.post('/issue', function (req, res) {
                     console.log(err1);
                 } else
                 {
-                    if (resp.issue == "garbage" || resp.issue == "road-contructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "enviroment" )
+                    if (resp.issue == "garbage" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "road-constructor" || resp.issue == "environment")
                     {
                         if (response.length > 0)
                         {
@@ -403,9 +403,9 @@ router.get('/issue', function (req, res) {
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
 		if(_default_issue=="---"){
-			_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+			_issue = [_default_issue,"garbage", "plumbing", "lighting", "green", "protection-policy", "road-constructor", "environment"];
 		}else{
-			_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+			_issue = ["garbage", "plumbing", "lighting", "green", "protection-policy", "road-constructor", "environment"];
 		}
     } else {
 
@@ -479,9 +479,9 @@ router.get('/issue', function (req, res) {
                 break;
             default:
                 if(_default_issue=="---"){
-					_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+					_issue = [_default_issue,"garbage", "plumbing", "lighting", "green", "protection-policy", "road-constructor", "environment"];
 				}else{
-					_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+					_issue = ["garbage", "plumbing", "lighting", "green", "protection-policy", "road-constructor", "environment"];
 				}
                 break;
         }
@@ -608,7 +608,7 @@ router.get('/issue', function (req, res) {
 
         if (_list_issue) {
 
-            Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}},{"user":_user}, function (err, issue) {
+            Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'plumbing', 'protection-policy', 'green', 'road-constructor', 'environment']}},{"user":_user}, function (err, issue) {
 
                 //new start
                 console.log("err   =   " + err);
@@ -1614,9 +1614,9 @@ router.get('/issue/:city', function (req, res) {
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
 		if(_default_issue=="---"){
-			_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+			_issue = [_default_issue,"garbage", "plumbing", "lighting", "green", "protection-policy", "road-constructor", "environment"];
 		}else{
-			_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+			_issue = ["garbage", "plumbing", "lighting", "green", "protection-policy", "road-constructor", "environment"];
 		}
     } else {
 
@@ -1690,9 +1690,9 @@ router.get('/issue/:city', function (req, res) {
                 break;
             default:
                 if(_default_issue=="---"){
-					_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+					_issue = [_default_issue,"garbage", "plumbing", "lighting", "green", "protection-policy",  "road-constructor", "environment"];
 				}else{
-					_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+					_issue = ["garbage", "plumbing", "lighting",  "green", "protection-policy", "road-constructor", "environment"];
 				}
                 break;
         }
@@ -1816,7 +1816,7 @@ router.get('/issue/:city', function (req, res) {
             if (_list_issue) {
                 
 				console.log("1");
-                Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}}, {"user":_user}, function (err, issue) {
+                Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'plumbing', 'protection-policy', 'green', 'environment', 'road-constructor']}}, {"user":_user}, function (err, issue) {
 
 					//new start
                     console.log("err   =   " + err);

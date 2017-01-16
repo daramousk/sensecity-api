@@ -3296,7 +3296,7 @@ router.post('/activate_users', function (req, res) {
 });
 
 router.post('/admin/bugs/search', authorization, function (req, res) {
-	console.log("sdfsdfsd======================================="+querystring.stringify(req.body)+"------->>>>>"+bugUrl);
+	console.log("sdfsdfsd======================================="+querystring.stringify(req.body)+"------->>>>>"+bugUrlRest);
     request({
         url: bugUrlRest + "/rest/bug?" + querystring.stringify(req.body),
         method: "GET"

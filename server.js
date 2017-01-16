@@ -159,9 +159,9 @@ app.use('/api/1.0/issue',require('./routes/image_return'));
 app.use('/fix_point', require('./routes/fix_point')); 
 app.use('/api/1.0/mobilemap', require('./routes/api')); 
 
-app.use('/api/1.1', require('./routes/api1_1'));
+//app.use('/api/1.1', require('./routes/api1_1'));
 //app.use('/api/1.1/issue',require('./routes/image_return')); 
-app.use('/api/1.1/mobilemap', require('./routes/api1_1')); 
+//app.use('/api/1.1/mobilemap', require('./routes/api1_1')); 
 
 // start server 
 app.listen(config.config.port); 

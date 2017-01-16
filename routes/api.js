@@ -292,7 +292,7 @@ router.post('/issue/:id', function (req, res) {
 								{
 																
 								request({
-									url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
+									url: bugUrlRest + "/rest.cgi/bug/comment/" + body2.result.id + "/tags",
 									method: "PUT",
 									json: {"add": ["all", "CONFIRMED"], "id": body2.result.id,"token": bugToken}
 								}, function (error4, response4, body4) {
@@ -304,7 +304,7 @@ router.post('/issue/:id', function (req, res) {
 							});
 
 							request({
-								url: "/rest/bug/" + body.result.bugs[0].id + "/comment",
+								url: "/rest.cgi/bug/" + body.result.bugs[0].id + "/comment",
 								method: "GET"
 							}, function (error3, bugResponse3, body3) {
 
@@ -3028,7 +3028,8 @@ router.get('/fullissue/:id', function (req, res) {
 
 			} else {
 				request({
-					url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/" + body.result.bugs[0].alias[0] + "/comment",
+					/*url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/" + body.result.bugs[0].alias[0] + "/comment",*/
+					url: "http://150.140.184.228/bugzilla/rest.cgi/bug/" + body.result.bugs[0].alias[0] + "/comment",
 					method: "GET"
 				}, function (error1, response1, body1) {
 					if(error1)
@@ -3297,7 +3298,7 @@ router.post('/activate_users', function (req, res) {
 router.post('/admin/bugs/search', authorization, function (req, res) {
 	console.log("sdfsdfsd======================================="+querystring.stringify(req.body)+"------->>>>>"+bugUrl);
     request({
-        url: bugUrlRest + "/rest/bug?" + querystring.stringify(req.body),
+        url: bugUrlRest + "/rest.cgi/bug?" + querystring.stringify(req.body),
         method: "GET"
     }, function (error, response, body) {
 		
@@ -3320,7 +3321,7 @@ router.post('/admin/bugs/search', authorization, function (req, res) {
 router.post('/admin/bugs/update', authorization, function (req, res) {
     req.body.token = bugToken;
     request({
-        url: bugUrlRest + "/rest/bug/" + req.body.ids[0],
+        url: bugUrlRest + "/rest.cgi/bug/" + req.body.ids[0],
         method: "PUT",
         json: req.body
     }, function (error, response, body) {
@@ -3341,7 +3342,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
 router.post('/admin/bugs/comment', authorization, function (req, res) {
     req.body.token = bugToken;
     request({
-        url: bugUrlRest + "/rest/bug/" + req.body.id + " /comment",
+        url: bugUrlRest + "/rest.cgi/bug/" + req.body.id + " /comment",
         method: "GET"
     }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -3361,7 +3362,7 @@ router.post('/admin/bugs/comment', authorization, function (req, res) {
 router.post('/admin/bugs/comment/add', authorization, function (req, res) {
     req.body.token = bugToken;
     request({
-        url: bugUrlRest + "/rest/bug/" + req.body.id + " /comment",
+        url: bugUrlRest + "/rest.cgi/bug/" + req.body.id + " /comment",
         method: "POST",
         json: req.body
     }, function (error, response, body) {
@@ -3383,7 +3384,7 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
     req.body.token = bugToken;
     console.log(req.body);
     request({
-        url: bugUrlRest + "/rest/bug/comment/" + req.body.id + "/tags",
+        url: bugUrlRest + "/rest.cgi/bug/comment/" + req.body.id + "/tags",
         method: "PUT",
         json: req.body
     }, function (error, response, body) {

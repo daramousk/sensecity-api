@@ -146,6 +146,7 @@ router.post('/issue', function (req, res) {
                     console.log(err1);
                 } else
                 {
+					console.log("bug.url =====>" + bugUrl);
                     if (resp.issue == "garbage" || resp.issue == "road-contructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "enviroment" )
                     {
                         if (response.length > 0)
@@ -202,7 +203,7 @@ router.post('/issue', function (req, res) {
 router.post('/issue/:id', function (req, res) {
 
     var bodyParams;
-
+	console.log("req.params.id"+req.params.id);
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
 
         Issue.findOneAndUpdate({"_id": req.params.id}, {

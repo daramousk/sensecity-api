@@ -528,6 +528,9 @@ router.get('/issue', function (req, res) {
         }
     }
 
+	console.log(req.query.product);
+	console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");
+	console.log(req);
     if (!req.query.hasOwnProperty('product'))
     {
         _product = req.query.product;

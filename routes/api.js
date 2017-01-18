@@ -612,7 +612,7 @@ router.get('/issue', function (req, res) {
 		
 		var i_count = 0;
 
-		console.log(body["bugs"]);
+		console.log(JSON.parse(body).bugs);
 		console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");
 		
         for (i_count = 0; i_count < body.bugs.length; i_count++)

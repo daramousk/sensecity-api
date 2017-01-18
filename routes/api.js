@@ -614,7 +614,7 @@ router.get('/issue', function (req, res) {
             Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}},{"user":_user}, function (err, issue) {
 
                 //new start
-                console.log("err   =   " + err);
+                if(err!=null){console.log("err   =   " + err);}
                 if(_kml==0){
 					issue_return += '[';
 				}else if(_kml==1){				
@@ -715,7 +715,7 @@ router.get('/issue', function (req, res) {
                         Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}},{"user":_user}, function (err, issue) {
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -816,7 +816,7 @@ router.get('/issue', function (req, res) {
                         },{"user":_user}, function (err, issue) {
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -923,7 +923,7 @@ router.get('/issue', function (req, res) {
 
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -1025,7 +1025,7 @@ router.get('/issue', function (req, res) {
                         },{"user":_user}, function (err, issue) {
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -1130,7 +1130,7 @@ router.get('/issue', function (req, res) {
                         Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image, "user":_user}, function (err, issue) {
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -1231,7 +1231,7 @@ router.get('/issue', function (req, res) {
                         }, {"image_name": _image, "user":_user}, function (err, issue) {
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -1337,7 +1337,7 @@ router.get('/issue', function (req, res) {
                         }, {"image_name": _image, "user":_user}, function (err, issue) {
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -1438,7 +1438,7 @@ router.get('/issue', function (req, res) {
                         }, {"image_name": _image, "user":_user}, function (err, issue) {
 
                             //new start
-                            console.log("err   =   " + err);
+                            if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';
 							}else if(_kml==1){				
@@ -1821,7 +1821,7 @@ router.get('/issue/:city', function (req, res) {
                 Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}}, {"user":_user}, function (err, issue) {
 
 					//new start
-                    console.log("err   =   " + err);
+                    if(err!=null){console.log("err   =   " + err);}
 					if(_kml==0){
 						issue_return += '[';
 					}else if(_kml==1){				
@@ -1919,7 +1919,7 @@ router.get('/issue/:city', function (req, res) {
                         {                 
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"user":_user}, function (err, issue) {
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
 								
 								if(_kml==0){
 									issue_return += '[';
@@ -2017,7 +2017,7 @@ router.get('/issue/:city', function (req, res) {
 								
 								
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
 								
 								if(_kml == 0){
 									issue_return += '[';
@@ -2120,7 +2120,7 @@ router.get('/issue/:city', function (req, res) {
                             }, {"user":_user}, function (err, issue) {
 
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
 								
 								if(_kml==0){
 									issue_return += '[';
@@ -2221,7 +2221,7 @@ router.get('/issue/:city', function (req, res) {
 						}, {"user":_user}, function (err, issue) {
 
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
 
 								if(_kml==0){
 									issue_return += '[';
@@ -2322,7 +2322,7 @@ router.get('/issue/:city', function (req, res) {
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image, "user":_user}, function (err, issue) {
 
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
 								if(_kml==0){
 									issue_return += '[';
 								}else if(_kml==1){						
@@ -2419,7 +2419,8 @@ router.get('/issue/:city', function (req, res) {
 
                                 
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
+								
 								if(_kml==0){
 									issue_return += '[';
 								}else if(_kml==1){
@@ -2521,7 +2522,7 @@ router.get('/issue/:city', function (req, res) {
                             }, {"image_name": _image, "user":_user}, function (err, issue) {
 
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
 								
 								if(_kml==0){
 									issue_return += '[';
@@ -2621,7 +2622,7 @@ router.get('/issue/:city', function (req, res) {
                             }, {"image_name": _image, "user":_user}, function (err, issue) {
 
 								//new start
-								console.log("err   =   " + err);
+								if(err!=null){console.log("err   =   " + err);}
 								
 								if(_kml==0){
 									issue_return += '[';

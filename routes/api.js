@@ -577,10 +577,12 @@ router.get('/issue', function (req, res) {
 		_kml = req.query.kml;
 	}	
 	_user = false;
-
-	console.log("_startdate  =======>>   "+_startdate+"_enddate =======>>  "+_enddate);
 	
 	var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + "&f5=cf_authedicated&o5=anyexact&include_fields=id,alias,status";	
+	
+	var ids = [];
+    var bugzilla_results = [];
+    var issue_return = [];
 	
 	request({
         url: bugUrlRest + "/rest/bug"+bugParams1,
@@ -589,7 +591,7 @@ router.get('/issue', function (req, res) {
 		
 		console.log(JSON.stringify(response));
 		
-	});
+	/*});
 	
     var bugParams =
             {
@@ -597,17 +599,15 @@ router.get('/issue', function (req, res) {
                 "params": [{"product": _product, "order": "bug_id DESC", "limit": _limit, "status": _status, "cf_authedicateds":_cf_authedicated, "cf_issues": _issue, "f1": "creation_ts", "o1": "greaterthan", "v1": _startdate, "include_fields": ["id", "alias", "status"]}],
                 "id": 1
             };
+*/
+    
 
-    var ids = [];
-    var bugzilla_results = [];
-    var issue_return = [];
-
-    request({
+  /*  request({
         url: bugUrl,
         method: "POST",
         json: bugParams
     }, function (error, response, body) {
-
+*/
         console.log("Get from bugzilla issues!");
 		
 		var i_count = 0;

@@ -577,6 +577,8 @@ router.get('/issue', function (req, res) {
 	}	
 	_user = false;
 
+	// var bugParams1 = "?product="+_product+"&limit="+_limit+"&status="+_status+"&cf_authedicateds="+_cf_authedicated+"&cf_issues="+_issue+"&creation_time="+_startdate+"&creation_time_type=greater_than&creation_time1="+_enddate+"&creation_time1_type=less_than";	
+	
     var bugParams =
             {
                 "method": "Bug.search",
@@ -1800,7 +1802,7 @@ router.get('/issue/:city', function (req, res) {
 		
 		console.log(JSON.stringify(body));
 		
-        if (body==undefined || body==null || body.length < 1 )
+        if (body.result.bugs==undefined || body==undefined || body==null || body.length < 1 )
         {
 			console.log("-1");
             res.send([{}]);

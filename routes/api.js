@@ -612,7 +612,7 @@ router.get('/issue', function (req, res) {
 		
 		var i_count = 0;
 		
-        for (i_count = 0; i_count < body.bugs.length; i_count++)
+        for (i_count = 0; i_count < Object.keys(body.bugs).length; i_count++)
         {            
             ids.push(body.bugs[i_count].alias[0]);
             bugzilla_results = body.bugs;

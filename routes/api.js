@@ -357,19 +357,19 @@ router.get('/issue', function (req, res) {
     if (!req.query.hasOwnProperty('startdate'))
     {
         _startdate.setDate(_startdate.getDate() - 3).toISOString();
-        _startdate.setHours(00);
-        _startdate.setMinutes(00, 00);
+        //_startdate.setHours(00);
+        //_startdate.setMinutes(00, 00);
     } else {
         _startdate = new Date(req.query.startdate).toISOString();
-        _startdate.setHours(00);
-        _startdate.setMinutes(00, 00);
+        //_startdate.setHours(00);
+       // _startdate.setMinutes(00, 00);
     }
 
     if (req.query.hasOwnProperty('enddate'))
     {
         _enddate = new Date(req.query.enddate).toISOString();
-        _enddate.setHours(23);
-        _enddate.setMinutes(59, 59);
+       // _enddate.setHours(23);
+       // _enddate.setMinutes(59, 59);
     } else {
         _enddate = newdate;
     }

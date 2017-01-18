@@ -614,7 +614,7 @@ router.get('/issue', function (req, res) {
 
 		console.log(body["bugs"]);
 		console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");
-		console.log(sss.length);
+		
         for (i_count = 0; i_count < body.bugs.length; i_count++)
         {            
             ids.push(body.bugs[i_count].alias[0]);

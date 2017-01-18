@@ -32,9 +32,9 @@ function authorization(req, res, next) {
     Role.find({uuid: req.get('x-uuid')}, function (err, response) {
         if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
             if (req.path === '/admin/bugs/search' || req.path === '/admin/bugs/update' || req.path === '/admin/bugs/comment' || req.path === '/admin/bugs/comment/tags' || req.path === '/admin/bugs/comment/add') {
-				console.log("x-role"+req.get('x-role'));
+				//console.log("x-role"+req.get('x-role'));
                 if (req.get('x-role') === 'departmentAdmin' || req.get('x-role') === 'sensecityAdmin' || req.get('x-role') === 'departmentUser' || req.get('x-role') === 'cityAdmin') {
-					console.log("success");
+					//console.log("success");
                     next();
                 } else {
                     res.send("failure");
@@ -339,7 +339,7 @@ router.get('/issue', function (req, res) {
     var _enddate = new Date();
     var _coordinates;
     var _distance;
-    var _issue = [];
+    var _issue;
     var _limit;
     var _sort;
     var _loc_var;
@@ -393,7 +393,7 @@ router.get('/issue', function (req, res) {
 	}
 	else{
 		if(req.query.includeAnonymous==1){
-			_cf_authedicated = [0,1];
+			_cf_authedicated = 0,1;
 			_default_issue = "---";
 		}else{
 			_cf_authedicated = 1;
@@ -404,9 +404,9 @@ router.get('/issue', function (req, res) {
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
 		if(_default_issue=="---"){
-			_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+			_issue = _default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
 		}else{
-			_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+			_issue = "garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
 		}
     } else {
 
@@ -480,9 +480,9 @@ router.get('/issue', function (req, res) {
                 break;
             default:
                 if(_default_issue=="---"){
-					_issue = [_default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+					_issue = _default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
 				}else{
-					_issue = ["garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment"];
+					_issue = "garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
 				}
                 break;
         }
@@ -577,7 +577,16 @@ router.get('/issue', function (req, res) {
 	}	
 	_user = false;
 
-	// var bugParams1 = "?product="+_product+"&limit="+_limit+"&status="+_status+"&cf_authedicateds="+_cf_authedicated+"&cf_issues="+_issue+"&creation_time="+_startdate+"&creation_time_type=greater_than&creation_time1="+_enddate+"&creation_time1_type=less_than";	
+	var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + "&f5=cf_authedicated&o5=anyexact&include_fields=id,alias,status";	
+	
+	request({
+        url: bugUrlRest + "/rest/bug"+bugParams1,
+        method: "GET"
+    }, function (error, response, body) {
+		
+		console.log(JSON.Stringify(body));
+		
+	}
 	
     var bugParams =
             {

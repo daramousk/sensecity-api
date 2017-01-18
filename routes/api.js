@@ -527,15 +527,10 @@ router.get('/issue', function (req, res) {
             _list_issue = true;
         }
     }
-	if(req.query.product!=undefined){
-		console.log(req.query.product);
-	}
+
     if (!req.query.hasOwnProperty('product'))
     {
-		console.log(req.query.product);
-        _product = req.query.product;
-    } else {
-        Municipality.find({boundaries: {$geoIntersects: {$geometry: {"type": "Point", "coordinates": req.query.coordinates}}}}, function (err, response) {
+		Municipality.find({boundaries: {$geoIntersects: {$geometry: {"type": "Point", "coordinates": req.query.coordinates}}}}, function (err, response) {
             if (response.length > 0)
             {
                 _product = response[0]["municipality"];
@@ -544,6 +539,9 @@ router.get('/issue', function (req, res) {
                 _product = '';
             }
         });
+    } else {
+        
+        _product = req.query.product;
     }
 
     if (!req.query.hasOwnProperty('status'))

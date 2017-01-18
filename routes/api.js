@@ -416,67 +416,52 @@ router.get('/issue', function (req, res) {
         switch (issue_split.length) {
             case 1:
 				if(_default_issue=="---"){
-					_issue.push("---");
+					_issue ="---",issue_split[0];
+				}else{
+					_issue = issue_split[0];
 				}
-                _issue.push(issue_split[0]);
                 break;
             case 2:
 				if(_default_issue=="---"){
-					_issue.push("---");
+					_issue ="---",issue_split[0],issue_split[1];
+				}else{
+                	issue_split[0],issue_split[1];
 				}
-                _issue.push(issue_split[0]);
-                _issue.push(issue_split[1]);
                 break;
             case 3:
 				if(_default_issue=="---"){
-					_issue.push("---");
+					_issue ="---",issue_split[0],issue_split[1],issue_split[2];
+				}else{
+                	issue_split[0],issue_split[1],issue_split[2];
 				}
-                _issue.push(issue_split[0]);
-                _issue.push(issue_split[1]);
-                _issue.push(issue_split[2]);
                 break;
 			case 4:
 				if(_default_issue=="---"){
-					_issue.push("---");
+					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3];
+				}else{
+                	issue_split[0],issue_split[1],issue_split[2],issue_split[3];
 				}
-                _issue.push(issue_split[0]);
-                _issue.push(issue_split[1]);
-                _issue.push(issue_split[2]);
-				_issue.push(issue_split[3]);
                 break;
             case 5:
 				if(_default_issue=="---"){
-					_issue.push("---");
+					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4];
+				}else{
+                	issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4];
 				}
-                _issue.push(issue_split[0]);
-                _issue.push(issue_split[1]);
-                _issue.push(issue_split[2]);
-				_issue.push(issue_split[3]);
-				_issue.push(issue_split[4]);
                 break;
             case 6:
 				if(_default_issue=="---"){
-					_issue.push("---");
+					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5];
+				}else{
+                	issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5];
 				}
-				
-                _issue.push(issue_split[0]);
-                _issue.push(issue_split[1]);
-                _issue.push(issue_split[2]);
-				_issue.push(issue_split[3]);
-				_issue.push(issue_split[4]);
-				_issue.push(issue_split[5]);
                 break;
             case 7:
 				if(_default_issue=="---"){
-					_issue.push("---");
+					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5],issue_split[6];
+				}else{
+                	issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5],issue_split[6];
 				}
-                _issue.push(issue_split[0]);
-                _issue.push(issue_split[1]);
-                _issue.push(issue_split[2]);
-				_issue.push(issue_split[3]);
-				_issue.push(issue_split[4]);
-				_issue.push(issue_split[5]);
-				_issue.push(issue_split[6]);
                 break;
             default:
                 if(_default_issue=="---"){

@@ -1796,7 +1796,7 @@ router.get('/issue/:city', function (req, res) {
         json: bugParams
     }, function (error, response, body) {
 		
-		console.log("Get issues from bugzilla with city in the url!");
+		//console.log("Get issues from bugzilla with city in the url!");
 		
 		var i_count = 0;
 		

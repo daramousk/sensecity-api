@@ -586,7 +586,7 @@ router.get('/issue', function (req, res) {
 		
 		console.log(JSON.Stringify(body));
 		
-	}
+	});
 	
     var bugParams =
             {

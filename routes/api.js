@@ -528,11 +528,9 @@ router.get('/issue', function (req, res) {
         }
     }
 
-	console.log(req.query.product);
-	console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");
-	console.log(req);
     if (!req.query.hasOwnProperty('product'))
     {
+		console.log(req.query.product);
         _product = req.query.product;
     } else {
         Municipality.find({boundaries: {$geoIntersects: {$geometry: {"type": "Point", "coordinates": req.query.coordinates}}}}, function (err, response) {

@@ -585,7 +585,7 @@ router.get('/issue', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
 		
-		console.log(JSON.stringify(body));
+		console.log(JSON.stringify(response));
 		
 	});
 	

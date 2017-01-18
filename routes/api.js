@@ -527,7 +527,9 @@ router.get('/issue', function (req, res) {
             _list_issue = true;
         }
     }
-	console.log(req.query);
+	if(req.query.product!=undefined){
+		console.log(req.query.product);
+	}
     if (!req.query.hasOwnProperty('product'))
     {
 		console.log(req.query.product);

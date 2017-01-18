@@ -439,7 +439,7 @@ router.get('/issue', function (req, res) {
 				if(_default_issue=="---"){
 					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3];
 				}else{
-                	_issue =issue_split[0].toString(),issue_split[1].toString(),issue_split[2].toString(),issue_split[3].toString();
+                	_issue =issue_split[0]+","+issue_split[1]+","+issue_split[2]+","+issue_split[3];
 				}
                 break;
             case 5:

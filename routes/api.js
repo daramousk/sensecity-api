@@ -611,8 +611,8 @@ router.get('/issue', function (req, res) {
         console.log("Get from bugzilla issues!");
 		
 		var i_count = 0;
-		var sss = body.bugs;
-		console.log(body.bugs);
+
+		console.log(body["bugs"]);
 		console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");
 		console.log(sss.length);
         for (i_count = 0; i_count < body.bugs.length; i_count++)

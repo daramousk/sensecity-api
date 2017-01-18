@@ -589,8 +589,6 @@ router.get('/issue', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
 		
-		console.log(body);
-		
 	/*});
 	
     var bugParams =
@@ -612,9 +610,6 @@ router.get('/issue', function (req, res) {
 		
 		var i_count = 0;
 
-		console.log(JSON.parse(body).bugs);
-		console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");
-		
         for (i_count = 0; i_count < JSON.parse(body).bugs.length; i_count++)
         {            
             ids.push(JSON.parse(body).bugs[i_count].alias[0]);

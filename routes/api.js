@@ -128,17 +128,17 @@ router.post('/issue', function (req, res) {
             if (response.length > 0)
             {
                 entry.municipality = response[0]["municipality"];
-				console.log(JSON.stringify(response[0]["municipality"]));
+				/*console.log(JSON.stringify(response[0]["municipality"]));
 				console.log(JSON.stringify(response[0].municipality));
 				console.log(JSON.stringify(response[0].municipality_desc));
-				console.log(JSON.stringify(response[0]["municipality_desc"]));
+				console.log(JSON.stringify(response[0]["municipality_desc"]));*/
 				city_name = response[0].municipality_desc;
             } else
             {
                 entry.municipality = '';
 				city_name ='';
             }
-			console.log("city_name ==== " + city_name);
+			//console.log("city_name ==== " + city_name);
             // console.log(entry);
             entry.save(function (err1, resp) {
                 if (err1)
@@ -146,7 +146,7 @@ router.post('/issue', function (req, res) {
                     console.log(err1);
                 } else
                 {
-					console.log("bug.url =====>" + bugUrl);
+					//console.log("bug.url =====>" + bugUrl);
                     if (resp.issue == "garbage" || resp.issue == "road-contructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "enviroment" )
                     {
                         if (response.length > 0)
@@ -203,7 +203,7 @@ router.post('/issue', function (req, res) {
 router.post('/issue/:id', function (req, res) {
 
     var bodyParams;
-	console.log("req.params.id"+req.params.id);
+	//console.log("req.params.id"+req.params.id);
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
 
         Issue.findOneAndUpdate({"_id": req.params.id}, {
@@ -251,7 +251,7 @@ router.post('/issue/:id', function (req, res) {
             }, function (error, response, body) {
 				
 				if( body.result.bugs[0] != undefined ) {
-					console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0]));
+					//console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0]));
 					
 					///* Update the issue with a specific id 
 					///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
@@ -261,7 +261,7 @@ router.post('/issue/:id', function (req, res) {
 								"params": [{"token": bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add": [req.body.email]}, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num,"reset_assigned_to":true, "cf_authedicated": 1, "cf_issues": resp.issue}],
 								"id": 1
 							};
-					console.log("bodyParams ====== > " + JSON.stringify(bodyParams));
+					//console.log("bodyParams ====== > " + JSON.stringify(bodyParams));
 					request({
 						url: bugUrl,
 						method: "POST",
@@ -286,7 +286,7 @@ router.post('/issue/:id', function (req, res) {
 								method: "POST",
 								json: bugComment
 							}, function (error2, bugResponse2, body2) {
-								console.log("body2" + JSON.stringify(body2));
+								//console.log("body2" + JSON.stringify(body2));
 								console.log("Insert comments to bugzilla");
 								
 								if(body2.result != null)
@@ -504,15 +504,15 @@ router.get('/issue', function (req, res) {
     if (!req.query.hasOwnProperty('image_field'))
     {
         _image = true;
-        console.log("1 _image=" + _image);
+        //console.log("1 _image=" + _image);
     } else {
         if (req.query.image_field == 0)
         {
             _image = false;
-            console.log("2 _image=" + _image);
+            //console.log("2 _image=" + _image);
         } else {
             _image = true;
-            console.log("2 _image=" + _image);
+            //console.log("2 _image=" + _image);
         }
     }
 
@@ -1800,14 +1800,15 @@ router.get('/issue/:city', function (req, res) {
 		
 		var i_count = 0;
 		
-		console.log(JSON.stringify(body));
+		//console.log(JSON.stringify(body));
 		
-        if (body.result.bugs.length==undefined || body==undefined || body==null || body.length < 1 )
+        if (body==undefined || body==null || body.length < 1 )
         {
-			console.log("-1");
             res.send([{}]);
-			
-        } else {
+        } else if (body.result.bugs==undefined || body.result.bugs.length==undefined){
+			res.send([{}]);
+		}
+		else {
 
             for (i_count = 0; i_count < body.result.bugs.length; i_count++)
             {
@@ -1815,10 +1816,8 @@ router.get('/issue/:city', function (req, res) {
                 bugzilla_results = body.result.bugs;
             }
 
-			console.log("0");
             if (_list_issue) {
                 
-				console.log("1");
                 Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}}, {"user":_user}, function (err, issue) {
 
 					//new start
@@ -1918,7 +1917,6 @@ router.get('/issue/:city', function (req, res) {
                     if (_coordinates == '') {						
                         if (_issue == '')
                         {                 
-							console.log("2");
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"user":_user}, function (err, issue) {
 								//new start
 								console.log("err   =   " + err);
@@ -2015,32 +2013,8 @@ router.get('/issue/:city', function (req, res) {
                     
 							}).sort({create_at: _sort});//.limit(_limit);
                         } else {
-							console.log("3");
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"user":_user}, function (err, issue) {
-								console.log("");
-								console.log("");
-								console.log(_startdate);
-								console.log(_enddate);
-								console.log("");
-								console.log("");
-								console.log(ids);
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log(_issue);
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log(issue);
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log("");
-								console.log("");
+								
 								
 								//new start
 								console.log("err   =   " + err);
@@ -2141,7 +2115,6 @@ router.get('/issue/:city', function (req, res) {
                     {
                         if (_issue == '')
                         {		
-							console.log("4");
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
                             }, {"user":_user}, function (err, issue) {
@@ -2243,7 +2216,6 @@ router.get('/issue/:city', function (req, res) {
 										
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-							console.log("5");
                             Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
 						}, {"user":_user}, function (err, issue) {
@@ -2347,7 +2319,6 @@ router.get('/issue/:city', function (req, res) {
                     if (_coordinates == '') {
                         if (_issue == '')
                         {
-							console.log("6");
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate}}, {"image_name": _image, "user":_user}, function (err, issue) {
 
 								//new start
@@ -2442,7 +2413,6 @@ router.get('/issue/:city', function (req, res) {
 								//new end
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-							console.log("7");
                             Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                                 "issue": {$in: _issue}
                             }, {"image_name": _image, "user":_user}, function (err, issue) {
@@ -2546,7 +2516,6 @@ router.get('/issue/:city', function (req, res) {
                     {
                         if (_issue == '')
                         {
-							console.log("8");
                             Issue.find({"_id": {$in: ids}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
                             }, {"image_name": _image, "user":_user}, function (err, issue) {
@@ -2646,7 +2615,7 @@ router.get('/issue/:city', function (req, res) {
 					
                             }).sort({create_at: _sort});//.limit(_limit);
                         } else {
-							console.log("9");
+
                             Issue.find({"_id": {$in: ids}, "issue": {$in: _issue}, "loc": {$nearSphere: {$geometry: {type: "Point", coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: JSON.parse(req.query.distance)}},
                                 "create_at": {$gte: _startdate, $lt: _enddate}
                             }, {"image_name": _image, "user":_user}, function (err, issue) {
@@ -2770,9 +2739,9 @@ router.get('/issue/:city', function (req, res) {
 //POST router
 router.post('/send_email', function (req, res) {    
 	
-	console.log("sdfsdfds");
+	//console.log("sdfsdfds");
 	
-	console.log("1111=====>>>> " + JSON.stringify(req.body));
+	//console.log("1111=====>>>> " + JSON.stringify(req.body));
 	
 	if( req.body.uuid!=undefined && req.body.name!=undefined && req.body.email!=undefined && req.body.phonenumber!=undefined ){
 		act_User.find({"uuid":req.body.uuid, "name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
@@ -2969,12 +2938,12 @@ router.get('/feelings', function (req, res) {
 	if(_city==''){
 		if(_coordinates!=''){
 			Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} },{"user":false}, function (err, issue) {
-				console.log("1");
+				
 				res.send(issue);
 			}).sort({"create_at": _sort}).limit(_limit);
 		}else{	
 			Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate} },{"user":false}, function (err, issue) {
-				console.log("2");
+			
 				res.send(issue);
 			}).sort({"create_at": _sort}).limit(_limit);
 		}
@@ -2983,12 +2952,12 @@ router.get('/feelings', function (req, res) {
 	else{
 		if(_coordinates!=''){
 			Issue.find({ 'loc': {$nearSphere: {$geometry: {type: 'Point', coordinates: JSON.parse(req.query.coordinates)}, $maxDistance: 2000}}, "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate}, "municipality":_city },{"user":false}, function (err, issue) {
-				console.log("3");
+				
 				res.send(issue);
 			}).sort({"create_at": _sort}).limit(_limit);
 		}else{	
 			Issue.find({ "issue": {$in:_feeling},"create_at": {$gte: _startdate, $lt: _enddate}, "municipality":_city  },{"user":false}, function (err, issue) {
-				console.log("4");
+				
 				res.send(issue);
 			}).sort({"create_at": _sort}).limit(_limit);
 		}
@@ -3040,7 +3009,7 @@ router.get('/fullissue/:id', function (req, res) {
 					
 					Issue.findOne({"_id": req.params.id}, function (err, issue) {
 						
-						console.log("issue      ===============>>>>>>>>    " + JSON.stringify(issue));
+						//console.log("issue      ===============>>>>>>>>    " + JSON.stringify(issue));
 						if(issue != null){
 							issue_rtrn = '[{"_id":"' + issue._id + '","municipality":"' + issue.municipality + '","image_name":"' + issue.image_name + '","issue":"' + issue.issue + '","device_id":"' + issue.device_id + '","value_desc":"' + issue.value_desc + '","user":{"phone":"' + issue.user.phone + '","email":"' + issue.user.email + '","name":"' + issue.user.name + '","uuid":"' + issue.user.uuid + '"},"comments":"' + issue.comments + '","create_at":"' + issue.create_at + '","loc":{"type":"Point","coordinates":[' + issue.loc.coordinates + ']},"status":"' + body.result.bugs[0].status + '","bug_id":"' + body.result.bugs[0].id + '"},' + body1 + ']';
 
@@ -3158,7 +3127,7 @@ router.post('/active_users', function (req, res) {
 				
                 if (resp.length > 0) {
 					
-					console.log(" activate    =============>>>>>>>>  " + resp[0].activate);
+					//console.log(" activate    =============>>>>>>>>  " + resp[0].activate);
 					
 					if (resp[0].activate == "1") {
 						text_act="1";
@@ -3167,8 +3136,8 @@ router.post('/active_users', function (req, res) {
 						for (var i = 0; i < 4; i++)
 							text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 					}
-						console.log(" Mobile use    =============>>>>>>>>  " + JSON.stringify(resp));
-						console.log(" text_act    =============>>>>>>>>  " + text_act);
+						//console.log(" Mobile use    =============>>>>>>>>  " + JSON.stringify(resp));
+						//console.log(" text_act    =============>>>>>>>>  " + text_act);
 						
 						act_User.findOneAndUpdate({"uuid": req.body.uuid, "email": req.body.email}, {
 							name: req.body.name,
@@ -3179,7 +3148,7 @@ router.post('/active_users', function (req, res) {
 						}, function (err, resp1) {
 							if (err)
 								throw err;
-							console.log(" Mobile use 1   =============>>>>>>>>  " + JSON.stringify(resp1));
+							//console.log(" Mobile use 1   =============>>>>>>>>  " + JSON.stringify(resp1));
 							if(resp1.activate != "1"){
 								
 								var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
@@ -3272,7 +3241,7 @@ router.get('/active_users', function (req, res) {
 
 
     act_User.find({"uuid": req.query.uuid}, function (error, actice_user) {
-        console.log(actice_user);
+        //console.log(actice_user);
         res.send(actice_user);
 
     }).sort({"create_at": -1}).limit(1);
@@ -3284,14 +3253,14 @@ router.get('/active_users', function (req, res) {
 
 router.post('/activate_users', function (req, res) {
 
-    console.log("_id   - " + req.body.id1);
-    console.log("uuid   - " + req.body.id2);
-    console.log("activate    - " + req.body.id3);
+    //console.log("_id   - " + req.body.id1);
+    //console.log("uuid   - " + req.body.id2);
+   // console.log("activate    - " + req.body.id3);
 
     act_User.findOneAndUpdate({"_id": req.body.id1, "uuid": req.body.id2, "activate": req.body.id3}, {
         "activate": "1"
     }, function (error, activate_user) {
-        console.log(activate_user);
+        //console.log(activate_user);
 		console.log(error);
         res.send(activate_user);
     });
@@ -3299,14 +3268,14 @@ router.post('/activate_users', function (req, res) {
 });
 
 router.post('/admin/bugs/search', authorization, function (req, res) {
-	console.log("sdfsdfsd======================================="+querystring.stringify(req.body)+"------->>>>>"+bugUrlRest);
+	//console.log("sdfsdfsd======================================="+querystring.stringify(req.body)+"------->>>>>"+bugUrlRest);
     request({
         url: bugUrlRest + "/rest/bug?" + querystring.stringify(req.body),
         method: "GET"
     }, function (error, response, body) {
 		
-		console.log(JSON.stringify(response));
-		console.log(JSON.stringify(body));
+		//console.log(JSON.stringify(response));
+		//console.log(JSON.stringify(body));
         if (!error && response.statusCode === 200) {
 
             if (response.body.result !== null)
@@ -3372,7 +3341,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
         if (!error && response.statusCode === 201) {
             if (response.body.result !== null)
             {
-                console.log(body);
+                //console.log(body);
                 res.send(body);
             } else
             {
@@ -3385,7 +3354,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
 
 router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
     req.body.token = bugToken;
-    console.log(req.body);
+    //console.log(req.body);
     request({
         url: bugUrlRest + "/rest/bug/comment/" + req.body.id + "/tags",
         method: "PUT",
@@ -3406,8 +3375,8 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
 });
 
 router.post('/dashboard', function (req, res) {
-	console.log("dfdsgdfgfdg");
-	console.log(req);
+	//console.log("dfdsgdfgfdg");
+	//console.log(req);
     Role.find({username: req.body.username, password: req.body.password, city: req.body.city}, function (err, response) {
         if (response.length > 0) {
             var wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);

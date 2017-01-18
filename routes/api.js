@@ -571,7 +571,7 @@ router.get('/issue', function (req, res) {
     var issue_return = [];
 	
 	request({
-        url: bugUrlRest + "/rest/bug"+bugParams1,
+        url: bugUrlRest + "/rest/bug"+bugParams1.toString(),
         method: "GET"
     }, function (error, response, body) {
 		

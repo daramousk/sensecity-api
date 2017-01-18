@@ -1802,7 +1802,7 @@ router.get('/issue/:city', function (req, res) {
 		
 		console.log(JSON.stringify(body));
 		
-        if (body.result.bugs==undefined || body==undefined || body==null || body.length < 1 )
+        if (body.result.bugs.length==undefined || body==undefined || body==null || body.length < 1 )
         {
 			console.log("-1");
             res.send([{}]);

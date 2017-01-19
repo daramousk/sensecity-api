@@ -574,7 +574,6 @@ router.get('/issue', function (req, res) {
         url: bugUrlRest + "/rest/bug"+bugParams1,
         method: "GET"
     }, function (error, response, body) {
-		console.log(JSON.parse(response.body).bugs);
 	/*});
 	
     var bugParams =
@@ -595,16 +594,14 @@ router.get('/issue', function (req, res) {
         console.log("Get from bugzilla issues!");
 		
 		var i_count = 0;
-		console.log(JSON.parse(response.body).bugs.length);
 		
         for (i_count = 0; i_count < JSON.parse(response.body).bugs.length; i_count++)
         {            
-			console.log(JSON.parse(response.body).bugs[i_count].alias);
             ids.push(JSON.parse(response.body).bugs[i_count].alias);
             bugzilla_results = JSON.parse(response.body).bugs;
         }
 
-
+		console.log(ids);
 
 
         if (_list_issue) {

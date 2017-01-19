@@ -613,8 +613,11 @@ router.get('/issue', function (req, res) {
         console.log("Get from bugzilla issues!");
 		
 		var i_count = 0;
-		
-        for (i_count = 0; i_count < JSON.parse(body).bugs.length; i_count++)
+		var bugs_length=0;
+		if(JSON.parse(body).bugs != undefined){
+			bugs_length=JSON.parse(body).bugs.length;
+		}
+        for (i_count = 0; i_count < bugs_length; i_count++)
         {       
             ids.push(JSON.parse(body).bugs[i_count].alias[0]);
             bugzilla_results = JSON.parse(body).bugs;

@@ -575,7 +575,7 @@ router.get('/issue', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
 		console.log(error);
-		console.log(body.bugs);
+		console.log(JSON.parse(body).bugs);
 		
 	/*});
 	

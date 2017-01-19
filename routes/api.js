@@ -597,12 +597,11 @@ router.get('/issue', function (req, res) {
 		
         for (i_count = 0; i_count < JSON.parse(response.body).bugs.length; i_count++)
         {       
-			console.log(JSON.parse(response.body).bugs[i_count].alias[0]);
             ids.push(JSON.parse(response.body).bugs[i_count].alias[0]);
             bugzilla_results = JSON.parse(response.body).bugs;
         }
 
-		console.log(ids);
+		console.log(bugzilla_results);
 
 
         if (_list_issue) {

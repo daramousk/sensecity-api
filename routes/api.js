@@ -596,10 +596,10 @@ router.get('/issue', function (req, res) {
 		
 		var i_count = 0;
 
-        for (i_count = 0; i_count < JSON.parse(body).bugs.length; i_count++)
+        for (i_count = 0; i_count < JSON.parse(response.body).bugs.length; i_count++)
         {            
-            ids.push(JSON.parse(body).bugs[i_count].alias[0]);
-            bugzilla_results = JSON.parse(body).bugs;
+            ids.push(JSON.parse(response.body).bugs[i_count].alias[0]);
+            bugzilla_results = JSON.parse(response.body).bugs;
         }
 
 

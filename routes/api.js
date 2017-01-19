@@ -588,7 +588,7 @@ router.get('/issue', function (req, res) {
 		var issue_return = [];
 		
 		request({
-			url: bugUrlRest + "/rest/bug"+bugParams1,
+			url: encodeURI(bugUrlRest + "/rest/bug"+bugParams1),
 			method: "GET"
 		}, function (error, response, body) {
 			console.log(error);

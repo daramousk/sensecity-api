@@ -356,224 +356,226 @@ router.get('/issue', function (req, res) {
 	if(!req.query.hasOwnProperty("city") && req.query.hasOwnProperty("coordinates")){
 		res.send([{}]);
 	}
-	
-    if (!req.query.hasOwnProperty('startdate'))
-    {
-        _startdate.setDate(_startdate.getDate() - 3).toISOString();
-        
-    } else {
-        _startdate = new Date(req.query.startdate).toISOString();
-    }
-
-    if (req.query.hasOwnProperty('enddate'))
-    {
-        _enddate = new Date(req.query.enddate).toISOString();
-    } else {
-        _enddate = newdate;
-    }
-
-    if (!req.query.hasOwnProperty('coordinates'))
-    {
-        _coordinates = '';
-    } else {
-        _coordinates = req.query.coordinates;
-    }
-
-    if (!req.query.hasOwnProperty('distance'))
-    {
-        _distance = '10000';
-    } else {
-        _distance = req.query.distance;
-    }
-
-    if (!req.query.hasOwnProperty('includeAnonymous')){
-		_cf_authedicated = 1;
-	}
 	else{
-		if(req.query.includeAnonymous==1){
-			_cf_authedicated = 0,1;
-			_default_issue = "---";
-		}else{
+		
+		if (!req.query.hasOwnProperty('startdate'))
+		{
+			_startdate.setDate(_startdate.getDate() - 3).toISOString();
+			
+		} else {
+			_startdate = new Date(req.query.startdate).toISOString();
+		}
+
+		if (req.query.hasOwnProperty('enddate'))
+		{
+			_enddate = new Date(req.query.enddate).toISOString();
+		} else {
+			_enddate = newdate;
+		}
+
+		if (!req.query.hasOwnProperty('coordinates'))
+		{
+			_coordinates = '';
+		} else {
+			_coordinates = req.query.coordinates;
+		}
+
+		if (!req.query.hasOwnProperty('distance'))
+		{
+			_distance = '10000';
+		} else {
+			_distance = req.query.distance;
+		}
+
+		if (!req.query.hasOwnProperty('includeAnonymous')){
 			_cf_authedicated = 1;
 		}
-		
-	}
-	
-    if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
-    {
-		if(_default_issue=="---"){
-			_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
-		}else{
-			_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+		else{
+			if(req.query.includeAnonymous==1){
+				_cf_authedicated = 0,1;
+				_default_issue = "---";
+			}else{
+				_cf_authedicated = 1;
+			}
+			
 		}
-    } else {
-
-
-        var issue_split = req.query.issue.split("|");
-
-        switch (issue_split.length) {
-            case 1:
-				if(_default_issue=="---"){
-					_issue ="---,"+issue_split[0].toString();
-				}else{
-					_issue = issue_split[0].toString();
-				}
-                break;
-            case 2:
-				if(_default_issue=="---"){
-					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString();
-				}else{
-                	_issue =issue_split[0].toString()+","+issue_split[1].toString();
-				}
-                break;
-            case 3:
-				if(_default_issue=="---"){
-					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
-				}else{
-                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
-				}
-                break;
-			case 4:
-				if(_default_issue=="---"){
-					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
-				}else{
-                	_issue = issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
-				}
-                break;
-            case 5:
-				if(_default_issue=="---"){
-					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
-				}else{
-                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
-				}
-                break;
-            case 6:
-				if(_default_issue=="---"){
-					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
-				}else{
-                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
-				}
-                break;
-            case 7:
-				if(_default_issue=="---"){
-					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
-				}else{
-                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
-				}
-                break;
-            default:
-                if(_default_issue=="---"){
-					_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
-				}else{
-					_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
-				}
-                break;
-        }
-    }
-
-	console.log(_issue);
-    if (!req.query.hasOwnProperty('limit'))
-    {
-        _limit = 1000;
-    } else {
-        _limit = req.query.limit;
-    }
-
-    if (!req.query.hasOwnProperty('sort'))
-    {
-        _sort = -1;
-    } else {
-        _sort = req.query.sort;
-    }
-    if (!req.query.hasOwnProperty('image_field'))
-    {
-        _image = true;
-        //console.log("1 _image=" + _image);
-    } else {
-        if (req.query.image_field == 0)
-        {
-            _image = false;
-            //console.log("2 _image=" + _image);
-        } else {
-            _image = true;
-            //console.log("2 _image=" + _image);
-        }
-    }
-
-    if (!req.query.hasOwnProperty('list_issue'))
-    {
-        _list_issue = false;
-    } else {
-        if (req.query.image_field == 0)
-        {
-            _list_issue = false;
-        } else {
-            _list_issue = true;
-        }
-    }
-
-    if (!req.query.hasOwnProperty('city'))
-    {
-		Municipality.find({boundaries: {$geoIntersects: {$geometry: {"type": "Point", "coordinates": req.query.coordinates}}}}, function (err, response) {
-            if (response.length > 0)
-            {
-                _product = response[0]["municipality"];
-            } else
-            {
-                _product = '';
-            }
-        });
-    } else {
-        
-        _product = req.query.city;
-    }
-
-    if (!req.query.hasOwnProperty('status'))
-    {
-        _status = ["CONFIRMED", "IN_PROGRESS"];
-    } else {
-        var status_split = req.query.status.split("|");
-
-        switch (status_split.length) {
-            case 1:
-                _status.push(status_split[0]);
-                break;
-            case 2:
-                _status.push(status_split[0]);
-                _status.push(status_split[1]);
-                break;
-            case 3:
-                _status.push(status_split[0]);
-                _status.push(status_split[1]);
-                _status.push(status_split[2]);
-                break;
-            default:
-                _status = ["CONFIRMED", "IN_PROGRESS"];
-                break;
-        }
-    }
 		
-    
-	if (!req.query.hasOwnProperty('kml')){
-		_kml = 0;
-	}
-	else{
-		_kml = req.query.kml;
-	}	
-	_user = false;
-	
-	var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + "&f5=cf_authedicated&o5=anyexact&include_fields=id,alias,status";	
-	console.log(bugUrlRest + "/rest/bug"+bugParams1);
-	var ids = [];
-    var bugzilla_results = [];
-    var issue_return = [];
-	
-	request({
-        url: bugUrlRest + "/rest/bug"+bugParams1,
-        method: "GET"
-    }, function (error, response, body) {
-		console.log(error);
-		console.log(JSON.parse(body).bugs);
+		if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
+		{
+			if(_default_issue=="---"){
+				_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+			}else{
+				_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+			}
+		} else {
+
+
+			var issue_split = req.query.issue.split("|");
+
+			switch (issue_split.length) {
+				case 1:
+					if(_default_issue=="---"){
+						_issue ="---,"+issue_split[0].toString();
+					}else{
+						_issue = issue_split[0].toString();
+					}
+					break;
+				case 2:
+					if(_default_issue=="---"){
+						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString();
+					}else{
+						_issue =issue_split[0].toString()+","+issue_split[1].toString();
+					}
+					break;
+				case 3:
+					if(_default_issue=="---"){
+						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
+					}else{
+						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
+					}
+					break;
+				case 4:
+					if(_default_issue=="---"){
+						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
+					}else{
+						_issue = issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
+					}
+					break;
+				case 5:
+					if(_default_issue=="---"){
+						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
+					}else{
+						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
+					}
+					break;
+				case 6:
+					if(_default_issue=="---"){
+						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
+					}else{
+						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
+					}
+					break;
+				case 7:
+					if(_default_issue=="---"){
+						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
+					}else{
+						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
+					}
+					break;
+				default:
+					if(_default_issue=="---"){
+						_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+					}else{
+						_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+					}
+					break;
+			}
+		}
+
+		console.log(_issue);
+		if (!req.query.hasOwnProperty('limit'))
+		{
+			_limit = 1000;
+		} else {
+			_limit = req.query.limit;
+		}
+
+		if (!req.query.hasOwnProperty('sort'))
+		{
+			_sort = -1;
+		} else {
+			_sort = req.query.sort;
+		}
+		if (!req.query.hasOwnProperty('image_field'))
+		{
+			_image = true;
+			//console.log("1 _image=" + _image);
+		} else {
+			if (req.query.image_field == 0)
+			{
+				_image = false;
+				//console.log("2 _image=" + _image);
+			} else {
+				_image = true;
+				//console.log("2 _image=" + _image);
+			}
+		}
+
+		if (!req.query.hasOwnProperty('list_issue'))
+		{
+			_list_issue = false;
+		} else {
+			if (req.query.image_field == 0)
+			{
+				_list_issue = false;
+			} else {
+				_list_issue = true;
+			}
+		}
+
+		if (!req.query.hasOwnProperty('city'))
+		{
+			Municipality.find({boundaries: {$geoIntersects: {$geometry: {"type": "Point", "coordinates": req.query.coordinates}}}}, function (err, response) {
+				if (response.length > 0)
+				{
+					_product = response[0]["municipality"];
+				} else
+				{
+					_product = '';
+				}
+			});
+		} else {
+			
+			_product = req.query.city;
+		}
+
+		if (!req.query.hasOwnProperty('status'))
+		{
+			_status = ["CONFIRMED", "IN_PROGRESS"];
+		} else {
+			var status_split = req.query.status.split("|");
+
+			switch (status_split.length) {
+				case 1:
+					_status.push(status_split[0]);
+					break;
+				case 2:
+					_status.push(status_split[0]);
+					_status.push(status_split[1]);
+					break;
+				case 3:
+					_status.push(status_split[0]);
+					_status.push(status_split[1]);
+					_status.push(status_split[2]);
+					break;
+				default:
+					_status = ["CONFIRMED", "IN_PROGRESS"];
+					break;
+			}
+		}
+			
+		
+		if (!req.query.hasOwnProperty('kml')){
+			_kml = 0;
+		}
+		else{
+			_kml = req.query.kml;
+		}	
+		_user = false;
+		
+		var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + "&f5=cf_authedicated&o5=anyexact&include_fields=id,alias,status";	
+		console.log(bugUrlRest + "/rest/bug"+bugParams1);
+		var ids = [];
+		var bugzilla_results = [];
+		var issue_return = [];
+		
+		request({
+			url: bugUrlRest + "/rest/bug"+bugParams1,
+			method: "GET"
+		}, function (error, response, body) {
+			console.log(error);
+			console.log(JSON.parse(body).bugs);
+		
 		
 	/*});
 	
@@ -1543,6 +1545,11 @@ router.get('/issue', function (req, res) {
 
 
     });
+	
+	}
+
+
+
 });
 
 

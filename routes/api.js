@@ -601,7 +601,6 @@ router.get('/issue', function (req, res) {
             bugzilla_results = JSON.parse(response.body).bugs;
         }
 
-		console.log(bugzilla_results);
 
 
         if (_list_issue) {
@@ -806,12 +805,18 @@ router.get('/issue', function (req, res) {
 
                         }).sort({create_at: _sort});//.limit(_limit);
                     } else {
-						console.log("0");
+						console.log(ids);
                         Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                             "issue": {$in: _issue}
                         },{"user":_user}, function (err, issue) {
-
-                            //new start
+							
+							
+							
+							console.log(issue);
+                            
+							
+							
+							//new start
                             if(err!=null){console.log("err   =   " + err);}
                             if(_kml==0){
 								issue_return += '[';

@@ -1797,6 +1797,8 @@ router.get('/issue/:city', function (req, res) {
         json: bugParams
     }, function (error, response, body) {
 		
+		
+		
 		//console.log("Get issues from bugzilla with city in the url!");
 		
 		var i_count = 0;
@@ -1816,7 +1818,7 @@ router.get('/issue/:city', function (req, res) {
                 ids.push(body.result.bugs[i_count].alias[0]);
                 bugzilla_results = body.result.bugs;
             }
-
+			console.log(ids);
             if (_list_issue) {
                 
                 Issue.find({'_id': {$in: ids}, 'issue': {$in: ['garbage', 'lighting', 'road-contructor', 'plumbing', 'protection-policy', 'green', 'enviroment']}}, {"user":_user}, function (err, issue) {

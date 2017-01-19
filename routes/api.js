@@ -478,14 +478,12 @@ router.get('/issue', function (req, res) {
 			var department_split = req.query.departments.split("|");
 
 			var i_dep = 0;
-			_departments = "&f6=component&o6=anywordssubstr&v6=";
+			
 			
 			for (i_dep = 0; i_dep < department_split.length; i_dep++){
-				_departments += department_split[i_dep].toString();
+				_departments += "&component="department_split[i_dep].toString();
 				
-				if(i_dep<department_split.length-1){
-					_departments +=",";
-				}
+				
 			}
 			
 			

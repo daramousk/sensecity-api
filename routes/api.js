@@ -831,7 +831,7 @@ router.get('/issue', function (req, res) {
 							
 							
 							
-							console.log(issue);
+							//console.log(issue);
                             
 							
 							

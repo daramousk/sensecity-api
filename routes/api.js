@@ -353,7 +353,7 @@ router.get('/issue', function (req, res) {
 	var _user=false;
 	var _default_issue="";
 	
-	if(!req.query.hasOwnProperty("city") AND req.query.hasOwnProperty("coordinates")){
+	if(!req.query.hasOwnProperty("city") && req.query.hasOwnProperty("coordinates")){
 		res.send([{}]);
 	}
 	

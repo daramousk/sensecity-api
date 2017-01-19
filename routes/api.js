@@ -475,7 +475,7 @@ router.get('/issue', function (req, res) {
 		if (!req.query.hasOwnProperty('departments')){
 			_departments = "";
 		}else{
-			var department_split = req.query.department.split("|");
+			var department_split = req.query.departments.split("|");
 
 			var i_dep = 0;
 			_departments = "&component=";

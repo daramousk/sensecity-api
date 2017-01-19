@@ -354,7 +354,7 @@ router.get('/issue', function (req, res) {
 	var _default_issue="";
 	
 	if(!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
-		res.send([{}]);
+		res.send([{"response":"","message":"You don't send city - coordinates values!"}]);
 	}
 	else{
 		
@@ -3302,6 +3302,7 @@ router.post('/admin/bugs/search', authorization, function (req, res) {
 
 router.post('/admin/bugs/update', authorization, function (req, res) {
     req.body.token = bugToken;
+	console.log(req.body);
     request({
         url: bugUrlRest + "/rest/bug/" + req.body.ids[0],
         method: "PUT",

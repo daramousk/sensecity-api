@@ -352,6 +352,7 @@ router.get('/issue', function (req, res) {
 	var _kml;
 	var _user=false;
 	var _default_issue="";
+	var _departments;
 	
 	if(!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
 		res.send([{"response":"no-data","message":"You don't send city - coordinates values!"}]);
@@ -471,8 +472,25 @@ router.get('/issue', function (req, res) {
 					break;
 			}
 		}
+		if (!req.query.hasOwnProperty('departments')){
+			_departments = "";
+		}else{
+			var department_split = req.query.department.split("|");
 
-		console.log(_issue);
+			var i_dep = 0;
+			_departments = "&component=";
+			
+			for (i_dep = 0; i_dep < department_split.length; i_dep++){
+				_departments += department_split[i_dep].toString();
+				
+				if(i_dep>0 && i_dep<department_split.length-1){
+					_departments +=",";
+				}
+			}
+			
+			
+		}
+		
 		if (!req.query.hasOwnProperty('limit'))
 		{
 			_limit = 1000;
@@ -563,7 +581,7 @@ router.get('/issue', function (req, res) {
 		}	
 		_user = false;
 		
-		var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + "&f5=cf_authedicated&o5=anyexact&include_fields=id,alias,status";	
+		var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + "&f5=cf_authedicated&o5=anyexact" + _departments + "&include_fields=id,alias,status";	
 		console.log(bugUrlRest + "/rest/bug"+bugParams1);
 		var ids = [];
 		var bugzilla_results = [];

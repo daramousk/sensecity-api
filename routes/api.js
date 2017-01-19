@@ -404,9 +404,9 @@ router.get('/issue', function (req, res) {
     if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
     {
 		if(_default_issue=="---"){
-			_issue = _default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
+			_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
 		}else{
-			_issue = "garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
+			_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
 		}
     } else {
 
@@ -416,58 +416,58 @@ router.get('/issue', function (req, res) {
         switch (issue_split.length) {
             case 1:
 				if(_default_issue=="---"){
-					_issue ="---",issue_split[0];
+					_issue ="---,"+issue_split[0].toString();
 				}else{
-					_issue = issue_split[0];
+					_issue = issue_split[0].toString();
 				}
                 break;
             case 2:
 				if(_default_issue=="---"){
-					_issue ="---",issue_split[0],issue_split[1];
+					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString();
 				}else{
-                	_issue =issue_split[0],issue_split[1];
+                	_issue =issue_split[0].toString()+","+issue_split[1].toString();
 				}
                 break;
             case 3:
 				if(_default_issue=="---"){
-					_issue ="---",issue_split[0],issue_split[1],issue_split[2];
+					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
 				}else{
-                	_issue =issue_split[0],issue_split[1],issue_split[2];
+                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
 				}
                 break;
 			case 4:
 				if(_default_issue=="---"){
-					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3];
+					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
 				}else{
-                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
+                	_issue = issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
 				}
                 break;
             case 5:
 				if(_default_issue=="---"){
-					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4];
+					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
 				}else{
-                	_issue =issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4];
+                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
 				}
                 break;
             case 6:
 				if(_default_issue=="---"){
-					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5];
+					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
 				}else{
-                	_issue =issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5];
+                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
 				}
                 break;
             case 7:
 				if(_default_issue=="---"){
-					_issue ="---",issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5],issue_split[6];
+					_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
 				}else{
-                	_issue =issue_split[0],issue_split[1],issue_split[2],issue_split[3],issue_split[4],issue_split[5],issue_split[6];
+                	_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
 				}
                 break;
             default:
                 if(_default_issue=="---"){
-					_issue = _default_issue,"garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
+					_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
 				}else{
-					_issue = "garbage", "plumbing", "lighting", "road-contructor", "green", "protection-policy", "enviroment";
+					_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
 				}
                 break;
         }

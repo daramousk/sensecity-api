@@ -808,7 +808,7 @@ router.get('/issue', function (req, res) {
 
                         }).sort({create_at: _sort});//.limit(_limit);
                     } else {
-						console.log(ids);
+						
                         Issue.find({"_id": {$in: ids}, "create_at": {$gte: _startdate, $lt: _enddate},
                             "issue": {$in: _issue}
                         },{"user":_user}, function (err, issue) {

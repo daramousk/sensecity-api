@@ -353,23 +353,21 @@ router.get('/issue', function (req, res) {
 	var _user=false;
 	var _default_issue="";
 	
+	if(!req.query.hasOwnProperty("city") AND req.query.hasOwnProperty("coordinates")){
+		res.send([{}]);
+	}
 	
     if (!req.query.hasOwnProperty('startdate'))
     {
         _startdate.setDate(_startdate.getDate() - 3).toISOString();
-        //_startdate.setHours(00);
-        //_startdate.setMinutes(00, 00);
+        
     } else {
         _startdate = new Date(req.query.startdate).toISOString();
-        //_startdate.setHours(00);
-       // _startdate.setMinutes(00, 00);
     }
 
     if (req.query.hasOwnProperty('enddate'))
     {
         _enddate = new Date(req.query.enddate).toISOString();
-       // _enddate.setHours(23);
-       // _enddate.setMinutes(59, 59);
     } else {
         _enddate = newdate;
     }
@@ -514,7 +512,7 @@ router.get('/issue', function (req, res) {
         }
     }
 
-    if (!req.query.hasOwnProperty('product'))
+    if (!req.query.hasOwnProperty('city'))
     {
 		Municipality.find({boundaries: {$geoIntersects: {$geometry: {"type": "Point", "coordinates": req.query.coordinates}}}}, function (err, response) {
             if (response.length > 0)
@@ -527,7 +525,7 @@ router.get('/issue', function (req, res) {
         });
     } else {
         
-        _product = req.query.product;
+        _product = req.query.city;
     }
 
     if (!req.query.hasOwnProperty('status'))

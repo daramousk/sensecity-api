@@ -645,7 +645,7 @@ router.get('/issue', function (req, res) {
 		
 		
 
-		Issue.find({'_id': {$in: ids}},{"user":_user, "image_field":_image }, function (err, issue) {
+		Issue.find({'_id': {$in: ids}},{"user":_user, "image_name":_image }, function (err, issue) {
 
                 //new start
                 if(err!=null){console.log("err   =   " + err);}

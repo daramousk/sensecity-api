@@ -481,12 +481,11 @@ router.get('/issue', function (req, res) {
 			
 			_departments="";
 			for (i_dep = 0; i_dep < department_split.length; i_dep++){
-				_departments += "&component="+department_split[i_dep].toString();
+				_departments += "&component="+encodeURIComponent(department_split[i_dep]);
 				console.log(_departments);
 				
 			}
 			
-			_departments = encodeURIComponent(_departments);
 		}
 		
 		if (!req.query.hasOwnProperty('limit'))

@@ -511,17 +511,17 @@ router.get('/issue', function (req, res) {
 		}
 		if (!req.query.hasOwnProperty('image_field'))
 		{
-			_image = 0;
+			_image = false;
 			//_image = true;
 			//console.log("1 _image=" + _image);
 		} else {
 			if (req.query.image_field == 0)
 			{
-				_image = 0;
+				_image = false;
 				//_image = false;
 				//console.log("2 _image=" + _image);
 			} else {
-				_image = 1;
+				_image = true;
 				//_image = true;
 				//console.log("2 _image=" + _image);
 			}

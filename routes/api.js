@@ -501,11 +501,14 @@ router.get('/issue', function (req, res) {
 		if (!req.query.hasOwnProperty('sort'))
 		{
 			_sort = "&order=bug_id%20DESC";
+			_sort_mongo =-1;
 		} else {
 			if(req.query.sort==1){
 				_sort = "&order=bug_id%20ASC";
+				_sort_mongo =1;
 			}else if(req.query.sort==-1){
 				_sort = "&order=bug_id%20DESC";
+				_sort_mongo =-1;
 			}
 			
 		}
@@ -741,7 +744,7 @@ router.get('/issue', function (req, res) {
 
 
 					//res.send(issue);
-				});//.limit(_limit);
+				}).sort({"create_at":_sort_mongo});//.limit(_limit);
 			
 			
 			
@@ -842,7 +845,7 @@ router.get('/issue', function (req, res) {
 
 
                 //res.send(issue);
-            });//.limit(_limit);
+            }).sort({"create_at":_sort_mongo});//.limit(_limit);
 		}
 		
 		

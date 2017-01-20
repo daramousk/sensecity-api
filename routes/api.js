@@ -507,15 +507,18 @@ router.get('/issue', function (req, res) {
 		}
 		if (!req.query.hasOwnProperty('image_field'))
 		{
-			_image = true;
+			_image = ",image_name=false"
+			//_image = true;
 			//console.log("1 _image=" + _image);
 		} else {
 			if (req.query.image_field == 0)
 			{
-				_image = false;
+				_image = ",image_name=false"
+				//_image = false;
 				//console.log("2 _image=" + _image);
 			} else {
-				_image = true;
+				_image = ",image_name=true"
+				//_image = true;
 				//console.log("2 _image=" + _image);
 			}
 		}
@@ -599,8 +602,6 @@ router.get('/issue', function (req, res) {
 			url: bugUrlRest + "/rest/bug"+bugParams1,
 			method: "GET"
 		}, function (error, response, body) {
-			console.log(error);
-			console.log(JSON.parse(body).bugs);
 		
 		
 	/*});
@@ -640,7 +641,7 @@ router.get('/issue', function (req, res) {
 		
 		
 
-		Issue.find({'_id': {$in: ids}},{"user":_user}, function (err, issue) {
+		Issue.find({'_id': {$in: ids}},{"user":_user+_image}, function (err, issue) {
 
                 //new start
                 if(err!=null){console.log("err   =   " + err);}

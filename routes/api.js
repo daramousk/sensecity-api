@@ -554,7 +554,7 @@ router.get('/issue', function (req, res) {
 			
 			_product = req.query.city;
 		}
-
+		console.log(_product);
 		if (!req.query.hasOwnProperty('status'))
 		{
 			_status = ["CONFIRMED", "IN_PROGRESS"];

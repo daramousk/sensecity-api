@@ -482,6 +482,8 @@ router.get('/issue', function (req, res) {
 			_departments="";
 			for (i_dep = 0; i_dep < department_split.length; i_dep++){
 				_departments += "&component="+encodeURIComponent(department_split[i_dep]);
+				console.log("department_split === " + department_split[i_dep]);
+				console.log("_departments  =   "+_departments);
 				console.log(_departments);
 				
 			}

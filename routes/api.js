@@ -350,6 +350,7 @@ router.get('/issue', function (req, res) {
     var _status = [];
 	var _cf_authedicated=1;
 	var _kml;
+	var _offset;
 	var _user=false;
 	var _default_issue="";
 	var _departments;
@@ -482,10 +483,6 @@ router.get('/issue', function (req, res) {
 			_departments="";
 			for (i_dep = 0; i_dep < department_split.length; i_dep++){
 				_departments += "&component="+encodeURIComponent(department_split[i_dep]);
-				console.log("department_split === " + department_split[i_dep]);
-				console.log("_departments  =   "+_departments);
-				console.log(_departments);
-				
 			}
 			
 		}
@@ -578,10 +575,17 @@ router.get('/issue', function (req, res) {
 		else{
 			_kml = req.query.kml;
 		}	
+		
+		if (!req.query.hasOwnProperty('offset')){
+			_offset = "";
+		}
+		else{
+			_offset = "&offset="+req.query.offset;
+		}
 		_user = false;
 		
-		var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + "&f5=cf_authedicated&o5=anyexact" + _departments + "&include_fields=id,alias,status";	
-		console.log(bugUrlRest + "/rest/bug"+bugParams1);
+		var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + "&include_fields=id,alias,status";	
+		
 		var ids = [];
 		var bugzilla_results = [];
 		var issue_return = [];

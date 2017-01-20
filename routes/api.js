@@ -511,17 +511,17 @@ router.get('/issue', function (req, res) {
 		}
 		if (!req.query.hasOwnProperty('image_field'))
 		{
-			_image = ',"image_name":false';
+			_image = 0;
 			//_image = true;
 			//console.log("1 _image=" + _image);
 		} else {
 			if (req.query.image_field == 0)
 			{
-				_image = ',"image_name":false';
+				_image = 0;
 				//_image = false;
 				//console.log("2 _image=" + _image);
 			} else {
-				_image = '';
+				_image = 1;
 				//_image = true;
 				//console.log("2 _image=" + _image);
 			}
@@ -644,8 +644,109 @@ router.get('/issue', function (req, res) {
 		
 		
 		
+		if(_image==0){
+			Issue.find({'_id': {$in: ids}},{"user":_user,"image_name":_image }, function (err, issue) {
 
-		Issue.find({'_id': {$in: ids}},{"user":_user + _image }, function (err, issue) {
+					//new start
+					if(err!=null){console.log("err   =   " + err);}
+					if(_kml==0){
+						issue_return += '[';
+					}else if(_kml==1){				
+						issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>'+
+						'<name>sensecity.kml</name>'+
+						'<Style id="s_ylw-pushpin_hl">'+
+						'<IconStyle>'+
+						'<color>ff7fffff</color>'+
+						'<scale>1.3</scale>'+
+						'<Icon>'+
+						'<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>'+
+						'</Icon>'+
+						'<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>'+
+						'</IconStyle>'+
+						'</Style>'+
+						'<StyleMap id="m_ylw-pushpin">'+
+						'<Pair>'+
+						'<key>normal</key>'+
+						'<styleUrl>#s_ylw-pushpin</styleUrl>'+
+						'</Pair>'+
+						'<Pair>'+
+						'<key>highlight</key>'+
+						'<styleUrl>#s_ylw-pushpin_hl</styleUrl>'+
+						'</Pair>'+
+						'</StyleMap>'+
+						'<Style id="s_ylw-pushpin">'+
+						'<IconStyle>'+
+						'<color>ff7fffff</color>'+
+						'<scale>1.1</scale>'+
+						'<Icon>'+
+						'<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>'+
+						'</Icon>'+
+						'<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>'+
+						'</IconStyle>'+
+						'</Style>'+
+						'<Folder>'+
+						'<name>sensecity</name>'+
+						'<open>1</open>';						
+					}
+					
+					console.log(issue);
+					for (var i = 0; i < issue.length; i++) {
+
+						var bug_id = 0;
+						var bug_status = "";
+						for (var j = 0; j < bugzilla_results.length; j++) {
+							if (bugzilla_results[j].alias[0] == issue[i]._id) {
+								bug_id = bugzilla_results[j].id;
+								bug_status = bugzilla_results[j].status;
+							}
+						}
+
+						if(_kml==0){
+								issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+								if (i < issue.length - 1) {
+									issue_return += ',';
+								}
+							}else if(_kml==1){							
+								issue_return +='<Placemark>'+
+									'<name>'+issue[i].issue+' - '+issue[i].value_desc+'</name>'+
+									'<description><![CDATA[<img src="'+issue[i].image_name+'"/><a href="http://'+issue[i].municipality+'.sense.city/scissuemap.html#?issue_id='+issue[i]._id+'">http://'+issue[i].municipality+'.sense.city/scissuemap.html#?issue_id='+issue[i]._id+'</a>]]></description>'+
+									'<LookAt>'+
+										'<longitude>'+issue[i].loc.coordinates[0]+'</longitude>'+
+										'<latitude>'+issue[i].loc.coordinates[1]+'</latitude>'+
+										'<altitude>0</altitude>'+
+										'<heading>-176.4101948194351</heading>'+
+										'<tilt>70.72955317497231</tilt>'+
+										'<range>1952.786634342951</range>'+
+										'<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>'+
+									'</LookAt>'+
+									'<styleUrl>#m_ylw-pushpin</styleUrl>'+
+									'<Point>'+
+										'<gx:drawOrder>1</gx:drawOrder>'+
+										'<coordinates>'+issue[i].loc.coordinates[0]+','+issue[i].loc.coordinates[1]+',0</coordinates>'+
+									'</Point>'+
+								'</Placemark>';
+							}
+					}
+					
+					if(_kml==0){
+						issue_return += ']';
+						res.send(issue_return);
+					}else if(_kml==1){						
+						issue_return += '</Folder> </Document> </kml>';
+							
+						res.send(issue_return);	
+					}
+						
+					//new end
+
+
+					//res.send(issue);
+				});//.limit(_limit);
+			
+			
+			
+		}else{
+			Issue.find({'_id': {$in: ids}},{"user":_user }, function (err, issue) {
 
                 //new start
                 if(err!=null){console.log("err   =   " + err);}
@@ -742,10 +843,7 @@ router.get('/issue', function (req, res) {
 
                 //res.send(issue);
             });//.limit(_limit);
-			
-			
-			
-		
+		}
 		
 		
 		

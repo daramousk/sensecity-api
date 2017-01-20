@@ -688,7 +688,8 @@ router.get('/issue', function (req, res) {
 					'<name>sensecity</name>'+
 					'<open>1</open>';						
 				}
-					
+				
+				console.log(issue);
                 for (var i = 0; i < issue.length; i++) {
 
                     var bug_id = 0;

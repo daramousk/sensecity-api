@@ -486,7 +486,7 @@ router.get('/issue', function (req, res) {
 				
 			}
 			
-			
+			_departments = encodeURIComponent(_departments);
 		}
 		
 		if (!req.query.hasOwnProperty('limit'))

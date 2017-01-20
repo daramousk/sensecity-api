@@ -360,15 +360,17 @@ router.get('/issue', function (req, res) {
 	}
 	else{
 		
+		
 		if (!req.query.hasOwnProperty('startdate'))
 		{
-			_startdate = new Date(req.query.enddate).toISOString();
+			_startdate = new Date().toISOString();
 			_startdate.setDate(_startdate.getDate() - 3).toISOString();
 			
 		} else {
 			_startdate = new Date(req.query.startdate).toISOString();
 		}
-
+		console.log(_startdate);
+		
 		if (req.query.hasOwnProperty('enddate'))
 		{
 			_enddate = new Date(req.query.enddate).toISOString();

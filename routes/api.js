@@ -364,6 +364,7 @@ router.get('/issue', function (req, res) {
 		if (!req.query.hasOwnProperty('startdate'))
 		{
 			_startdate = new Date().toISOString();
+			console.log(_startdate);
 			_startdate.setDate(_startdate.getDate() - 3).toISOString();
 			
 		} else {

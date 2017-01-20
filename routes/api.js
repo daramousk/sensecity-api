@@ -560,25 +560,30 @@ router.get('/issue', function (req, res) {
 		
 		if (!req.query.hasOwnProperty('status'))
 		{
-			_status = ["CONFIRMED", "IN_PROGRESS"];
+			_status = "&status=CONFIRMED&status=IN_PROGRESS";
 		} else {
 			var status_split = req.query.status.split("|");
 
 			switch (status_split.length) {
 				case 1:
-					_status.push(status_split[0]);
+					//_status.push(status_split[0]);
+					_status = "&status="+status_split[0];
 					break;
 				case 2:
-					_status.push(status_split[0]);
-					_status.push(status_split[1]);
+					_status = "&status="+status_split[0]+"&status="+status_split[1];
+					
+					//_status.push(status_split[0]);
+					//_status.push(status_split[1]);
 					break;
 				case 3:
-					_status.push(status_split[0]);
-					_status.push(status_split[1]);
-					_status.push(status_split[2]);
+					_status = "&status="+status_split[0]+"&status="+status_split[1]+"&status="+status_split[2];
+					//_status.push(status_split[0]);
+					//_status.push(status_split[1]);
+					//_status.push(status_split[2]);
 					break;
 				default:
-					_status = ["CONFIRMED", "IN_PROGRESS"];
+					_status = "&status=CONFIRMED&status=IN_PROGRESS";
+					//_status = ["CONFIRMED", "IN_PROGRESS"];
 					break;
 			}
 		}
@@ -599,7 +604,7 @@ router.get('/issue', function (req, res) {
 		}
 		_user = false;
 		
-		var bugParams1 = "?product=" + _product + "&limit=" + _limit + "&status=" + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";	
+		var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";	
 		
 		var ids = [];
 		var bugzilla_results = [];

@@ -637,7 +637,7 @@ router.get('/issue', function (req, res) {
 		
 		var i_count = 0;
 		var bugs_length=0;
-		if(JSON.parse(body).bugs != undefined){
+		if(body != undefined){
 			bugs_length=JSON.parse(body).bugs.length;
 		}
         for (i_count = 0; i_count < bugs_length; i_count++)

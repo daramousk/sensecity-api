@@ -637,7 +637,7 @@ router.get('/issue', function (req, res) {
         json: bugParams
     }, function (error, response, body) {
 */
-        console.log("Get from bugzilla issues!");
+        //console.log("Get from bugzilla issues!");
 		
 		var i_count = 0;
 		var bugs_length=0;
@@ -701,7 +701,7 @@ router.get('/issue', function (req, res) {
 						'<open>1</open>';						
 					}
 					
-					console.log(issue);
+					//console.log(issue);
 					for (var i = 0; i < issue.length; i++) {
 
 						var bug_id = 0;

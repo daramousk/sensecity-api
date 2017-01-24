@@ -609,15 +609,19 @@ router.get('/issue', function (req, res) {
 		}
 		_user = false;
 
+        var bugParams1 = "";
+        var flag_register_user = 0;
         Role.findOne({ "uuid": req.get('x-uuid'), "role": req.get('x-role') }, function (err, ans) {            
             console.log(err);
             if (ans == null) {
-                console.log("null2345");
+                bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";
+                flag_register_user = 0;
             } else {
-                console.log(ans);
+                bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status,cf_mobile,cf_creator";	        
+                flag_register_user = 1;
             }
         });
-		var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";	
+        
 		
 		var ids = [];
 		var bugzilla_results = [];
@@ -714,16 +718,27 @@ router.get('/issue', function (req, res) {
 					for (var i = 0; i < issue.length; i++) {
 
 						var bug_id = 0;
-						var bug_status = "";
+                        var bug_status = "";
+                        var bug_mobile = "";
+                        var bug_creator = "";
+
 						for (var j = 0; j < bugzilla_results.length; j++) {
 							if (bugzilla_results[j].alias[0] == issue[i]._id) {
 								bug_id = bugzilla_results[j].id;
-								bug_status = bugzilla_results[j].status;
+                                bug_status = bugzilla_results[j].status;
+                                if (flag_register_user == 1) {
+                                    bug_mobile = bugzilla_results[j].cf_mobile;
+                                    bug_creator = bugzilla_results[j].cf_creator;
+                                }
 							}
 						}
 
-						if(_kml==0){
-								issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                        if (_kml == 0) {
+                            if (flag_register_user == 1) {
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '", "bug_mobile":"' + bug_mobile + '","bug_creator":"'+bug_creator+'"}';
+                            } else {
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                            }
 								if (i < issue.length - 1) {
 									issue_return += ',';
 								}

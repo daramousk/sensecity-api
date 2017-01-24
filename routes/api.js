@@ -358,7 +358,7 @@ router.get('/issue', function (req, res) {
 	var _default_issue="";
 	var _departments;
 
-    console.log(req);
+    console.log(req.headers);
 	if(!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
 		res.send([{"response":"no-data","message":"You don't send city - coordinates values!"}]);
 	}

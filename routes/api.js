@@ -728,6 +728,7 @@ router.get('/issue', function (req, res) {
 							if (bugzilla_results[j].alias[0] == issue[i]._id) {
 								bug_id = bugzilla_results[j].id;
                                 bug_status = bugzilla_results[j].status;
+                                console.log("flag_register_user ======>" + flag_register_user );
                                 if (flag_register_user == 1) {
                                     bug_mobile = bugzilla_results[j].cf_mobile;
                                     bug_creator = bugzilla_results[j].cf_creator;

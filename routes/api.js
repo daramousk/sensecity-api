@@ -612,7 +612,7 @@ router.get('/issue', function (req, res) {
         Role.findOne({ "uuid": req.get('x-uuid'), "role": req.get('x-role') }, function (err, ans) {            
             console.log(err);
             if (ans == null) {
-                console.log("null");
+                console.log("null2345");
             } else {
                 console.log(ans);
             }

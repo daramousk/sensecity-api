@@ -156,7 +156,7 @@ router.post('/issue', function (req, res) {
                                     {
                                         "method": "Bug.create",
                                         "params": [{"token": bugToken, "summary": resp.issue, "bug_severity": "normal" ,"cf_city_name" : city_name, "alias": resp._id.toString(), "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "op_sys": "All"}],
-                                        "id": 2
+                                        "id": 1
                                     };
 
                             request({
@@ -164,6 +164,9 @@ router.post('/issue', function (req, res) {
                                 method: "POST",
                                 json: bugData
                             }, function (error, bugResponse, body) {
+                                console.log(body);
+                                console.log(bugResponse);
+                                console.log(error);
 
                                 if (!error && bugResponse.statusCode === 200) {
                                    // console.log(body);
@@ -354,7 +357,8 @@ router.get('/issue', function (req, res) {
 	var _user=false;
 	var _default_issue="";
 	var _departments;
-	
+
+    console.log(req);
 	if(!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
 		res.send([{"response":"no-data","message":"You don't send city - coordinates values!"}]);
 	}

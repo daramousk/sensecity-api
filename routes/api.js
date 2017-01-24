@@ -609,8 +609,9 @@ router.get('/issue', function (req, res) {
 		}
 		_user = false;
 
-        var bugParams1 = "";
+        var bugParams1;
         var flag_register_user = 0;
+
         Role.findOne({ "uuid": req.get('x-uuid'), "role": req.get('x-role') }, function (err, ans) {            
             console.log(err);
             if (ans == null) {
@@ -622,7 +623,7 @@ router.get('/issue', function (req, res) {
             }
         });
         
-		
+        console.log("bugParams1"+bugParams1);
 		var ids = [];
 		var bugzilla_results = [];
 		var issue_return = [];
@@ -831,15 +832,28 @@ router.get('/issue', function (req, res) {
 
                     var bug_id = 0;
                     var bug_status = "";
+                    var bug_mobile = "";
+                    var bug_creator = "";
+
                     for (var j = 0; j < bugzilla_results.length; j++) {
                         if (bugzilla_results[j].alias[0] == issue[i]._id) {
                             bug_id = bugzilla_results[j].id;
                             bug_status = bugzilla_results[j].status;
+                            if (flag_register_user == 1) {
+                                bug_mobile = bugzilla_results[j].cf_mobile;
+                                bug_creator = bugzilla_results[j].cf_creator;
+                            }
                         }
                     }
 
-                    if(_kml==0){
-							issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                    if (_kml == 0) {
+                        if (flag_register_user == 1) {
+                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '", "bug_mobile":"' + bug_mobile + '","bug_creator":"' + bug_creator + '"}';
+                        } else {
+                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                        }
+
+							//issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
 							if (i < issue.length - 1) {
 								issue_return += ',';
 							}

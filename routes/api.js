@@ -608,7 +608,11 @@ router.get('/issue', function (req, res) {
 			_offset = "&offset="+req.query.offset;
 		}
 		_user = false;
-		
+
+        Role.findOne({ "uuid": req.get('x-uuid'), "role": req.get('x-role') }, function (err, ans) {
+            console.log(ans);
+            console.log(err);
+        });
 		var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";	
 		
 		var ids = [];

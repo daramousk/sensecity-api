@@ -897,7 +897,7 @@ router.get('/issue', function (req, res) {
 
                 
                 if (_image == 0) {
-                   
+                    console.log("ids ===>> " + ids);
                     Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
                         //new start
                         if (err != null) { console.log("err2   =   " + err); }

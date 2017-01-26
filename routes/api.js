@@ -627,7 +627,7 @@ router.get('/issue', function (req, res) {
                     _product = response[0]["municipality"];
 
                     var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";
-
+                    console.log(bugParams1);
                     var ids = [];
                     var bugzilla_results = [];
                     var issue_return = [];
@@ -647,8 +647,7 @@ router.get('/issue', function (req, res) {
                             ids.push(JSON.parse(body).bugs[i_count].alias[0]);
                             bugzilla_results = JSON.parse(body).bugs;
                         }
-
-                        console.log(ids);
+                        
                         if (_image == 0) {
                           
                             Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
@@ -882,7 +881,7 @@ router.get('/issue', function (req, res) {
 
                 var i_count = 0;
                 var bugs_length = 0;
-                console.log("body ===>" + body);
+
                 if (body != undefined) {
                     bugs_length = JSON.parse(body).bugs.length;
                 }
@@ -891,12 +890,10 @@ router.get('/issue', function (req, res) {
                     bugzilla_results = JSON.parse(body).bugs;
                 }
 
-                console.log(ids);
                 
                 if (_image == 0) {
                    
                     Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
-                        console.log(issue);
                         //new start
                         if (err != null) { console.log("err   =   " + err); }
                         if (_kml == 0) {
@@ -1041,7 +1038,6 @@ router.get('/issue', function (req, res) {
                                 '<open>1</open>';
                         }
 
-                        console.log(issue);
                         for (var i = 0; i < issue.length; i++) {
 
                             var bug_id = 0;
@@ -2305,9 +2301,6 @@ router.get('/issue/:city', function (req, res) {
 //POST router
 router.post('/send_email', function (req, res) {    
 	
-	//console.log("sdfsdfds");
-	
-	//console.log("1111=====>>>> " + JSON.stringify(req.body));
 	
 	if( req.body.uuid!=undefined && req.body.name!=undefined && req.body.email!=undefined && req.body.phonenumber!=undefined ){
 		act_User.find({"uuid":req.body.uuid, "name":req.body.name, "email": req.body.email, "mobile_num": req.body.phonenumber }, function(err, response){
@@ -2544,19 +2537,33 @@ router.get('/fullissue/:id', function (req, res) {
 
     var id = req.params.id;
     var issue_rtrn = [];
-
+    
+    var bugParams1 = "?alias=" + id + "&include_fields=id,component,alias,status";
+    
+    /*
     var bugParams =
             {
                 "method": "Bug.search",
                 "params": [{"alias": id, "include_fields": ["id", "component", "alias", "status"]}],
                 "id": 1
             };
+            */
+
+       /*
+        request({
+            url: bugUrl,
+            method: "POST",
+            json: bugParams
+        }, function (error, response, body) {
+        */
 
     request({
-        url: bugUrl,
-        method: "POST",
-        json: bugParams
+        url: bugUrlRest + "/rest/bug" + bugParams1,
+        method: "GET"
     }, function (error, response, body) {
+
+        console.log(body);
+    
 			
 			if( body.result.bugs.length !== 0){
 			
@@ -2566,8 +2573,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 			} else {
 				request({
-					/*url: "http://nam.ece.upatras.gr/bugzilla/rest/bug/" + body.result.bugs[0].alias[0] + "/comment",*/
-					url: "http://150.140.184.228/bugzilla/rest/bug/" + body.result.bugs[0].alias[0] + "/comment",
+                    url: bugUrlRest + "/rest/bug/" + body.result.bugs[0].alias[0] + "/comment",
 					method: "GET"
 				}, function (error1, response1, body1) {
 					if(error1)

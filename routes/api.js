@@ -651,7 +651,8 @@ router.get('/issue', function (req, res) {
                             ids.push(JSON.parse(body).bugs[i_count].alias[0]);
                             bugzilla_results = JSON.parse(body).bugs;
                         }
-                        
+
+                        console.log("ids1 ======> "+ids);
                         if (_image == 0) {
                           
                             Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {

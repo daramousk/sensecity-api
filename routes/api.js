@@ -647,7 +647,8 @@ router.get('/issue', function (req, res) {
                             ids.push(JSON.parse(body).bugs[i_count].alias[0]);
                             bugzilla_results = JSON.parse(body).bugs;
                         }
-                        
+
+                        console.log(ids);
                         if (_image == 0) {
                           
                             Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
@@ -1108,7 +1109,7 @@ router.get('/issue', function (req, res) {
 });
 
 
-
+/*
 router.get('/issue/:city', function (req, res) {
 
     var _startdate = new Date();
@@ -2297,7 +2298,7 @@ router.get('/issue/:city', function (req, res) {
 
 
 });
-
+*/
 
 
 /* ** End test ** */

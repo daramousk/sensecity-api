@@ -2538,29 +2538,29 @@ router.get('/fullissue/:id', function (req, res) {
     var id = req.params.id;
     var issue_rtrn = [];
     
-    var bugParams1 = "?alias=" + id + "&include_fields=id,component,alias,status";
+    //var bugParams1 = "?alias=" + id + "&include_fields=id,component,alias,status";
     
-    /*
+    
     var bugParams =
             {
                 "method": "Bug.search",
                 "params": [{"alias": id, "include_fields": ["id", "component", "alias", "status"]}],
                 "id": 1
             };
-            */
+            
 
-       /*
+       
         request({
             url: bugUrl,
             method: "POST",
             json: bugParams
         }, function (error, response, body) {
-        */
-
+        
+        /*
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
-    }, function (error, response, body) {
+    }, function (error, response, body) {*/
 
         console.log(body);
     

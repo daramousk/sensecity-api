@@ -759,7 +759,7 @@ router.get('/issue', function (req, res) {
                             
                             Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
                                 //new start
-                                if (err != null) { console.log("err   =   " + err); }
+                                if (err != null) { console.log("err1   =   " + err); }
                                 if (_kml == 0) {
                                     issue_return += '[';
                                 } else if (_kml == 1) {
@@ -900,7 +900,7 @@ router.get('/issue', function (req, res) {
                    
                     Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
                         //new start
-                        if (err != null) { console.log("err   =   " + err); }
+                        if (err != null) { console.log("err2   =   " + err); }
                         if (_kml == 0) {
                             issue_return += '[';
                         } else if (_kml == 1) {
@@ -1002,7 +1002,7 @@ router.get('/issue', function (req, res) {
 
                     Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
                         //new start
-                        if (err != null) { console.log("err   =   " + err); }
+                        if (err != null) { console.log("err3   =   " + err); }
                         if (_kml == 0) {
                             issue_return += '[';
                         } else if (_kml == 1) {

@@ -379,7 +379,8 @@ router.get('/issue', function (req, res) {
     var _list_issue;
     var _product;
     var _status = [];
-	var _cf_authedicated=1;
+    var _cf_authedicated = 1;
+    var _cf_authedicated_contition;
 	var _kml;
 	var _offset;
 	var _user=false;
@@ -426,14 +427,17 @@ router.get('/issue', function (req, res) {
 		}
 
 		if (!req.query.hasOwnProperty('includeAnonymous')){
-			_cf_authedicated = 1;
+            _cf_authedicated = 1;
+            _cf_authedicated_contition = "equals";
 		}
 		else{
 			if(req.query.includeAnonymous==1){
-				_cf_authedicated = 0,1;
+                _cf_authedicated = 2;
+                _cf_authedicated_contition = "lessthan";
 				_default_issue = "---";
 			}else{
-				_cf_authedicated = 1;
+                _cf_authedicated = 1;
+                _cf_authedicated_contition = "equals";
 			}
 			
 		}
@@ -626,7 +630,7 @@ router.get('/issue', function (req, res) {
 
                     _product = response[0]["municipality"];
 
-                    var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";
+                    var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + "&include_fields=id,alias,status";
                     console.log(bugParams1);
                     var ids = [];
                     var bugzilla_results = [];
@@ -868,7 +872,7 @@ router.get('/issue', function (req, res) {
 
             _product = req.query.city;
             
-            var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=anyexact" + _departments + _sort + "&include_fields=id,alias,status";
+            var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + "&include_fields=id,alias,status";
 
             var ids = [];
             var bugzilla_results = [];

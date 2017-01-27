@@ -969,7 +969,8 @@ router.get('/issue', function (req, res) {
                                 '<open>1</open>';
                         }
 
-                        //console.log(issue);
+                        console.log(issue);
+
                         for (var i = 0; i < issue.length; i++) {
 
                             var bug_id = 0;

@@ -273,7 +273,7 @@ router.post('/issue/:id', function (req, res) {
             }, function (error, response, body) {
                 var body_parse = JSON.parse(body);
 
-                console.log("body" + body_parse.bugs[0].id);
+               // console.log("body" + body_parse.bugs[0].id);
 
                 if (body_parse.bugs[0].id != undefined ) {
 					//console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0]));

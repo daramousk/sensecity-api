@@ -659,6 +659,7 @@ router.get('/issue', function (req, res) {
                         method: "GET"
                     }, function (error, response, body) {
 
+                        console.log("BUGZILLA ======> " + JSON.stringify(body));
                         var i_count = 0;
                         var bugs_length = 0;
 

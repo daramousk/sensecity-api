@@ -901,7 +901,7 @@ router.get('/issue', function (req, res) {
             var ids = [];
             var bugzilla_results = [];
             var issue_return = [];
-
+            console.log(bugParams1);
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"

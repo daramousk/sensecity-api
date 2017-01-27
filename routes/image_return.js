@@ -26,6 +26,9 @@ router.get('/:id', function(req, res){
 				  }).limit(2);	
 				  
 				  */
+    console.log("image return");
+    console.log(req.params.id);
+
 	var id = req.params.id;
 	
 	Issue.findOne({"_id":req.params.id},function(err, issue){

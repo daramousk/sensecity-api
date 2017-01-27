@@ -21,8 +21,8 @@ var Municipality = require('../models/municipality');
 var cityPolicy = require('../models/citypolicy');
 
 // Routes
-Issue.methods(['get', 'put', 'post', 'delete']);
-Issue.register(router, '/issues');
+//Issue.methods(['get', 'put', 'post', 'delete']);
+//Issue.register(router, '/issues');
 
 var bugUrlRest=config.config.bugUrlRest;
 
@@ -898,6 +898,9 @@ router.get('/issue', function (req, res) {
                 
                 if (_image == 0) {
                     console.log("ids ===>> " + ids);
+                    // This query works only if is valid object ids
+                    // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
+
                     Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
                         //new start
                         if (err != null) { console.log("err2   =   " + err); }

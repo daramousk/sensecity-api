@@ -397,9 +397,7 @@ router.get('/issue', function (req, res) {
 
 		if (!req.query.hasOwnProperty('startdate'))	{
             //_startdate = new Date();
-            console.log(newdate.getFullYear());
-            console.log(newdate.getMonth()+1);
-            console.log(newdate.getDate()-3);
+           
             _startdate = newdate.getFullYear() + "-" + (newdate.getMonth() + 1) + "-" + (newdate.getDate() - 5); //.setDate(_startdate.getDate() - 3);
 
 			
@@ -643,7 +641,7 @@ router.get('/issue', function (req, res) {
             var _cordinates_ar = JSON.parse(req.query.coordinates);
 
             Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [_cordinates_ar[0], _cordinates_ar[1]] } } } }, { "municipality": 1, "municipality_desc": 1 }, function (err, response) {
-                console.log("response ===>" + response[0]);
+                //console.log("response ===>" + response[0]);
                 if (response.length > 0) {
 
                     _product = response[0]["municipality"];
@@ -659,7 +657,7 @@ router.get('/issue', function (req, res) {
                         method: "GET"
                     }, function (error, response, body) {
 
-                        console.log("BUGZILLA ======> " + JSON.stringify(body));
+                        //console.log("BUGZILLA ======> " + JSON.stringify(body));
                         var i_count = 0;
                         var bugs_length = 0;
 
@@ -671,7 +669,7 @@ router.get('/issue', function (req, res) {
                             bugzilla_results = JSON.parse(body).bugs;
                         }
 
-                        console.log("ids1 ======> "+ids);
+                        //console.log("ids1 ======> "+ids);
                         if (_image == 0) {
                           
                             Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
@@ -908,7 +906,7 @@ router.get('/issue', function (req, res) {
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"
             }, function (error, response, body) {
-                console.log("BUGZILLA ======> " + JSON.stringify(body));
+                //console.log("BUGZILLA ======> " + JSON.stringify(body));
                 var i_count = 0;
                 var bugs_length = 0;
 
@@ -922,7 +920,7 @@ router.get('/issue', function (req, res) {
 
                 
                 if (_image == 0) {
-                    console.log("ids ===>> " + ids);
+                    //console.log("ids ===>> " + ids);
                     // This query works only if is valid object ids
                     // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
 

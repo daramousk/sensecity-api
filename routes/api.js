@@ -969,47 +969,51 @@ router.get('/issue', function (req, res) {
                                 '<open>1</open>';
                         }
 
-                        console.log(issue);
+                        
+                        if (issue != undefined) {
+                            for (var i = 0; i < issue.length; i++) {
 
-                        for (var i = 0; i < issue.length; i++) {
+                                var bug_id = 0;
+                                var bug_status = "";
+                                var bug_authenticate = "0";
 
-                            var bug_id = 0;
-                            var bug_status = "";
-                            var bug_authenticate = "0";
+                                for (var j = 0; j < bugzilla_results.length; j++) {
+                                    if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                        bug_id = bugzilla_results[j].id;
+                                        bug_status = bugzilla_results[j].status;
+                                        bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                    }
+                                }
 
-                            for (var j = 0; j < bugzilla_results.length; j++) {
-                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                    bug_id = bugzilla_results[j].id;
-                                    bug_status = bugzilla_results[j].status;
-                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                if (_kml == 0) {
+                                    issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                                    if (i < issue.length - 1) {
+                                        issue_return += ',';
+                                    }
+                                } else if (_kml == 1) {
+                                    issue_return += '<Placemark>' +
+                                        '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                        '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                        '<LookAt>' +
+                                        '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                        '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                        '<altitude>0</altitude>' +
+                                        '<heading>-176.4101948194351</heading>' +
+                                        '<tilt>70.72955317497231</tilt>' +
+                                        '<range>1952.786634342951</range>' +
+                                        '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                        '</LookAt>' +
+                                        '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                        '<Point>' +
+                                        '<gx:drawOrder>1</gx:drawOrder>' +
+                                        '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                        '</Point>' +
+                                        '</Placemark>';
                                 }
                             }
-
-                            if (_kml == 0) {
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
-                                if (i < issue.length - 1) {
-                                    issue_return += ',';
-                                }
-                            } else if (_kml == 1) {
-                                issue_return += '<Placemark>' +
-                                    '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
-                                    '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
-                                    '<LookAt>' +
-                                    '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
-                                    '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
-                                    '<altitude>0</altitude>' +
-                                    '<heading>-176.4101948194351</heading>' +
-                                    '<tilt>70.72955317497231</tilt>' +
-                                    '<range>1952.786634342951</range>' +
-                                    '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
-                                    '</LookAt>' +
-                                    '<styleUrl>#m_ylw-pushpin</styleUrl>' +
-                                    '<Point>' +
-                                    '<gx:drawOrder>1</gx:drawOrder>' +
-                                    '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
-                                    '</Point>' +
-                                    '</Placemark>';
-                            }
+                        }
+                        else {
+                            issue_return = "{}";
                         }
 
                         if (_kml == 0) {

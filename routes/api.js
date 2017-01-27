@@ -908,7 +908,7 @@ router.get('/issue', function (req, res) {
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"
             }, function (error, response, body) {
-
+                console.log("BUGZILLA ======> " + JSON.stringify(body));
                 var i_count = 0;
                 var bugs_length = 0;
 

@@ -380,7 +380,7 @@ router.get('/issue', function (req, res) {
     var _product;
     var _status = [];
     var _cf_authedicated = 1;
-    var _cf_authedicated_contition;
+    var _cf_authedicated_contition = "equals";
 	var _kml;
 	var _offset;
 	var _user=false;

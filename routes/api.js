@@ -728,7 +728,7 @@ router.get('/issue', function (req, res) {
                                         if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                             bug_id = bugzilla_results[j].id;
                                             bug_status = bugzilla_results[j].status;
-                                            bug_authenticate = bugzilla_results[j].cf_authenticate;
+                                            bug_authenticate = bugzilla_results[j].cf_authedicated;
                                             
                                         }
                                     }
@@ -831,7 +831,7 @@ router.get('/issue', function (req, res) {
                                         if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                             bug_id = bugzilla_results[j].id;
                                             bug_status = bugzilla_results[j].status;
-                                            bug_authenticate = bugzilla_results[j].cf_authenticate;
+                                            bug_authenticate = bugzilla_results[j].cf_authedicated;
                                             
                                         }
                                     }
@@ -980,7 +980,7 @@ router.get('/issue', function (req, res) {
                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                     bug_id = bugzilla_results[j].id;
                                     bug_status = bugzilla_results[j].status;
-                                    bug_authenticate = bugzilla_results[j].cf_authenticate;
+                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
                                 }
                             }
 
@@ -1083,7 +1083,7 @@ router.get('/issue', function (req, res) {
                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                     bug_id = bugzilla_results[j].id;
                                     bug_status = bugzilla_results[j].status;
-                                    bug_authenticate = bugzilla_results[j].cf_authenticate;
+                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
                                 }
                             }
 

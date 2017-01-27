@@ -146,6 +146,7 @@ router.post('/issue', function (req, res) {
                     console.log(err1);
                 } else
                 {
+                    
 					//console.log("bug.url =====>" + bugUrl);
                     if (resp.issue == "garbage" || resp.issue == "road-contructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "enviroment" )
                     {
@@ -168,6 +169,8 @@ router.post('/issue', function (req, res) {
                                 method: "POST",
                                 json: bugData1
                             }, function (error, bugResponse, body) {
+
+                                console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log("");
                                 console.log(body);
                                 console.log(bugResponse);
                                 console.log(error);

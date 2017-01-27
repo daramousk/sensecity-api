@@ -648,7 +648,7 @@ router.get('/issue', function (req, res) {
 
                     _product = response[0]["municipality"];
 
-                    var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort +  _summary + "&include_fields=id,alias,status";
+                    var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
                     console.log(bugParams1);
                     var ids = [];
                     var bugzilla_results = [];
@@ -722,15 +722,18 @@ router.get('/issue', function (req, res) {
 
                                     var bug_id = 0;
                                     var bug_status = "";
+                                    var bug_authenticate = "0";
                                     for (var j = 0; j < bugzilla_results.length; j++) {
                                         if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                             bug_id = bugzilla_results[j].id;
                                             bug_status = bugzilla_results[j].status;
+                                            bug_authenticate = bugzilla_results[j].cf_authenticate;
+                                            
                                         }
                                     }
 
                                     if (_kml == 0) {
-                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
                                         if (i < issue.length - 1) {
                                             issue_return += ',';
                                         }
@@ -822,15 +825,18 @@ router.get('/issue', function (req, res) {
 
                                     var bug_id = 0;
                                     var bug_status = "";
+                                    var bug_authenticate = "0";
                                     for (var j = 0; j < bugzilla_results.length; j++) {
                                         if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                             bug_id = bugzilla_results[j].id;
                                             bug_status = bugzilla_results[j].status;
+                                            bug_authenticate = bugzilla_results[j].cf_authenticate;
+                                            
                                         }
                                     }
 
                                     if (_kml == 0) {
-                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
                                         if (i < issue.length - 1) {
                                             issue_return += ',';
                                         }
@@ -891,7 +897,7 @@ router.get('/issue', function (req, res) {
 
             _product = req.query.city;
 
-            var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status";
+            var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
 
             var ids = [];
             var bugzilla_results = [];
@@ -967,15 +973,18 @@ router.get('/issue', function (req, res) {
 
                             var bug_id = 0;
                             var bug_status = "";
+                            var bug_authenticate = "0";
+
                             for (var j = 0; j < bugzilla_results.length; j++) {
                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                     bug_id = bugzilla_results[j].id;
                                     bug_status = bugzilla_results[j].status;
+                                    bug_authenticate = bugzilla_results[j].cf_authenticate;
                                 }
                             }
 
                             if (_kml == 0) {
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
                                 if (i < issue.length - 1) {
                                     issue_return += ',';
                                 }
@@ -1068,15 +1077,17 @@ router.get('/issue', function (req, res) {
 
                             var bug_id = 0;
                             var bug_status = "";
+                            var bug_authenticate = "0";
                             for (var j = 0; j < bugzilla_results.length; j++) {
                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                     bug_id = bugzilla_results[j].id;
                                     bug_status = bugzilla_results[j].status;
+                                    bug_authenticate = bugzilla_results[j].cf_authenticate;
                                 }
                             }
 
                             if (_kml == 0) {
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '"}';
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
                                 if (i < issue.length - 1) {
                                     issue_return += ',';
                                 }

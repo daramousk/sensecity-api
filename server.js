@@ -155,7 +155,7 @@ app.use('/api/1.0', require('./routes/api'));
  
 app.use('/fixed-point',require('./routes/lighting')); 
 
-app.use('/api/1.0/issue',require('./routes/image_return')); 
+//app.use('/api/1.0/issue',require('./routes/image_return')); 
 app.use('/fix_point', require('./routes/fix_point')); 
 app.use('/api/1.0/mobilemap', require('./routes/api')); 
 

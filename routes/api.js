@@ -386,7 +386,7 @@ router.get('/issue', function (req, res) {
 	var _user=false;
 	var _default_issue="";
 	var _departments;
-
+    var _summary;
 
 	if(!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
 		res.send([{"response":"no-data","message":"You don't send city - coordinates values!"}]);
@@ -445,70 +445,88 @@ router.get('/issue', function (req, res) {
 		if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
 		{
 			if(_default_issue=="---"){
-				_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                _issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                _summary = "&f6=short_desc&o6=equals&v6=garbage&f7=short_desc&o7=equals&v7=plumbing&f8=short_desc&o8=equals&v8=lighting&f9=short_desc&o9=equals&v9=road-contructor&f10=short_desc&o10=equals&v10=green&f11=short_desc&o11=equals&v11=protection-policy&f12=short_desc&o12=equals&v12=enviroment";
 			}else{
-				_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                _issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                _summary = "&f6=short_desc&o6=equals&v6=garbage&f7=short_desc&o7=equals&v7=plumbing&f8=short_desc&o8=equals&v8=lighting&f9=short_desc&o9=equals&v9=road-contructor&f10=short_desc&o10=equals&v10=green&f11=short_desc&o11=equals&v11=protection-policy&f12=short_desc&o12=equals&v12=enviroment";
 			}
 		} else {
-
-
+        
 			var issue_split = req.query.issue.split("|");
 
 			switch (issue_split.length) {
 				case 1:
 					if(_default_issue=="---"){
-						_issue ="---,"+issue_split[0].toString();
+                        _issue = "---," + issue_split[0].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6="+issue_split[0].toString();
 					}else{
-						_issue = issue_split[0].toString();
+                        _issue = issue_split[0].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString();
 					}
 					break;
 				case 2:
 					if(_default_issue=="---"){
-						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString();
+                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString();
 					}else{
-						_issue =issue_split[0].toString()+","+issue_split[1].toString();
+                        _issue = issue_split[0].toString() + "," + issue_split[1].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString();
 					}
 					break;
 				case 3:
 					if(_default_issue=="---"){
-						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
+                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString();
 					}else{
-						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString();
+                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString();
+
 					}
 					break;
 				case 4:
 					if(_default_issue=="---"){
-						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
+                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString();
 					}else{
-						_issue = issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString();
+                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString();
 					}
 					break;
 				case 5:
 					if(_default_issue=="---"){
-						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
+                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString() + "&f10=short_desc&o10=equals&v10=" + issue_split[4].toString();
 					}else{
-						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString();
+                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString() + "&f10=short_desc&o10=equals&v10=" + issue_split[4].toString();
 					}
 					break;
 				case 6:
 					if(_default_issue=="---"){
-						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
+                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString() + "&f10=short_desc&o10=equals&v10=" + issue_split[4].toString() + "&f11=short_desc&o11=equals&v11=" + issue_split[5].toString();
 					}else{
-						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString();
+                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString() + "&f10=short_desc&o10=equals&v10=" + issue_split[4].toString() + "&f11=short_desc&o11=equals&v11=" + issue_split[5].toString();
 					}
 					break;
 				case 7:
 					if(_default_issue=="---"){
-						_issue ="---,"+issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
+                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString() + "&f10=short_desc&o10=equals&v10=" + issue_split[4].toString() + "&f11=short_desc&o11=equals&v11=" + issue_split[5].toString() + "&f12=short_desc&o12=equals&v12=" + issue_split[6].toString();
 					}else{
-						_issue =issue_split[0].toString()+","+issue_split[1].toString()+","+issue_split[2].toString()+","+issue_split[3].toString()+","+issue_split[4].toString()+","+issue_split[5].toString()+","+issue_split[6].toString();
+                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
+                        _summary = "&f6=short_desc&o6=equals&v6=" + issue_split[0].toString() + "&f7=short_desc&o7=equals&v7=" + issue_split[1].toString() + "&f8=short_desc&o8=equals&v8=" + issue_split[2].toString() + "&f9=short_desc&o9=equals&v9=" + issue_split[3].toString() + "&f10=short_desc&o10=equals&v10=" + issue_split[4].toString() + "&f11=short_desc&o11=equals&v11=" + issue_split[5].toString() + "&f12=short_desc&o12=equals&v12=" + issue_split[6].toString();
 					}
 					break;
 				default:
 					if(_default_issue=="---"){
-						_issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                        _issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                        _summary = "&f6=short_desc&o6=equals&v6=garbage&f7=short_desc&o7=equals&v7=plumbing&f8=short_desc&o8=equals&v8=lighting&f9=short_desc&o9=equals&v9=road-contructor&f10=short_desc&o10=equals&v10=green&f11=short_desc&o11=equals&v11=protection-policy&f12=short_desc&o12=equals&v12=enviroment";
 					}else{
-						_issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                        _issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
+                        _summary = "&f6=short_desc&o6=equals&v6=garbage&f7=short_desc&o7=equals&v7=plumbing&f8=short_desc&o8=equals&v8=lighting&f9=short_desc&o9=equals&v9=road-contructor&f10=short_desc&o10=equals&v10=green&f11=short_desc&o11=equals&v11=protection-policy&f12=short_desc&o12=equals&v12=enviroment";
 					}
 					break;
 			}
@@ -630,7 +648,7 @@ router.get('/issue', function (req, res) {
 
                     _product = response[0]["municipality"];
 
-                    var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + "&include_fields=id,alias,status";
+                    var bugParams1 = "?product=" + _product + "&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort +  _summary + "&include_fields=id,alias,status";
                     console.log(bugParams1);
                     var ids = [];
                     var bugzilla_results = [];

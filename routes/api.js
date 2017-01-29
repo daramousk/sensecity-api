@@ -408,7 +408,7 @@ router.get('/issue', function (req, res) {
 		if (req.query.hasOwnProperty('enddate')) {
 			_enddate = new Date(req.query.enddate).toISOString();
         } else {
-            _enddate = newdate.getFullYear() + "-" + (newdate.getMonth() + 1) + "-" + newdate.getDate();
+            _enddate = (newdate.getFullYear() + "-" + (newdate.getMonth() + 1) + "-" + newdate.getDate()).toISOString();
 		}
 
 		if (!req.query.hasOwnProperty('coordinates')) {

@@ -170,10 +170,7 @@ router.post('/issue', function (req, res) {
                                 json: bugData1
                             }, function (error, bugResponse, body) {
 
-                                console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log("");
-                                console.log(body);
-                                console.log(bugResponse);
-                                console.log(error);
+                                if (error != null) { console.log(error) };
 
                                 if (!error && bugResponse.statusCode === 200) {
                                    // console.log(body);
@@ -602,23 +599,24 @@ router.get('/issue', function (req, res) {
         
 		
 		if (!req.query.hasOwnProperty('status'))
-		{
-			_status = "&status=CONFIRMED&status=IN_PROGRESS";
+        {
+            
+			_status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
 		} else {
 			var status_split = req.query.status.split("|");
 
 			switch (status_split.length) {
 				case 1:		
-					_status = "&status="+status_split[0];
+                    _status = "&f7=bug_status&o7=anywordssubstr&v7="+status_split[0];
 					break;
 				case 2:
-					_status = "&status="+status_split[0]+"&status="+status_split[1];					
+                    _status = "&f7=bug_status&o7=anywordssubstr&v7="+status_split[0]+", "+status_split[1];					
 					break;
 				case 3:
-					_status = "&status="+status_split[0]+"&status="+status_split[1]+"&status="+status_split[2];
+                    _status = "&f7=bug_status&o7=anywordssubstr&v7="+status_split[0]+", "+status_split[1]+", "+status_split[2];
 					break;
 				default:
-					_status = "&status=CONFIRMED&status=IN_PROGRESS";
+                    _status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
 					break;
 			}
 		}
@@ -2586,7 +2584,6 @@ router.get('/fullissue/:id', function (req, res) {
     
     //var bugParams1 = "?alias=" + id + "&include_fields=id,component,alias,status";
     
-    
     var bugParams =
             {
                 "method": "Bug.search",
@@ -2602,15 +2599,6 @@ router.get('/fullissue/:id', function (req, res) {
             json: bugParams
         }, function (error, response, body) {
         
-        /*
-    request({
-        url: bugUrlRest + "/rest/bug" + bugParams1,
-        method: "GET"
-    }, function (error, response, body) {*/
-
-        console.log(body);
-    
-			
 			if( body.result.bugs.length !== 0){
 			
 			if (body.length < 1) {
@@ -2652,10 +2640,8 @@ router.get('/fullissue/:id', function (req, res) {
 
 router.post('/active_users', function (req, res) {
 
-
     if (req.body.hasOwnProperty('uuid') && req.body.hasOwnProperty('name') && req.body.hasOwnProperty('email'))
     {
-
         if (req.body.uuid == "web-site") { //web use
 
             act_User.find({"email": req.body.email, "activate": "1"}, function (error, resp) {
@@ -2673,12 +2659,7 @@ router.post('/active_users', function (req, res) {
                     }, function (err, resp) {
                         if (err)
                             throw err;
-
-                        // we have the updated user returned to us
-
-
                         res.send({"user_exist": "1"});
-
                     });
 
                 } else {
@@ -2721,17 +2702,9 @@ router.post('/active_users', function (req, res) {
                             }
                             console.log('Message sent: ' + info.response);
                         });
-
-
-
                     });
                 }
-
-                //res.send(actice_user);
-
             });
-
-
         } else { // Mobile use
             act_User.find({"uuid": req.body.uuid, "email": req.body.email}, function (error, resp) {
 				
@@ -2741,11 +2714,7 @@ router.post('/active_users', function (req, res) {
 				var text_act = "";
 				var possible = "0123456789";
 				
-				
-				
                 if (resp.length > 0) {
-					
-					//console.log(" activate    =============>>>>>>>>  " + resp[0].activate);
 					
 					if (resp[0].activate == "1") {
 						text_act="1";
@@ -2754,9 +2723,6 @@ router.post('/active_users', function (req, res) {
 						for (var i = 0; i < 4; i++)
 							text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 					}
-						//console.log(" Mobile use    =============>>>>>>>>  " + JSON.stringify(resp));
-						//console.log(" text_act    =============>>>>>>>>  " + text_act);
-						
 						act_User.findOneAndUpdate({"uuid": req.body.uuid, "email": req.body.email}, {
 							name: req.body.name,
 							email: req.body.email,
@@ -2833,20 +2799,11 @@ router.post('/active_users', function (req, res) {
 								}
 								console.log('Message sent: ' + info.response);
 							});
-
-
-
 						});
 					}
-
-                //res.send(actice_user);
-
             }).sort({"create_at":-1}).limit(1);
         }
     }
-
-    //res.send({"name":"active_users"});
-
 });
 
 router.get('/policy', function (req, res) {
@@ -2886,14 +2843,10 @@ router.post('/activate_users', function (req, res) {
 });
 
 router.post('/admin/bugs/search', authorization, function (req, res) {
-	//console.log("sdfsdfsd======================================="+querystring.stringify(req.body)+"------->>>>>"+bugUrlRest);
     request({
         url: bugUrlRest + "/rest/bug?" + querystring.stringify(req.body),
         method: "GET"
     }, function (error, response, body) {
-		
-		//console.log(JSON.stringify(response));
-		//console.log(JSON.stringify(body));
         if (!error && response.statusCode === 200) {
 
             if (response.body.result !== null)
@@ -2960,7 +2913,6 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
         if (!error && response.statusCode === 201) {
             if (response.body.result !== null)
             {
-                //console.log(body);
                 res.send(body);
             } else
             {
@@ -2973,7 +2925,6 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
 
 router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
     req.body.token = bugToken;
-    //console.log(req.body);
     request({
         url: bugUrlRest + "/rest/bug/comment/" + req.body.id + "/tags",
         method: "PUT",
@@ -2988,14 +2939,11 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
             {
                 res.send([response.body.error]);
             }
-
         }
     });
 });
 
 router.post('/dashboard', function (req, res) {
-	//console.log("dfdsgdfgfdg");
-	//console.log(req);
     Role.find({username: req.body.username, password: req.body.password, city: req.body.city}, function (err, response) {
         if (response.length > 0) {
             var wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);

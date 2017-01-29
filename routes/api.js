@@ -409,7 +409,7 @@ router.get('/issue', function (req, res) {
 			_enddate = new Date(req.query.enddate).toISOString();
         } else {
             
-            _enddate = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + newdate.getDate();
+            _enddate = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + (newdate.getDate()+3);
 		}
 
 		if (!req.query.hasOwnProperty('coordinates')) {

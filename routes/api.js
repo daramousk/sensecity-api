@@ -389,9 +389,15 @@ router.get('/issue', function (req, res) {
 	var _default_issue="";
 	var _departments;
     var _summary;
-    var 
+    var yyyy1;
+    var yyyy2;
+    var mm1;
+    var mm2;
+    var dd1;
+    var dd2;
 
-	if(!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
+
+	if (!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
 		res.send([{"response":"no-data","message":"You don't send city - coordinates values!"}]);
 	}
     else

@@ -406,21 +406,53 @@ router.get('/issue', function (req, res) {
 
 		if (!req.query.hasOwnProperty('startdate'))	{
             //_startdate = new Date();
-           
-            _startdate = newdate.getFullYear() + "-" + (newdate.getMonth() + 1) + "-" + (newdate.getDate() - 5); //.setDate(_startdate.getDate() - 3);
+            _startdate = new Date(_startdate) - 1000 * 60 * 60 * 24 * 3;
 
-			
+            _startdate = new Date(_startdate);
+
+            yyyy1 = _startdate.getFullYear();
+            if (_startdate.getMonth() < 9) {
+                mm1 = "0" + (_startdate.getMonth() + 1);
+            } else {
+                mm1 = _startdate.getMonth() + 1;
+            }
+            if (_startdate.getDate() <= 9) {
+                dd1 = "0" + _startdate.getDate();
+            } else {
+                dd1 = _startdate.getDate();
+            }
+
+            _startdate = yyyy1 + "-" + mm1 + "-" + dd1 + "T00:00:00.000";
+            
         } else {
-            _startdate = new Date(req.query.startdate).toISOString();
+            //_startdate = new Date(req.query.startdate).toISOString();
+
+            var partsOfStr = req.query.startdate.split('-');
+            _startdate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T00:00:00.000";
         }
 		
 		if (req.query.hasOwnProperty('enddate')) {
-            _enddate = new Date(req.query.enddate).toISOString();
-        } else {
-            
-            _enddate = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + (newdate.getDate() + 3);
+            //_enddate = new Date(req.query.enddate).toISOString();
+            var partsOfStr = req.query.enddate.split('-');
+            _enddate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T23:59:59.999";
+        } else {            
+            yyyy2 = _enddate.getFullYear();
+            if (_enddate.getMonth() < 9) {
+                mm2 = "0" + (_enddate.getMonth() + 1);
+            } else {
+                mm2 = _enddate.getMonth() + 1;
+            }
+            if (_enddate.getDate() <= 9) {
+                dd2 = "0" + _enddate.getDate();
+            } else {
+                dd2 = _enddate.getDate();
+            }
+
+            _enddate = yyyy2 + "-" + mm2 + "-" + dd2 + "T23:59:59.999";
 
 		}
+
+        console.log(_startdate + " ---- " + _enddate);
 
 		if (!req.query.hasOwnProperty('coordinates')) {
 			_coordinates = '';

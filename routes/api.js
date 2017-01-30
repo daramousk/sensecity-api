@@ -209,7 +209,7 @@ router.post('/issue', function (req, res) {
 
 router.post('/issue/:id', function (req, res) {
 
-    console.log(req);
+    //console.log(req);
     var bodyParams;
 	//console.log("req.params.id"+req.params.id);
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
@@ -316,17 +316,19 @@ router.post('/issue/:id', function (req, res) {
                             url: bugUrlRest + "/rest/bug/" + body_parse.bugs[0].id +"/comment",
 								method: "POST",
 								json: bugComment1
-							}, function (error2, bugResponse2, body2) {
-								console.log("body2" + JSON.stringify(body2));
+                        }, function (error2, bugResponse2, body2) {
+
+
+								//console.log("body2 ====> " + JSON.stringify(body2.id));
 								console.log("Insert comments to bugzilla");
 								
-								if(body2.result != null)
+								if(body2.id != null)
 								{
 																
 								request({
-									url: bugUrlRest + "/rest/bug/comment/" + body2.result.id + "/tags",
+									url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
 									method: "PUT",
-									json: {"add": ["all", "CONFIRMED"], "id": body2.result.id,"token": bugToken}
+									json: {"add": ["all", "CONFIRMED"], "id": body2.id,"token": bugToken}
 								}, function (error4, response4, body4) {
 									
 									console.log("Insert Tags to comment");
@@ -399,17 +401,24 @@ router.get('/issue', function (req, res) {
             //_startdate = new Date();
            
             _startdate = newdate.getFullYear() + "-" + (newdate.getMonth() + 1) + "-" + (newdate.getDate() - 5); //.setDate(_startdate.getDate() - 3);
-
+            _startdate = _startdate.format("isoDateTime");
+            console.log(_startdate);
 			
         } else {
-			_startdate = new Date(req.query.startdate).toISOString();
+            _startdate = new Date(req.query.startdate).toISOString();
+            _startdate = _startdate.format("isoDateTime");
+            console.log(_startdate);
         }
 		
 		if (req.query.hasOwnProperty('enddate')) {
-			_enddate = new Date(req.query.enddate).toISOString();
+            _enddate = new Date(req.query.enddate).toISOString();
+            _enddate = _enddate.format("isoDateTime");
+            console.log(_enddate);
         } else {
             
-            _enddate = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + (newdate.getDate()+3);
+            _enddate = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + (newdate.getDate() + 3);
+            _enddate = _enddate.format("isoDateTime");
+            console.log(_enddate);
 		}
 
 		if (!req.query.hasOwnProperty('coordinates')) {
@@ -650,7 +659,7 @@ router.get('/issue', function (req, res) {
 
                     //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
                     var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-                    console.log(bugParams1);
+                    //console.log(bugParams1);
                     var ids = [];
                     var bugzilla_results = [];
                     var issue_return = [];
@@ -905,7 +914,7 @@ router.get('/issue', function (req, res) {
             var ids = [];
             var bugzilla_results = [];
             var issue_return = [];
-            console.log(bugParams1);
+            //console.log(bugParams1);
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"

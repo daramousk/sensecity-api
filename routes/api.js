@@ -389,6 +389,7 @@ router.get('/issue', function (req, res) {
 	var _default_issue="";
 	var _departments;
     var _summary;
+    var 
 
 	if(!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
 		res.send([{"response":"no-data","message":"You don't send city - coordinates values!"}]);
@@ -401,24 +402,18 @@ router.get('/issue', function (req, res) {
             //_startdate = new Date();
            
             _startdate = newdate.getFullYear() + "-" + (newdate.getMonth() + 1) + "-" + (newdate.getDate() - 5); //.setDate(_startdate.getDate() - 3);
-            _startdate = _startdate.format("isoDateTime");
-            console.log(_startdate);
+
 			
         } else {
             _startdate = new Date(req.query.startdate).toISOString();
-            _startdate = _startdate.format("isoDateTime");
-            console.log(_startdate);
         }
 		
 		if (req.query.hasOwnProperty('enddate')) {
             _enddate = new Date(req.query.enddate).toISOString();
-            _enddate = _enddate.format("isoDateTime");
-            console.log(_enddate);
         } else {
             
             _enddate = newdate.getFullYear() + "-" + ("0" + (newdate.getMonth() + 1)).slice(-2) + "-" + (newdate.getDate() + 3);
-            _enddate = _enddate.format("isoDateTime");
-            console.log(_enddate);
+
 		}
 
 		if (!req.query.hasOwnProperty('coordinates')) {

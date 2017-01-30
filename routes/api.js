@@ -61,7 +61,9 @@ function authentication(req, res, next) {
 //Bugzilla login
 var bugUrl = config.config.bugUrl;
 
-var loginData =
+var loginData1 = "?login=" + config.config.login + "&password=" + config.config.pwd;
+
+/* var loginData 
         {
             "method": "User.login",
             "params": [{"login": config.config.login, "password": config.config.pwd}],
@@ -73,12 +75,21 @@ request({
     url: bugUrl,
     method: "POST",
     json: loginData
+}, function (error, response, body) {*/
+var bugToken = "";
+request({
+    url: bugUrlRest + "/rest/login" + loginData1,
+    method: "GET"
 }, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-        bugToken = body.result.token;
 
-        console.log("Login in bugzilla as: " + loginData.params[0].login);
-        console.log("And assigned token: " + body.result.token);
+    console.log(JSON.stringify(body));
+    var body_variable = JSON.parse(body);
+
+    if (!error && response.statusCode === 200) {
+        bugToken = body_variable.token;
+
+        console.log("Login in bugzilla as: " + config.config.login);
+        console.log("And assigned token: " + body_variable.token);
     } else {
         console.log("error: " + error);
         console.log("response.statusCode: " + response.statusCode);
@@ -2623,32 +2634,40 @@ router.get('/fullissue/:id', function (req, res) {
     var id = req.params.id;
     var issue_rtrn = [];
     
-    //var bugParams1 = "?alias=" + id + "&include_fields=id,component,alias,status";
+    var bugParams1 = "?alias=" + id + "&include_fields=id,component,alias,status";
     
-    var bugParams =
+    /*var bugParams =
             {
                 "method": "Bug.search",
                 "params": [{"alias": id, "include_fields": ["id", "component", "alias", "status"]}],
                 "id": 1
             };
             
-
+            
        
         request({
             url: bugUrl,
             method: "POST",
             json: bugParams
-        }, function (error, response, body) {
-        
-			if( body.result.bugs.length !== 0){
+        }, function (error, response, body) {*/
+
+
+            request({
+                url: bugUrlRest +"/rest/bug"+ bugParams1,
+                method: "GET"
+            }, function (error, response, body) {
+
+                var body_var = JSON.parse(body);
+
+                if (body_var.bugs.length !== 0){
 			
-			if (body.length < 1) {
+                    if (body_var.length < 1) {
 
 				res.send([{}]);
 
 			} else {
 				request({
-                    url: bugUrlRest + "/rest/bug/" + body.result.bugs[0].alias[0] + "/comment",
+                    url: bugUrlRest + "/rest/bug/" + body_var.bugs[0].alias[0] + "/comment",
 					method: "GET"
 				}, function (error1, response1, body1) {
 					if(error1)
@@ -2658,7 +2677,7 @@ router.get('/fullissue/:id', function (req, res) {
 						
 						//console.log("issue      ===============>>>>>>>>    " + JSON.stringify(issue));
 						if(issue != null){
-                            issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body.result.bugs[0].status + '","bug_id":"' + body.result.bugs[0].id + '"},' + body1 + ']';
+                            issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + ']';
 
 							res.send(issue_rtrn);
 						}

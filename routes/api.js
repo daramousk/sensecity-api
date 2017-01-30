@@ -450,9 +450,7 @@ router.get('/issue', function (req, res) {
 
             _enddate = yyyy2 + "-" + mm2 + "-" + dd2 + "T23:59:59.999";
 
-		}
-
-        console.log(_startdate + " ---- " + _enddate);
+		}        
 
 		if (!req.query.hasOwnProperty('coordinates')) {
 			_coordinates = '';
@@ -2656,11 +2654,11 @@ router.get('/fullissue/:id', function (req, res) {
 					if(error1)
 						cosnole.log("/fullissue/:id error :"+error1);
 					
-					Issue.findOne({"_id": req.params.id}, function (err, issue) {
+                    Issue.find({"_id":req.params.id}, {"user":0}, function (err, issue) {
 						
 						//console.log("issue      ===============>>>>>>>>    " + JSON.stringify(issue));
 						if(issue != null){
-							issue_rtrn = '[{"_id":"' + issue._id + '","municipality":"' + issue.municipality + '","image_name":"' + issue.image_name + '","issue":"' + issue.issue + '","device_id":"' + issue.device_id + '","value_desc":"' + issue.value_desc + '","user":{"phone":"' + issue.user.phone + '","email":"' + issue.user.email + '","name":"' + issue.user.name + '","uuid":"' + issue.user.uuid + '"},"comments":"' + issue.comments + '","create_at":"' + issue.create_at + '","loc":{"type":"Point","coordinates":[' + issue.loc.coordinates + ']},"status":"' + body.result.bugs[0].status + '","bug_id":"' + body.result.bugs[0].id + '"},' + body1 + ']';
+                            issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body.result.bugs[0].status + '","bug_id":"' + body.result.bugs[0].id + '"},' + body1 + ']';
 
 							res.send(issue_rtrn);
 						}

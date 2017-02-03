@@ -27,7 +27,7 @@ var cityPolicy = require('../models/citypolicy');
 var bugUrlRest=config.config.bugUrlRest;
 
 //Authorization middleware
-function authorization(req, res, next) 
+function authorization(req, res, next) {
 
 
     // /admin [email,mobile], [GET,POST,PUT,DELETE], [admin], allow

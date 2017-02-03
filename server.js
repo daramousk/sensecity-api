@@ -152,7 +152,8 @@ mongoose.connection.once('open', function () {
 
 // Routes 
 app.use('/api/1.0', require('./routes/api'));
- 
+//app.use('/api/1.0/admin', require('./routes/api'));
+
 app.use('/fixed-point',require('./routes/lighting')); 
 
 //app.use('/api/1.0/issue',require('./routes/image_return')); 

@@ -27,7 +27,14 @@ var cityPolicy = require('../models/citypolicy');
 var bugUrlRest=config.config.bugUrlRest;
 
 //Authorization middleware
-function authorization(req, res, next) {
+function authorization(req, res, next) 
+
+
+    // /admin [email,mobile], [GET,POST,PUT,DELETE], [admin], allow
+    // /admin [email,mobile], [POST,PUT,DELETE], [departmentUser], forbidden
+    // /admin, [GET,POST,PUT,DELETE], [all], forbidden
+
+
 	
     Role.find({uuid: req.get('x-uuid')}, function (err, response) {
         if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
@@ -377,7 +384,7 @@ router.post('/issue/:id', function (req, res) {
 
 /* ** Test ** */
 
-router.get('/issue', function (req, res) {
+router.get('/issue', function (req1, res1) {
 
     var _startdate = new Date();
     var _enddate = new Date();
@@ -394,11 +401,11 @@ router.get('/issue', function (req, res) {
     var _status = [];
     var _cf_authedicated = 1;
     var _cf_authedicated_contition = "equals";
-	var _kml;
-	var _offset;
-	var _user=false;
-	var _default_issue="";
-	var _departments;
+    var _kml;
+    var _offset;
+    var _user = false;
+    var _default_issue = "";
+    var _departments;
     var _summary;
     var yyyy1;
     var yyyy2;
@@ -408,14 +415,20 @@ router.get('/issue', function (req, res) {
     var dd2;
 
 
-	if (!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")){
-		res.send([{"response":"no-data","message":"You don't send city - coordinates values!"}]);
-	}
-    else
-    {
-		
+    /*if (is_authenticate({ "uuid": req.get('x-uuid'), "role": req.get('x-role')})) {
+        console.log("authedicate");
+    }
+    else {
+        console.log("anonymous");
+    }*/
 
-		if (!req.query.hasOwnProperty('startdate'))	{
+    if (!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")) {
+        res.send([{ "response": "no-data", "message": "You don't send city - coordinates values!" }]);
+    }
+    else {
+
+
+        if (!req.query.hasOwnProperty('startdate')) {
             //_startdate = new Date();
             _startdate = new Date(_startdate) - 1000 * 60 * 60 * 24 * 3;
 
@@ -434,19 +447,19 @@ router.get('/issue', function (req, res) {
             }
 
             _startdate = yyyy1 + "-" + mm1 + "-" + dd1 + "T00:00:00.000";
-            
+
         } else {
             //_startdate = new Date(req.query.startdate).toISOString();
 
             var partsOfStr = req.query.startdate.split('-');
             _startdate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T00:00:00.000";
         }
-		
-		if (req.query.hasOwnProperty('enddate')) {
+
+        if (req.query.hasOwnProperty('enddate')) {
             //_enddate = new Date(req.query.enddate).toISOString();
             var partsOfStr = req.query.enddate.split('-');
             _enddate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T23:59:59.999";
-        } else {            
+        } else {
             yyyy2 = _enddate.getFullYear();
             if (_enddate.getMonth() < 9) {
                 mm2 = "0" + (_enddate.getMonth() + 1);
@@ -461,229 +474,220 @@ router.get('/issue', function (req, res) {
 
             _enddate = yyyy2 + "-" + mm2 + "-" + dd2 + "T23:59:59.999";
 
-		}        
+        }
 
-		if (!req.query.hasOwnProperty('coordinates')) {
-			_coordinates = '';
-		} else {
-			_coordinates = req.query.coordinates;
-		}
+        if (!req.query.hasOwnProperty('coordinates')) {
+            _coordinates = '';
+        } else {
+            _coordinates = req.query.coordinates;
+        }
 
-		if (!req.query.hasOwnProperty('distance'))
-		{
-			_distance = '10000';
-		} else {
-			_distance = req.query.distance;
-		}
+        if (!req.query.hasOwnProperty('distance')) {
+            _distance = '10000';
+        } else {
+            _distance = req.query.distance;
+        }
 
-		if (!req.query.hasOwnProperty('includeAnonymous')){
+        if (!req.query.hasOwnProperty('includeAnonymous')) {
             _cf_authedicated = 1;
             _cf_authedicated_contition = "equals";
-		}
-		else{
-			if(req.query.includeAnonymous==1){
+        }
+        else {
+            if (req.query.includeAnonymous == 1) {
                 _cf_authedicated = 2;
                 _cf_authedicated_contition = "lessthan";
-				_default_issue = "---";
-			}else{
+                _default_issue = "---";
+            } else {
                 _cf_authedicated = 1;
                 _cf_authedicated_contition = "equals";
-			}
-			
-		}
-		
-		if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all')
-		{
-			if(_default_issue=="---"){
+            }
+
+        }
+
+        if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all') {
+            if (_default_issue == "---") {
                 _issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
                 _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
-			}else{
+            } else {
                 _issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
                 _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
-			}
-		} else {
-        
-			var issue_split = req.query.issue.split("|");
+            }
+        } else {
 
-			switch (issue_split.length) {
-				case 1:
-					if(_default_issue=="---"){
+            var issue_split = req.query.issue.split("|");
+
+            switch (issue_split.length) {
+                case 1:
+                    if (_default_issue == "---") {
                         _issue = "---," + issue_split[0].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6="+issue_split[0].toString();
-					}else{
+                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString();
+                    } else {
                         _issue = issue_split[0].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString();
-					}
-					break;
-				case 2:
-					if(_default_issue=="---"){
+                    }
+                    break;
+                case 2:
+                    if (_default_issue == "---") {
                         _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString();
-					}else{
+                    } else {
                         _issue = issue_split[0].toString() + "," + issue_split[1].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString();
-					}
-					break;
-				case 3:
-					if(_default_issue=="---"){
+                    }
+                    break;
+                case 3:
+                    if (_default_issue == "---") {
                         _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString();
-					}else{
+                    } else {
                         _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString();
 
-					}
-					break;
-				case 4:
-					if(_default_issue=="---"){
+                    }
+                    break;
+                case 4:
+                    if (_default_issue == "---") {
                         _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString();
-					}else{
+                    } else {
                         _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString();
-					}
-					break;
-				case 5:
-					if(_default_issue=="---"){
+                    }
+                    break;
+                case 5:
+                    if (_default_issue == "---") {
                         _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString();
-					}else{
+                    } else {
                         _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString();
-					}
-					break;
-				case 6:
-					if(_default_issue=="---"){
+                    }
+                    break;
+                case 6:
+                    if (_default_issue == "---") {
                         _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString();
-					}else{
+                    } else {
                         _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString();
-					}
-					break;
-				case 7:
-					if(_default_issue=="---"){
+                    }
+                    break;
+                case 7:
+                    if (_default_issue == "---") {
                         _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString() + ", " + issue_split[6].toString();
-					}else{
+                    } else {
                         _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString() + ", " + issue_split[6].toString();
-					}
-					break;
-				default:
-					if(_default_issue=="---"){
+                    }
+                    break;
+                default:
+                    if (_default_issue == "---") {
                         _issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
-					}else{
+                    } else {
                         _issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
                         _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
-					}
-					break;
-			}
+                    }
+                    break;
+            }
         }
 
-		if (!req.query.hasOwnProperty('departments')){
-			_departments = "";
-		} else {
-			var department_split = req.query.departments.split("|");
+        if (!req.query.hasOwnProperty('departments')) {
+            _departments = "";
+        } else {
+            var department_split = req.query.departments.split("|");
 
-			var i_dep = 0;
-			
-			_departments="";
-			for (i_dep = 0; i_dep < department_split.length; i_dep++){
-				_departments += "&component="+encodeURIComponent(department_split[i_dep]);
-			}
-			
-		}
-		
-		if (!req.query.hasOwnProperty('limit'))
-		{
-			_limit = 1000;
-		} else {
-			_limit = req.query.limit;
-		}
+            var i_dep = 0;
 
-		if (!req.query.hasOwnProperty('sort'))
-		{
-			_sort = "&order=bug_id%20DESC";
-			_sort_mongo =-1;
-		} else {
-			if(req.query.sort==1){
-				_sort = "&order=bug_id%20ASC";
-				_sort_mongo =1;
-			}else if(req.query.sort==-1){
-				_sort = "&order=bug_id%20DESC";
-				_sort_mongo =-1;
-			}
-			
+            _departments = "";
+            for (i_dep = 0; i_dep < department_split.length; i_dep++) {
+                _departments += "&component=" + encodeURIComponent(department_split[i_dep]);
+            }
+
         }
 
-		if (!req.query.hasOwnProperty('image_field'))
-		{
-			_image = 0;
-			//_image = true;
-			//console.log("1 _image=" + _image);
-		} else {
-			if (req.query.image_field == 0)
-			{
-				_image = 0;
-				//_image = false;
-				//console.log("2 _image=" + _image);
-			} else {
-				_image = 1;
-				//_image = true;
-				//console.log("2 _image=" + _image);
-			}
-		}
+        if (!req.query.hasOwnProperty('limit')) {
+            _limit = 1000;
+        } else {
+            _limit = req.query.limit;
+        }
 
-		if (!req.query.hasOwnProperty('list_issue'))
-		{
-			_list_issue = false;
-		} else {
-			if (req.query.image_field == 0)
-			{
-				_list_issue = false;
-			} else {
-				_list_issue = true;
-			}
-		}
+        if (!req.query.hasOwnProperty('sort')) {
+            _sort = "&order=bug_id%20DESC";
+            _sort_mongo = -1;
+        } else {
+            if (req.query.sort == 1) {
+                _sort = "&order=bug_id%20ASC";
+                _sort_mongo = 1;
+            } else if (req.query.sort == -1) {
+                _sort = "&order=bug_id%20DESC";
+                _sort_mongo = -1;
+            }
 
-        
-		
-		if (!req.query.hasOwnProperty('status'))
-        {
-            
-			_status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
-		} else {
-			var status_split = req.query.status.split("|");
+        }
 
-			switch (status_split.length) {
-				case 1:		
-                    _status = "&f7=bug_status&o7=anywordssubstr&v7="+status_split[0];
-					break;
-				case 2:
-                    _status = "&f7=bug_status&o7=anywordssubstr&v7="+status_split[0]+", "+status_split[1];					
-					break;
-				case 3:
-                    _status = "&f7=bug_status&o7=anywordssubstr&v7="+status_split[0]+", "+status_split[1]+", "+status_split[2];
-					break;
-				default:
+        if (!req.query.hasOwnProperty('image_field')) {
+            _image = 0;
+            //_image = true;
+            //console.log("1 _image=" + _image);
+        } else {
+            if (req.query.image_field == 0) {
+                _image = 0;
+                //_image = false;
+                //console.log("2 _image=" + _image);
+            } else {
+                _image = 1;
+                //_image = true;
+                //console.log("2 _image=" + _image);
+            }
+        }
+
+        if (!req.query.hasOwnProperty('list_issue')) {
+            _list_issue = false;
+        } else {
+            if (req.query.image_field == 0) {
+                _list_issue = false;
+            } else {
+                _list_issue = true;
+            }
+        }
+
+
+
+        if (!req.query.hasOwnProperty('status')) {
+
+            _status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
+        } else {
+            var status_split = req.query.status.split("|");
+
+            switch (status_split.length) {
+                case 1:
+                    _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0];
+                    break;
+                case 2:
+                    _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0] + ", " + status_split[1];
+                    break;
+                case 3:
+                    _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0] + ", " + status_split[1] + ", " + status_split[2];
+                    break;
+                default:
                     _status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
-					break;
-			}
-		}
-			
-		
-		if (!req.query.hasOwnProperty('kml')){
-			_kml = 0;
-		} else {
-			_kml = req.query.kml;
-		}	
-		
-		if (!req.query.hasOwnProperty('offset')){
-			_offset = "";
-		} else{
-			_offset = "&offset="+req.query.offset;
+                    break;
+            }
+        }
+
+
+        if (!req.query.hasOwnProperty('kml')) {
+            _kml = 0;
+        } else {
+            _kml = req.query.kml;
+        }
+
+        if (!req.query.hasOwnProperty('offset')) {
+            _offset = "";
+        } else {
+            _offset = "&offset=" + req.query.offset;
         }
 
         _user = false;
@@ -725,9 +729,9 @@ router.get('/issue', function (req, res) {
 
                         //console.log("ids1 ======> "+ids);
                         if (_image == 0) {
-                          
+
                             Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
-                                
+
                                 //new start
                                 if (err != null) { console.log("err   =   " + err); }
                                 if (_kml == 0) {
@@ -781,7 +785,7 @@ router.get('/issue', function (req, res) {
                                             bug_id = bugzilla_results[j].id;
                                             bug_status = bugzilla_results[j].status;
                                             bug_authenticate = bugzilla_results[j].cf_authedicated;
-                                            
+
                                         }
                                     }
 
@@ -814,11 +818,13 @@ router.get('/issue', function (req, res) {
 
                                 if (_kml == 0) {
                                     issue_return += ']';
-                                    res.send(issue_return);
+                                    //res.send(issue_return);
+                                    console.log("=======>>>>>>" + issue_return); return issue_return;
                                 } else if (_kml == 1) {
                                     issue_return += '</Folder> </Document> </kml>';
 
-                                    res.send(issue_return);
+                                    //res.send(issue_return);
+                                    console.log("=======>>>>>>" + issue_return); return issue_return;
                                 }
 
                                 //new end
@@ -830,7 +836,7 @@ router.get('/issue', function (req, res) {
 
 
                         } else {
-                            
+
                             Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
                                 //new start
                                 if (err != null) { console.log("err1   =   " + err); }
@@ -873,7 +879,7 @@ router.get('/issue', function (req, res) {
                                         '<name>sensecity</name>' +
                                         '<open>1</open>';
                                 }
-                                
+
                                 for (var i = 0; i < issue.length; i++) {
 
                                     var bug_id = 0;
@@ -884,7 +890,7 @@ router.get('/issue', function (req, res) {
                                             bug_id = bugzilla_results[j].id;
                                             bug_status = bugzilla_results[j].status;
                                             bug_authenticate = bugzilla_results[j].cf_authedicated;
-                                            
+
                                         }
                                     }
 
@@ -917,11 +923,13 @@ router.get('/issue', function (req, res) {
 
                                 if (_kml == 0) {
                                     issue_return += ']';
-                                    res.send(issue_return);
+                                    //res.send(issue_return);
+                                    console.log("=======>>>>>>" + issue_return); return issue_return;
                                 } else if (_kml == 1) {
                                     issue_return += '</Folder> </Document> </kml>';
 
-                                    res.send(issue_return);
+                                    //res.send(issue_return);
+                                    console.log("=======>>>>>>" + issue_return); return issue_return;
                                 }
 
                                 //new end
@@ -938,11 +946,12 @@ router.get('/issue', function (req, res) {
 
 
 
-                    
+
                 } else {
 
                     _product = '';
                     res.send([{}]); // We don't have city with that coordinates                    
+                    return [{}];
                 }
             });
             //end else if there is coordinates
@@ -973,7 +982,7 @@ router.get('/issue', function (req, res) {
                     bugzilla_results = JSON.parse(body).bugs;
                 }
 
-                
+
                 if (_image == 0) {
                     //console.log("ids ===>> " + ids);
                     // This query works only if is valid object ids
@@ -1022,7 +1031,7 @@ router.get('/issue', function (req, res) {
                                 '<open>1</open>';
                         }
 
-                        
+
                         if (issue != undefined) {
                             for (var i = 0; i < issue.length; i++) {
 
@@ -1071,11 +1080,13 @@ router.get('/issue', function (req, res) {
 
                         if (_kml == 0) {
                             issue_return += ']';
-                            res.send(issue_return);
+                            //res.send(issue_return);
+                            console.log("=======>>>>>>" + issue_return); return issue_return;
                         } else if (_kml == 1) {
                             issue_return += '</Folder> </Document> </kml>';
 
-                            res.send(issue_return);
+                            //res.send(issue_return);
+                            console.log("=======>>>>>>" + issue_return); return issue_return;
                         }
 
                         //new end
@@ -1087,7 +1098,7 @@ router.get('/issue', function (req, res) {
 
 
                 } else {
-                   
+
 
                     Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
                         //new start
@@ -1174,11 +1185,13 @@ router.get('/issue', function (req, res) {
 
                         if (_kml == 0) {
                             issue_return += ']';
-                            res.send(issue_return);
+                            //res.send(issue_return);
+                            console.log("=======>>>>>>" + issue_return); return issue_return;
                         } else if (_kml == 1) {
                             issue_return += '</Folder> </Document> </kml>';
 
-                            res.send(issue_return);
+                            //res.send(issue_return);
+                            console.log("=======>>>>>>" + issue_return); return issue_return;
                         }
 
                         //new end
@@ -1197,8 +1210,21 @@ router.get('/issue', function (req, res) {
     } //end else if no city AND coordinates
 
 
-
 });
+/*
+router.get('/admin/issue', authentication, function (req1, res1) {
+
+    console.log("------------>" + issue_result(req1));
+    //res1.send(issue_result(req1));
+});*/
+
+   /* function issue_result(req, res) {
+
+       
+
+
+
+}*/
 
 
 /*
@@ -3026,6 +3052,21 @@ router.get('/logout', authentication, function (req, res) {
         res.send("logout");
     });
 });
+
+
+function is_authenticate(req, res) {
+    if (req.uuid != undefined && req.role != undefined) {
+        Role.find({ "uuid": req.uuid, "role": req.role }, function (request, response) {
+            console("resp => " + response);
+        });
+
+    }
+    console.log("req => " + JSON.stringify(req));
+    console.log("res => " + req.uuid);
+
+    return true;
+
+}
 
 
 // Return router

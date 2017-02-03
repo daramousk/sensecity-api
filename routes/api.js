@@ -818,13 +818,13 @@ router.get('/issue', function (req, res) {
 
                                 if (_kml == 0) {
                                     issue_return += ']';
-                                    //res.send(issue_return);
-                                    console.log("=======>>>>>>" + issue_return); return issue_return;
+                                    res.send(issue_return);
+                                    
                                 } else if (_kml == 1) {
                                     issue_return += '</Folder> </Document> </kml>';
 
-                                    //res.send(issue_return);
-                                    console.log("=======>>>>>>" + issue_return); return issue_return;
+                                    res.send(issue_return);
+                                    
                                 }
 
                                 //new end
@@ -923,13 +923,13 @@ router.get('/issue', function (req, res) {
 
                                 if (_kml == 0) {
                                     issue_return += ']';
-                                    //res.send(issue_return);
-                                    console.log("=======>>>>>>" + issue_return); return issue_return;
+                                    res.send(issue_return);
+                                    
                                 } else if (_kml == 1) {
                                     issue_return += '</Folder> </Document> </kml>';
 
-                                    //res.send(issue_return);
-                                    console.log("=======>>>>>>" + issue_return); return issue_return;
+                                    res.send(issue_return);
+                                    
                                 }
 
                                 //new end
@@ -1080,13 +1080,13 @@ router.get('/issue', function (req, res) {
 
                         if (_kml == 0) {
                             issue_return += ']';
-                            //res.send(issue_return);
-                            console.log("=======>>>>>>" + issue_return); return issue_return;
+                            res.send(issue_return);
+                            
                         } else if (_kml == 1) {
                             issue_return += '</Folder> </Document> </kml>';
 
-                            //res.send(issue_return);
-                            console.log("=======>>>>>>" + issue_return); return issue_return;
+                            res.send(issue_return);
+                            
                         }
 
                         //new end
@@ -1185,13 +1185,13 @@ router.get('/issue', function (req, res) {
 
                         if (_kml == 0) {
                             issue_return += ']';
-                            //res.send(issue_return);
-                            console.log("=======>>>>>>" + issue_return); return issue_return;
+                            res.send(issue_return);
+                            
                         } else if (_kml == 1) {
                             issue_return += '</Folder> </Document> </kml>';
 
-                            //res.send(issue_return);
-                            console.log("=======>>>>>>" + issue_return); return issue_return;
+                            res.send(issue_return);
+                            
                         }
 
                         //new end

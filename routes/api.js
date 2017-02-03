@@ -166,7 +166,7 @@ router.post('/issue', function (req, res) {
                 {
                     
 					//console.log("bug.url =====>" + bugUrl);
-                    if (resp.issue == "garbage" || resp.issue == "road-contructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "enviroment" )
+                    if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment" )
                     {
                         if (response.length > 0)
                         {
@@ -506,11 +506,11 @@ router.get('/issue', function (req1, res1) {
 
         if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all') {
             if (_default_issue == "---") {
-                _issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
-                _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
+                _issue = "---,garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
             } else {
-                _issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
-                _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
+                _issue = "garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
             }
         } else {
 
@@ -583,11 +583,11 @@ router.get('/issue', function (req1, res1) {
                     break;
                 default:
                     if (_default_issue == "---") {
-                        _issue = "---,garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
+                        _issue = "---,garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
                     } else {
-                        _issue = "garbage,plumbing,lighting,road-contructor,green,protection-policy,enviroment";
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-contructor, green, protection-policy, enviroment";
+                        _issue = "garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
                     }
                     break;
             }

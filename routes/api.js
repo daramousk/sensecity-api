@@ -384,7 +384,7 @@ router.post('/issue/:id', function (req, res) {
 
 /* ** Test ** */
 
-router.get('/issue', function (req1, res1) {
+router.get('/issue', function (req, res) {
 
     var _startdate = new Date();
     var _enddate = new Date();

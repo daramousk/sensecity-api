@@ -10,6 +10,7 @@ var crypto = require('crypto-js');
 //var xml = require('xml');
 
 var config = require('app-config');
+var request_promise = require('request-promise');
 
 mongoose.connect('mongodb://' + config.config.my_hostname + '/' + config.config.database);
 
@@ -386,659 +387,867 @@ router.post('/issue/:id', function (req, res) {
 
 router.get('/issue', function (req, res) {
 
-    var _startdate = new Date();
-    var _enddate = new Date();
-    var _coordinates;
-    var _distance;
-    var _issue;
-    var _limit;
-    var _sort;
-    var _loc_var;
-    var newdate = new Date();
-    var _image;
-    var _list_issue;
-    var _product;
-    var _status = [];
-    var _cf_authedicated = 1;
-    var _cf_authedicated_contition = "equals";
-    var _kml;
-    var _offset;
-    var _user = false;
-    var _default_issue = "";
-    var _departments;
-    var _summary;
-    var yyyy1;
-    var yyyy2;
-    var mm1;
-    var mm2;
-    var dd1;
-    var dd2;
+    get_issues(req, function (result) {        
+        res.send(result);
+    });
+
+});
+
+router.get('/admin/issue', authentication, function (req, res) {
+
+    
+    get_issues(req, function (result) {
+        res.send(result);
+    });
+
+});
+
+var get_issues = function (req, callback) {
+
+    var x_uuid = req.get('x-uuid');
+    if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email")) ) {
+
+        var _bug_id;
+        var _mobile;
+        var _email;
+
+        if (req.query.hasOwnProperty("bug_id")) {
+            _bug_id = req.query.bug_id;
+        }
+        
+
+        if (req.query.hasOwnProperty("mobile")) {
+            _mobile = req.query.mobile;
+        }
+
+        if (req.query.hasOwnProperty("email")) {
+            _email = req.query.email;
+        }
+        
+
+        var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&include_fields=id,alias,status,cf_authedicated";
+
+        if (_bug_id != undefined) {
+            bugParams1 += "&v1=" + _bug_id;
+        }
+        if (_mobile != undefined) {
+            bugParams1 += "&v2=" + _mobile;
+        }
+        if (_email != undefined) {
+            bugParams1 += "&v3=" + _email;
+        }
+                
+        console.log(bugParams1);
+        
+        var ids = [];
+        var bugzilla_results = [];
+        var issue_return = [];
+
+        request({
+            url: bugUrlRest + "/rest/bug" + bugParams1,
+            method: "GET"
+        }, function (error, response, body) {
+            var i_count = 0;
+            var bugs_length = 0;
 
 
-    /*if (is_authenticate({ "uuid": req.get('x-uuid'), "role": req.get('x-role')})) {
-        console.log("authedicate");
+            if (body != undefined) {
+                bugs_length = JSON.parse(body).bugs.length;
+            }
+            for (i_count = 0; i_count < bugs_length; i_count++) {
+                ids.push(JSON.parse(body).bugs[i_count].alias[0]);
+                bugzilla_results = JSON.parse(body).bugs;
+            }
+
+            Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": 0 }, function (err, issue) {
+
+                //new start
+                if (err != null) { console.log("err   =   " + err); }
+                
+                issue_return += '[';
+               
+
+                //console.log(issue);
+                for (var i = 0; i < issue.length; i++) {
+
+                    var bug_id = 0;
+                    var bug_status = "";
+                    var bug_authenticate = "0";
+                    for (var j = 0; j < bugzilla_results.length; j++) {
+                        if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                            bug_id = bugzilla_results[j].id;
+                            bug_status = bugzilla_results[j].status;
+                            bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                        }
+                    }
+
+                    issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                    if (i < issue.length - 1) {
+                        issue_return += ',';
+                    }
+                }
+
+                issue_return += ']';
+
+                callback(issue_return);
+
+                
+            });
+
+
+
+
+        });
+
     }
-    else {
-        console.log("anonymous");
-    }*/
+    else if (!req.query.hasOwnProperty("bug_id") && !req.query.hasOwnProperty("mobile") && !req.query.hasOwnProperty("email")) {
+        var _startdate = new Date();
+        var _enddate = new Date();
+        var _coordinates;
+        var _distance;
+        var _issue;
+        var _limit;
+        var _sort;
+        var _loc_var;
+        var newdate = new Date();
+        var _image;
+        var _list_issue;
+        var _product;
+        var _status = [];
+        var _cf_authedicated = 1;
+        var _cf_authedicated_contition = "equals";
+        var _kml;
+        var _offset;
+        var _user = false;
+        var _default_issue = "";
+        var _departments;
+        var _summary;
+        var yyyy1;
+        var yyyy2;
+        var mm1;
+        var mm2;
+        var dd1;
+        var dd2;
 
-    if (!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")) {
-        res.send([{ "response": "no-data", "message": "You don't send city - coordinates values!" }]);
-    }
-    else {
 
-
-        if (!req.query.hasOwnProperty('startdate')) {
-            //_startdate = new Date();
-            _startdate = new Date(_startdate) - 1000 * 60 * 60 * 24 * 3;
-
-            _startdate = new Date(_startdate);
-
-            yyyy1 = _startdate.getFullYear();
-            if (_startdate.getMonth() < 9) {
-                mm1 = "0" + (_startdate.getMonth() + 1);
-            } else {
-                mm1 = _startdate.getMonth() + 1;
-            }
-            if (_startdate.getDate() <= 9) {
-                dd1 = "0" + _startdate.getDate();
-            } else {
-                dd1 = _startdate.getDate();
-            }
-
-            _startdate = yyyy1 + "-" + mm1 + "-" + dd1 + "T00:00:00.000";
-
-        } else {
-            //_startdate = new Date(req.query.startdate).toISOString();
-
-            var partsOfStr = req.query.startdate.split('-');
-            _startdate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T00:00:00.000";
-        }
-
-        if (req.query.hasOwnProperty('enddate')) {
-            //_enddate = new Date(req.query.enddate).toISOString();
-            var partsOfStr = req.query.enddate.split('-');
-            _enddate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T23:59:59.999";
-        } else {
-            yyyy2 = _enddate.getFullYear();
-            if (_enddate.getMonth() < 9) {
-                mm2 = "0" + (_enddate.getMonth() + 1);
-            } else {
-                mm2 = _enddate.getMonth() + 1;
-            }
-            if (_enddate.getDate() <= 9) {
-                dd2 = "0" + _enddate.getDate();
-            } else {
-                dd2 = _enddate.getDate();
-            }
-
-            _enddate = yyyy2 + "-" + mm2 + "-" + dd2 + "T23:59:59.999";
-
-        }
-
-        if (!req.query.hasOwnProperty('coordinates')) {
-            _coordinates = '';
-        } else {
-            _coordinates = req.query.coordinates;
-        }
-
-        if (!req.query.hasOwnProperty('distance')) {
-            _distance = '10000';
-        } else {
-            _distance = req.query.distance;
-        }
-
-        if (!req.query.hasOwnProperty('includeAnonymous')) {
-            _cf_authedicated = 1;
-            _cf_authedicated_contition = "equals";
+        /*if (is_authenticate({ "uuid": req.get('x-uuid'), "role": req.get('x-role')})) {
+            console.log("authedicate");
         }
         else {
-            if (req.query.includeAnonymous == 1) {
-                _cf_authedicated = 2;
-                _cf_authedicated_contition = "lessthan";
-                _default_issue = "---";
+            console.log("anonymous");
+        }*/
+
+        if (!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")) {
+            res.send([{ "response": "no-data", "message": "You don't send city - coordinates values!" }]);
+        }
+        else {
+
+
+            if (!req.query.hasOwnProperty('startdate')) {
+                //_startdate = new Date();
+                _startdate = new Date(_startdate) - 1000 * 60 * 60 * 24 * 3;
+
+                _startdate = new Date(_startdate);
+
+                yyyy1 = _startdate.getFullYear();
+                if (_startdate.getMonth() < 9) {
+                    mm1 = "0" + (_startdate.getMonth() + 1);
+                } else {
+                    mm1 = _startdate.getMonth() + 1;
+                }
+                if (_startdate.getDate() <= 9) {
+                    dd1 = "0" + _startdate.getDate();
+                } else {
+                    dd1 = _startdate.getDate();
+                }
+
+                _startdate = yyyy1 + "-" + mm1 + "-" + dd1 + "T00:00:00.000";
+
             } else {
+                //_startdate = new Date(req.query.startdate).toISOString();
+
+                var partsOfStr = req.query.startdate.split('-');
+                _startdate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T00:00:00.000";
+            }
+
+            if (req.query.hasOwnProperty('enddate')) {
+                //_enddate = new Date(req.query.enddate).toISOString();
+                var partsOfStr = req.query.enddate.split('-');
+                _enddate = partsOfStr[0] + "-" + partsOfStr[1] + "-" + partsOfStr[2] + "T23:59:59.999";
+            } else {
+                yyyy2 = _enddate.getFullYear();
+                if (_enddate.getMonth() < 9) {
+                    mm2 = "0" + (_enddate.getMonth() + 1);
+                } else {
+                    mm2 = _enddate.getMonth() + 1;
+                }
+                if (_enddate.getDate() <= 9) {
+                    dd2 = "0" + _enddate.getDate();
+                } else {
+                    dd2 = _enddate.getDate();
+                }
+
+                _enddate = yyyy2 + "-" + mm2 + "-" + dd2 + "T23:59:59.999";
+
+            }
+
+            if (!req.query.hasOwnProperty('coordinates')) {
+                _coordinates = '';
+            } else {
+                _coordinates = req.query.coordinates;
+            }
+
+            if (!req.query.hasOwnProperty('distance')) {
+                _distance = '10000';
+            } else {
+                _distance = req.query.distance;
+            }
+
+            if (!req.query.hasOwnProperty('includeAnonymous')) {
                 _cf_authedicated = 1;
                 _cf_authedicated_contition = "equals";
             }
+            else {
+                if (req.query.includeAnonymous == 1) {
+                    _cf_authedicated = 2;
+                    _cf_authedicated_contition = "lessthan";
+                    _default_issue = "---";
+                } else {
+                    _cf_authedicated = 1;
+                    _cf_authedicated_contition = "equals";
+                }
 
-        }
+            }
 
-        if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all') {
-            if (_default_issue == "---") {
-                _issue = "---,garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
-                _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
+            if (!req.query.hasOwnProperty('issue') || req.query.issue === 'all') {
+                if (_default_issue == "---") {
+                    _issue = "---,garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                    _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
+                } else {
+                    _issue = "garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                    _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
+                }
             } else {
-                _issue = "garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
-                _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
-            }
-        } else {
 
-            var issue_split = req.query.issue.split("|");
+                var issue_split = req.query.issue.split("|");
 
-            switch (issue_split.length) {
-                case 1:
-                    if (_default_issue == "---") {
-                        _issue = "---," + issue_split[0].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString();
-                    } else {
-                        _issue = issue_split[0].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString();
-                    }
-                    break;
-                case 2:
-                    if (_default_issue == "---") {
-                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString();
-                    } else {
-                        _issue = issue_split[0].toString() + "," + issue_split[1].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString();
-                    }
-                    break;
-                case 3:
-                    if (_default_issue == "---") {
-                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString();
-                    } else {
-                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString();
+                switch (issue_split.length) {
+                    case 1:
+                        if (_default_issue == "---") {
+                            _issue = "---," + issue_split[0].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString();
+                        } else {
+                            _issue = issue_split[0].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString();
+                        }
+                        break;
+                    case 2:
+                        if (_default_issue == "---") {
+                            _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString();
+                        } else {
+                            _issue = issue_split[0].toString() + "," + issue_split[1].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString();
+                        }
+                        break;
+                    case 3:
+                        if (_default_issue == "---") {
+                            _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString();
+                        } else {
+                            _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString();
 
-                    }
-                    break;
-                case 4:
-                    if (_default_issue == "---") {
-                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString();
-                    } else {
-                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString();
-                    }
-                    break;
-                case 5:
-                    if (_default_issue == "---") {
-                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString();
-                    } else {
-                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString();
-                    }
-                    break;
-                case 6:
-                    if (_default_issue == "---") {
-                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString();
-                    } else {
-                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString();
-                    }
-                    break;
-                case 7:
-                    if (_default_issue == "---") {
-                        _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString() + ", " + issue_split[6].toString();
-                    } else {
-                        _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString() + ", " + issue_split[6].toString();
-                    }
-                    break;
-                default:
-                    if (_default_issue == "---") {
-                        _issue = "---,garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
-                    } else {
-                        _issue = "garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
-                        _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
-                    }
-                    break;
-            }
-        }
-
-        if (!req.query.hasOwnProperty('departments')) {
-            _departments = "";
-        } else {
-            var department_split = req.query.departments.split("|");
-
-            var i_dep = 0;
-
-            _departments = "";
-            for (i_dep = 0; i_dep < department_split.length; i_dep++) {
-                _departments += "&component=" + encodeURIComponent(department_split[i_dep]);
+                        }
+                        break;
+                    case 4:
+                        if (_default_issue == "---") {
+                            _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString();
+                        } else {
+                            _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString();
+                        }
+                        break;
+                    case 5:
+                        if (_default_issue == "---") {
+                            _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString();
+                        } else {
+                            _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString();
+                        }
+                        break;
+                    case 6:
+                        if (_default_issue == "---") {
+                            _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString();
+                        } else {
+                            _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString();
+                        }
+                        break;
+                    case 7:
+                        if (_default_issue == "---") {
+                            _issue = "---," + issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString() + ", " + issue_split[6].toString();
+                        } else {
+                            _issue = issue_split[0].toString() + "," + issue_split[1].toString() + "," + issue_split[2].toString() + "," + issue_split[3].toString() + "," + issue_split[4].toString() + "," + issue_split[5].toString() + "," + issue_split[6].toString();
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=" + issue_split[0].toString() + ", " + issue_split[1].toString() + ", " + issue_split[2].toString() + ", " + issue_split[3].toString() + ", " + issue_split[4].toString() + ", " + issue_split[5].toString() + ", " + issue_split[6].toString();
+                        }
+                        break;
+                    default:
+                        if (_default_issue == "---") {
+                            _issue = "---,garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
+                        } else {
+                            _issue = "garbage,plumbing,lighting,road-constructor,green,protection-policy,environment";
+                            _summary = "&f6=short_desc&o6=anywordssubstr&v6=garbage, plumbing, lighting, road-constructor, green, protection-policy, environment";
+                        }
+                        break;
+                }
             }
 
-        }
+            if (!req.query.hasOwnProperty('departments')) {
+                _departments = "";
+            } else {
+                var department_split = req.query.departments.split("|");
 
-        if (!req.query.hasOwnProperty('limit')) {
-            _limit = 1000;
-        } else {
-            _limit = req.query.limit;
-        }
+                var i_dep = 0;
 
-        if (!req.query.hasOwnProperty('sort')) {
-            _sort = "&order=bug_id%20DESC";
-            _sort_mongo = -1;
-        } else {
-            if (req.query.sort == 1) {
-                _sort = "&order=bug_id%20ASC";
-                _sort_mongo = 1;
-            } else if (req.query.sort == -1) {
+                _departments = "";
+                for (i_dep = 0; i_dep < department_split.length; i_dep++) {
+                    _departments += "&component=" + encodeURIComponent(department_split[i_dep]);
+                }
+
+            }
+
+            if (!req.query.hasOwnProperty('limit')) {
+                _limit = 1000;
+            } else {
+                _limit = req.query.limit;
+            }
+
+            if (!req.query.hasOwnProperty('sort')) {
                 _sort = "&order=bug_id%20DESC";
                 _sort_mongo = -1;
-            }
-
-        }
-
-        if (!req.query.hasOwnProperty('image_field')) {
-            _image = 0;
-            //_image = true;
-            //console.log("1 _image=" + _image);
-        } else {
-            if (req.query.image_field == 0) {
-                _image = 0;
-                //_image = false;
-                //console.log("2 _image=" + _image);
             } else {
-                _image = 1;
-                //_image = true;
-                //console.log("2 _image=" + _image);
-            }
-        }
+                if (req.query.sort == 1) {
+                    _sort = "&order=bug_id%20ASC";
+                    _sort_mongo = 1;
+                } else if (req.query.sort == -1) {
+                    _sort = "&order=bug_id%20DESC";
+                    _sort_mongo = -1;
+                }
 
-        if (!req.query.hasOwnProperty('list_issue')) {
-            _list_issue = false;
-        } else {
-            if (req.query.image_field == 0) {
+            }
+
+            if (!req.query.hasOwnProperty('image_field')) {
+                _image = 0;
+                //_image = true;
+                //console.log("1 _image=" + _image);
+            } else {
+                if (req.query.image_field == 0) {
+                    _image = 0;
+                    //_image = false;
+                    //console.log("2 _image=" + _image);
+                } else {
+                    _image = 1;
+                    //_image = true;
+                    //console.log("2 _image=" + _image);
+                }
+            }
+
+            if (!req.query.hasOwnProperty('list_issue')) {
                 _list_issue = false;
             } else {
-                _list_issue = true;
-            }
-        }
-
-
-
-        if (!req.query.hasOwnProperty('status')) {
-
-            _status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
-        } else {
-            var status_split = req.query.status.split("|");
-
-            switch (status_split.length) {
-                case 1:
-                    _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0];
-                    break;
-                case 2:
-                    _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0] + ", " + status_split[1];
-                    break;
-                case 3:
-                    _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0] + ", " + status_split[1] + ", " + status_split[2];
-                    break;
-                default:
-                    _status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
-                    break;
-            }
-        }
-
-
-        if (!req.query.hasOwnProperty('kml')) {
-            _kml = 0;
-        } else {
-            _kml = req.query.kml;
-        }
-
-        if (!req.query.hasOwnProperty('offset')) {
-            _offset = "";
-        } else {
-            _offset = "&offset=" + req.query.offset;
-        }
-
-        _user = false;
-
-
-        if (!req.query.hasOwnProperty('city') && _coordinates != '') {
-
-            var _cordinates_ar = JSON.parse(req.query.coordinates);
-
-            Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [_cordinates_ar[0], _cordinates_ar[1]] } } } }, { "municipality": 1, "municipality_desc": 1 }, function (err, response) {
-                //console.log("response ===>" + response[0]);
-                if (response.length > 0) {
-
-                    _product = response[0]["municipality"];
-
-                    //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-                    var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-                    //console.log(bugParams1);
-                    var ids = [];
-                    var bugzilla_results = [];
-                    var issue_return = [];
-
-                    request({
-                        url: bugUrlRest + "/rest/bug" + bugParams1,
-                        method: "GET"
-                    }, function (error, response, body) {
-
-                        //console.log("BUGZILLA ======> " + JSON.stringify(body));
-                        var i_count = 0;
-                        var bugs_length = 0;
-
-                        if (body != undefined) {
-                            bugs_length = JSON.parse(body).bugs.length;
-                        }
-                        for (i_count = 0; i_count < bugs_length; i_count++) {
-                            ids.push(JSON.parse(body).bugs[i_count].alias[0]);
-                            bugzilla_results = JSON.parse(body).bugs;
-                        }
-
-                        //console.log("ids1 ======> "+ids);
-                        if (_image == 0) {
-
-                            Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
-
-                                //new start
-                                if (err != null) { console.log("err   =   " + err); }
-                                if (_kml == 0) {
-                                    issue_return += '[';
-                                } else if (_kml == 1) {
-                                    issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                        '<name>sensecity.kml</name>' +
-                                        '<Style id="s_ylw-pushpin_hl">' +
-                                        '<IconStyle>' +
-                                        '<color>ff7fffff</color>' +
-                                        '<scale>1.3</scale>' +
-                                        '<Icon>' +
-                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                        '</Icon>' +
-                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                        '</IconStyle>' +
-                                        '</Style>' +
-                                        '<StyleMap id="m_ylw-pushpin">' +
-                                        '<Pair>' +
-                                        '<key>normal</key>' +
-                                        '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                        '</Pair>' +
-                                        '<Pair>' +
-                                        '<key>highlight</key>' +
-                                        '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                        '</Pair>' +
-                                        '</StyleMap>' +
-                                        '<Style id="s_ylw-pushpin">' +
-                                        '<IconStyle>' +
-                                        '<color>ff7fffff</color>' +
-                                        '<scale>1.1</scale>' +
-                                        '<Icon>' +
-                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                        '</Icon>' +
-                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                        '</IconStyle>' +
-                                        '</Style>' +
-                                        '<Folder>' +
-                                        '<name>sensecity</name>' +
-                                        '<open>1</open>';
-                                }
-
-                                //console.log(issue);
-                                for (var i = 0; i < issue.length; i++) {
-
-                                    var bug_id = 0;
-                                    var bug_status = "";
-                                    var bug_authenticate = "0";
-                                    for (var j = 0; j < bugzilla_results.length; j++) {
-                                        if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                            bug_id = bugzilla_results[j].id;
-                                            bug_status = bugzilla_results[j].status;
-                                            bug_authenticate = bugzilla_results[j].cf_authedicated;
-
-                                        }
-                                    }
-
-                                    if (_kml == 0) {
-                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
-                                        if (i < issue.length - 1) {
-                                            issue_return += ',';
-                                        }
-                                    } else if (_kml == 1) {
-                                        issue_return += '<Placemark>' +
-                                            '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
-                                            '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
-                                            '<LookAt>' +
-                                            '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
-                                            '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
-                                            '<altitude>0</altitude>' +
-                                            '<heading>-176.4101948194351</heading>' +
-                                            '<tilt>70.72955317497231</tilt>' +
-                                            '<range>1952.786634342951</range>' +
-                                            '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
-                                            '</LookAt>' +
-                                            '<styleUrl>#m_ylw-pushpin</styleUrl>' +
-                                            '<Point>' +
-                                            '<gx:drawOrder>1</gx:drawOrder>' +
-                                            '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
-                                            '</Point>' +
-                                            '</Placemark>';
-                                    }
-                                }
-
-                                if (_kml == 0) {
-                                    issue_return += ']';
-                                    res.send(issue_return);
-                                    
-                                } else if (_kml == 1) {
-                                    issue_return += '</Folder> </Document> </kml>';
-
-                                    res.send(issue_return);
-                                    
-                                }
-
-                                //new end
-
-
-                                //res.send(issue);
-                            }).sort({ "create_at": _sort_mongo });//.limit(_limit);
-
-
-
-                        } else {
-
-                            Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
-                                //new start
-                                if (err != null) { console.log("err1   =   " + err); }
-                                if (_kml == 0) {
-                                    issue_return += '[';
-                                } else if (_kml == 1) {
-                                    issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                        '<name>sensecity.kml</name>' +
-                                        '<Style id="s_ylw-pushpin_hl">' +
-                                        '<IconStyle>' +
-                                        '<color>ff7fffff</color>' +
-                                        '<scale>1.3</scale>' +
-                                        '<Icon>' +
-                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                        '</Icon>' +
-                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                        '</IconStyle>' +
-                                        '</Style>' +
-                                        '<StyleMap id="m_ylw-pushpin">' +
-                                        '<Pair>' +
-                                        '<key>normal</key>' +
-                                        '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                        '</Pair>' +
-                                        '<Pair>' +
-                                        '<key>highlight</key>' +
-                                        '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                        '</Pair>' +
-                                        '</StyleMap>' +
-                                        '<Style id="s_ylw-pushpin">' +
-                                        '<IconStyle>' +
-                                        '<color>ff7fffff</color>' +
-                                        '<scale>1.1</scale>' +
-                                        '<Icon>' +
-                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                        '</Icon>' +
-                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                        '</IconStyle>' +
-                                        '</Style>' +
-                                        '<Folder>' +
-                                        '<name>sensecity</name>' +
-                                        '<open>1</open>';
-                                }
-
-                                for (var i = 0; i < issue.length; i++) {
-
-                                    var bug_id = 0;
-                                    var bug_status = "";
-                                    var bug_authenticate = "0";
-                                    for (var j = 0; j < bugzilla_results.length; j++) {
-                                        if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                            bug_id = bugzilla_results[j].id;
-                                            bug_status = bugzilla_results[j].status;
-                                            bug_authenticate = bugzilla_results[j].cf_authedicated;
-
-                                        }
-                                    }
-
-                                    if (_kml == 0) {
-                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
-                                        if (i < issue.length - 1) {
-                                            issue_return += ',';
-                                        }
-                                    } else if (_kml == 1) {
-                                        issue_return += '<Placemark>' +
-                                            '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
-                                            '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
-                                            '<LookAt>' +
-                                            '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
-                                            '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
-                                            '<altitude>0</altitude>' +
-                                            '<heading>-176.4101948194351</heading>' +
-                                            '<tilt>70.72955317497231</tilt>' +
-                                            '<range>1952.786634342951</range>' +
-                                            '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
-                                            '</LookAt>' +
-                                            '<styleUrl>#m_ylw-pushpin</styleUrl>' +
-                                            '<Point>' +
-                                            '<gx:drawOrder>1</gx:drawOrder>' +
-                                            '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
-                                            '</Point>' +
-                                            '</Placemark>';
-                                    }
-                                }
-
-                                if (_kml == 0) {
-                                    issue_return += ']';
-                                    res.send(issue_return);
-                                    
-                                } else if (_kml == 1) {
-                                    issue_return += '</Folder> </Document> </kml>';
-
-                                    res.send(issue_return);
-                                    
-                                }
-
-                                //new end
-
-
-                                //res.send(issue);
-                            }).sort({ "create_at": _sort_mongo });//.limit(_limit);
-                        }
-
-
-
-
-                    });
-
-
-
-
+                if (req.query.image_field == 0) {
+                    _list_issue = false;
                 } else {
-
-                    _product = '';
-                    res.send([{}]); // We don't have city with that coordinates                    
-                    return [{}];
+                    _list_issue = true;
                 }
-            });
-            //end else if there is coordinates
-        } else {
+            }
 
-            _product = req.query.city;
 
-            //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-            var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
 
-            var ids = [];
-            var bugzilla_results = [];
-            var issue_return = [];
-            //console.log(bugParams1);
-            request({
-                url: bugUrlRest + "/rest/bug" + bugParams1,
-                method: "GET"
-            }, function (error, response, body) {
-                //console.log("BUGZILLA ======> " + JSON.stringify(body));
-                var i_count = 0;
-                var bugs_length = 0;
+            if (!req.query.hasOwnProperty('status')) {
 
-                if (body != undefined) {
-                    bugs_length = JSON.parse(body).bugs.length;
+                _status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
+            } else {
+                var status_split = req.query.status.split("|");
+
+                switch (status_split.length) {
+                    case 1:
+                        _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0];
+                        break;
+                    case 2:
+                        _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0] + ", " + status_split[1];
+                        break;
+                    case 3:
+                        _status = "&f7=bug_status&o7=anywordssubstr&v7=" + status_split[0] + ", " + status_split[1] + ", " + status_split[2];
+                        break;
+                    default:
+                        _status = "&f7=bug_status&o7=anywordssubstr&v7=CONFIRMED, IN_PROGRESS";
+                        break;
                 }
-                for (i_count = 0; i_count < bugs_length; i_count++) {
-                    ids.push(JSON.parse(body).bugs[i_count].alias[0]);
-                    bugzilla_results = JSON.parse(body).bugs;
-                }
+            }
 
 
-                if (_image == 0) {
-                    //console.log("ids ===>> " + ids);
-                    // This query works only if is valid object ids
-                    // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
+            if (!req.query.hasOwnProperty('kml')) {
+                _kml = 0;
+            } else {
+                _kml = req.query.kml;
+            }
 
-                    Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
-                        //new start
-                        if (err != null) { console.log("err2   =   " + err); }
-                        if (_kml == 0) {
-                            issue_return += '[';
-                        } else if (_kml == 1) {
-                            issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                '<name>sensecity.kml</name>' +
-                                '<Style id="s_ylw-pushpin_hl">' +
-                                '<IconStyle>' +
-                                '<color>ff7fffff</color>' +
-                                '<scale>1.3</scale>' +
-                                '<Icon>' +
-                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                '</Icon>' +
-                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                '</IconStyle>' +
-                                '</Style>' +
-                                '<StyleMap id="m_ylw-pushpin">' +
-                                '<Pair>' +
-                                '<key>normal</key>' +
-                                '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                '</Pair>' +
-                                '<Pair>' +
-                                '<key>highlight</key>' +
-                                '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                '</Pair>' +
-                                '</StyleMap>' +
-                                '<Style id="s_ylw-pushpin">' +
-                                '<IconStyle>' +
-                                '<color>ff7fffff</color>' +
-                                '<scale>1.1</scale>' +
-                                '<Icon>' +
-                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                '</Icon>' +
-                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                '</IconStyle>' +
-                                '</Style>' +
-                                '<Folder>' +
-                                '<name>sensecity</name>' +
-                                '<open>1</open>';
-                        }
+            if (!req.query.hasOwnProperty('offset')) {
+                _offset = "";
+            } else {
+                _offset = "&offset=" + req.query.offset;
+            }
+
+            _user = false;
 
 
-                        if (issue != undefined) {
+            if (!req.query.hasOwnProperty('city') && _coordinates != '') {
+
+                var _cordinates_ar = JSON.parse(req.query.coordinates);
+
+                Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [_cordinates_ar[0], _cordinates_ar[1]] } } } }, { "municipality": 1, "municipality_desc": 1 }, function (err, response) {
+                    //console.log("response ===>" + response[0]);
+                    if (response.length > 0) {
+
+                        _product = response[0]["municipality"];
+
+                        //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
+                        var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
+                        //console.log(bugParams1);
+                        var ids = [];
+                        var bugzilla_results = [];
+                        var issue_return = [];
+
+                        request({
+                            url: bugUrlRest + "/rest/bug" + bugParams1,
+                            method: "GET"
+                        }, function (error, response, body) {
+
+                            //console.log("BUGZILLA ======> " + JSON.stringify(body));
+                            var i_count = 0;
+                            var bugs_length = 0;
+
+                            if (body != undefined) {
+                                bugs_length = JSON.parse(body).bugs.length;
+                            }
+                            for (i_count = 0; i_count < bugs_length; i_count++) {
+                                ids.push(JSON.parse(body).bugs[i_count].alias[0]);
+                                bugzilla_results = JSON.parse(body).bugs;
+                            }
+
+                            //console.log("ids1 ======> "+ids);
+                            if (_image == 0) {
+
+                                Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
+
+                                    //new start
+                                    if (err != null) { console.log("err   =   " + err); }
+                                    if (_kml == 0) {
+                                        issue_return += '[';
+                                    } else if (_kml == 1) {
+                                        issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                            '<name>sensecity.kml</name>' +
+                                            '<Style id="s_ylw-pushpin_hl">' +
+                                            '<IconStyle>' +
+                                            '<color>ff7fffff</color>' +
+                                            '<scale>1.3</scale>' +
+                                            '<Icon>' +
+                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                            '</Icon>' +
+                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                            '</IconStyle>' +
+                                            '</Style>' +
+                                            '<StyleMap id="m_ylw-pushpin">' +
+                                            '<Pair>' +
+                                            '<key>normal</key>' +
+                                            '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                            '</Pair>' +
+                                            '<Pair>' +
+                                            '<key>highlight</key>' +
+                                            '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                            '</Pair>' +
+                                            '</StyleMap>' +
+                                            '<Style id="s_ylw-pushpin">' +
+                                            '<IconStyle>' +
+                                            '<color>ff7fffff</color>' +
+                                            '<scale>1.1</scale>' +
+                                            '<Icon>' +
+                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                            '</Icon>' +
+                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                            '</IconStyle>' +
+                                            '</Style>' +
+                                            '<Folder>' +
+                                            '<name>sensecity</name>' +
+                                            '<open>1</open>';
+                                    }
+
+                                    //console.log(issue);
+                                    for (var i = 0; i < issue.length; i++) {
+
+                                        var bug_id = 0;
+                                        var bug_status = "";
+                                        var bug_authenticate = "0";
+                                        for (var j = 0; j < bugzilla_results.length; j++) {
+                                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                bug_id = bugzilla_results[j].id;
+                                                bug_status = bugzilla_results[j].status;
+                                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                            }
+                                        }
+
+                                        if (_kml == 0) {
+                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                                            if (i < issue.length - 1) {
+                                                issue_return += ',';
+                                            }
+                                        } else if (_kml == 1) {
+                                            issue_return += '<Placemark>' +
+                                                '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                '<LookAt>' +
+                                                '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                '<altitude>0</altitude>' +
+                                                '<heading>-176.4101948194351</heading>' +
+                                                '<tilt>70.72955317497231</tilt>' +
+                                                '<range>1952.786634342951</range>' +
+                                                '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                '</LookAt>' +
+                                                '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                '<Point>' +
+                                                '<gx:drawOrder>1</gx:drawOrder>' +
+                                                '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                '</Point>' +
+                                                '</Placemark>';
+                                        }
+                                    }
+
+                                    if (_kml == 0) {
+                                        issue_return += ']';
+
+                                        callback(issue_return);
+
+                                    } else if (_kml == 1) {
+                                        issue_return += '</Folder> </Document> </kml>';
+
+                                        callback(issue_return);
+
+                                    }
+
+                                    //new end
+
+
+                                    //res.send(issue);
+                                }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+
+
+
+                            } else {
+
+                                Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
+                                    //new start
+                                    if (err != null) { console.log("err1   =   " + err); }
+                                    if (_kml == 0) {
+                                        issue_return += '[';
+                                    } else if (_kml == 1) {
+                                        issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                            '<name>sensecity.kml</name>' +
+                                            '<Style id="s_ylw-pushpin_hl">' +
+                                            '<IconStyle>' +
+                                            '<color>ff7fffff</color>' +
+                                            '<scale>1.3</scale>' +
+                                            '<Icon>' +
+                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                            '</Icon>' +
+                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                            '</IconStyle>' +
+                                            '</Style>' +
+                                            '<StyleMap id="m_ylw-pushpin">' +
+                                            '<Pair>' +
+                                            '<key>normal</key>' +
+                                            '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                            '</Pair>' +
+                                            '<Pair>' +
+                                            '<key>highlight</key>' +
+                                            '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                            '</Pair>' +
+                                            '</StyleMap>' +
+                                            '<Style id="s_ylw-pushpin">' +
+                                            '<IconStyle>' +
+                                            '<color>ff7fffff</color>' +
+                                            '<scale>1.1</scale>' +
+                                            '<Icon>' +
+                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                            '</Icon>' +
+                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                            '</IconStyle>' +
+                                            '</Style>' +
+                                            '<Folder>' +
+                                            '<name>sensecity</name>' +
+                                            '<open>1</open>';
+                                    }
+
+                                    for (var i = 0; i < issue.length; i++) {
+
+                                        var bug_id = 0;
+                                        var bug_status = "";
+                                        var bug_authenticate = "0";
+                                        for (var j = 0; j < bugzilla_results.length; j++) {
+                                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                bug_id = bugzilla_results[j].id;
+                                                bug_status = bugzilla_results[j].status;
+                                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                            }
+                                        }
+
+                                        if (_kml == 0) {
+                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                                            if (i < issue.length - 1) {
+                                                issue_return += ',';
+                                            }
+                                        } else if (_kml == 1) {
+                                            issue_return += '<Placemark>' +
+                                                '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                '<LookAt>' +
+                                                '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                '<altitude>0</altitude>' +
+                                                '<heading>-176.4101948194351</heading>' +
+                                                '<tilt>70.72955317497231</tilt>' +
+                                                '<range>1952.786634342951</range>' +
+                                                '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                '</LookAt>' +
+                                                '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                '<Point>' +
+                                                '<gx:drawOrder>1</gx:drawOrder>' +
+                                                '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                '</Point>' +
+                                                '</Placemark>';
+                                        }
+                                    }
+
+                                    if (_kml == 0) {
+                                        issue_return += ']';
+
+                                        callback(issue_return);
+                                    } else if (_kml == 1) {
+                                        issue_return += '</Folder> </Document> </kml>';
+
+                                        callback(issue_return);
+                                    }
+
+                                    //new end
+                                    //res.send(issue);
+                                }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                            }
+
+                        });
+                    } else {
+                        _product = '';
+                        callback([{}]);
+                        //res.send([{}]); // We don't have city with that coordinates                    
+                        //return [{}];
+                    }
+                });
+                //end else if there is coordinates
+            } else {
+
+                _product = req.query.city;
+
+                //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
+                var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
+
+                var ids = [];
+                var bugzilla_results = [];
+                var issue_return = [];
+                //console.log(bugParams1);
+                request({
+                    url: bugUrlRest + "/rest/bug" + bugParams1,
+                    method: "GET"
+                }, function (error, response, body) {
+                    //console.log("BUGZILLA ======> " + JSON.stringify(body));
+                    var i_count = 0;
+                    var bugs_length = 0;
+
+                    if (body != undefined) {
+                        bugs_length = JSON.parse(body).bugs.length;
+                    }
+                    for (i_count = 0; i_count < bugs_length; i_count++) {
+                        ids.push(JSON.parse(body).bugs[i_count].alias[0]);
+                        bugzilla_results = JSON.parse(body).bugs;
+                    }
+
+
+                    if (_image == 0) {
+                        //console.log("ids ===>> " + ids);
+                        // This query works only if is valid object ids
+                        // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
+
+                        Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
+                            //new start
+                            if (err != null) { console.log("err2   =   " + err); }
+                            if (_kml == 0) {
+                                issue_return += '[';
+                            } else if (_kml == 1) {
+                                issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                    '<name>sensecity.kml</name>' +
+                                    '<Style id="s_ylw-pushpin_hl">' +
+                                    '<IconStyle>' +
+                                    '<color>ff7fffff</color>' +
+                                    '<scale>1.3</scale>' +
+                                    '<Icon>' +
+                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                    '</Icon>' +
+                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                    '</IconStyle>' +
+                                    '</Style>' +
+                                    '<StyleMap id="m_ylw-pushpin">' +
+                                    '<Pair>' +
+                                    '<key>normal</key>' +
+                                    '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                    '</Pair>' +
+                                    '<Pair>' +
+                                    '<key>highlight</key>' +
+                                    '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                    '</Pair>' +
+                                    '</StyleMap>' +
+                                    '<Style id="s_ylw-pushpin">' +
+                                    '<IconStyle>' +
+                                    '<color>ff7fffff</color>' +
+                                    '<scale>1.1</scale>' +
+                                    '<Icon>' +
+                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                    '</Icon>' +
+                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                    '</IconStyle>' +
+                                    '</Style>' +
+                                    '<Folder>' +
+                                    '<name>sensecity</name>' +
+                                    '<open>1</open>';
+                            }
+
+
+                            if (issue != undefined) {
+                                for (var i = 0; i < issue.length; i++) {
+
+                                    var bug_id = 0;
+                                    var bug_status = "";
+                                    var bug_authenticate = "0";
+
+                                    for (var j = 0; j < bugzilla_results.length; j++) {
+                                        if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                            bug_id = bugzilla_results[j].id;
+                                            bug_status = bugzilla_results[j].status;
+                                            bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                        }
+                                    }
+
+                                    if (_kml == 0) {
+                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                                        if (i < issue.length - 1) {
+                                            issue_return += ',';
+                                        }
+                                    } else if (_kml == 1) {
+                                        issue_return += '<Placemark>' +
+                                            '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                            '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                            '<LookAt>' +
+                                            '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                            '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                            '<altitude>0</altitude>' +
+                                            '<heading>-176.4101948194351</heading>' +
+                                            '<tilt>70.72955317497231</tilt>' +
+                                            '<range>1952.786634342951</range>' +
+                                            '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                            '</LookAt>' +
+                                            '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                            '<Point>' +
+                                            '<gx:drawOrder>1</gx:drawOrder>' +
+                                            '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                            '</Point>' +
+                                            '</Placemark>';
+                                    }
+                                }
+                            }
+                            else {
+                                issue_return = "{}";
+                            }
+
+                            if (_kml == 0) {
+                                issue_return += ']';
+
+                                callback(issue_return);
+                            } else if (_kml == 1) {
+                                issue_return += '</Folder> </Document> </kml>';
+
+                                callback(issue_return);
+                            }
+
+                            //new end
+                            //res.send(issue);
+                        }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+
+                    } else {
+                        Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
+                            //new start
+                            if (err != null) { console.log("err3   =   " + err); }
+                            if (_kml == 0) {
+                                issue_return += '[';
+                            } else if (_kml == 1) {
+                                issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                    '<name>sensecity.kml</name>' +
+                                    '<Style id="s_ylw-pushpin_hl">' +
+                                    '<IconStyle>' +
+                                    '<color>ff7fffff</color>' +
+                                    '<scale>1.3</scale>' +
+                                    '<Icon>' +
+                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                    '</Icon>' +
+                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                    '</IconStyle>' +
+                                    '</Style>' +
+                                    '<StyleMap id="m_ylw-pushpin">' +
+                                    '<Pair>' +
+                                    '<key>normal</key>' +
+                                    '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                    '</Pair>' +
+                                    '<Pair>' +
+                                    '<key>highlight</key>' +
+                                    '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                    '</Pair>' +
+                                    '</StyleMap>' +
+                                    '<Style id="s_ylw-pushpin">' +
+                                    '<IconStyle>' +
+                                    '<color>ff7fffff</color>' +
+                                    '<scale>1.1</scale>' +
+                                    '<Icon>' +
+                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                    '</Icon>' +
+                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                    '</IconStyle>' +
+                                    '</Style>' +
+                                    '<Folder>' +
+                                    '<name>sensecity</name>' +
+                                    '<open>1</open>';
+                            }
+
                             for (var i = 0; i < issue.length; i++) {
 
                                 var bug_id = 0;
                                 var bug_status = "";
                                 var bug_authenticate = "0";
-
                                 for (var j = 0; j < bugzilla_results.length; j++) {
                                     if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                         bug_id = bugzilla_results[j].id;
@@ -1073,159 +1282,32 @@ router.get('/issue', function (req, res) {
                                         '</Placemark>';
                                 }
                             }
-                        }
-                        else {
-                            issue_return = "{}";
-                        }
-
-                        if (_kml == 0) {
-                            issue_return += ']';
-                            res.send(issue_return);
-                            
-                        } else if (_kml == 1) {
-                            issue_return += '</Folder> </Document> </kml>';
-
-                            res.send(issue_return);
-                            
-                        }
-
-                        //new end
-
-
-                        //res.send(issue);
-                    }).sort({ "create_at": _sort_mongo });//.limit(_limit);
-
-
-
-                } else {
-
-
-                    Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
-                        //new start
-                        if (err != null) { console.log("err3   =   " + err); }
-                        if (_kml == 0) {
-                            issue_return += '[';
-                        } else if (_kml == 1) {
-                            issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                '<name>sensecity.kml</name>' +
-                                '<Style id="s_ylw-pushpin_hl">' +
-                                '<IconStyle>' +
-                                '<color>ff7fffff</color>' +
-                                '<scale>1.3</scale>' +
-                                '<Icon>' +
-                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                '</Icon>' +
-                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                '</IconStyle>' +
-                                '</Style>' +
-                                '<StyleMap id="m_ylw-pushpin">' +
-                                '<Pair>' +
-                                '<key>normal</key>' +
-                                '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                '</Pair>' +
-                                '<Pair>' +
-                                '<key>highlight</key>' +
-                                '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                '</Pair>' +
-                                '</StyleMap>' +
-                                '<Style id="s_ylw-pushpin">' +
-                                '<IconStyle>' +
-                                '<color>ff7fffff</color>' +
-                                '<scale>1.1</scale>' +
-                                '<Icon>' +
-                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                '</Icon>' +
-                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                '</IconStyle>' +
-                                '</Style>' +
-                                '<Folder>' +
-                                '<name>sensecity</name>' +
-                                '<open>1</open>';
-                        }
-
-                        for (var i = 0; i < issue.length; i++) {
-
-                            var bug_id = 0;
-                            var bug_status = "";
-                            var bug_authenticate = "0";
-                            for (var j = 0; j < bugzilla_results.length; j++) {
-                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                    bug_id = bugzilla_results[j].id;
-                                    bug_status = bugzilla_results[j].status;
-                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
-                                }
-                            }
 
                             if (_kml == 0) {
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
-                                if (i < issue.length - 1) {
-                                    issue_return += ',';
-                                }
+                                issue_return += ']';
+
+                                callback(issue_return);
                             } else if (_kml == 1) {
-                                issue_return += '<Placemark>' +
-                                    '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
-                                    '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
-                                    '<LookAt>' +
-                                    '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
-                                    '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
-                                    '<altitude>0</altitude>' +
-                                    '<heading>-176.4101948194351</heading>' +
-                                    '<tilt>70.72955317497231</tilt>' +
-                                    '<range>1952.786634342951</range>' +
-                                    '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
-                                    '</LookAt>' +
-                                    '<styleUrl>#m_ylw-pushpin</styleUrl>' +
-                                    '<Point>' +
-                                    '<gx:drawOrder>1</gx:drawOrder>' +
-                                    '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
-                                    '</Point>' +
-                                    '</Placemark>';
+                                issue_return += '</Folder> </Document> </kml>';
+
+                                callback(issue_return);
                             }
-                        }
 
-                        if (_kml == 0) {
-                            issue_return += ']';
-                            res.send(issue_return);
-                            
-                        } else if (_kml == 1) {
-                            issue_return += '</Folder> </Document> </kml>';
+                            //new end
 
-                            res.send(issue_return);
-                            
-                        }
+                            //res.send(issue);
+                        }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                    }
 
-                        //new end
+                });
+            } //
 
-
-                        //res.send(issue);
-                    }).sort({ "create_at": _sort_mongo });//.limit(_limit);
-                }
-
-
-
-
-            });
-        } //
-
-    } //end else if no city AND coordinates
-
-
-});
-/*
-router.get('/admin/issue', authentication, function (req1, res1) {
-
-    console.log("------------>" + issue_result(req1));
-    //res1.send(issue_result(req1));
-});*/
-
-   /* function issue_result(req, res) {
-
-       
-
-
-
-}*/
-
+        } //end else if no city AND coordinates
+    }
+    else {
+        callback([{}]);
+    }
+}
 
 /*
 router.get('/issue/:city', function (req, res) {

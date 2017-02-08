@@ -8,7 +8,7 @@ var fs = require('fs');
 // Models
 
 var static_data = require('../models/fix_point');
-
+console.log("fix point");
 
 /*
 static_router.get('/:_long/:_lat/:_dist/data', function(req, res){		

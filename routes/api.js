@@ -10,7 +10,6 @@ var crypto = require('crypto-js');
 //var xml = require('xml');
 
 var config = require('app-config');
-var request_promise = require('request-promise');
 
 mongoose.connect('mongodb://' + config.config.my_hostname + '/' + config.config.database);
 

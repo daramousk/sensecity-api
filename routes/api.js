@@ -450,9 +450,9 @@ var get_issues = function (req, callback) {
             var bugs_length = 0;
 
             console.log("-------------------------------------------------");
-            console.log(body);
+            console.log(JSON.parse(body));
             console.log("-------------------------------------------------");
-            if (body.bugs != undefined) {
+            if (JSON.parse(body).bugs != undefined) {
                 bugs_length = JSON.parse(body).bugs.length;
             }
             for (i_count = 0; i_count < bugs_length; i_count++) {

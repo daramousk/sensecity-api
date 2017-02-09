@@ -506,7 +506,7 @@ var get_issues = function (req, callback) {
 
         }
     }
-    else if (!req.query.hasOwnProperty("bug_id") && !req.query.hasOwnProperty("mobile") && !req.query.hasOwnProperty("email") && !req.query.hasOwnProperty("city")) {
+    else if (!req.query.hasOwnProperty("bug_id") && !req.query.hasOwnProperty("mobile") && !req.query.hasOwnProperty("email") && req.query.hasOwnProperty("city")) {
         var _startdate = new Date();
         var _enddate = new Date();
         var _coordinates;

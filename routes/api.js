@@ -449,9 +449,9 @@ var get_issues = function (req, callback) {
             var i_count = 0;
             var bugs_length = 0;
 
-            console.log("body=============="+body);
+            console.log("body=============="+body.bugs);
 
-            if (body != undefined) {
+            if (body.bugs != undefined) {
                 bugs_length = JSON.parse(body).bugs.length;
             }
             for (i_count = 0; i_count < bugs_length; i_count++) {

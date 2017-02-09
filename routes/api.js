@@ -402,105 +402,109 @@ router.get('/admin/issue', authentication, function (req, res) {
 });
 
 var get_issues = function (req, callback) {
-
+    
     var x_uuid = req.get('x-uuid');
-    if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email")) ) {
+    if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email"))) {
+        if (req.query.bug_id == "" && req.query.mobile == "" && req.query.email == "") {
+            callback([{}]);
+        } else {
 
-        var _bug_id;
-        var _mobile;
-        var _email;
+            var _bug_id;
+            var _mobile;
+            var _email;
 
-        if (req.query.hasOwnProperty("bug_id")) {
-            _bug_id = req.query.bug_id;
-        }
-        
-
-        if (req.query.hasOwnProperty("mobile")) {
-            _mobile = req.query.mobile;
-        }
-
-        if (req.query.hasOwnProperty("email")) {
-            _email = req.query.email;
-        }
-        
-
-        var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&include_fields=id,alias,status,cf_authedicated";
-
-        if (_bug_id != undefined) {
-            bugParams1 += "&v1=" + _bug_id;
-        }
-        if (_mobile != undefined) {
-            bugParams1 += "&v2=" + _mobile;
-        }
-        if (_email != undefined) {
-            bugParams1 += "&v3=" + _email;
-        }
-                
-        console.log(bugParams1);
-        
-        var ids = [];
-        var bugzilla_results = [];
-        var issue_return = [];
-
-        request({
-            url: bugUrlRest + "/rest/bug" + bugParams1,
-            method: "GET"
-        }, function (error, response, body) {
-            var i_count = 0;
-            var bugs_length = 0;
-
-            console.log("-------------------------------------------------");
-            console.log(JSON.parse(body));
-            console.log("-------------------------------------------------");
-            if (JSON.parse(body).bugs != undefined) {
-                bugs_length = JSON.parse(body).bugs.length;
-            }
-            for (i_count = 0; i_count < bugs_length; i_count++) {
-                ids.push(JSON.parse(body).bugs[i_count].alias[0]);
-                bugzilla_results = JSON.parse(body).bugs;
+            if (req.query.hasOwnProperty("bug_id")) {
+                _bug_id = req.query.bug_id;
             }
 
-            Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": 0 }, function (err, issue) {
 
-                //new start
-                if (err != null) { console.log("err   =   " + err); }
-                
-                issue_return += '[';
-               
+            if (req.query.hasOwnProperty("mobile")) {
+                _mobile = req.query.mobile;
+            }
 
-                //console.log(issue);
-                for (var i = 0; i < issue.length; i++) {
+            if (req.query.hasOwnProperty("email")) {
+                _email = req.query.email;
+            }
 
-                    var bug_id = 0;
-                    var bug_status = "";
-                    var bug_authenticate = "0";
-                    for (var j = 0; j < bugzilla_results.length; j++) {
-                        if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                            bug_id = bugzilla_results[j].id;
-                            bug_status = bugzilla_results[j].status;
-                            bug_authenticate = bugzilla_results[j].cf_authedicated;
 
+            var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&include_fields=id,alias,status,cf_authedicated";
+
+            if (_bug_id != undefined) {
+                bugParams1 += "&v1=" + _bug_id;
+            }
+            if (_mobile != undefined) {
+                bugParams1 += "&v2=" + _mobile;
+            }
+            if (_email != undefined) {
+                bugParams1 += "&v3=" + _email;
+            }
+
+            console.log(bugParams1);
+
+            var ids = [];
+            var bugzilla_results = [];
+            var issue_return = [];
+
+            request({
+                url: bugUrlRest + "/rest/bug" + bugParams1,
+                method: "GET"
+            }, function (error, response, body) {
+                var i_count = 0;
+                var bugs_length = 0;
+
+                console.log("-------------------------------------------------");
+                console.log(JSON.parse(body));
+                console.log("-------------------------------------------------");
+                if (JSON.parse(body).bugs != undefined) {
+                    bugs_length = JSON.parse(body).bugs.length;
+                }
+                for (i_count = 0; i_count < bugs_length; i_count++) {
+                    ids.push(JSON.parse(body).bugs[i_count].alias[0]);
+                    bugzilla_results = JSON.parse(body).bugs;
+                }
+
+                Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": 0 }, function (err, issue) {
+
+                    //new start
+                    if (err != null) { console.log("err   =   " + err); }
+
+                    issue_return += '[';
+
+
+                    //console.log(issue);
+                    for (var i = 0; i < issue.length; i++) {
+
+                        var bug_id = 0;
+                        var bug_status = "";
+                        var bug_authenticate = "0";
+                        for (var j = 0; j < bugzilla_results.length; j++) {
+                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                bug_id = bugzilla_results[j].id;
+                                bug_status = bugzilla_results[j].status;
+                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                            }
+                        }
+
+                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                        if (i < issue.length - 1) {
+                            issue_return += ',';
                         }
                     }
 
-                    issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
-                    if (i < issue.length - 1) {
-                        issue_return += ',';
-                    }
-                }
+                    issue_return += ']';
 
-                issue_return += ']';
+                    callback(issue_return);
 
-                callback(issue_return);
 
-                
+                });
+
+
+
+
             });
 
-
-
-
-        });
-
+        }
     }
     else if (!req.query.hasOwnProperty("bug_id") && !req.query.hasOwnProperty("mobile") && !req.query.hasOwnProperty("email") && !req.query.hasOwnProperty("city")) {
         var _startdate = new Date();

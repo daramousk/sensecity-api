@@ -504,7 +504,7 @@ var get_issues = function (req, callback) {
                                 bug_id = bugzilla_results[j].id;
                                 bug_status = bugzilla_results[j].status;
                                 bug_authenticate = bugzilla_results[j].cf_authedicated;
-
+                                console.log(bugzilla_results[j].alias[0]);
                             }
                         }
 

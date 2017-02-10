@@ -412,6 +412,8 @@ var get_issues = function (req, callback) {
             var _bug_id;
             var _mobile;
             var _email;
+            var _limit;
+            var _sort;
 
             if (req.query.hasOwnProperty("bug_id")) {
                 _bug_id = req.query.bug_id;
@@ -426,8 +428,28 @@ var get_issues = function (req, callback) {
                 _email = req.query.email;
             }
 
+            if (!req.query.hasOwnProperty('limit')) {
+                _limit = 1000;
+            } else {
+                _limit = req.query.limit;
+            }
 
-            var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&include_fields=id,alias,status,cf_authedicated";
+            if (!req.query.hasOwnProperty('sort')) {
+                _sort = "&order=bug_id%20DESC";
+                _sort_mongo = -1;
+            } else {
+                if (req.query.sort == 1) {
+                    _sort = "&order=bug_id%20ASC";
+                    _sort_mongo = 1;
+                } else if (req.query.sort == -1) {
+                    _sort = "&order=bug_id%20DESC";
+                    _sort_mongo = -1;
+                }
+
+            }
+
+
+            var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&limit=" + _limit + _sort + "&include_fields=id,alias,status,cf_authedicated";
 
             if (_bug_id != undefined) {
                 bugParams1 += "&v1=" + _bug_id;

@@ -840,7 +840,7 @@ var get_issues = function (req, callback) {
                             var i_count = 0;
                             var bugs_length = 0;
 
-                            if (body != undefined) {
+                            if (JSON.parse(body).bugs != undefined) {
                                 bugs_length = JSON.parse(body).bugs.length;
                             }
                             for (i_count = 0; i_count < bugs_length; i_count++) {
@@ -1086,7 +1086,7 @@ var get_issues = function (req, callback) {
                     var i_count = 0;
                     var bugs_length = 0;
 
-                    if (body != undefined) {
+                    if (JSON.parse(body).bugs != undefined) {
                         bugs_length = JSON.parse(body).bugs.length;
                     }
                     for (i_count = 0; i_count < bugs_length; i_count++) {

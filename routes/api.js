@@ -482,6 +482,7 @@ var get_issues = function (req, callback) {
                 }
                 console.log(bugs_length);
                 for (i_count = 0; i_count < bugs_length; i_count++) {
+                    console.log(i_count + "=" + JSON.parse(body).bugs[i_count].alias[0]);
                     ids.push(JSON.parse(body).bugs[i_count].alias[0]);
                     bugzilla_results = JSON.parse(body).bugs;
                 }

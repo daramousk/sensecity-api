@@ -414,6 +414,7 @@ var get_issues = function (req, callback) {
             var _email;
             var _limit;
             var _sort;
+            var _offset;
 
             if (req.query.hasOwnProperty("bug_id")) {
                 _bug_id = req.query.bug_id;
@@ -448,6 +449,11 @@ var get_issues = function (req, callback) {
 
             }
 
+            if (!req.query.hasOwnProperty('offset')) {
+                _offset = "";
+            } else {
+                _offset = "&offset=" + req.query.offset;
+            }
 
             var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&limit=" + _limit + _sort + "&include_fields=id,alias,status,cf_authedicated";
 
@@ -521,7 +527,7 @@ var get_issues = function (req, callback) {
                     callback(issue_return);
 
 
-                });
+                }).sort({ "create_at": _sort_mongo });
 
 
 

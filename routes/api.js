@@ -455,7 +455,7 @@ var get_issues = function (req, callback) {
                 _offset = "&offset=" + req.query.offset;
             }
 
-            var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&limit=" + _limit + _sort + "&include_fields=id,alias,status,cf_authedicated";
+            var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&limit=" + _limit + _sort + _offset + "&include_fields=id,alias,status,cf_authedicated";
 
             if (_bug_id != undefined) {
                 bugParams1 += "&v1=" + _bug_id;

@@ -480,6 +480,7 @@ var get_issues = function (req, callback) {
                 if (JSON.parse(body).bugs != undefined) {
                     bugs_length = JSON.parse(body).bugs.length;
                 }
+                console.log(bugs_length);
                 for (i_count = 0; i_count < bugs_length; i_count++) {
                     ids.push(JSON.parse(body).bugs[i_count].alias[0]);
                     bugzilla_results = JSON.parse(body).bugs;
@@ -495,7 +496,7 @@ var get_issues = function (req, callback) {
 
                     //console.log(issue);
                     for (var i = 0; i < issue.length; i++) {
-
+                       
                         var bug_id = 0;
                         var bug_status = "";
                         var bug_authenticate = "0";

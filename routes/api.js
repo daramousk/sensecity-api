@@ -487,8 +487,7 @@ var get_issues = function (req, callback) {
                     bugs_length = JSON.parse(body).bugs.length;
                 }
                 console.log(bugs_length);
-                for (i_count = 0; i_count < bugs_length; i_count++) {
-                    console.log(i_count + "=" + JSON.parse(body).bugs[i_count].alias[0]);
+                for (i_count = 0; i_count < bugs_length; i_count++) {                    
                     ids.push(JSON.parse(body).bugs[i_count].alias[0]);
                     bugzilla_results = JSON.parse(body).bugs;
                 }
@@ -512,7 +511,6 @@ var get_issues = function (req, callback) {
                                 bug_id = bugzilla_results[j].id;
                                 bug_status = bugzilla_results[j].status;
                                 bug_authenticate = bugzilla_results[j].cf_authedicated;
-                                console.log(bugzilla_results[j].alias[0]);
                             }
                         }
 
@@ -2771,6 +2769,21 @@ router.get('/mobilemap', function (req, res) {
     }).sort({create_at: 1}).limit(40);
 
 });
+
+router.get('/city_policy', function (req, res) {    
+    var _coordinates = req.query.coordinates;
+    var _issue = req.query.issue;
+    Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": JSON.parse(req.query.coordinates) } } } }, { "municipality": 1 }, function (err, response) { 
+        if (response[0] != undefined) {
+            cityPolicy.find({ "city": response[0].municipality, "category": req.query.issue }, { "policy_desc": 1, "anonymous": 1 }, function (err, city_policy) {
+                res.send(city_policy);
+            });
+        } else {
+            res.send([{}]);
+        }
+    });
+});
+
 
 router.get('/fullissue/:id', function (req, res) {
 

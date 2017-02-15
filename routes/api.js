@@ -202,7 +202,7 @@ router.post('/issue', function (req, res) {
                     }
 
                     ///* Check the policy
-
+                    /*
 					if (response.length > 0){
 						cityPolicy.find({"city": response[0]["municipality"], "category": resp.issue}, function (err_2, result) {
 							console.log('err2: '+ err_2);
@@ -218,7 +218,11 @@ router.post('/issue', function (req, res) {
 					else{
 						return_var = {"_id": resp._id, "anonymous": "true", "policy_description": ""};
 						res.send(return_var);
-					}
+                    }
+                    */
+                    return_var = { "_id": resp._id};
+                    res.send(return_var);
+
                 }
             });
         });

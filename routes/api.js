@@ -526,6 +526,8 @@ var get_issues = function (req, callback) {
                     //new start
                     if (err != null) { console.log("err   =   " + err); }
 
+                    console.log(JSON.stringify(issue));
+
                     issue_return += '[';
 
 

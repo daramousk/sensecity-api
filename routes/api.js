@@ -222,10 +222,12 @@ router.post('/issue', function (req, res) {
 						res.send(return_var);
                     }
                     */
-                    return_var = { "_id": resp._id};
-                    res.send(return_var);
+                    
 
                 }
+                return_var = { "_id": resp._id };
+                console.log("_id" + resp._id);
+                    res.send(return_var);
             });
         });
     }

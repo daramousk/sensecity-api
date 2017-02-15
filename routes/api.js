@@ -521,43 +521,83 @@ var get_issues = function (req, callback) {
                     bugzilla_results = JSON.parse(body).bugs;
                 }
 
-                Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
+                if (_image == 0) {
+                    Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
 
-                    //new start
-                    if (err != null) { console.log("err   =   " + err); }
+                        //new start
+                        if (err != null) { console.log("err   =   " + err); }
 
-                    console.log(JSON.stringify(issue));
+                        console.log(JSON.stringify(issue));
 
-                    issue_return += '[';
+                        issue_return += '[';
 
 
-                    //console.log(issue);
-                    for (var i = 0; i < issue.length; i++) {
-                       
-                        var bug_id = 0;
-                        var bug_status = "";
-                        var bug_authenticate = "0";
-                        for (var j = 0; j < bugzilla_results.length; j++) {
-                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                bug_id = bugzilla_results[j].id;
-                                bug_status = bugzilla_results[j].status;
-                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+                        //console.log(issue);
+                        for (var i = 0; i < issue.length; i++) {
+
+                            var bug_id = 0;
+                            var bug_status = "";
+                            var bug_authenticate = "0";
+                            for (var j = 0; j < bugzilla_results.length; j++) {
+                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                    bug_id = bugzilla_results[j].id;
+                                    bug_status = bugzilla_results[j].status;
+                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                }
+                            }
+
+                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                            if (i < issue.length - 1) {
+                                issue_return += ',';
                             }
                         }
 
-                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
-                        if (i < issue.length - 1) {
-                            issue_return += ',';
+                        issue_return += ']';
+
+                        callback(issue_return);
+
+
+                    }).sort({ "create_at": _sort_mongo });
+                }
+                else {
+
+                    Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
+
+                        //new start
+                        if (err != null) { console.log("err   =   " + err); }
+
+                        console.log(JSON.stringify(issue));
+
+                        issue_return += '[';
+
+
+                        //console.log(issue);
+                        for (var i = 0; i < issue.length; i++) {
+
+                            var bug_id = 0;
+                            var bug_status = "";
+                            var bug_authenticate = "0";
+                            for (var j = 0; j < bugzilla_results.length; j++) {
+                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                    bug_id = bugzilla_results[j].id;
+                                    bug_status = bugzilla_results[j].status;
+                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                }
+                            }
+
+                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '"}';
+                            if (i < issue.length - 1) {
+                                issue_return += ',';
+                            }
                         }
-                    }
 
-                    issue_return += ']';
+                        issue_return += ']';
 
-                    callback(issue_return);
+                        callback(issue_return);
 
 
-                }).sort({ "create_at": _sort_mongo });
-
+                    }).sort({ "create_at": _sort_mongo });
+                }
 
 
 

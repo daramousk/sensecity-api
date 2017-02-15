@@ -235,7 +235,11 @@ router.post('/issue', function (req, res) {
 
 router.post('/issue/:id', function (req, res) {
 
-    //console.log(req);
+    console.log("1");
+
+    console.log(JSON.stringify(req.body));
+
+
     var bodyParams;
 	//console.log("req.params.id"+req.params.id);
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
@@ -423,6 +427,7 @@ var get_issues = function (req, callback) {
             var _limit;
             var _sort;
             var _offset;
+            var _image;
 
             if (req.query.hasOwnProperty("bug_id")) {
                 _bug_id = req.query.bug_id;
@@ -475,6 +480,22 @@ var get_issues = function (req, callback) {
                 bugParams1 += "&v3=" + _email;
             }
 
+            if (!req.query.hasOwnProperty('image_field')) {
+                _image = 0;
+                //_image = true;
+                //console.log("1 _image=" + _image);
+            } else {
+                if (req.query.image_field == 0) {
+                    _image = 0;
+                    //_image = false;
+                    //console.log("2 _image=" + _image);
+                } else {
+                    _image = 1;
+                    //_image = true;
+                    //console.log("2 _image=" + _image);
+                }
+            }
+
             console.log(bugParams1);
 
             var ids = [];
@@ -500,7 +521,7 @@ var get_issues = function (req, callback) {
                     bugzilla_results = JSON.parse(body).bugs;
                 }
 
-                Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": 0 }, function (err, issue) {
+                Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
 
                     //new start
                     if (err != null) { console.log("err   =   " + err); }

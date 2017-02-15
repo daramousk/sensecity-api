@@ -164,7 +164,9 @@ router.post('/issue', function (req, res) {
                     console.log(err1);
                 } else
                 {
-                    
+                    console.log("                 ------------------------------------------------------ ");
+                    console.log(JSON.stringify(resp));
+
 					//console.log("bug.url =====>" + bugUrl);
                     if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment" )
                     {

@@ -311,6 +311,8 @@ router.post('/issue/:id', function (req, res) {
 					///* Update the issue with a specific id 
 					///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
                     bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": { "add": [req.body.email] }, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num, "reset_assigned_to": true, "cf_authedicated": 1, "cf_issues": resp.issue };
+
+                    console.log(bodyParams);
 					/*bodyParams =
 							{
 								"method": "Bug.update",
@@ -325,6 +327,8 @@ router.post('/issue/:id', function (req, res) {
 						json: bodyParams
 					}, function (error1, response1, body1) {
 
+                        console.log(JSON.stringify(body1));
+
                         console.log(error1);
 
 						if(resp.comments === null || resp.comments ===""){
@@ -332,7 +336,7 @@ router.post('/issue/:id', function (req, res) {
 							resp.comments = "undefined";
 						}
                         var bugComment1 = { "token": bugToken, "id": body_parse.bugs[0].id, "comment": resp.comments};
-
+                        console.log(JSON.stringify(bugComment1));
                         /*
                         var bugComment =
 								{
@@ -348,7 +352,7 @@ router.post('/issue/:id', function (req, res) {
 								json: bugComment1
                         }, function (error2, bugResponse2, body2) {
 
-
+                            console.log(JSON.stringify(body2));
 								//console.log("body2 ====> " + JSON.stringify(body2.id));
 								console.log("Insert comments to bugzilla");
 								

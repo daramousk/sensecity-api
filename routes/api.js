@@ -234,20 +234,12 @@ router.post('/issue', function (req, res) {
 });
 
 router.post('/issue/:id', function (req, res) {
-
-    console.log("1");
-
-    console.log(JSON.stringify(req.body));
-
-
     var bodyParams;
-	//console.log("req.params.id"+req.params.id);
     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
 
         Issue.findOneAndUpdate({"_id": req.params.id}, {
             user: {uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num}
-        }, function (err, resp) {
-            console.log(resp);
+        }, function (err, resp) {           
 			console.log("Update Issue with name,email & mobile num!");
 			
             if (err)
@@ -255,22 +247,6 @@ router.post('/issue/:id', function (req, res) {
 
             ///* Create user acount to bugzilla			
             var bugCreateuser1 = {"token": bugToken, "email": req.body.email.toString()};
-            
-            /*
-            var bugCreateuser =
-                    {
-                        "method": "User.create",
-                        "params": [{"token": bugToken, }],
-                        "id": 1
-                    };
-            */
-            /*
-            request({
-                url: bugUrl,
-                method: "POST",
-                json: bugCreateuser
-            }, function (error, response, body) {
-            */
             
             request({
                 url: bugUrlRest+"/rest/user",
@@ -281,113 +257,109 @@ router.post('/issue/:id', function (req, res) {
 					console.log("User doesnot created! Error : "+error);
 					return false;
 				}
-				console.log("User Created/already exist at bugzilla");
-            });
+                console.log("User Created/already exist at bugzilla");
 
-            ///* Find to bugzilla the issue and return the id
-            var bugParams1 = "?alias=" + req.params.id + "&include_fields=id,alias";
-            //{ "alias":[req.params.id], "include_fields":"id,alias" };
 
-            /*
-            var bugParams =
-                    {
-                        "method": "Bug.search",
-                        "params": [{"alias": req.params.id, "include_fields": ["id", "alias"]}],
-                        "id": 1
-                    };
-                    */
-             
-            request({
-                url: bugUrlRest + "/rest/bug" + bugParams1,
-                method: "GET"
-            }, function (error, response, body) {
-                var body_parse = JSON.parse(body);
 
-               // console.log("body" + body_parse.bugs[0].id);
 
-                if (body_parse.bugs[0] != undefined ) {
-					//console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0]));
-					
-					///* Update the issue with a specific id 
-					///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
-                    bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": { "add": [req.body.email] }, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num, "reset_assigned_to": true, "cf_authedicated": 1, "cf_issues": resp.issue };
 
-                    console.log(bodyParams);
-					/*bodyParams =
-							{
-								"method": "Bug.update",
-								"params": [{"token": bugToken, "ids": [body.result.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": {"add": [req.body.email]}, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num,"reset_assigned_to":true, "cf_authedicated": 1, "cf_issues": resp.issue}],
-								"id": 1
-							};*/
-                    //console.log("bodyParams ====== > " + JSON.stringify(bodyParams));
-                    
-					request({
-                        url: bugUrlRest + "/rest/bug/" + req.params.id,
-						method: "PUT",
-						json: bodyParams
-					}, function (error1, response1, body1) {
 
-                        console.log(JSON.stringify(body1));
+                ///* Find to bugzilla the issue and return the id
+                var bugParams1 = "?alias=" + req.params.id + "&include_fields=id,alias";
 
-                        console.log(error1);
+                request({
+                    url: bugUrlRest + "/rest/bug" + bugParams1,
+                    method: "GET"
+                }, function (error, response, body) {
+                    var body_parse = JSON.parse(body);
 
-						if(resp.comments === null || resp.comments ===""){
-							
-							resp.comments = "undefined";
-						}
-                        var bugComment1 = { "token": bugToken, "id": body_parse.bugs[0].id, "comment": resp.comments};
-                        console.log(JSON.stringify(bugComment1));
-                        /*
-                        var bugComment =
-								{
-									"method": "Bug.add_comment",
-									"params": [{"token": bugToken, "id": body.result.bugs[0].id, "comment": resp.comments}],
-									"id": 1
-								};
-						*/
+                    // console.log("body" + body_parse.bugs[0].id);
+
+                    if (body_parse.bugs[0] != undefined) {
+                        //console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0]));
+
+                        ///* Update the issue with a specific id 
+                        ///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
+                        bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": { "add": [req.body.email] }, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num, "reset_assigned_to": true, "cf_authedicated": 1, "cf_issues": resp.issue };                        
 
                         request({
-                            url: bugUrlRest + "/rest/bug/" + body_parse.bugs[0].id +"/comment",
-								method: "POST",
-								json: bugComment1
-                        }, function (error2, bugResponse2, body2) {
+                            url: bugUrlRest + "/rest/bug/" + req.params.id,
+                            method: "PUT",
+                            json: bodyParams
+                        }, function (error1, response1, body1) {
 
-                            console.log(JSON.stringify(body2));
-								//console.log("body2 ====> " + JSON.stringify(body2.id));
-								console.log("Insert comments to bugzilla");
-								
-								if(body2.id != null)
-								{
-																
-								request({
-									url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
-									method: "PUT",
-									json: {"add": ["all", "CONFIRMED"], "id": body2.id,"token": bugToken}
-								}, function (error4, response4, body4) {
-									
-									console.log("Insert Tags to comment");
-									
-								});
-								}
-							});
+                            console.log(JSON.stringify(body1));
 
-							request({
+                            console.log(error1);
+
+                            if (resp.comments === null || resp.comments === "") {
+
+                                resp.comments = "undefined";
+                            }
+                            var bugComment1 = { "token": bugToken, "id": body_parse.bugs[0].id, "comment": resp.comments };
+                            console.log(JSON.stringify(bugComment1));
+                            
+                            request({
+                                url: bugUrlRest + "/rest/bug/" + body_parse.bugs[0].id + "/comment",
+                                method: "POST",
+                                json: bugComment1
+                            }, function (error2, bugResponse2, body2) {
+
+                                console.log(JSON.stringify(body2));
+                                //console.log("body2 ====> " + JSON.stringify(body2.id));
+                                console.log("Insert comments to bugzilla");
+
+                                if (body2.id != null) {
+
+                                    request({
+                                        url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
+                                        method: "PUT",
+                                        json: { "add": ["all", "CONFIRMED"], "id": body2.id, "token": bugToken }
+                                    }, function (error4, response4, body4) {
+
+                                        console.log("Insert Tags to comment");
+
+                                    });
+                                }
+                            });
+
+                            request({
                                 url: "/rest/bug/" + body_parse.bugs[0].id + "/comment",
-								method: "GET"
-							}, function (error3, bugResponse3, body3) {
+                                method: "GET"
+                            }, function (error3, bugResponse3, body3) {
 
-							});
-						
-						/*}
-						else{
-							console.log("No comments availiable");
-						}*/
-					});
-				
-				
-				}
+                            });
+
+                            /*}
+                            else{
+                                console.log("No comments availiable");
+                            }*/
+                        });
+
+
+                    }
+
+                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             });
+            
 
             res.send({"description": "ok"});
 

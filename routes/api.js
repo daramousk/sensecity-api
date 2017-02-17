@@ -276,7 +276,6 @@ router.post('/issue/:id', function (req, res) {
                     // console.log("body" + body_parse.bugs[0].id);
 
                     if (body_parse.bugs[0] != undefined) {
-                        //console.log("body bug.search in issue/:id =>"+JSON.stringify(body.result.bugs[0]));
 
                         ///* Update the issue with a specific id 
                         ///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
@@ -288,8 +287,6 @@ router.post('/issue/:id', function (req, res) {
                             json: bodyParams
                         }, function (error1, response1, body1) {
 
-                            console.log(JSON.stringify(body1));
-
                             console.log(error1);
 
                             if (resp.comments === null || resp.comments === "") {
@@ -297,16 +294,13 @@ router.post('/issue/:id', function (req, res) {
                                 resp.comments = "undefined";
                             }
                             var bugComment1 = { "token": bugToken, "id": body_parse.bugs[0].id, "comment": resp.comments };
-                            console.log(JSON.stringify(bugComment1));
                             
                             request({
                                 url: bugUrlRest + "/rest/bug/" + body_parse.bugs[0].id + "/comment",
                                 method: "POST",
                                 json: bugComment1
                             }, function (error2, bugResponse2, body2) {
-
-                                console.log(JSON.stringify(body2));
-                                //console.log("body2 ====> " + JSON.stringify(body2.id));
+                            
                                 console.log("Insert comments to bugzilla");
 
                                 if (body2.id != null) {
@@ -328,12 +322,7 @@ router.post('/issue/:id', function (req, res) {
                                 method: "GET"
                             }, function (error3, bugResponse3, body3) {
 
-                            });
-
-                            /*}
-                            else{
-                                console.log("No comments availiable");
-                            }*/
+                            });                            
                         });
 
 

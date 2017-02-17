@@ -164,9 +164,6 @@ router.post('/issue', function (req, res) {
                     console.log(err1);
                 } else
                 {
-                    console.log("                 ------------------------------------------------------ ");
-                    console.log(JSON.stringify(resp));
-
 					//console.log("bug.url =====>" + bugUrl);
                     if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment" )
                     {
@@ -225,8 +222,7 @@ router.post('/issue', function (req, res) {
                     
 
                 }
-                return_var = { "_id": resp._id };
-                console.log("_id" + resp._id);
+                return_var = { "_id": resp._id };                
                     res.send(return_var);
             });
         });

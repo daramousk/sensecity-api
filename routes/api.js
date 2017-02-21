@@ -2811,7 +2811,7 @@ router.get('/city_policy', function (req, res) {
                 res.send(city_policy);
             });
         } else {
-            res.send([{}]);
+            res.send([{ "policy_desc":"Η πόλη που βρίσκεστε δεν υποστηρίζετε από το Sense.City. Το αίτημα σας θα καταχωριθεί ως ανώνυμο."}]);
         }
     });
 });

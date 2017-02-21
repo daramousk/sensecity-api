@@ -2807,7 +2807,7 @@ router.get('/city_policy', function (req, res) {
     var _issue = req.query.issue;
     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": JSON.parse(req.query.coordinates) } } } }, { "municipality": 1 }, function (err, response) { 
         if (response[0] != undefined) {
-            cityPolicy.find({ "city": response[0].municipality, "category": req.query.issue }, { "policy_desc": 1, "anonymous": 1,"municipality": 1 }, function (err, city_policy) {
+            cityPolicy.find({ "city": response[0].municipality, "category": req.query.issue }, { "policy_desc": 1, "anonymous": 1,"city": 1 }, function (err, city_policy) {
                 res.send(city_policy);
             });
         } else {

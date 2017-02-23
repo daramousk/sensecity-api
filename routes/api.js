@@ -558,6 +558,7 @@ var get_issues = function (req, callback) {
                             
 
                             for (var j = 0; j < bugzilla_results.length; j++) {
+                                console.log(bugzilla_results[j]);
                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
                                     bug_id = bugzilla_results[j].id;
                                     bug_status = bugzilla_results[j].status;

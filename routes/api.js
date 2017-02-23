@@ -392,11 +392,6 @@ var get_issues = function (req, callback) {
 
     var _bug_extra="";
     var _user_extra = 0;
-    console.log("--------------------");
-    console.log("--------------------");
-    console.log(req);
-    console.log("--------------------");
-    console.log("--------------------");
 
     if (req.send_user == 1) {
         _user_extra = 1;
@@ -521,9 +516,7 @@ var get_issues = function (req, callback) {
                 var i_count = 0;
                 var bugs_length = 0;
 
-                console.log("-------------------------------------------------");
-                console.log(JSON.parse(body));
-                console.log("-------------------------------------------------");
+                
                 if (JSON.parse(body).bugs != undefined) {
                     bugs_length = JSON.parse(body).bugs.length;
                 }
@@ -534,119 +527,225 @@ var get_issues = function (req, callback) {
                 }
 
                 if (_image == 0) {
-                    Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
+                    if (_user_extra == 0) {
+                        Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
 
-                        //new start
-                        if (err != null) { console.log("err   =   " + err); }
-
-                        console.log("234567890----====    "+JSON.stringify(issue));
-                        console.log("*******************************************"); console.log("*******************************************"); console.log("*******************************************");
-                        console.log(issue.length);
-                        console.log("*******************************************"); console.log("*******************************************"); console.log("*******************************************");
-                        issue_return += '[';
+                            //new start
+                            if (err != null) { console.log("err   =   " + err); }
+                            issue_return += '[';
 
 
-                        //console.log(issue);
-                        for (var i = 0; i < issue.length; i++) {
+                            //console.log(issue);
+                            for (var i = 0; i < issue.length; i++) {
 
-                            var bug_id = 0;
-                            var bug_status = "";
-                            var bug_authenticate = "0";
+                                var bug_id = 0;
+                                var bug_status = "";
+                                var bug_authenticate = "0";
 
-                            var bug_component;
-                            var bug_priority;
-                            var bug_severity;
-                            
+                                var bug_component;
+                                var bug_priority;
+                                var bug_severity;
 
-                            for (var j = 0; j < bugzilla_results.length; j++) {
-                                console.log(bugzilla_results[j]);
-                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                    bug_id = bugzilla_results[j].id;
-                                    bug_status = bugzilla_results[j].status;
-                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
 
-                                    if (bugzilla_results[j].component != undefined) {
-                                        bug_component = bugzilla_results[j].component;
+                                for (var j = 0; j < bugzilla_results.length; j++) {
+                                    console.log(bugzilla_results[j]);
+                                    if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                        bug_id = bugzilla_results[j].id;
+                                        bug_status = bugzilla_results[j].status;
+                                        bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                        if (bugzilla_results[j].component != undefined) {
+                                            bug_component = bugzilla_results[j].component;
+                                        }
+                                        if (bugzilla_results[j].priority != undefined) {
+                                            bug_priority = bugzilla_results[j].priority;
+                                        }
+                                        if (bugzilla_results[j].severity != undefined) {
+                                            bug_severity = bugzilla_results[j].severity;
+                                        }
+
                                     }
-                                    if (bugzilla_results[j].priority != undefined) {
-                                        bug_priority = bugzilla_results[j].priority;
-                                    }
-                                    if (bugzilla_results[j].bug_severity != undefined) {
-                                        bug_severity = bugzilla_results[j].bug_severity;
-                                    }
+                                }
 
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                if (i < issue.length - 1) {
+                                    issue_return += ',';
                                 }
                             }
 
-                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity +'"}';
-                            if (i < issue.length - 1) {
-                                issue_return += ',';
+                            issue_return += ']';
+
+                            callback(issue_return);
+
+
+                        }).sort({ "create_at": _sort_mongo });
+                    } else {
+                        Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
+
+                            //new start
+                            if (err != null) { console.log("err   =   " + err); }
+                            issue_return += '[';
+
+
+                            //console.log(issue);
+                            for (var i = 0; i < issue.length; i++) {
+
+                                var bug_id = 0;
+                                var bug_status = "";
+                                var bug_authenticate = "0";
+
+                                var bug_component;
+                                var bug_priority;
+                                var bug_severity;
+
+
+                                for (var j = 0; j < bugzilla_results.length; j++) {
+                                    console.log(bugzilla_results[j]);
+                                    if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                        bug_id = bugzilla_results[j].id;
+                                        bug_status = bugzilla_results[j].status;
+                                        bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                        if (bugzilla_results[j].component != undefined) {
+                                            bug_component = bugzilla_results[j].component;
+                                        }
+                                        if (bugzilla_results[j].priority != undefined) {
+                                            bug_priority = bugzilla_results[j].priority;
+                                        }
+                                        if (bugzilla_results[j].severity != undefined) {
+                                            bug_severity = bugzilla_results[j].severity;
+                                        }
+
+                                    }
+                                }
+
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                if (i < issue.length - 1) {
+                                    issue_return += ',';
+                                }
                             }
-                        }
 
-                        issue_return += ']';
+                            issue_return += ']';
 
-                        callback(issue_return);
+                            callback(issue_return);
 
 
-                    }).sort({ "create_at": _sort_mongo });
+                        }).sort({ "create_at": _sort_mongo });
+                    }
                 }
                 else {
+                    if (_user_extra == 0) {
+                        Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
 
-                    Issue.find({ "_id": { $in: ids } }, { "user": _user_extra }, function (err, issue) {
+                            //new start
+                            if (err != null) { console.log("err   =   " + err); }
 
-                        //new start
-                        if (err != null) { console.log("err   =   " + err); }
+                            console.log(JSON.stringify(issue));
 
-                        console.log(JSON.stringify(issue));
-
-                        issue_return += '[';
-
-
-                        //console.log(issue);
-                        for (var i = 0; i < issue.length; i++) {
-
-                            var bug_id = 0;
-                            var bug_status = "";
-                            var bug_authenticate = "0";
-
-                            var bug_component;
-                            var bug_priority;
-                            var bug_severity;
+                            issue_return += '[';
 
 
-                            for (var j = 0; j < bugzilla_results.length; j++) {
-                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                    bug_id = bugzilla_results[j].id;
-                                    bug_status = bugzilla_results[j].status;
-                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
+                            //console.log(issue);
+                            for (var i = 0; i < issue.length; i++) {
 
-                                    if (bugzilla_results[j].component != undefined) {
-                                        bug_component = bugzilla_results[j].component;
+                                var bug_id = 0;
+                                var bug_status = "";
+                                var bug_authenticate = "0";
+
+                                var bug_component;
+                                var bug_priority;
+                                var bug_severity;
+
+
+                                for (var j = 0; j < bugzilla_results.length; j++) {
+                                    if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                        bug_id = bugzilla_results[j].id;
+                                        bug_status = bugzilla_results[j].status;
+                                        bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                        if (bugzilla_results[j].component != undefined) {
+                                            bug_component = bugzilla_results[j].component;
+                                        }
+                                        if (bugzilla_results[j].cf_priority != undefined) {
+                                            bug_priority = bugzilla_results[j].cf_priority;
+                                        }
+                                        if (bugzilla_results[j].bug_severity != undefined) {
+                                            bug_severity = bugzilla_results[j].bug_severity;
+                                        }
+
+
                                     }
-                                    if (bugzilla_results[j].cf_priority != undefined) {
-                                        bug_priority = bugzilla_results[j].cf_priority;
-                                    }
-                                    if (bugzilla_results[j].bug_severity != undefined) {
-                                        bug_severity = bugzilla_results[j].bug_severity;
-                                    }
+                                }
 
-
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                if (i < issue.length - 1) {
+                                    issue_return += ',';
                                 }
                             }
 
-                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity +'"}';
-                            if (i < issue.length - 1) {
-                                issue_return += ',';
+                            issue_return += ']';
+
+                            callback(issue_return);
+
+
+                        }).sort({ "create_at": _sort_mongo });
+                    }
+                    else {
+                        Issue.find({ "_id": { $in: ids } }, function (err, issue) {
+
+                            //new start
+                            if (err != null) { console.log("err   =   " + err); }
+
+                            console.log(JSON.stringify(issue));
+
+                            issue_return += '[';
+
+
+                            //console.log(issue);
+                            for (var i = 0; i < issue.length; i++) {
+
+                                var bug_id = 0;
+                                var bug_status = "";
+                                var bug_authenticate = "0";
+
+                                var bug_component;
+                                var bug_priority;
+                                var bug_severity;
+
+
+                                for (var j = 0; j < bugzilla_results.length; j++) {
+                                    if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                        bug_id = bugzilla_results[j].id;
+                                        bug_status = bugzilla_results[j].status;
+                                        bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                        if (bugzilla_results[j].component != undefined) {
+                                            bug_component = bugzilla_results[j].component;
+                                        }
+                                        if (bugzilla_results[j].cf_priority != undefined) {
+                                            bug_priority = bugzilla_results[j].cf_priority;
+                                        }
+                                        if (bugzilla_results[j].bug_severity != undefined) {
+                                            bug_severity = bugzilla_results[j].bug_severity;
+                                        }
+
+
+                                    }
+                                }
+
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                if (i < issue.length - 1) {
+                                    issue_return += ',';
+                                }
                             }
-                        }
 
-                        issue_return += ']';
+                            issue_return += ']';
 
-                        callback(issue_return);
+                            callback(issue_return);
 
 
-                    }).sort({ "create_at": _sort_mongo });
+                        }).sort({ "create_at": _sort_mongo });
+                    }
                 }
 
 
@@ -999,240 +1098,471 @@ var get_issues = function (req, callback) {
 
                             //console.log("ids1 ======> "+ids);
                             if (_image == 0) {
+                                if (_user_extra == 0) {
+                                    Issue.find({ "_id": { $in: ids } }, { "user":0, "image_name": _image }, function (err, issue) {
 
-                                Issue.find({ "_id": { $in: ids } }, { "user": _user_extra, "image_name": _image }, function (err, issue) {
+                                        //new start
+                                        if (err != null) { console.log("err   =   " + err); }
+                                        if (_kml == 0) {
+                                            issue_return += '[';
+                                        } else if (_kml == 1) {
+                                            issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                                '<name>sensecity.kml</name>' +
+                                                '<Style id="s_ylw-pushpin_hl">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.3</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<StyleMap id="m_ylw-pushpin">' +
+                                                '<Pair>' +
+                                                '<key>normal</key>' +
+                                                '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                                '</Pair>' +
+                                                '<Pair>' +
+                                                '<key>highlight</key>' +
+                                                '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                                '</Pair>' +
+                                                '</StyleMap>' +
+                                                '<Style id="s_ylw-pushpin">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.1</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<Folder>' +
+                                                '<name>sensecity</name>' +
+                                                '<open>1</open>';
+                                        }
 
-                                    //new start
-                                    if (err != null) { console.log("err   =   " + err); }
-                                    if (_kml == 0) {
-                                        issue_return += '[';
-                                    } else if (_kml == 1) {
-                                        issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                            '<name>sensecity.kml</name>' +
-                                            '<Style id="s_ylw-pushpin_hl">' +
-                                            '<IconStyle>' +
-                                            '<color>ff7fffff</color>' +
-                                            '<scale>1.3</scale>' +
-                                            '<Icon>' +
-                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                            '</Icon>' +
-                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                            '</IconStyle>' +
-                                            '</Style>' +
-                                            '<StyleMap id="m_ylw-pushpin">' +
-                                            '<Pair>' +
-                                            '<key>normal</key>' +
-                                            '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                            '</Pair>' +
-                                            '<Pair>' +
-                                            '<key>highlight</key>' +
-                                            '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                            '</Pair>' +
-                                            '</StyleMap>' +
-                                            '<Style id="s_ylw-pushpin">' +
-                                            '<IconStyle>' +
-                                            '<color>ff7fffff</color>' +
-                                            '<scale>1.1</scale>' +
-                                            '<Icon>' +
-                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                            '</Icon>' +
-                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                            '</IconStyle>' +
-                                            '</Style>' +
-                                            '<Folder>' +
-                                            '<name>sensecity</name>' +
-                                            '<open>1</open>';
-                                    }
+                                        //console.log(issue);
+                                        for (var i = 0; i < issue.length; i++) {
 
-                                    //console.log(issue);
-                                    for (var i = 0; i < issue.length; i++) {
+                                            var bug_id = 0;
+                                            var bug_status = "";
+                                            var bug_authenticate = "0";
+                                            var bug_component;
+                                            var bug_priority;
+                                            var bug_severity;
 
-                                        var bug_id = 0;
-                                        var bug_status = "";
-                                        var bug_authenticate = "0";
-                                        var bug_component;
-                                        var bug_priority;
-                                        var bug_severity;
+                                            for (var j = 0; j < bugzilla_results.length; j++) {
+                                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                    bug_id = bugzilla_results[j].id;
+                                                    bug_status = bugzilla_results[j].status;
+                                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
 
-                                        for (var j = 0; j < bugzilla_results.length; j++) {
-                                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                                bug_id = bugzilla_results[j].id;
-                                                bug_status = bugzilla_results[j].status;
-                                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                                    if (bugzilla_results[j].component != undefined) {
+                                                        bug_component = bugzilla_results[j].component;
+                                                    }
+                                                    if (bugzilla_results[j].cf_priority != undefined) {
+                                                        bug_priority = bugzilla_results[j].cf_priority;
+                                                    }
+                                                    if (bugzilla_results[j].bug_severity != undefined) {
+                                                        bug_severity = bugzilla_results[j].bug_severity;
+                                                    }
 
-                                                if (bugzilla_results[j].component != undefined) {
-                                                    bug_component = bugzilla_results[j].component;
                                                 }
-                                                if (bugzilla_results[j].cf_priority != undefined) {
-                                                    bug_priority = bugzilla_results[j].cf_priority;
-                                                }
-                                                if (bugzilla_results[j].bug_severity != undefined) {
-                                                    bug_severity = bugzilla_results[j].bug_severity;
-                                                }
+                                            }
 
+                                            if (_kml == 0) {
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                                if (i < issue.length - 1) {
+                                                    issue_return += ',';
+                                                }
+                                            } else if (_kml == 1) {
+                                                issue_return += '<Placemark>' +
+                                                    '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                    '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                    '<LookAt>' +
+                                                    '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                    '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                    '<altitude>0</altitude>' +
+                                                    '<heading>-176.4101948194351</heading>' +
+                                                    '<tilt>70.72955317497231</tilt>' +
+                                                    '<range>1952.786634342951</range>' +
+                                                    '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                    '</LookAt>' +
+                                                    '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                    '<Point>' +
+                                                    '<gx:drawOrder>1</gx:drawOrder>' +
+                                                    '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                    '</Point>' +
+                                                    '</Placemark>';
                                             }
                                         }
 
                                         if (_kml == 0) {
-                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity +'"}';
-                                            if (i < issue.length - 1) {
-                                                issue_return += ',';
-                                            }
+                                            issue_return += ']';
+
+                                            callback(issue_return);
+
                                         } else if (_kml == 1) {
-                                            issue_return += '<Placemark>' +
-                                                '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
-                                                '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
-                                                '<LookAt>' +
-                                                '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
-                                                '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
-                                                '<altitude>0</altitude>' +
-                                                '<heading>-176.4101948194351</heading>' +
-                                                '<tilt>70.72955317497231</tilt>' +
-                                                '<range>1952.786634342951</range>' +
-                                                '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
-                                                '</LookAt>' +
-                                                '<styleUrl>#m_ylw-pushpin</styleUrl>' +
-                                                '<Point>' +
-                                                '<gx:drawOrder>1</gx:drawOrder>' +
-                                                '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
-                                                '</Point>' +
-                                                '</Placemark>';
+                                            issue_return += '</Folder> </Document> </kml>';
+
+                                            callback(issue_return);
+
                                         }
-                                    }
 
-                                    if (_kml == 0) {
-                                        issue_return += ']';
-
-                                        callback(issue_return);
-
-                                    } else if (_kml == 1) {
-                                        issue_return += '</Folder> </Document> </kml>';
-
-                                        callback(issue_return);
-
-                                    }
-
-                                    //new end
+                                        //new end
 
 
-                                    //res.send(issue);
-                                }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                                        //res.send(issue);
+                                    }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+
+                                } else {
+                                    Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
+
+                                        //new start
+                                        if (err != null) { console.log("err   =   " + err); }
+                                        if (_kml == 0) {
+                                            issue_return += '[';
+                                        } else if (_kml == 1) {
+                                            issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                                '<name>sensecity.kml</name>' +
+                                                '<Style id="s_ylw-pushpin_hl">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.3</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<StyleMap id="m_ylw-pushpin">' +
+                                                '<Pair>' +
+                                                '<key>normal</key>' +
+                                                '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                                '</Pair>' +
+                                                '<Pair>' +
+                                                '<key>highlight</key>' +
+                                                '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                                '</Pair>' +
+                                                '</StyleMap>' +
+                                                '<Style id="s_ylw-pushpin">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.1</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<Folder>' +
+                                                '<name>sensecity</name>' +
+                                                '<open>1</open>';
+                                        }
+
+                                        //console.log(issue);
+                                        for (var i = 0; i < issue.length; i++) {
+
+                                            var bug_id = 0;
+                                            var bug_status = "";
+                                            var bug_authenticate = "0";
+                                            var bug_component;
+                                            var bug_priority;
+                                            var bug_severity;
+
+                                            for (var j = 0; j < bugzilla_results.length; j++) {
+                                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                    bug_id = bugzilla_results[j].id;
+                                                    bug_status = bugzilla_results[j].status;
+                                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                                    if (bugzilla_results[j].component != undefined) {
+                                                        bug_component = bugzilla_results[j].component;
+                                                    }
+                                                    if (bugzilla_results[j].cf_priority != undefined) {
+                                                        bug_priority = bugzilla_results[j].cf_priority;
+                                                    }
+                                                    if (bugzilla_results[j].bug_severity != undefined) {
+                                                        bug_severity = bugzilla_results[j].bug_severity;
+                                                    }
+
+                                                }
+                                            }
+
+                                            if (_kml == 0) {
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                                if (i < issue.length - 1) {
+                                                    issue_return += ',';
+                                                }
+                                            } else if (_kml == 1) {
+                                                issue_return += '<Placemark>' +
+                                                    '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                    '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                    '<LookAt>' +
+                                                    '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                    '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                    '<altitude>0</altitude>' +
+                                                    '<heading>-176.4101948194351</heading>' +
+                                                    '<tilt>70.72955317497231</tilt>' +
+                                                    '<range>1952.786634342951</range>' +
+                                                    '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                    '</LookAt>' +
+                                                    '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                    '<Point>' +
+                                                    '<gx:drawOrder>1</gx:drawOrder>' +
+                                                    '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                    '</Point>' +
+                                                    '</Placemark>';
+                                            }
+                                        }
+
+                                        if (_kml == 0) {
+                                            issue_return += ']';
+
+                                            callback(issue_return);
+
+                                        } else if (_kml == 1) {
+                                            issue_return += '</Folder> </Document> </kml>';
+
+                                            callback(issue_return);
+
+                                        }
+
+                                        //new end
 
 
+                                        //res.send(issue);
+                                    }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                                }
 
                             } else {
+                                if (_user_extra == 0) {
+                                    Issue.find({ "_id": { $in: ids } }, { "user":0 }, function (err, issue) {
+                                        //new start
+                                        if (err != null) { console.log("err1   =   " + err); }
+                                        if (_kml == 0) {
+                                            issue_return += '[';
+                                        } else if (_kml == 1) {
+                                            issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                                '<name>sensecity.kml</name>' +
+                                                '<Style id="s_ylw-pushpin_hl">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.3</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<StyleMap id="m_ylw-pushpin">' +
+                                                '<Pair>' +
+                                                '<key>normal</key>' +
+                                                '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                                '</Pair>' +
+                                                '<Pair>' +
+                                                '<key>highlight</key>' +
+                                                '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                                '</Pair>' +
+                                                '</StyleMap>' +
+                                                '<Style id="s_ylw-pushpin">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.1</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<Folder>' +
+                                                '<name>sensecity</name>' +
+                                                '<open>1</open>';
+                                        }
 
-                                Issue.find({ "_id": { $in: ids } }, { "user": _user_extra }, function (err, issue) {
-                                    //new start
-                                    if (err != null) { console.log("err1   =   " + err); }
-                                    if (_kml == 0) {
-                                        issue_return += '[';
-                                    } else if (_kml == 1) {
-                                        issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                            '<name>sensecity.kml</name>' +
-                                            '<Style id="s_ylw-pushpin_hl">' +
-                                            '<IconStyle>' +
-                                            '<color>ff7fffff</color>' +
-                                            '<scale>1.3</scale>' +
-                                            '<Icon>' +
-                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                            '</Icon>' +
-                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                            '</IconStyle>' +
-                                            '</Style>' +
-                                            '<StyleMap id="m_ylw-pushpin">' +
-                                            '<Pair>' +
-                                            '<key>normal</key>' +
-                                            '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                            '</Pair>' +
-                                            '<Pair>' +
-                                            '<key>highlight</key>' +
-                                            '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                            '</Pair>' +
-                                            '</StyleMap>' +
-                                            '<Style id="s_ylw-pushpin">' +
-                                            '<IconStyle>' +
-                                            '<color>ff7fffff</color>' +
-                                            '<scale>1.1</scale>' +
-                                            '<Icon>' +
-                                            '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                            '</Icon>' +
-                                            '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                            '</IconStyle>' +
-                                            '</Style>' +
-                                            '<Folder>' +
-                                            '<name>sensecity</name>' +
-                                            '<open>1</open>';
-                                    }
+                                        for (var i = 0; i < issue.length; i++) {
 
-                                    for (var i = 0; i < issue.length; i++) {
+                                            var bug_id = 0;
+                                            var bug_status = "";
+                                            var bug_authenticate = "0";
+                                            var bug_component;
+                                            var bug_priority;
+                                            var bug_severity;
 
-                                        var bug_id = 0;
-                                        var bug_status = "";
-                                        var bug_authenticate = "0";
-                                        var bug_component;
-                                        var bug_priority;
-                                        var bug_severity;
+                                            for (var j = 0; j < bugzilla_results.length; j++) {
+                                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                    bug_id = bugzilla_results[j].id;
+                                                    bug_status = bugzilla_results[j].status;
+                                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
 
-                                        for (var j = 0; j < bugzilla_results.length; j++) {
-                                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                                bug_id = bugzilla_results[j].id;
-                                                bug_status = bugzilla_results[j].status;
-                                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                                    if (bugzilla_results[j].component != undefined) {
+                                                        bug_component = bugzilla_results[j].component;
+                                                    }
+                                                    if (bugzilla_results[j].cf_priority != undefined) {
+                                                        bug_priority = bugzilla_results[j].cf_priority;
+                                                    }
+                                                    if (bugzilla_results[j].bug_severity != undefined) {
+                                                        bug_severity = bugzilla_results[j].bug_severity;
+                                                    }
 
-                                                if (bugzilla_results[j].component != undefined) {
-                                                    bug_component = bugzilla_results[j].component;
                                                 }
-                                                if (bugzilla_results[j].cf_priority != undefined) {
-                                                    bug_priority = bugzilla_results[j].cf_priority;
-                                                }
-                                                if (bugzilla_results[j].bug_severity != undefined) {
-                                                    bug_severity = bugzilla_results[j].bug_severity;
-                                                }
+                                            }
 
+                                            if (_kml == 0) {
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                                if (i < issue.length - 1) {
+                                                    issue_return += ',';
+                                                }
+                                            } else if (_kml == 1) {
+                                                issue_return += '<Placemark>' +
+                                                    '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                    '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                    '<LookAt>' +
+                                                    '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                    '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                    '<altitude>0</altitude>' +
+                                                    '<heading>-176.4101948194351</heading>' +
+                                                    '<tilt>70.72955317497231</tilt>' +
+                                                    '<range>1952.786634342951</range>' +
+                                                    '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                    '</LookAt>' +
+                                                    '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                    '<Point>' +
+                                                    '<gx:drawOrder>1</gx:drawOrder>' +
+                                                    '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                    '</Point>' +
+                                                    '</Placemark>';
                                             }
                                         }
 
                                         if (_kml == 0) {
-                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity +'"}';
-                                            if (i < issue.length - 1) {
-                                                issue_return += ',';
-                                            }
+                                            issue_return += ']';
+
+                                            callback(issue_return);
                                         } else if (_kml == 1) {
-                                            issue_return += '<Placemark>' +
-                                                '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
-                                                '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
-                                                '<LookAt>' +
-                                                '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
-                                                '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
-                                                '<altitude>0</altitude>' +
-                                                '<heading>-176.4101948194351</heading>' +
-                                                '<tilt>70.72955317497231</tilt>' +
-                                                '<range>1952.786634342951</range>' +
-                                                '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
-                                                '</LookAt>' +
-                                                '<styleUrl>#m_ylw-pushpin</styleUrl>' +
-                                                '<Point>' +
-                                                '<gx:drawOrder>1</gx:drawOrder>' +
-                                                '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
-                                                '</Point>' +
-                                                '</Placemark>';
+                                            issue_return += '</Folder> </Document> </kml>';
+
+                                            callback(issue_return);
                                         }
-                                    }
 
-                                    if (_kml == 0) {
-                                        issue_return += ']';
+                                        //new end
+                                        //res.send(issue);
+                                    }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                                } else {
+                                    Issue.find({ "_id": { $in: ids } }, function (err, issue) {
+                                        //new start
+                                        if (err != null) { console.log("err1   =   " + err); }
+                                        if (_kml == 0) {
+                                            issue_return += '[';
+                                        } else if (_kml == 1) {
+                                            issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                                '<name>sensecity.kml</name>' +
+                                                '<Style id="s_ylw-pushpin_hl">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.3</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<StyleMap id="m_ylw-pushpin">' +
+                                                '<Pair>' +
+                                                '<key>normal</key>' +
+                                                '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                                '</Pair>' +
+                                                '<Pair>' +
+                                                '<key>highlight</key>' +
+                                                '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                                '</Pair>' +
+                                                '</StyleMap>' +
+                                                '<Style id="s_ylw-pushpin">' +
+                                                '<IconStyle>' +
+                                                '<color>ff7fffff</color>' +
+                                                '<scale>1.1</scale>' +
+                                                '<Icon>' +
+                                                '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                                '</Icon>' +
+                                                '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                                '</IconStyle>' +
+                                                '</Style>' +
+                                                '<Folder>' +
+                                                '<name>sensecity</name>' +
+                                                '<open>1</open>';
+                                        }
 
-                                        callback(issue_return);
-                                    } else if (_kml == 1) {
-                                        issue_return += '</Folder> </Document> </kml>';
+                                        for (var i = 0; i < issue.length; i++) {
 
-                                        callback(issue_return);
-                                    }
+                                            var bug_id = 0;
+                                            var bug_status = "";
+                                            var bug_authenticate = "0";
+                                            var bug_component;
+                                            var bug_priority;
+                                            var bug_severity;
 
-                                    //new end
-                                    //res.send(issue);
-                                }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                                            for (var j = 0; j < bugzilla_results.length; j++) {
+                                                if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                    bug_id = bugzilla_results[j].id;
+                                                    bug_status = bugzilla_results[j].status;
+                                                    bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                                    if (bugzilla_results[j].component != undefined) {
+                                                        bug_component = bugzilla_results[j].component;
+                                                    }
+                                                    if (bugzilla_results[j].cf_priority != undefined) {
+                                                        bug_priority = bugzilla_results[j].cf_priority;
+                                                    }
+                                                    if (bugzilla_results[j].bug_severity != undefined) {
+                                                        bug_severity = bugzilla_results[j].bug_severity;
+                                                    }
+
+                                                }
+                                            }
+
+                                            if (_kml == 0) {
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                                if (i < issue.length - 1) {
+                                                    issue_return += ',';
+                                                }
+                                            } else if (_kml == 1) {
+                                                issue_return += '<Placemark>' +
+                                                    '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                    '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                    '<LookAt>' +
+                                                    '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                    '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                    '<altitude>0</altitude>' +
+                                                    '<heading>-176.4101948194351</heading>' +
+                                                    '<tilt>70.72955317497231</tilt>' +
+                                                    '<range>1952.786634342951</range>' +
+                                                    '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                    '</LookAt>' +
+                                                    '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                    '<Point>' +
+                                                    '<gx:drawOrder>1</gx:drawOrder>' +
+                                                    '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                    '</Point>' +
+                                                    '</Placemark>';
+                                            }
+                                        }
+
+                                        if (_kml == 0) {
+                                            issue_return += ']';
+
+                                            callback(issue_return);
+                                        } else if (_kml == 1) {
+                                            issue_return += '</Folder> </Document> </kml>';
+
+                                            callback(issue_return);
+                                        }
+
+                                        //new end
+                                        //res.send(issue);
+                                    }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                                }
                             }
 
                         });
@@ -1276,52 +1606,291 @@ var get_issues = function (req, callback) {
                         //console.log("ids ===>> " + ids);
                         // This query works only if is valid object ids
                         // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
+                        if (_user_extra == 0) {
+                            Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
+                                //new start
+                                if (err != null) { console.log("err2   =   " + err); }
+                                if (_kml == 0) {
+                                    issue_return += '[';
+                                } else if (_kml == 1) {
+                                    issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                        '<name>sensecity.kml</name>' +
+                                        '<Style id="s_ylw-pushpin_hl">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.3</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<StyleMap id="m_ylw-pushpin">' +
+                                        '<Pair>' +
+                                        '<key>normal</key>' +
+                                        '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                        '</Pair>' +
+                                        '<Pair>' +
+                                        '<key>highlight</key>' +
+                                        '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                        '</Pair>' +
+                                        '</StyleMap>' +
+                                        '<Style id="s_ylw-pushpin">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.1</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<Folder>' +
+                                        '<name>sensecity</name>' +
+                                        '<open>1</open>';
+                                }
 
-                        Issue.find({ "_id": { $in: ids } }, { "user": _user_extra, "image_name": _image }, function (err, issue) {
-                            //new start
-                            if (err != null) { console.log("err2   =   " + err); }
-                            if (_kml == 0) {
-                                issue_return += '[';
-                            } else if (_kml == 1) {
-                                issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                    '<name>sensecity.kml</name>' +
-                                    '<Style id="s_ylw-pushpin_hl">' +
-                                    '<IconStyle>' +
-                                    '<color>ff7fffff</color>' +
-                                    '<scale>1.3</scale>' +
-                                    '<Icon>' +
-                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                    '</Icon>' +
-                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                    '</IconStyle>' +
-                                    '</Style>' +
-                                    '<StyleMap id="m_ylw-pushpin">' +
-                                    '<Pair>' +
-                                    '<key>normal</key>' +
-                                    '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                    '</Pair>' +
-                                    '<Pair>' +
-                                    '<key>highlight</key>' +
-                                    '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                    '</Pair>' +
-                                    '</StyleMap>' +
-                                    '<Style id="s_ylw-pushpin">' +
-                                    '<IconStyle>' +
-                                    '<color>ff7fffff</color>' +
-                                    '<scale>1.1</scale>' +
-                                    '<Icon>' +
-                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                    '</Icon>' +
-                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                    '</IconStyle>' +
-                                    '</Style>' +
-                                    '<Folder>' +
-                                    '<name>sensecity</name>' +
-                                    '<open>1</open>';
-                            }
+
+                                if (issue != undefined) {
+                                    for (var i = 0; i < issue.length; i++) {
+
+                                        var bug_id = 0;
+                                        var bug_status = "";
+                                        var bug_authenticate = "0";
+                                        var bug_component;
+                                        var bug_priority;
+                                        var bug_severity;
+
+                                        for (var j = 0; j < bugzilla_results.length; j++) {
+                                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                bug_id = bugzilla_results[j].id;
+                                                bug_status = bugzilla_results[j].status;
+                                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                                if (bugzilla_results[j].component != undefined) {
+                                                    bug_component = bugzilla_results[j].component;
+                                                }
+                                                if (bugzilla_results[j].cf_priority != undefined) {
+                                                    bug_priority = bugzilla_results[j].cf_priority;
+                                                }
+                                                if (bugzilla_results[j].bug_severity != undefined) {
+                                                    bug_severity = bugzilla_results[j].bug_severity;
+                                                }
 
 
-                            if (issue != undefined) {
+                                            }
+                                        }
+
+                                        if (_kml == 0) {
+                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                            if (i < issue.length - 1) {
+                                                issue_return += ',';
+                                            }
+                                        } else if (_kml == 1) {
+                                            issue_return += '<Placemark>' +
+                                                '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                '<LookAt>' +
+                                                '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                '<altitude>0</altitude>' +
+                                                '<heading>-176.4101948194351</heading>' +
+                                                '<tilt>70.72955317497231</tilt>' +
+                                                '<range>1952.786634342951</range>' +
+                                                '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                '</LookAt>' +
+                                                '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                '<Point>' +
+                                                '<gx:drawOrder>1</gx:drawOrder>' +
+                                                '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                '</Point>' +
+                                                '</Placemark>';
+                                        }
+                                    }
+                                }
+                                else {
+                                    issue_return = "{}";
+                                }
+
+                                if (_kml == 0) {
+                                    issue_return += ']';
+
+                                    callback(issue_return);
+                                } else if (_kml == 1) {
+                                    issue_return += '</Folder> </Document> </kml>';
+
+                                    callback(issue_return);
+                                }
+
+                                //new end
+                                //res.send(issue);
+                            }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                        } else {
+                            Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
+                                //new start
+                                if (err != null) { console.log("err2   =   " + err); }
+                                if (_kml == 0) {
+                                    issue_return += '[';
+                                } else if (_kml == 1) {
+                                    issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                        '<name>sensecity.kml</name>' +
+                                        '<Style id="s_ylw-pushpin_hl">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.3</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<StyleMap id="m_ylw-pushpin">' +
+                                        '<Pair>' +
+                                        '<key>normal</key>' +
+                                        '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                        '</Pair>' +
+                                        '<Pair>' +
+                                        '<key>highlight</key>' +
+                                        '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                        '</Pair>' +
+                                        '</StyleMap>' +
+                                        '<Style id="s_ylw-pushpin">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.1</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<Folder>' +
+                                        '<name>sensecity</name>' +
+                                        '<open>1</open>';
+                                }
+
+
+                                if (issue != undefined) {
+                                    for (var i = 0; i < issue.length; i++) {
+
+                                        var bug_id = 0;
+                                        var bug_status = "";
+                                        var bug_authenticate = "0";
+                                        var bug_component;
+                                        var bug_priority;
+                                        var bug_severity;
+
+                                        for (var j = 0; j < bugzilla_results.length; j++) {
+                                            if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                                bug_id = bugzilla_results[j].id;
+                                                bug_status = bugzilla_results[j].status;
+                                                bug_authenticate = bugzilla_results[j].cf_authedicated;
+
+                                                if (bugzilla_results[j].component != undefined) {
+                                                    bug_component = bugzilla_results[j].component;
+                                                }
+                                                if (bugzilla_results[j].cf_priority != undefined) {
+                                                    bug_priority = bugzilla_results[j].cf_priority;
+                                                }
+                                                if (bugzilla_results[j].bug_severity != undefined) {
+                                                    bug_severity = bugzilla_results[j].bug_severity;
+                                                }
+
+
+                                            }
+                                        }
+
+                                        if (_kml == 0) {
+                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                            if (i < issue.length - 1) {
+                                                issue_return += ',';
+                                            }
+                                        } else if (_kml == 1) {
+                                            issue_return += '<Placemark>' +
+                                                '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                                '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                                '<LookAt>' +
+                                                '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                                '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                                '<altitude>0</altitude>' +
+                                                '<heading>-176.4101948194351</heading>' +
+                                                '<tilt>70.72955317497231</tilt>' +
+                                                '<range>1952.786634342951</range>' +
+                                                '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                                '</LookAt>' +
+                                                '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                                '<Point>' +
+                                                '<gx:drawOrder>1</gx:drawOrder>' +
+                                                '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                                '</Point>' +
+                                                '</Placemark>';
+                                        }
+                                    }
+                                }
+                                else {
+                                    issue_return = "{}";
+                                }
+
+                                if (_kml == 0) {
+                                    issue_return += ']';
+
+                                    callback(issue_return);
+                                } else if (_kml == 1) {
+                                    issue_return += '</Folder> </Document> </kml>';
+
+                                    callback(issue_return);
+                                }
+
+                                //new end
+                                //res.send(issue);
+                            }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                        }
+
+                    } else {
+                        if (_user_extra == 0) {
+                            Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
+                                //new start
+                                if (err != null) { console.log("err3   =   " + err); }
+                                if (_kml == 0) {
+                                    issue_return += '[';
+                                } else if (_kml == 1) {
+                                    issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                        '<name>sensecity.kml</name>' +
+                                        '<Style id="s_ylw-pushpin_hl">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.3</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<StyleMap id="m_ylw-pushpin">' +
+                                        '<Pair>' +
+                                        '<key>normal</key>' +
+                                        '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                        '</Pair>' +
+                                        '<Pair>' +
+                                        '<key>highlight</key>' +
+                                        '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                        '</Pair>' +
+                                        '</StyleMap>' +
+                                        '<Style id="s_ylw-pushpin">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.1</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<Folder>' +
+                                        '<name>sensecity</name>' +
+                                        '<open>1</open>';
+                                }
+
                                 for (var i = 0; i < issue.length; i++) {
 
                                     var bug_id = 0;
@@ -1347,12 +1916,12 @@ var get_issues = function (req, callback) {
                                                 bug_severity = bugzilla_results[j].bug_severity;
                                             }
 
-
                                         }
                                     }
 
                                     if (_kml == 0) {
-                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity +'"}';
+                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"} ';
+
                                         if (i < issue.length - 1) {
                                             issue_return += ',';
                                         }
@@ -1377,139 +1946,136 @@ var get_issues = function (req, callback) {
                                             '</Placemark>';
                                     }
                                 }
-                            }
-                            else {
-                                issue_return = "{}";
-                            }
 
-                            if (_kml == 0) {
-                                issue_return += ']';
+                                if (_kml == 0) {
+                                    issue_return += ']';
 
-                                callback(issue_return);
-                            } else if (_kml == 1) {
-                                issue_return += '</Folder> </Document> </kml>';
+                                    callback(issue_return);
+                                } else if (_kml == 1) {
+                                    issue_return += '</Folder> </Document> </kml>';
 
-                                callback(issue_return);
-                            }
+                                    callback(issue_return);
+                                }
 
-                            //new end
-                            //res.send(issue);
-                        }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                                //new end
 
-                    } else {
-                        Issue.find({ "_id": { $in: ids } }, { "user": _user_extra }, function (err, issue) {
-                            //new start
-                            if (err != null) { console.log("err3   =   " + err); }
-                            if (_kml == 0) {
-                                issue_return += '[';
-                            } else if (_kml == 1) {
-                                issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
-                                    '<name>sensecity.kml</name>' +
-                                    '<Style id="s_ylw-pushpin_hl">' +
-                                    '<IconStyle>' +
-                                    '<color>ff7fffff</color>' +
-                                    '<scale>1.3</scale>' +
-                                    '<Icon>' +
-                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                    '</Icon>' +
-                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                    '</IconStyle>' +
-                                    '</Style>' +
-                                    '<StyleMap id="m_ylw-pushpin">' +
-                                    '<Pair>' +
-                                    '<key>normal</key>' +
-                                    '<styleUrl>#s_ylw-pushpin</styleUrl>' +
-                                    '</Pair>' +
-                                    '<Pair>' +
-                                    '<key>highlight</key>' +
-                                    '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
-                                    '</Pair>' +
-                                    '</StyleMap>' +
-                                    '<Style id="s_ylw-pushpin">' +
-                                    '<IconStyle>' +
-                                    '<color>ff7fffff</color>' +
-                                    '<scale>1.1</scale>' +
-                                    '<Icon>' +
-                                    '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
-                                    '</Icon>' +
-                                    '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
-                                    '</IconStyle>' +
-                                    '</Style>' +
-                                    '<Folder>' +
-                                    '<name>sensecity</name>' +
-                                    '<open>1</open>';
-                            }
+                                //res.send(issue);
+                            }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                        } else {
+                            Issue.find({ "_id": { $in: ids } }, function (err, issue) {
+                                //new start
+                                if (err != null) { console.log("err3   =   " + err); }
+                                if (_kml == 0) {
+                                    issue_return += '[';
+                                } else if (_kml == 1) {
+                                    issue_return += '<?xml version="1.0" encoding="UTF-8"?> <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom"> <Document>' +
+                                        '<name>sensecity.kml</name>' +
+                                        '<Style id="s_ylw-pushpin_hl">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.3</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<StyleMap id="m_ylw-pushpin">' +
+                                        '<Pair>' +
+                                        '<key>normal</key>' +
+                                        '<styleUrl>#s_ylw-pushpin</styleUrl>' +
+                                        '</Pair>' +
+                                        '<Pair>' +
+                                        '<key>highlight</key>' +
+                                        '<styleUrl>#s_ylw-pushpin_hl</styleUrl>' +
+                                        '</Pair>' +
+                                        '</StyleMap>' +
+                                        '<Style id="s_ylw-pushpin">' +
+                                        '<IconStyle>' +
+                                        '<color>ff7fffff</color>' +
+                                        '<scale>1.1</scale>' +
+                                        '<Icon>' +
+                                        '<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>' +
+                                        '</Icon>' +
+                                        '<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>' +
+                                        '</IconStyle>' +
+                                        '</Style>' +
+                                        '<Folder>' +
+                                        '<name>sensecity</name>' +
+                                        '<open>1</open>';
+                                }
 
-                            for (var i = 0; i < issue.length; i++) {
+                                for (var i = 0; i < issue.length; i++) {
 
-                                var bug_id = 0;
-                                var bug_status = "";
-                                var bug_authenticate = "0";
-                                var bug_component;
-                                var bug_priority;
-                                var bug_severity;
+                                    var bug_id = 0;
+                                    var bug_status = "";
+                                    var bug_authenticate = "0";
+                                    var bug_component;
+                                    var bug_priority;
+                                    var bug_severity;
 
-                                for (var j = 0; j < bugzilla_results.length; j++) {
-                                    if (bugzilla_results[j].alias[0] == issue[i]._id) {
-                                        bug_id = bugzilla_results[j].id;
-                                        bug_status = bugzilla_results[j].status;
-                                        bug_authenticate = bugzilla_results[j].cf_authedicated;
+                                    for (var j = 0; j < bugzilla_results.length; j++) {
+                                        if (bugzilla_results[j].alias[0] == issue[i]._id) {
+                                            bug_id = bugzilla_results[j].id;
+                                            bug_status = bugzilla_results[j].status;
+                                            bug_authenticate = bugzilla_results[j].cf_authedicated;
 
-                                        if (bugzilla_results[j].component != undefined) {
-                                            bug_component = bugzilla_results[j].component;
+                                            if (bugzilla_results[j].component != undefined) {
+                                                bug_component = bugzilla_results[j].component;
+                                            }
+                                            if (bugzilla_results[j].cf_priority != undefined) {
+                                                bug_priority = bugzilla_results[j].cf_priority;
+                                            }
+                                            if (bugzilla_results[j].bug_severity != undefined) {
+                                                bug_severity = bugzilla_results[j].bug_severity;
+                                            }
+
                                         }
-                                        if (bugzilla_results[j].cf_priority != undefined) {
-                                            bug_priority = bugzilla_results[j].cf_priority;
-                                        }
-                                        if (bugzilla_results[j].bug_severity != undefined) {
-                                            bug_severity = bugzilla_results[j].bug_severity;
-                                        }
+                                    }
 
+                                    if (_kml == 0) {
+                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"} ';
+
+                                        if (i < issue.length - 1) {
+                                            issue_return += ',';
+                                        }
+                                    } else if (_kml == 1) {
+                                        issue_return += '<Placemark>' +
+                                            '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
+                                            '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
+                                            '<LookAt>' +
+                                            '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
+                                            '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
+                                            '<altitude>0</altitude>' +
+                                            '<heading>-176.4101948194351</heading>' +
+                                            '<tilt>70.72955317497231</tilt>' +
+                                            '<range>1952.786634342951</range>' +
+                                            '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
+                                            '</LookAt>' +
+                                            '<styleUrl>#m_ylw-pushpin</styleUrl>' +
+                                            '<Point>' +
+                                            '<gx:drawOrder>1</gx:drawOrder>' +
+                                            '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
+                                            '</Point>' +
+                                            '</Placemark>';
                                     }
                                 }
 
                                 if (_kml == 0) {
-                                    issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity+'"} ';
+                                    issue_return += ']';
 
-                                    if (i < issue.length - 1) {
-                                        issue_return += ',';
-                                    }
+                                    callback(issue_return);
                                 } else if (_kml == 1) {
-                                    issue_return += '<Placemark>' +
-                                        '<name>' + issue[i].issue + ' - ' + issue[i].value_desc + '</name>' +
-                                        '<description><![CDATA[<img src="' + issue[i].image_name + '"/><a href="http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '">http://' + issue[i].municipality + '.sense.city/scissuemap.html#?issue_id=' + issue[i]._id + '</a>]]></description>' +
-                                        '<LookAt>' +
-                                        '<longitude>' + issue[i].loc.coordinates[0] + '</longitude>' +
-                                        '<latitude>' + issue[i].loc.coordinates[1] + '</latitude>' +
-                                        '<altitude>0</altitude>' +
-                                        '<heading>-176.4101948194351</heading>' +
-                                        '<tilt>70.72955317497231</tilt>' +
-                                        '<range>1952.786634342951</range>' +
-                                        '<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>' +
-                                        '</LookAt>' +
-                                        '<styleUrl>#m_ylw-pushpin</styleUrl>' +
-                                        '<Point>' +
-                                        '<gx:drawOrder>1</gx:drawOrder>' +
-                                        '<coordinates>' + issue[i].loc.coordinates[0] + ',' + issue[i].loc.coordinates[1] + ',0</coordinates>' +
-                                        '</Point>' +
-                                        '</Placemark>';
+                                    issue_return += '</Folder> </Document> </kml>';
+
+                                    callback(issue_return);
                                 }
-                            }
 
-                            if (_kml == 0) {
-                                issue_return += ']';
+                                //new end
 
-                                callback(issue_return);
-                            } else if (_kml == 1) {
-                                issue_return += '</Folder> </Document> </kml>';
-
-                                callback(issue_return);
-                            }
-
-                            //new end
-
-                            //res.send(issue);
-                        }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                                //res.send(issue);
+                            }).sort({ "create_at": _sort_mongo });//.limit(_limit);
+                        }
                     }
 
                 });

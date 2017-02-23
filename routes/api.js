@@ -367,7 +367,10 @@ router.get('/issue', function (req, res) {
 
 router.get('/admin/issue', authentication, function (req, res) {
 
-    
+    req.send_user = 1;
+    req.send_component = 1;
+    req.send_severity = 1;
+    req.send_priority = 1;
     get_issues(req, function (result) {
         res.send(result);
     });
@@ -375,7 +378,8 @@ router.get('/admin/issue', authentication, function (req, res) {
 });
 
 var get_issues = function (req, callback) {
-    
+
+    console.log(req.query.send_priority);
     var x_uuid = req.get('x-uuid');
     if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email"))) {
         if (req.query.bug_id == "" && req.query.mobile == "" && req.query.email == "") {

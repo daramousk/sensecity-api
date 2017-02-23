@@ -10,7 +10,7 @@ var request = require('request');
 
 // Express
 var app = express();
-app.use(bodyParser.urlencoded({limit: '100mb'},{extended: true}));
+/*app.use(bodyParser.urlencoded({limit: '10mb'},{extended: true}));*/
 app.use(bodyParser.json({limit: '100mb'}));
 
 var config = require('app-config');

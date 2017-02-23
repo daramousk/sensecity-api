@@ -388,8 +388,13 @@ router.get('/admin/issue', authentication, function (req, res) {
 
 var get_issues = function (req, callback) {
 
-    var _bug_extra;
+    var _bug_extra="";
     var _user_extra = 0;
+    console.log("--------------------");
+    console.log("--------------------");
+    console.log(JSON.stringify(req));
+    console.log("--------------------");
+    console.log("--------------------");
 
     if (req.send_user == 1) {
         _user_extra = 1;

@@ -392,7 +392,7 @@ var get_issues = function (req, callback) {
     var _user_extra = 0;
     console.log("--------------------");
     console.log("--------------------");
-    console.log(JSON.stringify(req));
+    console.log(req);
     console.log("--------------------");
     console.log("--------------------");
 

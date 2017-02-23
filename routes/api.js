@@ -567,8 +567,8 @@ var get_issues = function (req, callback) {
                                     if (bugzilla_results[j].component != undefined) {
                                         bug_component = bugzilla_results[j].component;
                                     }
-                                    if (bugzilla_results[j].cf_priority != undefined) {
-                                        bug_priority = bugzilla_results[j].cf_priority;
+                                    if (bugzilla_results[j].priority != undefined) {
+                                        bug_priority = bugzilla_results[j].priority;
                                     }
                                     if (bugzilla_results[j].bug_severity != undefined) {
                                         bug_severity = bugzilla_results[j].bug_severity;

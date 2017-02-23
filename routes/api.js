@@ -538,7 +538,7 @@ var get_issues = function (req, callback) {
                         //new start
                         if (err != null) { console.log("err   =   " + err); }
 
-                        console.log(JSON.stringify(issue));
+                        console.log("234567890----====    "+JSON.stringify(issue));
                         console.log("*******************************************"); console.log("*******************************************"); console.log("*******************************************");
                         console.log(issue.length);
                         console.log("*******************************************"); console.log("*******************************************"); console.log("*******************************************");

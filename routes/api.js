@@ -417,7 +417,7 @@ var get_issues = function (req, callback) {
     }
 
     if (req.send_priority == 1) {
-        _bug_extra += ",bug_severity";
+        _bug_extra += ",severity";
     } else {
         _bug_extra += "";
     }

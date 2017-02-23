@@ -379,7 +379,7 @@ router.get('/admin/issue', authentication, function (req, res) {
 
 var get_issues = function (req, callback) {
 
-    console.log(req.query.send_priority);
+    console.log("sadasdasdsadsadasd================================================>>>>>>>>>>>>>>>>>>>"+req.query.send_priority);
     var x_uuid = req.get('x-uuid');
     if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email"))) {
         if (req.query.bug_id == "" && req.query.mobile == "" && req.query.email == "") {

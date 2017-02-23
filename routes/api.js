@@ -359,6 +359,11 @@ router.post('/issue/:id', function (req, res) {
 
 router.get('/issue', function (req, res) {
 
+    req.send_user = 0;
+    req.send_component = 0;
+    req.send_severity = 0;
+    req.send_priority = 0;
+
     get_issues(req, function (result) {        
         res.send(result);
     });
@@ -371,6 +376,8 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_component = 1;
     req.send_severity = 1;
     req.send_priority = 1;
+
+
     get_issues(req, function (result) {
         res.send(result);
     });
@@ -379,7 +386,36 @@ router.get('/admin/issue', authentication, function (req, res) {
 
 var get_issues = function (req, callback) {
 
-    console.log("sadasdasdsadsadasd================================================>>>>>>>>>>>>>>>>>>>"+req.send_priority);
+    var _bug_extra;
+    var _user_extra = 0;
+
+    if (req.send_user == 1) {
+        _user_extra = 1;
+    } else {
+        _user_extra = 0;
+    }
+
+    if (req.send_component == 1) {
+        _bug_extra += ",component";
+    } else {
+        _bug_extra += "";
+    }
+
+    if (req.send_severity == 1) {
+        _bug_extra += ",priority";
+    } else {
+        _bug_extra += "";
+    }
+
+    if (req.send_priority == 1) {
+        _bug_extra += ",bug_severity";
+    } else {
+        _bug_extra += "";
+    }
+
+    
+    
+
     var x_uuid = req.get('x-uuid');
     if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email"))) {
         if (req.query.bug_id == "" && req.query.mobile == "" && req.query.email == "") {
@@ -433,7 +469,7 @@ var get_issues = function (req, callback) {
                 _offset = "&offset=" + req.query.offset;
             }
 
-            var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&limit=" + _limit + _sort + _offset + "&include_fields=id,alias,status,cf_authedicated";
+            var bugParams1 = "?f1=bug_id&o1=equals&f2=cf_mobile&o2=equals&f3=cf_email&o3=equals&limit=" + _limit + _sort + _offset + "&include_fields=id,alias,status,cf_authedicated" + _bug_extra;
 
             if (_bug_id != undefined) {
                 bugParams1 += "&v1=" + _bug_id;
@@ -487,7 +523,7 @@ var get_issues = function (req, callback) {
                 }
 
                 if (_image == 0) {
-                    Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
+                    Issue.find({ "_id": { $in: ids } }, { "user": _user_extra, "image_name": _image }, function (err, issue) {
 
                         //new start
                         if (err != null) { console.log("err   =   " + err); }
@@ -526,7 +562,7 @@ var get_issues = function (req, callback) {
                 }
                 else {
 
-                    Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
+                    Issue.find({ "_id": { $in: ids } }, { "user": _user_extra }, function (err, issue) {
 
                         //new start
                         if (err != null) { console.log("err   =   " + err); }
@@ -889,7 +925,7 @@ var get_issues = function (req, callback) {
                         _product = response[0]["municipality"];
 
                         //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-                        var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
+                        var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated" + _bug_extra;
                         //console.log(bugParams1);
                         var ids = [];
                         var bugzilla_results = [];
@@ -915,7 +951,7 @@ var get_issues = function (req, callback) {
                             //console.log("ids1 ======> "+ids);
                             if (_image == 0) {
 
-                                Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
+                                Issue.find({ "_id": { $in: ids } }, { "user": _user_extra, "image_name": _image }, function (err, issue) {
 
                                     //new start
                                     if (err != null) { console.log("err   =   " + err); }
@@ -1023,7 +1059,7 @@ var get_issues = function (req, callback) {
 
                             } else {
 
-                                Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
+                                Issue.find({ "_id": { $in: ids } }, { "user": _user_extra }, function (err, issue) {
                                     //new start
                                     if (err != null) { console.log("err1   =   " + err); }
                                     if (_kml == 0) {
@@ -1136,7 +1172,7 @@ var get_issues = function (req, callback) {
                 _product = req.query.city;
 
                 //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-                var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
+                var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated" + _bug_extra;
 
                 var ids = [];
                 var bugzilla_results = [];
@@ -1164,7 +1200,7 @@ var get_issues = function (req, callback) {
                         // This query works only if is valid object ids
                         // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
 
-                        Issue.find({ "_id": { $in: ids } }, { "user": _user, "image_name": _image }, function (err, issue) {
+                        Issue.find({ "_id": { $in: ids } }, { "user": _user_extra, "image_name": _image }, function (err, issue) {
                             //new start
                             if (err != null) { console.log("err2   =   " + err); }
                             if (_kml == 0) {
@@ -1269,7 +1305,7 @@ var get_issues = function (req, callback) {
                         }).sort({ "create_at": _sort_mongo });//.limit(_limit);
 
                     } else {
-                        Issue.find({ "_id": { $in: ids } }, { "user": _user }, function (err, issue) {
+                        Issue.find({ "_id": { $in: ids } }, { "user": _user_extra }, function (err, issue) {
                             //new start
                             if (err != null) { console.log("err3   =   " + err); }
                             if (_kml == 0) {

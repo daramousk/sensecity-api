@@ -533,7 +533,7 @@ var get_issues = function (req, callback) {
                 }
 
                 if (_image == 0) {
-                    Issue.find({ "_id": { $in: ids } }, { "user": _user_extra, "image_name": _image }, function (err, issue) {
+                    Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
 
                         //new start
                         if (err != null) { console.log("err   =   " + err); }

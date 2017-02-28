@@ -43,12 +43,12 @@ var bugUrl = config.config.bugUrl;
 function authorization(req, res, next) {
    Role.find({uuid: req.get('x-uuid')}, function (err, response) {
         if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
-			console.log("1");
-			console.log("req.path ====> " + req.path);
+			//console.log("1");
+			//console.log("req.path ====> " + req.path);
             if (req.path === '/admin/bugs/search') {
-				console.log("2");
+				//console.log("2");
                 if (req.get('x-role') === 'departmentAdmin' || req.get('x-role') === 'sensecityAdmin' || req.get('x-role') === 'departmentUser' || req.get('x-role') === 'cityAdmin') {
-					console.log("3");
+					//console.log("3");
                     next();
                 } else {
                     res.send("failure");
@@ -69,9 +69,7 @@ function authentication(req,res,next) {
 	Role.find({uuid: req.get('x-uuid')}, function(err, response) {
 		if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
 			next();
-		} else { 
-			 res.send("failure");  
-		}
+		} else {  /* res.send("failure"); */ }
 	});
 }
 
@@ -95,8 +93,8 @@ mongoose.connection.once('open', function () {
 	});
 	app.get('/logout', authentication, function (req, res) {
 		
-		console.log("fsdlghfksdlghfdlk");
-		console.log(req.get('x-uuid'));
+		//console.log("fsdlghfksdlghfdlk");
+		//console.log(req.get('x-uuid'));
 
 		Role.update({uuid: req.get('x-uuid')},{$unset: {"uuid": 1, "timestamp": 1}}, function(err, response) {
 			res.send("logout");
@@ -105,7 +103,7 @@ mongoose.connection.once('open', function () {
 
                     app.post('/admin/bugs/search', authorization, function (req, res) {
 						console.log("bug search");
-                        console.log("req    ========>>>>>>> " + JSON.stringify(req));
+                        //console.log("req    ========>>>>>>> " + JSON.stringify(req));
                         var bugToken = "";
                         var loginData = {"method": "User.login", "params": [{"login": config.config.login, "password": config.config.pwd}],"id": 1 };
                         request({

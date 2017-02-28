@@ -20,6 +20,7 @@ var Role = require('../models/roles.js');
 var Municipality = require('../models/municipality');
 var cityPolicy = require('../models/citypolicy');
 
+
 // Routes
 //Issue.methods(['get', 'put', 'post', 'delete']);
 //Issue.register(router, '/issues');
@@ -144,7 +145,22 @@ router.post('/issue', function (req, res) {
                         {
 
                             var bugData1 = {"token": bugToken ,"summary" : resp.issue ,"priority" : "normal","bug_severity":"normal","cf_city_name" : city_name,"alias" : [resp._id.toString() ],"url" : resp.value_desc,"product" : response[0]["municipality"],"component" : config.config.bug_component,"version": "unspecified"}; 
-            
+                            /*
+                            request({
+                                url: bugUrlRest + "/rest/valid_login?login=" + config.config.login + "&token=" + bugToken,
+                                method: "GET"
+                            }, function (error, res_login) {
+                                if (error != undefined) { console.log(error); }
+                                if (res_login != undefined) {
+                                    if (res_login.statusCode == 200) {
+                                        console.log("result = " + JSON.parse(res_login.body).result);
+                                        if (JSON.parse(res_login.body).result) {
+                                            console.log("true");
+                                        }
+                                    }
+                                }
+                            });*/
+
                             request({
                                 url: bugUrlRest+"/rest/bug",
                                 method: "POST",
@@ -2518,6 +2534,8 @@ router.post('/admin/bugs/search', authorization, function (req, res) {
 
 router.post('/admin/bugs/update', authorization, function (req, res) {
     req.body.token = bugToken;
+
+    console.log("request   =>> " + JSON.stringify(req.body));
 
     request({
         url: bugUrlRest + "/rest/bug/" + req.body.ids[0],

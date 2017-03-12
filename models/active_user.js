@@ -10,7 +10,8 @@ var active_userSchema = new mongoose.Schema({
 	mobile_num : {type:String, default : ""},	
 	create_at : {type: Date, default: Date.now},
 	permission :  { send_issues: {type:String, default : "false"}, communicate_with: {email : {type:String, default : "false"}, sms : {type:String, default : "false"}}},
-	activate : {type:String, default : ""}
+    activate: { type: String, default: "" },
+    activate_sms: { type: String, default: "" }
 });
 
 // Return model

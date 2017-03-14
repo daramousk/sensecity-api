@@ -2409,7 +2409,7 @@ router.post('/activate_user', function (req, res) {
                    // setup e-mail data with unicode symbols 
                    var mailOptions = {
                        from: '"Sense.City " <info@sense.city>', // sender address 
-                       to: req.body.email, // list of receivers 
+                       to: req.query.email, // list of receivers 
                        subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
                        text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
                        html: 'Κωδικός ενεργοποίησης :' + text_act // html body 

@@ -2316,11 +2316,8 @@ router.get('/fullissue/:id', function (req, res) {
 
 router.post('/activate_user', function (req, res) {
 
-    console.log(req.query);
-
     if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
-        console.log("1");
-
+        
         act_User.find({ "uuid": req.query.uuid}, function (err, resp) {
 
             if (err) {
@@ -2431,23 +2428,71 @@ router.post('/activate_user', function (req, res) {
         });
 
     }
-    else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('mobile')) {
-        act_User.find({ "uuid": req.query.uuid, "name": req.query.name, "email": req.query.mobile }, function (err, resp) {
+    else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('mobile') ) {
+        
+        console.log(req.query.lat);
+        console.log(req.query.long);
+        console.log(req.query.city);
 
-            if (err)
-                throw err;
+        Municipality.find({ "municipaliy ": "patras" }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
+            console.log(res_mun);
+        });
 
-            if (resp != '') {
-                // user exist update the name & email
-                var text_act = "";
-                var possible = "0123456789";
+        var acc = 0;
 
-                for (var i = 0; i < 4; i++)
-                    text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+        if (acc == 1) {
+            act_User.find({ "uuid": req.query.uuid, "name": req.query.name, "email": req.query.mobile }, function (err, resp) {
 
-                act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true"}} }, { "upsert": true }, function (err1, resp1) {
-                    if (resp1.ok == 1) {
-                        console.log("Send sms verify code");
+                if (err)
+                    throw err;
+
+                if (resp != '') {
+                    // user exist update the name & email
+                    var text_act = "";
+                    var possible = "0123456789";
+
+                    for (var i = 0; i < 4; i++)
+                        text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                    act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
+                        if (resp1.ok == 1) {
+                            console.log("Send sms verify code");
+
+                            request({
+                                url: "https://api.theansr.com/v1/sms",
+                                method: "POST",
+                                form: { 'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΠΙΣΤΟΠΟΙΗΣΗΣ ΕΙΝΑΙ ' + text_act },
+                                headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
+                            }, function (err, response) {
+                                res.send(response.body);
+                                //if call_id
+                            });
+
+                        }
+                    });
+
+
+                } else {
+                    //User doesn't exist insert to active_users collection
+                    var text_act = "";
+                    var possible = "0123456789";
+
+                    for (var i = 0; i < 4; i++)
+                        text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                    var entry_active_user = new act_User({
+                        uuid: req.query.uuid,
+                        name: req.query.name,
+                        email: '',
+                        mobile_num: req.query.mobile,
+                        permission: { send_issues: req.body.permission.send_issues, communicate_with: { email: false, sms: true } },
+                        activate: '',
+                        activate_sms: text_act
+                    });
+
+                    entry_active_user.save(function (err1, resp) {
+                        console.log("send sms");
+                        res.send([{ "test": JSON.stringify(resp) }]);
 
                         request({
                             url: "https://api.theansr.com/v1/sms",
@@ -2457,50 +2502,16 @@ router.post('/activate_user', function (req, res) {
                         }, function (err, response) {
                             res.send(response.body);
                             //if call_id
-                            });
-
-                    }
-                });
-
-
-            } else {
-                //User doesn't exist insert to active_users collection
-                var text_act = "";
-                var possible = "0123456789";
-
-                for (var i = 0; i < 4; i++)
-                    text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-
-                var entry_active_user = new act_User({
-                    uuid: req.query.uuid,
-                    name: req.query.name,
-                    email: '',
-                    mobile_num: req.query.mobile,
-                    permission: { send_issues: req.body.permission.send_issues, communicate_with: { email: false, sms: true } },
-                    activate: '',
-                    activate_sms: text_act
-                });
-
-                entry_active_user.save(function (err1, resp) {
-                    console.log("send sms");
-                    res.send([{ "test": JSON.stringify(resp) }]);
-
-                    request({
-                        url: "https://api.theansr.com/v1/sms",
-                        method: "POST",
-                        form: { 'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΠΙΣΤΟΠΟΙΗΣΗΣ ΕΙΝΑΙ ' + text_act  },
-                        headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
-                    }, function (err, response) {
-                        res.send(response.body);
-                        //if call_id
                         });
 
 
-                });
+                    });
 
-            }
+                }
 
-        });
+            });
+        }
+
     }
 });
 

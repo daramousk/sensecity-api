@@ -6,7 +6,8 @@ var mongoose = restful.mongoose;
 var municipalitySchema = new mongoose.Schema({
 	municipality: String,
 	municipality_desc: String,
-	boundaries: {coordinates:Number}
+    boundaries: { coordinates: Number },
+    sms_key_fibair: { type: String, default: "" }
 });
 
 

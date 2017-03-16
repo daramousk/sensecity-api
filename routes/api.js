@@ -2459,7 +2459,7 @@ router.post('/activate_user', function (req, res) {
         if (mob_sms_key_fibair != '') {
             act_User.find({ "uuid": req.query.uuid, "name": req.query.name, "email": req.query.mobile }, function (err, resp) {
                 var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
-
+                console.log(mob_sms_key_fibair_base64);
                 if (err)
                     throw err;
 
@@ -2512,6 +2512,7 @@ router.post('/activate_user', function (req, res) {
 
 
                 } else {
+                    console.log("fgjh");
 
                     request({
                         url: "https://api.theansr.com/v1/sms/verification_pin",

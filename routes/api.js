@@ -2517,7 +2517,7 @@ router.post('/activate_user', function (req, res) {
 
                                     console.log(JSON.stringify(response));
 
-                                    act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
+                                   
                                         cosole.log(err1);
                                         cosole.log(resp1);
                                         var entry_active_user = new act_User({
@@ -2537,9 +2537,7 @@ router.post('/activate_user', function (req, res) {
 
                                         });
 
-
-                                    });
-
+                                        
 
                                     //if call_id
                                 });

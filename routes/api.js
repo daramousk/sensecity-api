@@ -2518,8 +2518,6 @@ router.post('/activate_user', function (req, res) {
                                     console.log(JSON.stringify(response));
 
                                    
-                                        console.log(err1);
-                                        console.log(resp1);
                                         var entry_active_user = new act_User({
                                             uuid: req.query.uuid,
                                             name: req.query.name,

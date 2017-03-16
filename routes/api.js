@@ -2515,7 +2515,7 @@ router.post('/activate_user', function (req, res) {
                                     if(err)
                                         cosole.log(err);
 
-                                    cosole.log(response);
+                                    cosole.log(JSON.stringify(response));
 
                                     act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
                                         cosole.log(err1);

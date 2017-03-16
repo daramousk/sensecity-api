@@ -2531,7 +2531,7 @@ router.post('/activate_user', function (req, res) {
                                             console.log(err2);
                                             console.log(resp2);
                                             
-
+                                            res.send([{ "status": "send sms" }]);
                                         });
 
                                         
@@ -2549,7 +2549,7 @@ router.post('/activate_user', function (req, res) {
 
 
                             }
-                            resp.send([{ "status": "send sms" }]);
+                            
                         });
                     }
 

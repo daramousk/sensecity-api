@@ -2323,16 +2323,17 @@ router.post('/activate_user', function (req, res) {
             if (err) {
                 throw err;
             }
+            var text_act = "";
+            var possible = "0123456789";
+
+            for (var i = 0; i < 4; i++)
+                text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
             if (resp != '') {
-                act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "email": req.query.email, "permission": { "communicate_with": { "email": "true" }} }, { "upsert": true }, function (err1, resp1) {                    
+                act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission": { "communicate_with": { "email": "true" } }, "activate": text_act, } }, { "upsert": true }, function (err1, resp1) {                    
                     if (resp1.ok == 1) {
                         console.log("Send mail verify code");
-                        var text_act = "";
-                        var possible = "0123456789";
-
-                        for (var i = 0; i < 4; i++)
-                            text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+                        
 
                         // create reusable transporter object using the default SMTP transport 
                         var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
@@ -2429,45 +2430,65 @@ router.post('/activate_user', function (req, res) {
 
     }
     else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('mobile') ) {
-        
+
+        var mob_municipality = '';
+        var mob_sms_key_fibair = '';
+
         console.log(req.query.lat);
         console.log(req.query.long);
         console.log(req.query.city);
-        if (req.query.lat != undefined && req.query.long != undefined) {
-            Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
-                console.log(res_mun);
 
+        if (req.query.lat != undefined && req.query.long != undefined) {
+            Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1 }, function (req_mun, res_mun) {
                 if (res_mun[0].sms_key_fibair != undefined ) {
-                    console.log(res_mun[0].sms_key_fibair);
+                    mob_municipality = res_mun[0].municipality;
+                    mob_sms_key_fibair = res_mun[0].sms_key_fibair;
                 } else {
                     console.log("noresults");
                 }
             });
         } else if (req.query.city != undefined) {
-            Municipality.find({ "municipaliy ": "patras" }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
+            Municipality.find({ "municipaliy ": "patras" }, { "municipality":1,"sms_key_fibair": 1 }, function (req_mun, res_mun) {
                 console.log(res_mun);
             });
         }
         var acc = 0;
 
-        if (acc == 1) {
+        if (mob_sms_key_fibair != '') {
             act_User.find({ "uuid": req.query.uuid, "name": req.query.name, "email": req.query.mobile }, function (err, resp) {
+                var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
 
                 if (err)
                     throw err;
 
-                if (resp != '') {
+                if (resp != '')
+               {
+
+                        request({
+                            url: "https://api.theansr.com/v1/sms/verification_pin",
+                            method: "POST",
+                            form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile, 'num_of_digits ': '4'},
+                            headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                        }, function (err, response) {
+                            act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } }, "activate_sms": response.verification_pin } }, { "upsert": true }, function (err1, resp1) {
+                                resp1.send({ "status":"send sms"});
+                            });
+
+                            
+                            //if call_id
+                        });
+
                     // user exist update the name & email
-                    var text_act = "";
-                    var possible = "0123456789";
+                    //var text_act = "";
+                    //var possible = "0123456789";
 
-                    for (var i = 0; i < 4; i++)
-                        text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+                    //for (var i = 0; i < 4; i++)
+                      //  text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
-                    act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
-                        if (resp1.ok == 1) {
-                            console.log("Send sms verify code");
-
+                    //act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
+                        //if (resp1.ok == 1) {
+                        //    console.log("Send sms verify code");
+                            /*
                             request({
                                 url: "https://api.theansr.com/v1/sms",
                                 method: "POST",
@@ -2476,46 +2497,51 @@ router.post('/activate_user', function (req, res) {
                             }, function (err, response) {
                                 res.send(response.body);
                                 //if call_id
-                            });
+                            });*/
 
-                        }
-                    });
+                      //  }
+                    //});
 
 
                 } else {
-                    //User doesn't exist insert to active_users collection
-                    var text_act = "";
-                    var possible = "0123456789";
 
-                    for (var i = 0; i < 4; i++)
-                        text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+                    request({
+                        url: "https://api.theansr.com/v1/sms/verification_pin",
+                        method: "POST",
+                        form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile, 'num_of_digits ': '4' },
+                        headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                    }, function (err, response) {
+                        act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
+                            var entry_active_user = new act_User({
+                                uuid: req.query.uuid,
+                                name: req.query.name,
+                                email: '',
+                                mobile_num: req.query.mobile,
+                                permission: { send_issues: req.body.permission.send_issues, communicate_with: { email: false, sms: true } },
+                                activate: '',
+                                activate_sms: response.verification_pin
+                            });
 
-                    var entry_active_user = new act_User({
-                        uuid: req.query.uuid,
-                        name: req.query.name,
-                        email: '',
-                        mobile_num: req.query.mobile,
-                        permission: { send_issues: req.body.permission.send_issues, communicate_with: { email: false, sms: true } },
-                        activate: '',
-                        activate_sms: text_act
-                    });
+                            entry_active_user.save(function (err1, resp) {
+                                resp1.send({ "status": "send sms" });                                
+                                
+                            });
 
-                    entry_active_user.save(function (err1, resp) {
-                        console.log("send sms");
-                        res.send([{ "test": JSON.stringify(resp) }]);
 
-                        request({
-                            url: "https://api.theansr.com/v1/sms",
-                            method: "POST",
-                            form: { 'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΠΙΣΤΟΠΟΙΗΣΗΣ ΕΙΝΑΙ ' + text_act },
-                            headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
-                        }, function (err, response) {
-                            res.send(response.body);
-                            //if call_id
                         });
 
 
+                        //if call_id
                     });
+
+                    //User doesn't exist insert to active_users collection
+                   // var text_act = "";
+                   // var possible = "0123456789";
+
+                  //  for (var i = 0; i < 4; i++)
+                   //     text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                    
 
                 }
 

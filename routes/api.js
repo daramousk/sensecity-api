@@ -2438,7 +2438,7 @@ router.post('/activate_user', function (req, res) {
                 console.log(res_mun);
 
                 if (res_mun[0].sms_key_fibair != undefined ) {
-                    console.log(res_mun.sms_key_fibair);
+                    console.log(res_mun[0].sms_key_fibair);
                 } else {
                     console.log("noresults");
                 }

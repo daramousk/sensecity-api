@@ -2515,7 +2515,7 @@ router.post('/activate_user', function (req, res) {
                                     if(err)
                                         console.log(err1);
 
-                                    console.log(JSON.stringify(response));
+                                    console.log(JSON.parse(response.body));
 
                                         var entry_active_user = new act_User({
                                             uuid: req.query.uuid,
@@ -2524,7 +2524,7 @@ router.post('/activate_user', function (req, res) {
                                             mobile_num: req.query.mobile,
                                             permission: { send_issues: "true", communicate_with: { email: false, sms: true } },
                                             activate: '',
-                                            activate_sms: response.verification_pin
+                                            activate_sms: response.body.verification_pin
                                         });
 
                                         entry_active_user.save(function (err2, resp2) {

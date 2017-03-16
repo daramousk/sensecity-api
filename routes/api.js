@@ -2509,7 +2509,7 @@ router.post('/activate_user', function (req, res) {
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",
                                     method: "POST",
-                                    form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile, 'num_of_digits ': '4' },
+                                    form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile, 'num_of_digits ': 4 },
                                     headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                 }, function (err, response) {
                                     if(err)

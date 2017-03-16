@@ -2512,8 +2512,11 @@ router.post('/activate_user', function (req, res) {
                                     form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile, 'num_of_digits ': '4' },
                                     headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                 }, function (err, response) {
-                                    cosole.log(err);
+                                    if(err)
+                                        cosole.log(err);
+
                                     cosole.log(response);
+
                                     act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
                                         cosole.log(err1);
                                         cosole.log(resp1);

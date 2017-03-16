@@ -2463,8 +2463,8 @@ router.post('/activate_user', function (req, res) {
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",
                                     method: "POST",
-                                    form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile, 'num_of_digits ': '4' },
-                                    headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                                    form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
+                                    headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
                                 }, function (err1, response) {
 
                                     console.log(err1);
@@ -2509,7 +2509,7 @@ router.post('/activate_user', function (req, res) {
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",
                                     method: "POST",
-                                    form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile },
+                                    form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
                                     headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }/*'content-type': 'application/form-data'*/
                                 }, function (err1, response) {
                                     if(err)

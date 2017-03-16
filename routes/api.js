@@ -2517,13 +2517,12 @@ router.post('/activate_user', function (req, res) {
 
                                     console.log(JSON.stringify(response));
 
-                                   
                                         var entry_active_user = new act_User({
                                             uuid: req.query.uuid,
                                             name: req.query.name,
                                             email: '',
                                             mobile_num: req.query.mobile,
-                                            permission: { send_issues: req.body.permission.send_issues, communicate_with: { email: false, sms: true } },
+                                            permission: { send_issues: "true", communicate_with: { email: false, sms: true } },
                                             activate: '',
                                             activate_sms: response.verification_pin
                                         });

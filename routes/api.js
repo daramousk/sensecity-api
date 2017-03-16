@@ -2433,11 +2433,19 @@ router.post('/activate_user', function (req, res) {
         console.log(req.query.lat);
         console.log(req.query.long);
         console.log(req.query.city);
-
-        Municipality.find({ "municipaliy ": "patras" }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
-            console.log(res_mun);
-        });
-
+        if (req.query.lat != undefined && req.query.long != undefined) {
+            Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.lat, req.query.long] } } } }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
+                if (res_mun.sms_key_fibair != undefined) {
+                    console.log(res_mun.sms_key_fibair);
+                } else {
+                    console.log("noresults");
+                }
+            });
+        } else if (req.query.city != undefined) {
+            Municipality.find({ "municipaliy ": "patras" }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
+                console.log(res_mun);
+            });
+        }
         var acc = 0;
 
         if (acc == 1) {

@@ -2601,7 +2601,7 @@ router.post('/activate_email', function (req, res) {
 router.post('/activate_mobile', function (req, res) {
     if (req.query.uuid != "web-site") {
         act_User.findOneAndUpdate({ "uuid": req.query.uuid, "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
-            "activate": "1"
+            "activate_sms": "1"
         }, function (error, activate_user) {
 
             console.log(error);
@@ -2609,7 +2609,7 @@ router.post('/activate_mobile', function (req, res) {
         });
     } else if (req.query.uuid == "web-site") {
         act_User.findOneAndUpdate({ "uuid": "web-site", "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
-            "activate": "1"
+            "activate_sms": "1"
         }, function (error, activate_user) {
 
             console.log(error);

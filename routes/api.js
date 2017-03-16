@@ -2434,7 +2434,7 @@ router.post('/activate_user', function (req, res) {
         console.log(req.query.long);
         console.log(req.query.city);
         if (req.query.lat != undefined && req.query.long != undefined) {
-            Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.lat, req.query.long] } } } }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
+            Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "sms_key_fibair": 1 }, function (req_mun, res_mun) {
                 if (res_mun.sms_key_fibair != undefined) {
                     console.log(res_mun.sms_key_fibair);
                 } else {

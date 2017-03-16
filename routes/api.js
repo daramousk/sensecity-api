@@ -2509,17 +2509,17 @@ router.post('/activate_user', function (req, res) {
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",
                                     method: "POST",
-                                    form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile, 'num_of_digits ': 4 },
-                                    headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
-                                }, function (err, response) {
+                                    form: { 'sender': mob_municipality + '.sense.city', 'recipients': '30' + req.query.mobile },
+                                    headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }/*'content-type': 'application/form-data'*/
+                                }, function (err1, response) {
                                     if(err)
-                                        cosole.log(err);
+                                        console.log(err1);
 
                                     console.log(JSON.stringify(response));
 
                                    
-                                        cosole.log(err1);
-                                        cosole.log(resp1);
+                                        console.log(err1);
+                                        console.log(resp1);
                                         var entry_active_user = new act_User({
                                             uuid: req.query.uuid,
                                             name: req.query.name,
@@ -2531,8 +2531,8 @@ router.post('/activate_user', function (req, res) {
                                         });
 
                                         entry_active_user.save(function (err2, resp) {
-                                            cosole.log(err2);
-                                            cosole.log(resp);
+                                            console.log(err2);
+                                            console.log(resp);
                                             resp.send({ "status": "send sms" });
 
                                         });

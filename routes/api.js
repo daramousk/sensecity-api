@@ -2455,16 +2455,19 @@ router.post('/activate_user', function (req, res) {
             });
         }
         var acc = 0;
+        console.log("test 1");
 
         if (mob_sms_key_fibair != '') {
-            act_User.find({ "uuid": req.query.uuid, "name": req.query.name, "email": req.query.mobile }, function (err, resp) {
+            console.log("test 2");
+            act_User.find({ "uuid": req.query.uuid, "name": req.query.name, "mobile_num": req.query.mobile }, function (err, resp) {
                 var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
                 console.log(mob_sms_key_fibair_base64);
                 if (err)
                     throw err;
 
                 console.log(mob_sms_key_fibair_base64);
-
+                console.log("");
+                console.log(resp);
                 if (resp != '')
                {
 

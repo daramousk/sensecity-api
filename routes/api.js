@@ -2527,10 +2527,10 @@ router.post('/activate_user', function (req, res) {
                                             activate_sms: response.verification_pin
                                         });
 
-                                        entry_active_user.save(function (err2, resp) {
+                                        entry_active_user.save(function (err2, resp2) {
                                             console.log(err2);
-                                            console.log(resp);
-                                            resp.send({ "status": "send sms" });
+                                            console.log(resp2);
+                                            
 
                                         });
 
@@ -2549,7 +2549,7 @@ router.post('/activate_user', function (req, res) {
 
 
                             }
-
+                            resp.send([{ "status": "send sms" }]);
                         });
                     }
 

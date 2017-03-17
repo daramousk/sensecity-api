@@ -2471,7 +2471,7 @@ router.post('/activate_user', function (req, res) {
                                     console.log(response);
 
                                     act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } }, "activate_sms": response.verification_pin } }, { "upsert": true }, function (err1, resp1) {
-                                        resp1.send({ "status": "send sms" });
+                                        res.send({ "status": "send sms" });
                                     });
 
 
@@ -2573,6 +2573,21 @@ router.post('/activate_user', function (req, res) {
        
 
     }
+});
+
+router.post('/activate_city_policy', function (req, res) {
+    if (req.query.long == undefined) {
+        res.send([{}]);
+    }
+
+    if (req.query.lat == undefined) {
+        res.send([{}]);
+    }
+
+    Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email":1 }, function (req1, res1) {
+        console.log(res1);
+    });
+    
 });
 
 router.post('/activate_email', function (req, res) {

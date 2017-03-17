@@ -2585,7 +2585,7 @@ router.post('/activate_city_policy', function (req, res) {
     }
 
     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email":1 }, function (req1, res1) {
-        console.log(res1);
+        res.send(res1);
     });
     
 });

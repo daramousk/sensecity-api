@@ -2316,7 +2316,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 router.post('/activate_user', function (req, res) {
 
-    if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
+    if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && (req.query.hasOwnProperty('email') || req.query.hasOwnProperty('mobile'))) {
         
         act_User.find({ "uuid": req.query.uuid}, function (err, resp) {
 
@@ -2429,7 +2429,7 @@ router.post('/activate_user', function (req, res) {
         });
 
     }
-    else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('mobile') ) {
+    else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && (req.query.hasOwnProperty('email') || req.query.hasOwnProperty('mobile'))) {
 
         var mob_municipality = '';
         var mob_sms_key_fibair = '';

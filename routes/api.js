@@ -2316,7 +2316,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 router.post('/activate_user', function (req, res) {
 
-    if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && (req.query.hasOwnProperty('email') || req.query.hasOwnProperty('mobile'))) {
+    if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
         
         act_User.find({ "uuid": req.query.uuid}, function (err, resp) {
 
@@ -2328,7 +2328,7 @@ router.post('/activate_user', function (req, res) {
 
             for (var i = 0; i < 4; i++)
                 text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-
+            console.log(JSON.stringify(resp));
             if (resp != '') {
                 act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission": { "communicate_with": { "email": "true" } }, "activate": text_act, } }, { "upsert": true }, function (err1, resp1) {                    
                     if (resp1.ok == 1) {
@@ -2429,7 +2429,7 @@ router.post('/activate_user', function (req, res) {
         });
 
     }
-    else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && (req.query.hasOwnProperty('email') || req.query.hasOwnProperty('mobile'))) {
+    else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('mobile')) {
 
         var mob_municipality = '';
         var mob_sms_key_fibair = '';

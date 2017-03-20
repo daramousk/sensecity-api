@@ -2623,7 +2623,7 @@ router.post('/activate_email', function (req, res) {
 });
 
 router.post('/activate_mobile', function (req, res) {
-    console.log("req=====>"+req);
+    console.log("req=====>"+JSON.stringify(req));
     if (req.query.uuid != "web-site") {
         console.log(req);
         act_User.update({ "uuid": req.query.uuid, "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {

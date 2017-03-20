@@ -2315,6 +2315,9 @@ router.get('/fullissue/:id', function (req, res) {
 
 
 router.post('/activate_user', function (req, res) {
+
+    console.log(req);
+
     if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
         
         act_User.find({ "uuid": req.query.uuid}, function (err, resp) {

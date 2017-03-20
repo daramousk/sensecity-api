@@ -2315,7 +2315,6 @@ router.get('/fullissue/:id', function (req, res) {
 
 
 router.post('/activate_user', function (req, res) {
-
     if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
         
         act_User.find({ "uuid": req.query.uuid}, function (err, resp) {
@@ -2449,7 +2448,10 @@ router.post('/activate_user', function (req, res) {
 
                     if (mob_sms_key_fibair != '') {
                         console.log("test 2");
-                        act_User.find({ "uuid": req.query.uuid, "name": req.query.name, "mobile_num": req.query.mobile }, function (err, resp) {
+                        act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
+
+                            console.log(JSON.stringify(resp));
+
                             var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
                             console.log(mob_sms_key_fibair_base64);
                             if (err)

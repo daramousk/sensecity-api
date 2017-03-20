@@ -2624,6 +2624,7 @@ router.post('/activate_email', function (req, res) {
 
 router.post('/activate_mobile', function (req, res) {
     if (req.query.uuid != "web-site") {
+        console.log(req);
         act_User.update({ "uuid": req.query.uuid, "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
             $set: {
                 "activate_sms": "1", "permission.communicate_with.sms": "true"

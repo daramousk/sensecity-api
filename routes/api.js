@@ -2456,14 +2456,15 @@ router.post('/activate_user', function (req, res) {
                             console.log(JSON.stringify(resp));
 
                             var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
-                            console.log(mob_sms_key_fibair_base64);
                             if (err)
                                 throw err;
-
-                            console.log(mob_sms_key_fibair_base64);
+                                
                             console.log("");
                             console.log(resp);
                             if (resp != '') {
+
+                                console.log("req.query ===>>>>>> " + req.query);
+                                console.log("req.body ===>>>>>>>>> " + req.body);
 
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",

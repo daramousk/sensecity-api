@@ -2475,6 +2475,7 @@ router.post('/activate_user', function (req, res) {
 
                                     console.log(err1);
                                     console.log(response.body.verification_pin);
+                                    console.log(JSON.stringify(response));
 
                                     act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } }, "activate_sms": response.body.verification_pin } }, { "upsert": true }, function (err1, resp1) {
                                         res.send({ "status": "send sms" });

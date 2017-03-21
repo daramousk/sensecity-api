@@ -2332,7 +2332,7 @@ router.post('/activate_user', function (req, res) {
                 text_act += possible.charAt(Math.floor(Math.random() * possible.length));
             console.log(JSON.stringify(resp));
             if (resp != '') {
-                act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission": { "communicate_with": { "email": "true" } }, "activate": text_act, } }, function (err1, resp1) {                    
+                act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission.communicate_with.email": "true", "activate": text_act, } }, function (err1, resp1) {                    
                     if (resp1.ok == 1) {
                         console.log("Send mail verify code");
                         
@@ -2475,7 +2475,7 @@ router.post('/activate_user', function (req, res) {
 
                                     console.log(err1);
 
-                                    act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } }, "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
+                                    act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission.communicate_with.sms": "true", "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
                                         res.send({ "status": "send sms" });
                                     });
 

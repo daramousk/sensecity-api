@@ -2332,7 +2332,7 @@ router.post('/activate_user', function (req, res) {
                 text_act += possible.charAt(Math.floor(Math.random() * possible.length));
             console.log(JSON.stringify(resp));
             if (resp != '') {
-                act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission": { "communicate_with": { "email": "true" } }, "activate": text_act, } }, { "upsert": true }, function (err1, resp1) {                    
+                act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission": { "communicate_with": { "email": "true" } }, "activate": text_act, } }, function (err1, resp1) {                    
                     if (resp1.ok == 1) {
                         console.log("Send mail verify code");
                         
@@ -2473,7 +2473,7 @@ router.post('/activate_user', function (req, res) {
                                 }, function (err1, response) {
 
                                     console.log(err1);
-                                    console.log(response);
+                                    console.log(response.body.verification_pin);
 
                                     act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } }, "activate_sms": response.body.verification_pin } }, { "upsert": true }, function (err1, resp1) {
                                         res.send({ "status": "send sms" });
@@ -2600,7 +2600,7 @@ router.post('/activate_email', function (req, res) {
 
         act_User.update({ "uuid": req.query.uuid, "email": req.query.email, "activate": req.query.code }, {
             $set: {
-                "activate": "1", "permission.communicate_with.email": "true"
+                "activate": "1", "permission": { "communicate_with": { "email": "true" } }
             }
         }, function (error, activate_user) {
 
@@ -2610,7 +2610,7 @@ router.post('/activate_email', function (req, res) {
     } else if (req.query.uuid == "web-site") {
         act_User.findOneAndUpdate({ "uuid": req.query.uuid, "email": req.query.email, "activate": req.query.code }, {
             $set: {
-                "activate": "1", "permission.communicate_with.email": "true"
+                "activate": "1", "permission": { "communicate_with": { "email": "true" } } 
             }
         }, function (error, activate_user) {
 
@@ -2623,12 +2623,12 @@ router.post('/activate_email', function (req, res) {
 });
 
 router.post('/activate_mobile', function (req, res) {
-    console.log("req=====>"+JSON.stringify(req));
+    console.log("req=====>" + JSON.stringify(req));
     if (req.query.uuid != "web-site") {
         console.log(req);
         act_User.update({ "uuid": req.query.uuid, "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
             $set: {
-                "activate_sms": "1", "permission.communicate_with.sms": "true"
+                "activate_sms": "1", "permission": { "communicate_with": { "sms": "true" } } 
             }
         }, function (error, activate_user) {
 
@@ -2638,7 +2638,7 @@ router.post('/activate_mobile', function (req, res) {
     } else if (req.query.uuid == "web-site") {
         act_User.update({ "uuid": "web-site", "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
             $set: {
-                "activate_sms": "1", "permission.communicate_with.sms": "true"
+                "activate_sms": "1", "permission": { "communicate_with": { "sms": "true" } }
             }
         }, function (error, activate_user) {
 

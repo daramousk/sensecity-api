@@ -2463,8 +2463,8 @@ router.post('/activate_user', function (req, res) {
                             console.log(resp);
                             if (resp != '') {
 
-                                console.log("req.query ===>>>>>> " + req.query);
-                                console.log("req.body ===>>>>>>>>> " + req.body);
+                                console.log("req.query ===>>>>>> " + JSON.stringify(req.query));
+                                console.log("req.body ===>>>>>>>>> " + JSON.stringify(req.body));
 
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",

@@ -196,7 +196,7 @@ router.post('/issue/:id', function (req, res) {
         console.log("res1 ======>>>>> " + JSON.stringify(res1));
         console.log("res1a ======>>>>> " + JSON.parser(JSON.stringify(res1))[0].municipality);
         console.log("res1b ======>>>>> " + res1.municipality);
-        console.log("res1c ======>>>>> " + res1.keys());
+        console.log("res1c ======>>>>> " + Object.keys(res1));
         cityPolicy.find({
             "city": res1.municipality
         }, {"anonymous":1}, function (req2, res2) {

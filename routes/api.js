@@ -196,7 +196,7 @@ router.post('/issue/:id', function (req, res) {
         console.log("res1 ======>>>>> " + JSON.stringify(res1));
         var xxx = JSON.stringify(res1);
         console.log("res1a ======>>>>> " + JSON.parse(xxx)[0].municipality);
-        console.log("res1b ======>>>>> " + res1[0]);
+        console.log("res1b ======>>>>> " + res1[0].municipality);
         
         cityPolicy.find({
             "city": res1.municipality

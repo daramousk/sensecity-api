@@ -421,8 +421,6 @@ router.post('/issue/:id', function (req, res) {
 
 router.get('/issue', function (req, res) {
 
-    res.redirect('https://www.google.com');
-
     req.send_user = 0;
     req.send_component = 0;
     req.send_severity = 0;

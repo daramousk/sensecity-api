@@ -89,20 +89,20 @@ request({
 
 //POST router
 router.post('/issue', function (req, res) {    
-
-    var _mobile_num = '';
-    var _email_user = '';
-
     if (req.body.mobile_num != undefined) {
-        _mobile_num = req.body.mobile_num;
-    }
+        var _mobile_num = '';
+        var _email_user = '';
 
-    if (req.body.mobile_num != undefined) {
-        _email_user = req.body.email_user;
-    } 
+        if (req.body.mobile_num != undefined) {
+            _mobile_num = req.body.mobile_num;
+        }
 
-    // Start Check The logic send email - sms mandatory
+        if (req.body.email_user != undefined) {
+            _email_user = req.body.email_user;
+        }
 
+        // Start Check The logic send email - sms mandatory
+    
     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.body.loc.coordinates[0], req.body.loc.coordinates[1]] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email": 1 }, function (req1, res1) {
         var _res1 = JSON.stringify(res1);
         
@@ -117,7 +117,7 @@ router.post('/issue', function (req, res) {
     });
 
     // end Check The logic send email - sms mandatory
-    
+    }
     var anonymous_status = "true";
 
     var return_var;

@@ -3031,7 +3031,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
         json: req.body
     }, function (error, response, body) {
         console.log("send sms");
-        console.log(JSON.stringify(response));
+        console.log(JSON.stringify(body));
 
 
 /*

@@ -90,38 +90,39 @@ request({
 //POST router
 router.post('/issue', function (req, res) {    
 
+    var _mobile_num = '';
+    var _email_user = '';
 
-    console.log(req.body.mobile_num);
-    console.log(req.body.email_user);
+    if (req.body.mobile_num != undefined) {
+        _mobile_num = req.body.mobile_num;
+    }
+
+    if (req.body.mobile_num != undefined) {
+        _email_user = req.body.email_user;
+    } 
+
     // Start Check The logic send email - sms mandatory
+
     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.body.loc.coordinates[0], req.body.loc.coordinates[1]] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email": 1 }, function (req1, res1) {
-        console.log(res1[0]);
         var _res1 = JSON.stringify(res1);
         
-        if (JSON.parse(_res1)[0].mandatory_email == true) {
-            console.log("email=====> " + JSON.stringify(res1[0].mandatory_email));
-        } else {
-            console.log("sdfsd");
-        }
-        if (JSON.parse(_res1)[0].mandatory_sms == true) {
-        console.log("sms=====> " + JSON.stringify(res1[0].mandatory_sms));
-        } else {
-            console.log("wmw");
-        }
-        console.log(res1[0].sms_key_fibair);
-        
+        if (JSON.parse(_res1)[0].mandatory_email == true && _email_user == '') {
+            //Forbidden
+            res.status(403).send([{"error_msg":"Required_email"}]);
+        } 
+
+        if (JSON.parse(_res1)[0].mandatory_sms == true && _mobile_num == '') {
+            res.status(403).send([{ "error_msg": "Required_sms"}]);
+        }        
     });
 
     // end Check The logic send email - sms mandatory
-
-
+    
     var anonymous_status = "true";
 
     var return_var;
 	var city_name='';
-
-
-	
+    
     if (!req.body.hasOwnProperty('issue') ||
             !req.body.hasOwnProperty('loc') ||
             !req.body.hasOwnProperty('value_desc') ||
@@ -224,124 +225,60 @@ router.post('/issue/:id', function (req, res) {
             "city": res1[0].municipality,
             "category": res1[0].issue
         }, { "anonymous": 1 }, function (req2, res2) {
-            console.log("res2 ======>>>>> " + res2[0].anonymous);
             if (res2[0].anonymous == "true") {
-                var _name = "";
-                var _uuid = "";
-                var _email = "";
+                ///* Update the issue with a specific id 
+                ///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
 
-                if (req.body.name != '') {
-                    _name = req.body.name;
-                } 
-                if (req.body.uuid != '') {
-                    _uuid = req.body.uuid;
-                }
-                if (req.body.email != '') {
-                    _email = req.body.email;
-                }
+                bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "reset_assigned_to": true, "cf_issues": resp.issue };
 
-                Issue.findOneAndUpdate({ "_id": req.params.id }, {
-                    user: { uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num }
-                }, function (err, resp) {
-                    console.log("Update Issue with name,email & mobile num!");
+                request({
+                    url: bugUrlRest + "/rest/bug/" + req.params.id,
+                    method: "PUT",
+                    json: bodyParams
+                }, function (error1, response1, body1) {
+                    //console.log(error1);
+                    if (resp.comments === null || resp.comments === "") {
+                        resp.comments = "undefined";
+                    }
 
-                    if (err)
-                        throw err;
+                    var bugComment1 = { "token": bugToken, "id": body_parse.bugs[0].id, "comment": resp.comments };
 
-                    ///* Create user acount to bugzilla			
-                    var bugCreateuser1 = { "token": bugToken, "email": req.body.email.toString() };
 
                     request({
-                        url: bugUrlRest + "/rest/user",
+                        url: bugUrlRest + "/rest/bug/" + body_parse.bugs[0].id + "/comment",
                         method: "POST",
-                        json: bugCreateuser1
-                    }, function (error, response, body) {
-                        if (error) {
-                            console.log("User doesnot created! Error : " + error);
-                            return false;
+                        json: bugComment1
+                    }, function (error2, bugResponse2, body2) {
+                        console.log("Insert comments to bugzilla");
+
+                        if (body2.id != null) {
+                            request({
+                                url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
+                                method: "PUT",
+                                json: { "add": ["all", "CONFIRMED"], "id": body2.id, "token": bugToken }
+                            }, function (error4, response4, body4) {
+                                console.log("Insert Tags to comment");
+                            });
                         }
-                        console.log("User Created/already exist at bugzilla");
+                    });
 
-                        ///* Find to bugzilla the issue and return the id
-                        var bugParams1 = "?alias=" + req.params.id + "&include_fields=id,alias";
-
-                        request({
-                            url: bugUrlRest + "/rest/bug" + bugParams1,
-                            method: "GET"
-                        }, function (error, response, body) {
-                            var body_parse = JSON.parse(body);
-
-                            // console.log("body" + body_parse.bugs[0].id);
-
-                            if (body_parse.bugs[0] != undefined) {
-
-                                ///* Update the issue with a specific id 
-                                ///* Add cc list and move from default component to "ΤΜΗΜΑ ΕΠΙΛΥΣΗΣ ΠΡΟΒΛΗΜΑΤΩΝ" and Custom field values
-                                bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "component": "Τμήμα επίλυσης προβλημάτων", "cc": { "add": [req.body.email] }, "cf_creator": req.body.name, "cf_email": req.body.email, "cf_mobile": req.body.mobile_num, "reset_assigned_to": true, "cf_authedicated": 1, "cf_issues": resp.issue };
-
-                                request({
-                                    url: bugUrlRest + "/rest/bug/" + req.params.id,
-                                    method: "PUT",
-                                    json: bodyParams
-                                }, function (error1, response1, body1) {
-
-                                    console.log(error1);
-
-                                    if (resp.comments === null || resp.comments === "") {
-
-                                        resp.comments = "undefined";
-                                    }
-                                    var bugComment1 = { "token": bugToken, "id": body_parse.bugs[0].id, "comment": resp.comments };
-
-                                    request({
-                                        url: bugUrlRest + "/rest/bug/" + body_parse.bugs[0].id + "/comment",
-                                        method: "POST",
-                                        json: bugComment1
-                                    }, function (error2, bugResponse2, body2) {
-
-                                        console.log("Insert comments to bugzilla");
-
-                                        if (body2.id != null) {
-
-                                            request({
-                                                url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
-                                                method: "PUT",
-                                                json: { "add": ["all", "CONFIRMED"], "id": body2.id, "token": bugToken }
-                                            }, function (error4, response4, body4) {
-
-                                                console.log("Insert Tags to comment");
-
-                                            });
-                                        }
-                                    });
-
-                                    request({
-                                        url: "/rest/bug/" + body_parse.bugs[0].id + "/comment",
-                                        method: "GET"
-                                    }, function (error3, bugResponse3, body3) {
-
-                                    });
-                                });
-
-
-                            }
+                    request({
+                        url: "/rest/bug/" + body_parse.bugs[0].id + "/comment",
+                        method: "GET"
+                    }, function (error3, bugResponse3, body3) {
 
                         });
 
-                    });
+                });
 
-
-                    res.send({ "description": "ok" });
-
-                    });
 
             } else {
                 if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
-
                     Issue.findOneAndUpdate({ "_id": req.params.id }, {
                         user: { uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num }
                     }, function (err, resp) {
                         console.log("Update Issue with name,email & mobile num!");
+                        console.log(resp);
 
                         if (err)
                             throw err;
@@ -399,7 +336,21 @@ router.post('/issue/:id', function (req, res) {
 
                                             console.log("Insert comments to bugzilla");
 
+
                                             if (body2.id != null) {
+
+                                                
+                                            /*
+                                                request({
+                                                    url: "https://api.theansr.com/v1/sms",
+                                                    method: "POST",
+                                                    form: { 'sender': 'SenseCity', 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
+                                                    headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
+                                                }, function (err, response) {
+                                                    res.send(response.body);
+                                                    //if call_id
+                                                    });
+                                                    */
 
                                                 request({
                                                     url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",

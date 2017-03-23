@@ -90,11 +90,21 @@ request({
 //POST router
 router.post('/issue', function (req, res) {
 
+    // Start Check The logic send email - sms mandatory
+
+    Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.body.loc.coordinates[0], req.body.loc.coordinates[1]] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email": 1 }, function (req1, res1) {
+        res.send(res1);
+    });
+
+    // end Check The logic send email - sms mandatory
+
+
     var anonymous_status = "true";
 
     var return_var;
 	var city_name='';
-	
+
+
 	
     if (!req.body.hasOwnProperty('issue') ||
             !req.body.hasOwnProperty('loc') ||
@@ -113,6 +123,7 @@ router.post('/issue', function (req, res) {
                                 }
                     }
         }, function (err, response) {
+        
             var entry = new Issue({
                 loc: {type: 'Point', coordinates: req.body.loc.coordinates},
                 issue: req.body.issue,

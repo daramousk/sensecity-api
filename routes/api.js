@@ -3035,19 +3035,21 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
         console.log("send sms");
         console.log(JSON.stringify(body));
         console.log("-------");
-        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias,bug_status,product,cf_mobile";
+        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias,status,product,cf_mobile";
 
         request({
             url: bugUrlRest + "/rest/bug" + bugParams1,
             method: "GET"
         }, function (error, response, body) {
             console.log(JSON.parse(body));
+            console.log(JSON.parse(body).bugs[0].product);
+            console.log(JSON.parse(body).bugs[0].cf_mobile);
             console.log(JSON.parse(body).bugs[0].alias[0]);
             
 
         });
 
-/*
+        /*
         Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
             //console.log(res11[0].sms_key_fibair);
             var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");

@@ -3024,6 +3024,8 @@ router.post('/admin/bugs/comment', authorization, function (req, res) {
 });
 
 router.post('/admin/bugs/comment/add', authorization, function (req, res) {
+    console.log("req=====>" + req);
+
     req.body.token = bugToken;
     request({
         url: bugUrlRest + "/rest/bug/" + req.body.id + " /comment",
@@ -3032,7 +3034,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
     }, function (error, response, body) {
         console.log("send sms");
         console.log(JSON.stringify(body));
-
+        console.log("-------");
 
 /*
         Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {

@@ -96,12 +96,13 @@ router.post('/issue', function (req, res) {
     // Start Check The logic send email - sms mandatory
     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.body.loc.coordinates[0], req.body.loc.coordinates[1]] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email": 1 }, function (req1, res1) {
         console.log(res1[0]);
-        if (res1[0].mandatory_email) {
+        console.log(res1[0].mandatory_email.toString());
+        if (res1[0].mandatory_email == true) {
             console.log("email=====> " + JSON.stringify(res1[0].mandatory_email));
         } else {
             console.log("sdfsd");
         }
-        if (res1[0].mandatory_sms) {
+        if (res1[0].mandatory_sms == true) {
         console.log("sms=====> " + JSON.stringify(res1[0].mandatory_sms));
         } else {
             console.log("wmw");

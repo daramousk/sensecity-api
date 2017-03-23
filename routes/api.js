@@ -3042,8 +3042,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             method: "GET"
         }, function (error, response, body) {
             var xxx1 = JSON.stringify(body);
-            console.log(JSON.parse(xxx1).bugs);
-            console.log(JSON.parse(xxx1).bugs[0].alias[0]);
+            console.log(JSON.parse(xxx1));
             
             
 

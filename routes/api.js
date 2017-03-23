@@ -338,10 +338,27 @@ router.post('/issue/:id', function (req, res) {
 
 
                                             if (body2.id != null) {
-
+                                                var mob_sms_key_fibair_base64;
                                                 Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
-                                                    console.log(res11[0].sms_key_fibair);
+                                                    //console.log(res11[0].sms_key_fibair);
+                                                    mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
+
                                                 });
+                                                if (mob_sms_key_fibair_base64 != undefined) {
+                                                    if (mob_sms_key_fibair_base64 != '') {
+                                                        if (req.body.mobile_num != ''){
+                                                            request({
+                                                                url: "https://api.theansr.com/v1/sms",
+                                                                method: "POST",
+                                                                form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
+                                                                headers: { "Authorization": mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                                                            }, function (err, response) {
+                                                                res.send(response.body);
+                                                                //if call_id
+                                                            });
+                                                    }
+                                                    }
+                                                }
                                             /*
                                                 request({
                                                     url: "https://api.theansr.com/v1/sms",
@@ -2555,10 +2572,7 @@ router.post('/activate_user', function (req, res) {
 
                     if (mob_sms_key_fibair != '') {
                         console.log("test 2");
-                        act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
-
-                            console.log(JSON.stringify(resp));
-
+                        act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {                 
                             var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
                             if (err)
                                 throw err;
@@ -2566,10 +2580,7 @@ router.post('/activate_user', function (req, res) {
                             console.log("");
                             console.log(resp);
                             if (resp != '') {
-
-                                console.log("req.query ===>>>>>> " + JSON.stringify(req.query));
-                                console.log("req.body ===>>>>>>>>> " + JSON.stringify(req.body));
-
+                            
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",
                                     method: "POST",
@@ -2613,8 +2624,7 @@ router.post('/activate_user', function (req, res) {
 
 
                             } else {
-                                console.log("fgjh");
-
+                                
                                 request({
                                     url: "https://api.theansr.com/v1/sms/verification_pin",
                                     method: "POST",

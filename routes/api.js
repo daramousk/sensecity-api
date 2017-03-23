@@ -354,7 +354,7 @@ router.post('/issue/:id', function (req, res) {
                                                                     form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
                                                                     headers: { "Authorization": mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                                                 }, function (err, response) {
-                                                                    res.send(response.body);
+                                                                    console.log(response);
                                                                     //if call_id
                                                                 });
                                                             }

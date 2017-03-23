@@ -338,7 +338,7 @@ router.post('/issue/:id', function (req, res) {
 
                                             if (body2.id != null) {
 
-                                                Municipality.find({"municipality":})
+                                                //Municipality.find({"municipality":})
                                             /*
                                                 request({
                                                     url: "https://api.theansr.com/v1/sms",

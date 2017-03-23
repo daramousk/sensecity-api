@@ -3035,13 +3035,13 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
         console.log("send sms");
         console.log(JSON.stringify(body));
         console.log("-------");
-        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias";
+        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias,bug_status,cf_city_name,cf_mobile";
 
         request({
             url: bugUrlRest + "/rest/bug" + bugParams1,
             method: "GET"
         }, function (error, response, body) {
-
+            console.log(JSON.parse(body));
             console.log(JSON.parse(body).bugs[0].alias[0]);
             
 

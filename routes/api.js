@@ -98,7 +98,7 @@ router.post('/issue', function (req, res) {
         console.log(res1[0]);
         var xxx = JSON.stringify(res1);
 
-        console.log(JSON.parse(xxx).mandatory_email);
+        console.log(JSON.parse(xxx)[0].mandatory_email);
         if (res1[0].mandatory_email == true) {
             console.log("email=====> " + JSON.stringify(res1[0].mandatory_email));
         } else {

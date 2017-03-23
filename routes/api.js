@@ -3042,7 +3042,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             method: "GET"
         }, function (error, response, body) {
                     
-            console.log(response.body);
+            console.log(response.body.bugs);
             
 
         });

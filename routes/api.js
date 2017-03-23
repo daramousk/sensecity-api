@@ -3041,12 +3041,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams1,
             method: "GET"
         }, function (error, response, body) {
-            console.log(JSON.parse(body));
-            console.log(JSON.parse(body).bugs[0].status);
-            console.log(JSON.parse(body).bugs[0].product);
-            console.log(JSON.parse(body).bugs[0].cf_mobile);
-            console.log(JSON.parse(body).bugs[0].alias[0]);
-            
+           
             var _status_field = '';
             if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
                 _status_field = 'ΕΙΝΑΙ ΣΕ ΕΞΕΛΙΞΗ';
@@ -3065,7 +3060,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
 
                         if (JSON.parse(body).bugs[0].cf_mobile != '') {
                             console.log("send sms");
-                            request({
+                            /*request({
                                 url: "https://api.theansr.com/v1/sms",
                                 method: "POST",
                                 form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid/' + req.body.id },
@@ -3074,7 +3069,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                                 console.log(response);
                                 //if call_id
                             });
-
+                            */
                         }
                     }
                 }

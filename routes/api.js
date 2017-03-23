@@ -344,9 +344,14 @@ router.post('/issue/:id', function (req, res) {
                                                     mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
 
                                                 });
+                                                console.log("mob_sms_key_fibair_base64" + mob_sms_key_fibair_base64);
+
                                                 if (mob_sms_key_fibair_base64 != undefined) {
+                                                    console.log("1");
                                                     if (mob_sms_key_fibair_base64 != '') {
-                                                        if (req.body.mobile_num != ''){
+                                                        console.log("2");
+                                                        if (req.body.mobile_num != '') {
+                                                            console.log("3");
                                                             request({
                                                                 url: "https://api.theansr.com/v1/sms",
                                                                 method: "POST",

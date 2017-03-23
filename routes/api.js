@@ -3049,7 +3049,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             
             var _status_field = '';
             if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
-                _status_field = 'ΣΕ ΕΞΕΛΙΞΗ';
+                _status_field = 'ΕΙΝΑΙ ΣΕ ΕΞΕΛΙΞΗ';
             }
             else if (JSON.parse(body).bugs[0].status == "RESOLVED") {
                 _status_field = 'ΟΛΟΚΛΗΡΩΘΗΚΕ';
@@ -3068,7 +3068,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                             request({
                                 url: "https://api.theansr.com/v1/sms",
                                 method: "POST",
-                                form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + 'sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + ' ΕΙΝΑΙ ΣΕ ' + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid/' + req.body.id },
+                                form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid/' + req.body.id },
                                 headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                             }, function (err, response) {
                                 console.log(response);

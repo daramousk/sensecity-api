@@ -340,7 +340,7 @@ router.post('/issue/:id', function (req, res) {
                                             if (body2.id != null) {
 
                                                 Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
-                                                    console.log(res11);
+                                                    console.log(res11[0].sms_key_fibair);
                                                 });
                                             /*
                                                 request({

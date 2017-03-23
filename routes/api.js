@@ -3041,8 +3041,8 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams1,
             method: "GET"
         }, function (error, response, body) {
-                    
-            console.log(response.body['bugs']);
+
+            console.log(JSON.parse(body.bugs[0].alias[0]));
             
 
         });

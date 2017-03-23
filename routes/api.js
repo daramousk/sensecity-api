@@ -341,7 +341,7 @@ router.post('/issue/:id', function (req, res) {
                                                 Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
                                                     //console.log(res11[0].sms_key_fibair);
                                                     var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
-                                                    
+                                                    console.log(mob_sms_key_fibair_base64);
                                                     if (mob_sms_key_fibair_base64 != undefined) {
                                                         console.log("1");
                                                         if (mob_sms_key_fibair_base64 != '') {

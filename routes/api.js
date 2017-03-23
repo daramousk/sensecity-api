@@ -101,7 +101,11 @@ router.post('/issue', function (req, res) {
         } else {
             console.log("sdfsd");
         }
+        if (res1[0].mandatory_sms) {
         console.log("sms=====> " + JSON.stringify(res1[0].mandatory_sms));
+        } else {
+            console.log("wmw");
+        }
         console.log(res1[0].sms_key_fibair);
         
     });

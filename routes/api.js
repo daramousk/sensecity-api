@@ -338,32 +338,30 @@ router.post('/issue/:id', function (req, res) {
 
 
                                             if (body2.id != null) {
-                                                var mob_sms_key_fibair_base64;
                                                 Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
                                                     //console.log(res11[0].sms_key_fibair);
-                                                    mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
-
+                                                    var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
+                                                    
+                                                    if (mob_sms_key_fibair_base64 != undefined) {
+                                                        console.log("1");
+                                                        if (mob_sms_key_fibair_base64 != '') {
+                                                            console.log("2");
+                                                            if (req.body.mobile_num != '') {
+                                                                console.log("3");
+                                                                request({
+                                                                    url: "https://api.theansr.com/v1/sms",
+                                                                    method: "POST",
+                                                                    form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
+                                                                    headers: { "Authorization": mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                                                                }, function (err, response) {
+                                                                    res.send(response.body);
+                                                                    //if call_id
+                                                                });
+                                                            }
+                                                        }
+                                                    }
                                                 });
-                                                console.log("mob_sms_key_fibair_base64" + mob_sms_key_fibair_base64);
-
-                                                if (mob_sms_key_fibair_base64 != undefined) {
-                                                    console.log("1");
-                                                    if (mob_sms_key_fibair_base64 != '') {
-                                                        console.log("2");
-                                                        if (req.body.mobile_num != '') {
-                                                            console.log("3");
-                                                            request({
-                                                                url: "https://api.theansr.com/v1/sms",
-                                                                method: "POST",
-                                                                form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
-                                                                headers: { "Authorization": mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
-                                                            }, function (err, response) {
-                                                                res.send(response.body);
-                                                                //if call_id
-                                                            });
-                                                    }
-                                                    }
-                                                }
+                                                
                                             /*
                                                 request({
                                                     url: "https://api.theansr.com/v1/sms",

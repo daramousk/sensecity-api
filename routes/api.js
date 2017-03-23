@@ -341,39 +341,28 @@ router.post('/issue/:id', function (req, res) {
                                                 Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
                                                     //console.log(res11[0].sms_key_fibair);
                                                     var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
-                                                    console.log(mob_sms_key_fibair_base64);
+                                                    
                                                     if (mob_sms_key_fibair_base64 != undefined) {
-                                                        console.log("1");
+                                                        
                                                         if (mob_sms_key_fibair_base64 != '') {
-                                                            console.log("2");
+                                                            
                                                             if (req.body.mobile_num != '') {
-                                                                console.log("3");
-                                                                request({
+                                                                console.log("send sms");
+                                                                /*request({
                                                                     url: "https://api.theansr.com/v1/sms",
                                                                     method: "POST",
-                                                                    form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + JSON.parse(_resp).municipality +'.sense.city/bugid/' + body_parse.bugs[0].id },
+                                                                    form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality+'sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality +'.sense.city/bugid/' + body_parse.bugs[0].id },
                                                                     headers: {"Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                                                 }, function (err, response) {
                                                                     console.log(response);
                                                                     //if call_id
                                                                 });
+                                                                */
                                                             }
                                                         }
                                                     }
                                                 });
-                                                
-                                            /*
-                                                request({
-                                                    url: "https://api.theansr.com/v1/sms",
-                                                    method: "POST",
-                                                    form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
-                                                    headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
-                                                }, function (err, response) {
-                                                    res.send(response.body);
-                                                    //if call_id
-                                                    });
-                                                    */
-
+                                            
                                                 request({
                                                     url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
                                                     method: "PUT",
@@ -3041,6 +3030,40 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
         method: "POST",
         json: req.body
     }, function (error, response, body) {
+        console.log("send sms");
+        console.log(JSON.stringify(response));
+
+
+/*
+        Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
+            //console.log(res11[0].sms_key_fibair);
+            var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
+
+            if (mob_sms_key_fibair_base64 != undefined) {
+
+                if (mob_sms_key_fibair_base64 != '') {
+
+                    if (req.body.mobile_num != '') {
+                        console.log("send sms");
+                        request({
+                            url: "https://api.theansr.com/v1/sms",
+                            method: "POST",
+                            form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality+'sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality +'.sense.city/bugid/' + body_parse.bugs[0].id },
+                            headers: {"Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                        }, function (err, response) {
+                            console.log(response);
+                            //if call_id
+                        });
+                        
+                    }
+                }
+            }
+        });
+*/
+
+
+
+
         if (!error && response.statusCode === 201) {
             if (response.body.result !== null)
             {

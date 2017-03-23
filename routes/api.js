@@ -91,7 +91,8 @@ request({
 router.post('/issue', function (req, res) {    
 
     console.log(req);
-
+    console.log(req.body.mobile_num);
+    console.log(req.body.email_user);
     // Start Check The logic send email - sms mandatory
     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.body.loc.coordinates[0], req.body.loc.coordinates[1]] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email": 1 }, function (req1, res1) {
         console.log(res1[0].mandatory_email);

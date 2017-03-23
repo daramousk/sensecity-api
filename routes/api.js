@@ -278,11 +278,7 @@ router.post('/issue/:id', function (req, res) {
                         user: { uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num }
                     }, function (err, resp) {
                         console.log("Update Issue with name,email & mobile num!");
-
-                        console.log(resp);
                         var _resp = JSON.stringify(resp);
-                        console.log(_resp);
-                        console.log(JSON.parse(_resp).municipality);
 
                         if (err)
                             throw err;
@@ -343,12 +339,14 @@ router.post('/issue/:id', function (req, res) {
 
                                             if (body2.id != null) {
 
-                                                //Municipality.find({"municipality":})
+                                                Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
+                                                    console.log(res11.sms_key_fibair);
+                                                });
                                             /*
                                                 request({
                                                     url: "https://api.theansr.com/v1/sms",
                                                     method: "POST",
-                                                    form: { 'sender': 'SenseCity', 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
+                                                    form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': 'Η ΕΞΕΛΙΞΗ ΤΟΥ ΑΙΤΗΜΑΤΟΣ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + ' ΜΠΟΡΕΙΤΕ ΝΑ ΤΟ ΔΕΙΤΕ ΣΤΟ http://' + +'.sense.city/bugid/' + body_parse.bugs[0].id },
                                                     headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
                                                 }, function (err, response) {
                                                     res.send(response.body);

@@ -3024,7 +3024,7 @@ router.post('/admin/bugs/comment', authorization, function (req, res) {
 });
 
 router.post('/admin/bugs/comment/add', authorization, function (req, res) {
-    console.log("req=====>" + JSON.stringify(req.body));
+    console.log("req=====>" + req.body.id);
 
     req.body.token = bugToken;
     request({

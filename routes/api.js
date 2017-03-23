@@ -279,7 +279,11 @@ router.post('/issue/:id', function (req, res) {
                     }, function (err, resp) {
                         console.log("Update Issue with name,email & mobile num!");
 
-                        console.log(resp[0].municipality);
+                        console.log(resp);
+                        var _resp = JSON.stringify(resp);
+                        console.log(_resp);
+                        console.log(JSON.parse(_resp).municipality);
+
                         if (err)
                             throw err;
 

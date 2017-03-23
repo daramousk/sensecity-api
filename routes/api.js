@@ -3048,7 +3048,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             console.log(JSON.parse(body).bugs[0].alias[0]);
             
             var _status_field = '';
-            if (JSON.parse(body).bugs[0].status == "IN_PROGESS") {
+            if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
                 _status_field = 'ΣΕ ΕΞΕΛΙΞΗ';
             }
             else if (JSON.parse(body).bugs[0].status == "RESOLVED") {

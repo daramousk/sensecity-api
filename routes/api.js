@@ -283,7 +283,10 @@ router.post('/issue/:id', function (req, res) {
                     if (JSON.parse(result_)[0].mandatory_email == true) {
                         console.log('email');
                     }
-                    if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
+
+                    console.log("email ==================>>>>>>>>>>>>>>>>" + req.body.email);
+
+                    if (req.body.uuid != '' && req.body.name != '') {
                         Issue.findOneAndUpdate({ "_id": req.params.id }, {
                             user: { uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num }
                         }, function (err, resp) {

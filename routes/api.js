@@ -276,6 +276,12 @@ router.post('/issue/:id', function (req, res) {
                 Municipality.find({ "municipality": res1[0].municipality }, { "mandatory_sms": 1, "mandatory_email": 1 }, function (req4, res4) {
 
                     console.log(res4);
+                    if (res4.[0].mandatory_sms == 'true') {
+                        console.log('sms');
+                    }
+                    if (res4.[0].mandatory_email == 'false') {
+                        console.log('email');
+                    }
                     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {
                         Issue.findOneAndUpdate({ "_id": req.params.id }, {
                             user: { uuid: req.body.uuid, name: req.body.name, email: req.body.email, phone: req.body.mobile_num }

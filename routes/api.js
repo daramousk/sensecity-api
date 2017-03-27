@@ -277,10 +277,10 @@ router.post('/issue/:id', function (req, res) {
 
                     console.log(res4);
 
-                    if (res4[0].mandatory_sms == 'true') {
+                    if (res4[0].mandatory_sms == true) {
                         console.log('sms');
                     }
-                    if (res4[0].mandatory_email == 'false') {
+                    if (res4[0].mandatory_email == true) {
                         console.log('email');
                     }
                     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {

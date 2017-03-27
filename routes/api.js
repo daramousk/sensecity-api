@@ -275,12 +275,12 @@ router.post('/issue/:id', function (req, res) {
             } else {
                 Municipality.find({ "municipality": res1[0].municipality }, { "mandatory_sms": 1, "mandatory_email": 1 }, function (req4, res4) {
 
-                    console.log(res4);
+                    var result_ = JSON.stringify(res4);
 
-                    if (res4[0].mandatory_sms == true) {
+                    if (JSON.parse(result_)[0].mandatory_sms == true) {
                         console.log('sms');
                     }
-                    if (res4[0].mandatory_email == true) {
+                    if (JSON.parse(result_)[0].mandatory_email == true) {
                         console.log('email');
                     }
                     if (req.body.uuid != '' && req.body.name != '' && req.body.email != '') {

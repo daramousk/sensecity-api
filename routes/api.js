@@ -348,7 +348,7 @@ router.post('/issue/:id', function (req, res) {
                                                             
                                                             if (req.body.mobile_num != '') {
                                                                 console.log("send sms");
-                                                                /*request({
+                                                                request({
                                                                     url: "https://api.theansr.com/v1/sms",
                                                                     method: "POST",
                                                                     form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality+'sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality +'.sense.city/bugid/' + body_parse.bugs[0].id },
@@ -357,7 +357,7 @@ router.post('/issue/:id', function (req, res) {
                                                                     console.log(response);
                                                                     //if call_id
                                                                 });
-                                                                */
+                                                                
                                                             }
                                                         }
                                                     }
@@ -3060,7 +3060,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
 
                         if (JSON.parse(body).bugs[0].cf_mobile != '') {
                             console.log("send sms");
-                            /*request({
+                            request({
                                 url: "https://api.theansr.com/v1/sms",
                                 method: "POST",
                                 form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid/' + req.body.id },
@@ -3069,7 +3069,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                                 console.log(response);
                                 //if call_id
                             });
-                            */
+                            
                         }
                     }
                 }

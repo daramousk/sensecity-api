@@ -2443,8 +2443,6 @@ router.get('/fullissue/:id', function (req, res) {
 
 router.get('/is_activate_user', function (req, res) {
 
-    res.send([{}]);
-
     var _activate_email = '';
     var _activate_sms = '';
 

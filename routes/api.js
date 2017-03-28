@@ -2458,7 +2458,8 @@ router.post('/is_activate_user', function (req, res) {
                 console.log("4");
                 console.log("res9==>" + res9[0]);
                 act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
-                    if (res9[0] != undefined || res9[0].activate_sms != '') {
+                    var xxx = JSON.parse(res9);
+                    if (xxx[0] != undefined || res9[0].activate_sms != '') {
                         _activate_sms = res9[0].activate_sms;
                     } else {
                         console.log("undefined");

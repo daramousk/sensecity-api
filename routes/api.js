@@ -2440,34 +2440,66 @@ router.get('/fullissue/:id', function (req, res) {
 	});
 	
 });
+router.get('/is_activate_user', function (req, res) {
+    var _activate_email = '';
+    var _activate_sms = '';
 
+    if (req.body.email != undefined || req.body.email != '') {
+        console.log("1");
+        act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
+            if (res8.activate != undefined) {
+                console.log(res8.activate);
+                _activate_email = res8.activate;
+            }
+                
+                console.log("res8===>" + res8);
+                if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
+                    console.log("2");
+                    act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
+                        if (res9.activate_sms != undefined) {
+                            console.log("res9==>" + res9);
+                            _activate_sms = res9.activate_sms;
+                        } else {
+                            console.log("undefined");
+                        }
+
+                        res.send([{ "activate_email": _activate_email, "activate_sms": _activate_sms}]);
+                    });
+                }
+
+            
+        });
+    }
+
+   
+});
 
 router.post('/activate_user', function (req, res) {
     console.log(req.body);
     console.log(req.body.uuid);
     if (req.body.uuid != undefined){
         if (req.body.uuid == "web-site") {
+
             if (req.body.email != undefined || req.body.email != '') {
                 console.log("1");
                 act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
                     if (res8.activate != undefined) {
                         console.log("res8===>" + res8);
                     }
-                    if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
-                        console.log("2");
-                        act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
-                            if (res9.activate_sms != undefined) {
-                                console.log("res9==>" + res9);
-                            } else {
-                                console.log("undefined");
-                            }
-                        });
-                    }
-
-
                 });
             }
-            
+
+            if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
+                console.log("2");
+                act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
+                    if (res9.activate_sms != undefined) {
+                        console.log("res9==>" + res9);
+                    } else {
+                        console.log("undefined");
+                    }
+                });
+            }
+
         }
     }
 

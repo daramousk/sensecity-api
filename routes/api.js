@@ -2444,16 +2444,16 @@ router.get('/fullissue/:id', function (req, res) {
 
 router.post('/activate_user', function (req, res) {
 
-    console.log(req);
-    if (req.query.hasOwnProperty('uuid')){
-        if (req.query.uuid == "web-site") {
-            if (req.query.hasOwnProperty('email')){
-                act_User.find({ "uuid": "web-site", "email": req.query.email }, function (req8, res8) {
+    console.log(req.body);
+    if (req.body.hasOwnProperty('uuid')){
+        if (req.body.uuid == "web-site") {
+            if (req.body.hasOwnProperty('email')){
+                act_User.find({ "uuid": "web-site", "email": req.body.email }, function (req8, res8) {
                     console.log(res8);
                 });
             }
-            if (req.query.hasOwnProperty('mobile_num')){
-                act_User.find({ "uuid": "web-site", "mobile_num": req.query.email }, function (req9, res9) {
+            if (req.body.hasOwnProperty('mobile_num')){
+                act_User.find({ "uuid": "web-site", "mobile_num": req.body.email }, function (req9, res9) {
                     console.log(res9);
                 });
             }

@@ -2447,18 +2447,18 @@ router.post('/is_activate_user', function (req, res) {
     var _activate_sms = '';
 
     if (req.body.email != undefined || req.body.email != '') {
-        console.log("1");
+        console.log("3");
         act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
-            if (res8.activate != undefined) {
+            if (res8.activate != undefined || res8.activate != '') {
                 console.log(res8.activate);
                 _activate_email = res8.activate;
             }
                 
                 console.log("res8===>" + res8);
                 if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
-                    console.log("2");
+                    console.log("4");
                     act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
-                        if (res9.activate_sms != undefined) {
+                        if (res9.activate_sms != undefined || res9.activate_sms != '') {
                             console.log("res9==>" + res9);
                             _activate_sms = res9.activate_sms;
                         } else {

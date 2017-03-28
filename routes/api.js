@@ -2455,7 +2455,7 @@ router.post('/activate_user', function (req, res) {
             }
             if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
                 console.log("2");
-                act_User.find({ "uuid": "web-site", "mobile_num": req.body.email }, function (req9, res9) {
+                act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, function (req9, res9) {
                     console.log(res9);
                 });
             }

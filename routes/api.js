@@ -2447,12 +2447,12 @@ router.post('/activate_user', function (req, res) {
     console.log(req);
     if (req.query.hasOwnProperty('uuid')){
         if (req.query.uuid == "web-site") {
-            if (req.query.hasOwnProperty('email'){
+            if (req.query.hasOwnProperty('email')){
                 act_User.find({ "uuid": "web-site", "email": req.query.email }, function (req8, res8) {
                     console.log(res8);
                 });
             }
-            if (req.query.hasOwnProperty('mobile_num'){
+            if (req.query.hasOwnProperty('mobile_num')){
                 act_User.find({ "uuid": "web-site", "mobile_num": req.query.email }, function (req9, res9) {
                     console.log(res9);
                 });

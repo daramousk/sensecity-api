@@ -2447,12 +2447,14 @@ router.post('/activate_user', function (req, res) {
     console.log(req.body.uuid);
     if (req.body.uuid != undefined){
         if (req.body.uuid == "web-site") {
-            if (req.body.email!=undefined){
+            if (req.body.email != undefined || req.body.email != '') {
+                console.log("1");
                 act_User.find({ "uuid": "web-site", "email": req.body.email }, function (req8, res8) {
                     console.log(res8);
                 });
             }
-            if (req.body.mobile_num != undefined){
+            if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
+                console.log("2");
                 act_User.find({ "uuid": "web-site", "mobile_num": req.body.email }, function (req9, res9) {
                     console.log(res9);
                 });

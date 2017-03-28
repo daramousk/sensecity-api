@@ -2445,26 +2445,107 @@ router.get('/fullissue/:id', function (req, res) {
 router.post('/activate_user', function (req, res) {
 
     console.log(req);
+    if (req.query.hasOwnProperty('uuid'){
+        if (req.query.uuid == "web-site") {
+            if (req.query.hasOwnProperty('email'){
+                act_User.find({ "uuid": "web-site", "email": req.query.email }, function (req8, res8) {
+                    console.log(res8);
+                });
+            }
+            if (req.query.hasOwnProperty('mobile_num'){
+                act_User.find({ "uuid": "web-site", "mobile_num": req.query.email }, function (req9, res9) {
+                    console.log(res9);
+                });
+            }
+        }
+    }
 
     if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
+
         
-        act_User.find({ "uuid": req.query.uuid}, function (err, resp) {
+            act_User.find({ "uuid": req.query.uuid }, function (err, resp) {
 
-            if (err) {
-                throw err;
-            }
-            var text_act = "";
-            var possible = "0123456789";
+                if (err) {
+                    throw err;
+                }
+                var text_act = "";
+                var possible = "0123456789";
 
-            for (var i = 0; i < 4; i++)
-                text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-            console.log(JSON.stringify(resp));
-            if (resp != '') {
-                act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission.communicate_with.email": "true", "activate": text_act, } }, function (err1, resp1) {                    
-                    if (resp1.ok == 1) {
-                        console.log("Send mail verify code");
-                        
+                for (var i = 0; i < 4; i++)
+                    text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+                console.log(JSON.stringify(resp));
+                if (resp != '') {
+                    act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission.communicate_with.email": "true", "activate": text_act, } }, function (err1, resp1) {
+                        if (resp1.ok == 1) {
+                            console.log("Send mail verify code");
 
+
+                            // create reusable transporter object using the default SMTP transport 
+                            var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+
+                            // setup e-mail data with unicode symbols 
+                            var mailOptions = {
+                                from: '"Sense.City " <info@sense.city>', // sender address 
+                                to: req.query.email, // list of receivers 
+                                subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+                                text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
+                                html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
+                            };
+
+                            // send mail with defined transport object 
+                            transporter.sendMail(mailOptions, function (error, info) {
+                                if (error) {
+                                    return console.log(error);
+                                }
+                                console.log('Message sent: ' + info.response);
+                            });
+
+                        }
+                    });
+
+                    /*
+                    request({
+                        url: "https://api.theansr.com/v1/sms",
+                        method: "POST",
+                        form: {'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΕΙΝΑΙ 5555'},
+                        headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data'}
+                    }, function (err, response) {
+                        res.send(response.body);
+                        //if call_id
+                        });
+                    */
+
+
+                    /*console.log("1="+JSON.stringify(resp));
+                    if (resp.permission.communicate_with.email != 1) {
+                        res.send([{ "test": "2" }]);
+                    }
+                    else {
+                        res.send([{ "test": "1a" }]);
+                    }*/
+
+                } else {
+
+
+                    console.log("resp1=" + resp);
+
+                    var text_act = "";
+                    var possible = "0123456789";
+
+                    for (var i = 0; i < 4; i++)
+                        text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                    var entry_active_user = new act_User({
+                        uuid: req.query.uuid,
+                        name: req.query.name,
+                        email: req.query.email,
+                        mobile_num: '',
+                        permission: { send_issues: "true", communicate_with: { email: true, sms: false } },
+                        activate: text_act,
+                        activate_sms: ''
+                    });
+
+                    entry_active_user.save(function (err1, resp) {
                         // create reusable transporter object using the default SMTP transport 
                         var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
 
@@ -2485,78 +2566,13 @@ router.post('/activate_user', function (req, res) {
                             console.log('Message sent: ' + info.response);
                         });
 
-                    }
-                });
-
-                /*
-                request({
-                    url: "https://api.theansr.com/v1/sms",
-                    method: "POST",
-                    form: {'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΕΙΝΑΙ 5555'},
-                    headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data'}
-                }, function (err, response) {
-                    res.send(response.body);
-                    //if call_id
+                        res.send([{ "test": JSON.stringify(resp) }]);
                     });
-                */
 
-
-                /*console.log("1="+JSON.stringify(resp));
-                if (resp.permission.communicate_with.email != 1) {
-                    res.send([{ "test": "2" }]);
                 }
-                else {
-                    res.send([{ "test": "1a" }]);
-                }*/
 
-            } else {
+            });
 
-                
-                console.log("resp1=" + resp);
-
-                var text_act = "";
-                var possible = "0123456789";
-
-                for (var i = 0; i < 4; i++)
-                    text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-
-               var entry_active_user = new act_User({
-                    uuid: req.query.uuid,
-                    name: req.query.name,
-                    email: req.query.email,
-                    mobile_num: '',
-                    permission: { send_issues: "true", communicate_with: { email: true, sms: false } },
-                    activate: text_act,
-                    activate_sms: ''
-                });
-
-               entry_active_user.save(function (err1, resp) {
-                   // create reusable transporter object using the default SMTP transport 
-                   var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
-
-                   // setup e-mail data with unicode symbols 
-                   var mailOptions = {
-                       from: '"Sense.City " <info@sense.city>', // sender address 
-                       to: req.query.email, // list of receivers 
-                       subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
-                       text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
-                       html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
-                   };
-
-                   // send mail with defined transport object 
-                   transporter.sendMail(mailOptions, function (error, info) {
-                       if (error) {
-                           return console.log(error);
-                       }
-                       console.log('Message sent: ' + info.response);
-                   });
-
-                    res.send([{ "test": JSON.stringify(resp) }]);
-                });
-               
-            }
-
-        });
 
     }
     else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('mobile')) {
@@ -2710,7 +2726,7 @@ router.post('/activate_city_policy', function (req, res) {
         res.send([{}]);
     }
 
-    Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email":1 }, function (req1, res1) {
+    Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "mandatory_sms": 1, "mandatory_email":1 }, function (req1, res1) {
         res.send(res1);
     });
     

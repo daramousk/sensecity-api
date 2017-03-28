@@ -2444,7 +2444,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 router.post('/activate_user', function (req, res) {
 
-    console.log(req.body);
+    console.log(req.body[0].uuid);
     if (req.body.uuid != undefined){
         if (req.body.uuid == "web-site") {
             if (req.body.email!=undefined){

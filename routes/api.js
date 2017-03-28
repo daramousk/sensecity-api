@@ -2449,19 +2449,17 @@ router.post('/is_activate_user', function (req, res) {
     if (req.body.email != undefined || req.body.email != '') {
         console.log("3");
         act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
-            if (res8.activate != undefined || res8.activate != '') {
-                console.log(res8.activate);
-                _activate_email = res8.activate;
+            if (res8[0].activate != undefined || res8[0].activate != '') {
+                console.log(res8[0].activate);
+                _activate_email = res8[0].activate;
             }
                 
-            console.log("res8===>" + res8.activate);
-            console.log("res8===>" + res8[0].activate);
                 if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
                     console.log("4");
                     act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
-                        if (res9.activate_sms != undefined || res9.activate_sms != '') {
+                        if (res9[0].activate_sms != undefined || res9[0].activate_sms != '') {
                             console.log("res9==>" + res9);
-                            _activate_sms = res9.activate_sms;
+                            _activate_sms = res9[0].activate_sms;
                         } else {
                             console.log("undefined");
                         }

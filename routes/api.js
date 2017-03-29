@@ -416,6 +416,7 @@ router.post('/issue/:id', function (req, res) {
                 }
             });
         } else {
+            console.log("11111");
             res.send({ "description": "no-update" });
         }
     });
@@ -2446,13 +2447,14 @@ router.get('/fullissue/:id', function (req, res) {
 });
 
 router.post('/is_activate_user', function (req, res) {
-    console.log(req);
+    //console.log(req);
     var _activate_email = '';
     var _activate_sms = '';
 
     if (req.body.email != undefined || req.body.email != '') {
         act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
             var _res8 = JSON.stringify(res8);
+            console.log("_res8.length" + _res8.length);
             if (_res8.length != '2') {
                 _activate_email = res8[0].activate;
             }
@@ -2460,7 +2462,7 @@ router.post('/is_activate_user', function (req, res) {
 
                 act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
                     var _res9 = JSON.stringify(res9);
-
+                    console.log("_res9.length" + _res9.length);
                     if (_res9.length != '2') {
                         _activate_sms = res9[0].activate_sms;
                     } 

@@ -2997,6 +2997,7 @@ router.get('/bugidtoalias/:id', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
         console.log(body);
+        res.send(body);
         });
 
 });

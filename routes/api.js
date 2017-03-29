@@ -219,8 +219,9 @@ router.post('/issue', function (req, res) {
 
 router.post('/issue/:id', function (req, res) {
     var bodyParams;
-
-    Issue.find({ "_id": req.params.id }, { "municipality": 1,"issue":1 }, function (req1, res1) {
+    console.log("is=====>"+req.params.id);
+    Issue.find({ "_id": req.params.id }, { "municipality": 1, "issue": 1 }, function (req1, res1) {
+        console.log("res1=====>"+res1);
         cityPolicy.find({
             "city": res1[0].municipality,
             "category": res1[0].issue

@@ -2599,126 +2599,130 @@ router.post('/activate_user', function (req, res) {
                 var mob_municipality = '';
                 var mob_sms_key_fibair = '';
 
-               // console.log(req.query.lat);
-               // console.log(req.query.long);
-              //  console.log(req.query.city);
+                console.log(req.query.lat);
+                console.log(req.query.long);
+                console.log(req.query.city);
 
                 if (req.query.lat != undefined && req.query.long != undefined) {
                     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1 }, function (req_mun, res_mun) {
-                        if (res_mun[0].sms_key_fibair != undefined) {
-                            mob_municipality = res_mun[0].municipality;
-                            mob_sms_key_fibair = res_mun[0].sms_key_fibair;
-                            console.log(mob_municipality);
-                            console.log(mob_sms_key_fibair);
+                        if (res_mun != undefined) {
+                            if (res_mun[0].sms_key_fibair != undefined) {
+                                mob_municipality = res_mun[0].municipality;
+                                mob_sms_key_fibair = res_mun[0].sms_key_fibair;
+                                console.log(mob_municipality);
+                                console.log(mob_sms_key_fibair);
 
 
-                            if (mob_sms_key_fibair != '') {
-                               // console.log("test 2");
-                                act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
-                                    var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
-                                    if (err)
-                                        throw err;
+                                if (mob_sms_key_fibair != '') {
+                                    // console.log("test 2");
+                                    act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
+                                        var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
+                                        if (err)
+                                            throw err;
 
-                                 //   console.log("");
-                                //    console.log(resp);
-                                    if (resp != '') {
+                                        //   console.log("");
+                                        //    console.log(resp);
+                                        if (resp != '') {
 
-                                        request({
-                                            url: "https://api.theansr.com/v1/sms/verification_pin",
-                                            method: "POST",
-                                            form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
-                                            headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
-                                        }, function (err1, response) {
+                                            request({
+                                                url: "https://api.theansr.com/v1/sms/verification_pin",
+                                                method: "POST",
+                                                form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
+                                                headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
+                                            }, function (err1, response) {
 
-                                           // console.log(err1);
+                                                // console.log(err1);
 
-                                            act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission.communicate_with.sms": "true", "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
-                                                res.send({ "status": "send sms" });
+                                                act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission.communicate_with.sms": "true", "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
+                                                    res.send({ "status": "send sms" });
+                                                });
+
+
+                                                //if call_id
                                             });
 
+                                            // user exist update the name & email
+                                            //var text_act = "";
+                                            //var possible = "0123456789";
 
-                                            //if call_id
-                                        });
+                                            //for (var i = 0; i < 4; i++)
+                                            //  text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
-                                        // user exist update the name & email
-                                        //var text_act = "";
-                                        //var possible = "0123456789";
+                                            //act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
+                                            //if (resp1.ok == 1) {
+                                            //    console.log("Send sms verify code");
+                                            /*
+                                            request({
+                                                url: "https://api.theansr.com/v1/sms",
+                                                method: "POST",
+                                                form: { 'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΠΙΣΤΟΠΟΙΗΣΗΣ ΕΙΝΑΙ ' + text_act },
+                                                headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
+                                            }, function (err, response) {
+                                                res.send(response.body);
+                                                //if call_id
+                                            });*/
 
-                                        //for (var i = 0; i < 4; i++)
-                                        //  text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-
-                                        //act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
-                                        //if (resp1.ok == 1) {
-                                        //    console.log("Send sms verify code");
-                                        /*
-                                        request({
-                                            url: "https://api.theansr.com/v1/sms",
-                                            method: "POST",
-                                            form: { 'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΠΙΣΤΟΠΟΙΗΣΗΣ ΕΙΝΑΙ ' + text_act },
-                                            headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
-                                        }, function (err, response) {
-                                            res.send(response.body);
-                                            //if call_id
-                                        });*/
-
-                                        //  }
-                                        //});
+                                            //  }
+                                            //});
 
 
-                                    } else {
+                                        } else {
 
-                                        request({
-                                            url: "https://api.theansr.com/v1/sms/verification_pin",
-                                            method: "POST",
-                                            form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
-                                            headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }/*'content-type': 'application/form-data'*/
-                                        }, function (err1, response) {
-                                            if (err)
-                                                console.log(err1);
+                                            request({
+                                                url: "https://api.theansr.com/v1/sms/verification_pin",
+                                                method: "POST",
+                                                form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
+                                                headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }/*'content-type': 'application/form-data'*/
+                                            }, function (err1, response) {
+                                                if (err)
+                                                    console.log(err1);
 
-                                           // console.log(JSON.parse(response.body).verification_pin);
+                                                // console.log(JSON.parse(response.body).verification_pin);
 
-                                            var entry_active_user = new act_User({
-                                                uuid: req.query.uuid,
-                                                name: req.query.name,
-                                                email: '',
-                                                mobile_num: req.query.mobile,
-                                                permission: { send_issues: "true", communicate_with: { email: false, sms: true } },
-                                                activate: '',
-                                                activate_sms: JSON.parse(response.body).verification_pin
+                                                var entry_active_user = new act_User({
+                                                    uuid: req.query.uuid,
+                                                    name: req.query.name,
+                                                    email: '',
+                                                    mobile_num: req.query.mobile,
+                                                    permission: { send_issues: "true", communicate_with: { email: false, sms: true } },
+                                                    activate: '',
+                                                    activate_sms: JSON.parse(response.body).verification_pin
+                                                });
+
+                                                entry_active_user.save(function (err2, resp2) {
+                                                    console.log(err2);
+                                                    console.log(resp2);
+
+                                                    // res.send([{ "status": "send sms" }]);
+                                                });
+
+
+
+                                                //if call_id
                                             });
 
-                                            entry_active_user.save(function (err2, resp2) {
-                                                console.log(err2);
-                                                console.log(resp2);
+                                            //User doesn't exist insert to active_users collection
+                                            // var text_act = "";
+                                            // var possible = "0123456789";
 
-                                               // res.send([{ "status": "send sms" }]);
-                                            });
-
-
-
-                                            //if call_id
-                                        });
-
-                                        //User doesn't exist insert to active_users collection
-                                        // var text_act = "";
-                                        // var possible = "0123456789";
-
-                                        //  for (var i = 0; i < 4; i++)
-                                        //     text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+                                            //  for (var i = 0; i < 4; i++)
+                                            //     text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
 
 
-                                    }
+                                        }
 
-                                });
+                                    });
+                                }
+
+
+
+
+
+
+                            } else {
+                                console.log("noresults");
                             }
-
-
-
-
-
-
                         } else {
                             console.log("noresults");
                         }

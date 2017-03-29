@@ -2466,6 +2466,7 @@ router.post('/is_activate_user', function (req, res) {
                     if (_res9.length != '2') {
                         _activate_sms = res9[0].activate_sms;
                     } 
+                    console.log("activate_email" + _activate_email + "|activate_sms" + _activate_sms);
                     res.send([{ "activate_email": _activate_email, "activate_sms": _activate_sms}]);
                 });
             }
@@ -2475,9 +2476,8 @@ router.post('/is_activate_user', function (req, res) {
 });
 
 router.post('/activate_user', function (req, res) {
-    console.log(req.body);
-    console.log(req.body.uuid);
-    if (req.body.uuid != undefined){         
+
+    if (req.query.uuid != undefined){         
 
             if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
 

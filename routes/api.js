@@ -2989,7 +2989,17 @@ router.get('/policy', function (req, res) {
 	res.send({"policy":"<p style=\"font-size:18px\"><b>Coming</b></p><p> soon<\p>"});
 });
 
+router.get('/bugidtoalias/:id', function (req, res) {
+    var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.params.id + "&include_fields=id,alias,product";
 
+    request({
+        url: bugUrlRest + "/rest/bug" + bugParams1,
+        method: "GET"
+    }, function (error, response, body) {
+        console.log(body);
+        });
+
+});
 
 router.get('/active_users', function (req, res) {
 

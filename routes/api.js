@@ -2608,8 +2608,8 @@ router.post('/activate_user', function (req, res) {
                         if (res_mun[0].sms_key_fibair != undefined) {
                             mob_municipality = res_mun[0].municipality;
                             mob_sms_key_fibair = res_mun[0].sms_key_fibair;
-                           // console.log(mob_municipality);
-                          //  console.log(mob_sms_key_fibair);
+                            console.log(mob_municipality);
+                            console.log(mob_sms_key_fibair);
 
 
                             if (mob_sms_key_fibair != '') {

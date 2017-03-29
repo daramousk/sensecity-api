@@ -366,7 +366,7 @@ router.post('/issue/:id', function (req, res) {
                                                                         request({
                                                                             url: "https://api.theansr.com/v1/sms",
                                                                             method: "POST",
-                                                                            form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality + 'sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality + '.sense.city/bugid/' + body_parse.bugs[0].id },
+                                                                            form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality + '.sense.city/bugid/' + body_parse.bugs[0].id },
                                                                             headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                                                         }, function (err, response) {
                                                                             console.log(response);

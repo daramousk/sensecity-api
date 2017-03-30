@@ -366,7 +366,7 @@ router.post('/issue/:id', function (req, res) {
                                                                         request({
                                                                             url: "https://api.theansr.com/v1/sms",
                                                                             method: "POST",
-                                                                            form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality + '.sense.city/bugid/' + body_parse.bugs[0].id },
+                                                                            form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality + '.sense.city/bugid.html?issue=' + body_parse.bugs[0].id },
                                                                             headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                                                         }, function (err, response) {
                                                                             console.log(response);
@@ -3124,10 +3124,10 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                             request({
                                 url: "https://api.theansr.com/v1/sms",
                                 method: "POST",
-                                form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid/' + req.body.id },
+                                form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
                                 headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                             }, function (err, response) {
-                                console.log(response);
+                                //console.log(response);
                                 //if call_id
                             });
                             
@@ -3206,12 +3206,12 @@ router.get('/logout', authentication, function (req, res) {
 function is_authenticate(req, res) {
     if (req.uuid != undefined && req.role != undefined) {
         Role.find({ "uuid": req.uuid, "role": req.role }, function (request, response) {
-            console("resp => " + response);
+           // console("resp => " + response);
         });
 
     }
-    console.log("req => " + JSON.stringify(req));
-    console.log("res => " + req.uuid);
+    //console.log("req => " + JSON.stringify(req));
+   // console.log("res => " + req.uuid);
 
     return true;
 

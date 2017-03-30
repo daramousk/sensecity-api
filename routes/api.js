@@ -2516,6 +2516,8 @@ router.post('/activate_user', function (req, res) {
                                     if (error) {
                                         return console.log(error);
                                     }
+                                    res.send([{ "Status": "send" }]);
+
                                     //console.log('Message sent: ' + info.response);
                                 });
 
@@ -2582,6 +2584,7 @@ router.post('/activate_user', function (req, res) {
                                 if (error) {
                                     return console.log(error);
                                 }
+                                res.send([{ "Status": "send" }]);
                               //  console.log('Message sent: ' + info.response);
                             });
 
@@ -2599,9 +2602,9 @@ router.post('/activate_user', function (req, res) {
                 var mob_municipality = '';
                 var mob_sms_key_fibair = '';
 
-                console.log(req.query.lat);
-                console.log(req.query.long);
-                console.log(req.query.city);
+                //console.log(req.query.lat);
+                //console.log(req.query.long);
+                //console.log(req.query.city);
 
                 if (req.query.lat != undefined && req.query.long != undefined) {
                     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1 }, function (req_mun, res_mun) {
@@ -2609,8 +2612,8 @@ router.post('/activate_user', function (req, res) {
                             if (res_mun[0].sms_key_fibair != undefined) {
                                 mob_municipality = res_mun[0].municipality;
                                 mob_sms_key_fibair = res_mun[0].sms_key_fibair;
-                                console.log(mob_municipality);
-                                console.log(mob_sms_key_fibair);
+                                //console.log(mob_municipality);
+                                //console.log(mob_sms_key_fibair);
 
 
                                 if (mob_sms_key_fibair != '') {
@@ -2690,10 +2693,10 @@ router.post('/activate_user', function (req, res) {
                                                 });
 
                                                 entry_active_user.save(function (err2, resp2) {
-                                                    console.log(err2);
-                                                    console.log(resp2);
+                                                    if(err2)
+                                                        console.log(err2);
 
-                                                    // res.send([{ "status": "send sms" }]);
+                                                    res.send([{ "status": "send sms" }]);
                                                 });
 
 
@@ -2714,29 +2717,19 @@ router.post('/activate_user', function (req, res) {
 
                                     });
                                 }
-
-
-
-
-
+                                
 
                             } else {
                                 console.log("noresults");
+                                res.send([{}]);
                             }
                         } else {
                             console.log("noresults");
+                            res.send([{}]);
                         }
                     });
-                } else if (req.query.city != undefined) {
-                    Municipality.find({ "municipaliy ": "patras" }, { "municipality": 1, "sms_key_fibair": 1 }, function (req_mun, res_mun) {
-                      //  console.log(res_mun);
-                    });
                 }
-                var acc = 0;
-               // console.log("test 1");
-
-
-
+                
             }
             
     }
@@ -3110,12 +3103,12 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             method: "GET"
         }, function (error, response, body) {
            
-            var _status_field = '';
+            var _status_field = ' ';
             if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
-                _status_field = 'ΕΙΝΑΙ ΣΕ ΕΞΕΛΙΞΗ';
+                _status_field = ' ΕΙΝΑΙ ΣΕ ΕΞΕΛΙΞΗ';
             }
             else if (JSON.parse(body).bugs[0].status == "RESOLVED") {
-                _status_field = 'ΟΛΟΚΛΗΡΩΘΗΚΕ';
+                _status_field = ' ΟΛΟΚΛΗΡΩΘΗΚΕ';
             }
 
             Municipality.find({ "municipality": JSON.parse(body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {

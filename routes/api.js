@@ -2426,7 +2426,7 @@ router.get('/fullissue/:id', function (req, res) {
 					
                     Issue.find({"_id":req.params.id}, {"user":0}, function (err, issue) {
 						
-						//console.log("issue      ===============>>>>>>>>    " + JSON.stringify(issue));
+						console.log("issue      ===============>>>>>>>>" + JSON.stringify(issue));
 						if(issue != null){
                             issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + ']';
 

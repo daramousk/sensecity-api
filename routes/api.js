@@ -449,6 +449,9 @@ router.get('/admin/issue', authentication, function (req, res) {
 
 
     get_issues(req, function (result) {
+
+        console.log(JSON.stringify(result));
+
         res.send(result);
     });
 

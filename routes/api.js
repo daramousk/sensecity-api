@@ -450,7 +450,7 @@ router.get('/admin/issue', authentication, function (req, res) {
 
     get_issues(req, function (result) {
 
-        console.log(JSON.stringify(result));
+        //console.log(JSON.stringify(result));
 
         res.send(result);
     });
@@ -467,6 +467,8 @@ var get_issues = function (req, callback) {
     } else {
         _user_extra = 0;
     }
+
+    console.log("_user_extra" + _user_extra);
 
     if (req.send_component == 1) {
         _bug_extra += ",component";
@@ -800,6 +802,8 @@ var get_issues = function (req, callback) {
         }
     }
     else if (!req.query.hasOwnProperty("bug_id") && !req.query.hasOwnProperty("mobile") && !req.query.hasOwnProperty("email") && req.query.hasOwnProperty("city")) {
+
+        console.log("1");
         var _startdate = new Date();
         var _enddate = new Date();
         var _coordinates;
@@ -1123,6 +1127,8 @@ var get_issues = function (req, callback) {
                                 if (_user_extra == 0) {
                                     Issue.find({ "_id": { $in: ids } }, { "user":0, "image_name": _image }, function (err, issue) {
 
+                                        console.log("2");
+
                                         //new start
                                         if (err != null) { console.log("err   =   " + err); }
                                         if (_kml == 0) {
@@ -1245,6 +1251,10 @@ var get_issues = function (req, callback) {
 
                                 } else {
                                     Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
+
+
+                                        console.log("2");
+
 
                                         //new start
                                         if (err != null) { console.log("err   =   " + err); }
@@ -1369,7 +1379,9 @@ var get_issues = function (req, callback) {
 
                             } else {
                                 if (_user_extra == 0) {
-                                    Issue.find({ "_id": { $in: ids } }, { "user":0 }, function (err, issue) {
+                                    Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
+
+                                        console.log("3");
                                         //new start
                                         if (err != null) { console.log("err1   =   " + err); }
                                         if (_kml == 0) {
@@ -1484,6 +1496,9 @@ var get_issues = function (req, callback) {
                                     }).sort({ "create_at": _sort_mongo });//.limit(_limit);
                                 } else {
                                     Issue.find({ "_id": { $in: ids } }, function (err, issue) {
+
+                                        console.log("4");
+
                                         //new start
                                         if (err != null) { console.log("err1   =   " + err); }
                                         if (_kml == 0) {
@@ -1636,6 +1651,9 @@ var get_issues = function (req, callback) {
                         // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
                         if (_user_extra == 0) {
                             Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
+
+                                console.log("5");
+
                                 //new start
                                 if (err != null) { console.log("err2   =   " + err); }
                                 if (_kml == 0) {
@@ -1759,6 +1777,10 @@ var get_issues = function (req, callback) {
                             }).sort({ "create_at": _sort_mongo });//.limit(_limit);
                         } else {
                             Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
+
+                                console.log("6");
+
+
                                 //new start
                                 if (err != null) { console.log("err2   =   " + err); }
                                 if (_kml == 0) {
@@ -1884,6 +1906,9 @@ var get_issues = function (req, callback) {
                     } else {
                         if (_user_extra == 0) {
                             Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
+
+                                console.log("7");
+
                                 //new start
                                 if (err != null) { console.log("err3   =   " + err); }
                                 if (_kml == 0) {
@@ -2001,7 +2026,9 @@ var get_issues = function (req, callback) {
                                 //res.send(issue);
                             }).sort({ "create_at": _sort_mongo });//.limit(_limit);
                         } else {
-                            Issue.find({ "_id": { $in: ids } }, { "user":0 }, function (err, issue) {
+                            Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
+
+                                console.log("8");
                             //new start
                             if (err != null) { console.log("err3   =   " + err); }
                             if (_kml == 0) {

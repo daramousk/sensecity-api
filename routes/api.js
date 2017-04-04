@@ -212,6 +212,8 @@ router.post('/issue', function (req, res) {
                                 }
                             });*/
 
+                            console.log(bugData1);
+
                             request({
                                 url: bugUrlRest+"/rest/bug",
                                 method: "POST",

@@ -136,7 +136,11 @@ router.post('/issue', function (req, res) {
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0]+"&language=el&key=" + config.config.key_geocoding,
             method: "GET"
         }, function (error, response) {
-            console.log(JSON.parse(response.body).results[0].formatted_address);
+            if (JSON.parse(response.body).status == "OK") {
+                city_address = JSON.parse(response.body).results[0].formatted_address;
+            } else {
+                city_address = "N/A";
+            }
         });
     }
 
@@ -163,7 +167,8 @@ router.post('/issue', function (req, res) {
                 issue: req.body.issue,
                 device_id: req.body.device_id,
                 value_desc: req.body.value_desc,
-                comments: req.body.comments
+                comments: req.body.comments,
+                city_address: city_address
             });
 
 
@@ -190,7 +195,7 @@ router.post('/issue', function (req, res) {
                         if (response.length > 0)
                         {
 
-                            var bugData1 = {"token": bugToken ,"summary" : resp.issue ,"priority" : "normal","bug_severity":"normal","cf_city_name" : city_name,"alias" : [resp._id.toString() ],"url" : resp.value_desc,"product" : response[0]["municipality"],"component" : config.config.bug_component,"version": "unspecified"}; 
+                            var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address}; 
                             /*
                             request({
                                 url: bugUrlRest + "/rest/valid_login?login=" + config.config.login + "&token=" + bugToken,

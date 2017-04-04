@@ -129,7 +129,7 @@ router.post('/issue', function (req, res) {
         city_address = req.body.city_address;
     }
 
-    if (city_address != '') {
+    if (city_address == '') {
        /* https://maps.googleapis.com/maps/api/geocode/json?latlng=38.289835547083946,21.773357391357422&language=el&key=AIzaSyCHBdH6Zw1z3H6NOmAaTIG2TwIPTXUhnvM */
         console.log("sdsad");
         request({

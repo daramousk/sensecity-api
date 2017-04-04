@@ -510,7 +510,7 @@ var get_issues = function (req, callback) {
         if (req.query.bug_id == "" && req.query.mobile == "" && req.query.email == "") {
             callback([{}]);
         } else {
-
+            console.log("bug_id=====");
             var _bug_id;
             var _mobile;
             var _email;

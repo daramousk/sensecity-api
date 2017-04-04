@@ -486,7 +486,7 @@ var get_issues = function (req, callback) {
     }
 
     console.log("_user_extra" + _user_extra);
-    console.log(JSON.stringify(req));
+    console.log(req);
 
     if (req.send_component == 1) {
         _bug_extra += ",component";

@@ -118,11 +118,28 @@ router.post('/issue', function (req, res) {
 
     // end Check The logic send email - sms mandatory
     }
+
     var anonymous_status = "true";
 
     var return_var;
 	var city_name='';
-    
+    var city_address = '';
+
+    if (req.body.hasOwnProperty('city_address')) {
+        city_address = req.body.city_address;
+    }
+
+    if (city_address != '') {
+       /* https://maps.googleapis.com/maps/api/geocode/json?latlng=38.289835547083946,21.773357391357422&language=el&key=AIzaSyCHBdH6Zw1z3H6NOmAaTIG2TwIPTXUhnvM */
+
+        request({
+            url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[0] + "," + req.body.loc.coordinates[1]+"&language=el&key=" + config.config.key_geocoding,
+            method: "GET"
+        }, function (error, response) {
+            console.log(JSON.stringify(response));
+        });
+    }
+
     if (!req.body.hasOwnProperty('issue') ||
             !req.body.hasOwnProperty('loc') ||
             !req.body.hasOwnProperty('value_desc') ||
@@ -627,7 +644,7 @@ var get_issues = function (req, callback) {
                                     }
                                 }
 
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution +'"}';//"phone" : "6974037897", "email" : "kostas.bakoulias@gmail.com", "name" : "Kostas"
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution +'"}';
                                 if (i < issue.length - 1) {
                                     issue_return += ',';
                                 }
@@ -641,7 +658,7 @@ var get_issues = function (req, callback) {
                         }).sort({ "create_at": _sort_mongo });
                     } else {
                         Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
-
+                            console.log("mpika");
                             //new start
                             if (err != null) { console.log("err   =   " + err); }
                             issue_return += '[';
@@ -665,6 +682,7 @@ var get_issues = function (req, callback) {
 
                                         if (bugzilla_results[j].component != undefined) {
                                             bug_component = bugzilla_results[j].component;
+                                            console.log("bug_component ====>" + bug_component);
                                         }
                                         if (bugzilla_results[j].priority != undefined) {
                                             bug_priority = bugzilla_results[j].priority;
@@ -748,7 +766,7 @@ var get_issues = function (req, callback) {
                     }
                     else {
                         Issue.find({ "_id": { $in: ids } }, function (err, issue) {
-
+                            console.log("mpika 2");
                             //new start
                             if (err != null) { console.log("err   =   " + err); }
                             
@@ -773,6 +791,7 @@ var get_issues = function (req, callback) {
 
                                         if (bugzilla_results[j].component != undefined) {
                                             bug_component = bugzilla_results[j].component;
+                                            console.log("bug_component 2====>" + bug_component);
                                         }
                                         if (bugzilla_results[j].priority != undefined) {
                                             bug_priority = bugzilla_results[j].priority;
@@ -2169,8 +2188,8 @@ router.post('/send_email', function (req, res) {
 			
 			//console.log(response[0].activate);		
 			if(response[0].activate == "1" ){
-				
-				var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+
+                var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 
 				// setup e-mail data with unicode symbols 
 				var mailOptions = {
@@ -2531,7 +2550,7 @@ router.post('/activate_user', function (req, res) {
 
 
                                 // create reusable transporter object using the default SMTP transport 
-                                var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+                                var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 
                                 // setup e-mail data with unicode symbols 
                                 var mailOptions = {
@@ -2599,7 +2618,7 @@ router.post('/activate_user', function (req, res) {
 
                         entry_active_user.save(function (err1, resp) {
                             // create reusable transporter object using the default SMTP transport 
-                            var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+                            var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 
                             // setup e-mail data with unicode symbols 
                             var mailOptions = {
@@ -2887,7 +2906,7 @@ router.post('/active_users', function (req, res) {
                             throw err1;
                         res.send(resp);
                         // create reusable transporter object using the default SMTP transport 
-                        var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+                        var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 
                         // setup e-mail data with unicode symbols 
                         var mailOptions = {
@@ -2938,7 +2957,7 @@ router.post('/active_users', function (req, res) {
 							//console.log(" Mobile use 1   =============>>>>>>>>  " + JSON.stringify(resp1));
 							if(resp1.activate != "1"){
 								
-								var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+                                var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 
 								// setup e-mail data with unicode symbols 
 								var mailOptions = {
@@ -2984,7 +3003,7 @@ router.post('/active_users', function (req, res) {
 								throw err1;
 							res.send(resp);
 							// create reusable transporter object using the default SMTP transport 
-							var transporter = nodemailer.createTransport('smtps://sense.city.uop%40gmail.com:dd3Gt56Asz@smtp.gmail.com');
+                            var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 
 							// setup e-mail data with unicode symbols 
 							var mailOptions = {

@@ -7,5 +7,8 @@ module.exports = {
 	bugUrl:'',
 	bug_product: '',
 	bug_component: '',
-	bug_cc:''
+    bug_cc: '',
+    key_geocoding: '',
+    email: '',
+    password_email: ''
 }

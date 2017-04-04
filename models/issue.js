@@ -12,7 +12,8 @@ var issueSchema = new mongoose.Schema({
 	comments: {type:String, default : ""},
     image_name: String,
 	municipality: String,
-	user :  { uuid: {type:String, default : ""}, name: {type:String, default : ""}, email: {type:String, default : ""}, phone : {type:String, default : ""}}
+    user: { uuid: { type: String, default: "" }, name: { type: String, default: "" }, email: { type: String, default: "" }, phone: { type: String, default: "" } },
+    city_address: { type: String, default: "" }
 });
 
 issueSchema.index({loc: "2dsphere"});

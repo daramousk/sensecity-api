@@ -131,7 +131,7 @@ router.post('/issue', function (req, res) {
 
     if (city_address != '') {
        /* https://maps.googleapis.com/maps/api/geocode/json?latlng=38.289835547083946,21.773357391357422&language=el&key=AIzaSyCHBdH6Zw1z3H6NOmAaTIG2TwIPTXUhnvM */
-
+        console.log("sdsad");
         request({
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[0] + "," + req.body.loc.coordinates[1]+"&language=el&key=" + config.config.key_geocoding,
             method: "GET"

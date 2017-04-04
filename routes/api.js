@@ -136,7 +136,7 @@ router.post('/issue', function (req, res) {
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0]+"&language=el&key=" + config.config.key_geocoding,
             method: "GET"
         }, function (error, response) {
-            console.log(response.body);
+            console.log(response.body.results[0].formatted_address);
         });
     }
 

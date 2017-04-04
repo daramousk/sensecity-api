@@ -137,7 +137,7 @@ router.post('/issue', function (req, res) {
             method: "GET"
         }, function (error, response) {
 
-            console.log(response.body.status);
+            console.log("===================>"+response.body.status);
 
             if (response.body.status == "OK") {
                 

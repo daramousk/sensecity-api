@@ -139,8 +139,8 @@ router.post('/issue', function (req, res) {
 
             console.log("===================>"+JSON.parse(response.body).status);
 
-            if (response.body.status == "OK") {
-                
+            if (JSON.parse(response.body).status == "OK") {
+                console.log("============sdsad");
                 city_address = JSON.parse(response.body).results[0].formatted_address;
             } else {
                 city_address = "N/A";

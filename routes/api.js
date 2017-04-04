@@ -145,104 +145,118 @@ router.post('/issue', function (req, res) {
             } else {
                 city_address = "N/A";
             }
-        });
-    }
-
-    if (!req.body.hasOwnProperty('issue') ||
-            !req.body.hasOwnProperty('loc') ||
-            !req.body.hasOwnProperty('value_desc') ||
-            !req.body.hasOwnProperty('device_id'))
-    {
-        res.statusCode = 403;
-        return res.send({"message": "Forbidden"});
-    } else
-    {
-
-        Municipality.find({boundaries:
-                    {$geoIntersects:
-                                {$geometry: {"type": "Point",
-                                        "coordinates": req.body.loc.coordinates}
-                                }
-                    }
-        }, function (err, response) {
-        
-            var entry = new Issue({
-                loc: {type: 'Point', coordinates: req.body.loc.coordinates},
-                issue: req.body.issue,
-                device_id: req.body.device_id,
-                value_desc: req.body.value_desc,
-                comments: req.body.comments,
-                city_address: city_address
-            });
 
 
-            entry.image_name = req.body.image_name;
 
-            if (response.length > 0)
-            {
-                entry.municipality = response[0]["municipality"];
-				
-				city_name = response[0].municipality_desc;
-            } else
-            {
-                entry.municipality = '';
-				city_name ='';
-            }
-            entry.save(function (err1, resp) {
-                if (err1)
-                {
-                    console.log(err1);
-                } else
-                {
-                    if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment" )
+
+
+
+
+
+            if (!req.body.hasOwnProperty('issue') ||
+                !req.body.hasOwnProperty('loc') ||
+                !req.body.hasOwnProperty('value_desc') ||
+                !req.body.hasOwnProperty('device_id')) {
+                res.statusCode = 403;
+                return res.send({ "message": "Forbidden" });
+            } else {
+
+                Municipality.find({
+                    boundaries:
                     {
-                        if (response.length > 0)
+                        $geoIntersects:
                         {
-
-                            var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address}; 
-                            /*
-                            request({
-                                url: bugUrlRest + "/rest/valid_login?login=" + config.config.login + "&token=" + bugToken,
-                                method: "GET"
-                            }, function (error, res_login) {
-                                if (error != undefined) { console.log(error); }
-                                if (res_login != undefined) {
-                                    if (res_login.statusCode == 200) {
-                                        console.log("result = " + JSON.parse(res_login.body).result);
-                                        if (JSON.parse(res_login.body).result) {
-                                            console.log("true");
-                                        }
-                                    }
-                                }
-                            });*/
-
-                            console.log(bugData1);
-
-                            request({
-                                url: bugUrlRest+"/rest/bug",
-                                method: "POST",
-                                json: bugData1
-                            }, function (error, bugResponse, body) {
-                                console.log(JSON.stringify(bugResponse));
-                                if (error != null) { console.log(error) };
-
-                                if (!error && bugResponse.statusCode === 200) {
-                                   // console.log(body);
-                                } else {
-                                    console.log("error: " + error);
-                                    console.log("bugResponse.statusCode: " + bugResponse.statusCode);
-                                    console.log("bugResponse.statusText: " + bugResponse.statusText);
-                                }
-                            });
+                            $geometry: {
+                                "type": "Point",
+                                "coordinates": req.body.loc.coordinates
+                            }
                         }
                     }
+                }, function (err, response) {
 
-                }
-                return_var = { "_id": resp._id };                
-                    res.send(return_var);
-            });
+                    var entry = new Issue({
+                        loc: { type: 'Point', coordinates: req.body.loc.coordinates },
+                        issue: req.body.issue,
+                        device_id: req.body.device_id,
+                        value_desc: req.body.value_desc,
+                        comments: req.body.comments,
+                        city_address: city_address
+                    });
+
+
+                    entry.image_name = req.body.image_name;
+
+                    if (response.length > 0) {
+                        entry.municipality = response[0]["municipality"];
+
+                        city_name = response[0].municipality_desc;
+                    } else {
+                        entry.municipality = '';
+                        city_name = '';
+                    }
+                    entry.save(function (err1, resp) {
+                        if (err1) {
+                            console.log(err1);
+                        } else {
+                            if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
+                                if (response.length > 0) {
+
+                                    var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
+                                    /*
+                                    request({
+                                        url: bugUrlRest + "/rest/valid_login?login=" + config.config.login + "&token=" + bugToken,
+                                        method: "GET"
+                                    }, function (error, res_login) {
+                                        if (error != undefined) { console.log(error); }
+                                        if (res_login != undefined) {
+                                            if (res_login.statusCode == 200) {
+                                                console.log("result = " + JSON.parse(res_login.body).result);
+                                                if (JSON.parse(res_login.body).result) {
+                                                    console.log("true");
+                                                }
+                                            }
+                                        }
+                                    });*/
+
+                                    console.log(bugData1);
+
+                                    request({
+                                        url: bugUrlRest + "/rest/bug",
+                                        method: "POST",
+                                        json: bugData1
+                                    }, function (error, bugResponse, body) {
+                                        console.log(JSON.stringify(bugResponse));
+                                        if (error != null) { console.log(error) };
+
+                                        if (!error && bugResponse.statusCode === 200) {
+                                            // console.log(body);
+                                        } else {
+                                            console.log("error: " + error);
+                                            console.log("bugResponse.statusCode: " + bugResponse.statusCode);
+                                            console.log("bugResponse.statusText: " + bugResponse.statusText);
+                                        }
+                                    });
+                                }
+                            }
+
+                        }
+                        return_var = { "_id": resp._id };
+                        res.send(return_var);
+                    });
+                });
+            }
+
+
+
+
+
+
+
+
         });
     }
+
+   
 });
 
 router.post('/issue/:id', function (req, res) {

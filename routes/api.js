@@ -484,10 +484,7 @@ var get_issues = function (req, callback) {
     } else {
         _user_extra = 0;
     }
-
-    console.log("_user_extra" + _user_extra);
-    console.log(req);
-
+    
     if (req.send_component == 1) {
         _bug_extra += ",component";
     } else {

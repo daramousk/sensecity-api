@@ -2026,6 +2026,7 @@ var get_issues = function (req, callback) {
                                 //res.send(issue);
                             }).sort({ "create_at": _sort_mongo });//.limit(_limit);
                         } else {
+                            console.log("_user_extra===>" + _user_extra);
                             Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
 
                                 console.log("8");

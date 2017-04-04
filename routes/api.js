@@ -486,6 +486,7 @@ var get_issues = function (req, callback) {
     }
 
     console.log("_user_extra" + _user_extra);
+    console.log(JSON.stringify(req));
 
     if (req.send_component == 1) {
         _bug_extra += ",component";
@@ -715,7 +716,8 @@ var get_issues = function (req, callback) {
                 else {
                     if (_user_extra == 0) {
                         Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
-                            console.log("bug_id=====2");
+                        
+                            console.log("bug_id=====2===>" + _user_extra );
                             //new start
                             if (err != null) { console.log("err   =   " + err); }
                             

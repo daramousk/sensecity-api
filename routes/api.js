@@ -1715,6 +1715,8 @@ var get_issues = function (req, callback) {
                     var i_count = 0;
                     var bugs_length = 0;
 
+                    console.log(JSON.stringify(response.body));
+
                     if (JSON.parse(body).bugs != undefined) {
                         bugs_length = JSON.parse(body).bugs.length;
                     }

@@ -593,7 +593,7 @@ var get_issues = function (req, callback) {
                 bugParams1 += "&v3=" + _email;
             }
 
-            bugParams1 += "&include_fields=id,alias,status,cf_authedicated,resolution" + _bug_extra;
+            bugParams1 += "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
             if (!req.query.hasOwnProperty('image_field')) {
                 _image = 0;
             } else {
@@ -642,6 +642,7 @@ var get_issues = function (req, callback) {
                                 var bug_priority;
                                 var bug_severity;
                                 var bug_resolution;
+                                var bug_address;
 
                                 for (var j = 0; j < bugzilla_results.length; j++) {
 
@@ -664,10 +665,14 @@ var get_issues = function (req, callback) {
                                             bug_resolution = bugzilla_results[j].resolution;
                                         }
 
+                                        if (bugzilla_results[j].cf_city_address != undefined) {
+                                            bug_address = bugzilla_results[j].cf_city_address;
+                                        }
+
                                     }
                                 }
 
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution +'"}';
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}'; 
                                 if (i < issue.length - 1) {
                                     issue_return += ',';
                                 }
@@ -696,6 +701,7 @@ var get_issues = function (req, callback) {
                                 var bug_priority;
                                 var bug_severity;
                                 var bug_resolution;
+                                var bug_address;
 
                                 for (var j = 0; j < bugzilla_results.length; j++) {
                                     if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -717,11 +723,14 @@ var get_issues = function (req, callback) {
                                         if (bugzilla_results[j].resolution != undefined) {
                                             bug_resolution = bugzilla_results[j].resolution;
                                         }
+                                        if (bugzilla_results[j].cf_city_address != undefined) {
+                                            bug_address = bugzilla_results[j].cf_city_address;
+                                        }
 
                                     }
                                 }
 
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution +'"}';
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                 if (i < issue.length - 1) {
                                     issue_return += ',';
                                 }
@@ -755,6 +764,7 @@ var get_issues = function (req, callback) {
                                 var bug_priority;
                                 var bug_severity;
                                 var bug_resolution;
+                                var bug_address;
 
                                 for (var j = 0; j < bugzilla_results.length; j++) {
                                     if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -775,11 +785,14 @@ var get_issues = function (req, callback) {
                                         if (bugzilla_results[j].resolution != undefined) {
                                             bug_resolution = bugzilla_results[j].resolution;
                                         }
+                                        if (bugzilla_results[j].cf_city_address != undefined) {
+                                            bug_address = bugzilla_results[j].cf_city_address;
+                                        }
 
                                     }
                                 }
 
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '"}';
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","bug_address":"' + bug_address + '"}';
                                 if (i < issue.length - 1) {
                                     issue_return += ',';
                                 }
@@ -806,6 +819,7 @@ var get_issues = function (req, callback) {
                                 var bug_priority;
                                 var bug_severity;
                                 var bug_resolution;
+                                var bug_address;
 
                                 for (var j = 0; j < bugzilla_results.length; j++) {
                                     if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -828,10 +842,12 @@ var get_issues = function (req, callback) {
                                             bug_resolution = bugzilla_results[j].resolution;
                                         }
 
-
+                                        if (bugzilla_results[j].cf_city_address != undefined) {
+                                            bug_address = bugzilla_results[j].cf_city_address;
+                                        }
                                     }
                                 }
-                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution+'"}';
+                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                 if (i < issue.length - 1) {
                                     issue_return += ',';
                                 }
@@ -1144,7 +1160,7 @@ var get_issues = function (req, callback) {
 
                         _product = response[0]["municipality"];
 
-                        var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated,resolution" + _bug_extra;
+                        var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
                         var ids = [];
                         var bugzilla_results = [];
                         var issue_return = [];
@@ -1223,6 +1239,7 @@ var get_issues = function (req, callback) {
                                             var bug_priority;
                                             var bug_severity;
                                             var bug_resolution;
+                                            var bug_address;
 
                                             for (var j = 0; j < bugzilla_results.length; j++) {
                                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -1244,11 +1261,14 @@ var get_issues = function (req, callback) {
                                                         bug_resolution = bugzilla_results[j].resolution;
                                                     }
 
+                                                    if (bugzilla_results[j].cf_city_address != undefined) {
+                                                        bug_address = bugzilla_results[j].cf_city_address;
+                                                    }
                                                 }
                                             }
 
                                             if (_kml == 0) {
-                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution +'"}';
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                                 if (i < issue.length - 1) {
                                                     issue_return += ',';
                                                 }
@@ -1350,6 +1370,7 @@ var get_issues = function (req, callback) {
                                             var bug_priority;
                                             var bug_severity;
                                             var bug_resolution;
+                                            var bug_address;
 
                                             for (var j = 0; j < bugzilla_results.length; j++) {
                                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -1371,11 +1392,15 @@ var get_issues = function (req, callback) {
                                                         bug_resolution = bugzilla_results[j].resolution;
                                                     }
 
+                                                    if (bugzilla_results[j].cf_city_address != undefined) {
+                                                        bug_address = bugzilla_results[j].cf_city_address;
+                                                    }
+
                                                 }
                                             }
 
                                             if (_kml == 0) {
-                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution +'"}';
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                                 if (i < issue.length - 1) {
                                                     issue_return += ',';
                                                 }
@@ -1476,6 +1501,7 @@ var get_issues = function (req, callback) {
                                             var bug_priority;
                                             var bug_severity;
                                             var bug_resolution;
+                                            var bug_address;
 
                                             for (var j = 0; j < bugzilla_results.length; j++) {
                                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -1497,11 +1523,14 @@ var get_issues = function (req, callback) {
                                                         bug_resolution = bugzilla_results[j].resolution;
                                                     }
 
+                                                    if (bugzilla_results[j].cf_city_address != undefined) {
+                                                        bug_address = bugzilla_results[j].cf_city_address;
+                                                    }
                                                 }
                                             }
 
                                             if (_kml == 0) {
-                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution +'"}';
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                                 if (i < issue.length - 1) {
                                                     issue_return += ',';
                                                 }
@@ -1593,6 +1622,7 @@ var get_issues = function (req, callback) {
                                             var bug_priority;
                                             var bug_severity;
                                             var bug_resolution;
+                                            var bug_address;
 
                                             for (var j = 0; j < bugzilla_results.length; j++) {
                                                 if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -1613,11 +1643,16 @@ var get_issues = function (req, callback) {
                                                     if (bugzilla_results[j].resolution != undefined) {
                                                         bug_resolution = bugzilla_results[j].resolution;
                                                     }
+
+                                                    if (bugzilla_results[j].cf_city_address != undefined) {
+                                                        bug_address = bugzilla_results[j].cf_city_address;
+                                                    }
+
                                                 }
                                             }
 
                                             if (_kml == 0) {
-                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution +'"}';
+                                                issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                                 if (i < issue.length - 1) {
                                                     issue_return += ',';
                                                 }
@@ -1668,7 +1703,7 @@ var get_issues = function (req, callback) {
                 _product = req.query.city;
 
                 //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-                var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated,resolution" + _bug_extra;
+                var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
 
                 var ids = [];
                 var bugzilla_results = [];
@@ -1750,6 +1785,7 @@ var get_issues = function (req, callback) {
                                         var bug_priority;
                                         var bug_severity;
                                         var bug_resolution;
+                                        var bug_address;
 
                                         for (var j = 0; j < bugzilla_results.length; j++) {
                                             if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -1771,11 +1807,14 @@ var get_issues = function (req, callback) {
                                                     bug_resolution = bugzilla_results[j].resolution;
                                                 }
 
+                                                if (bugzilla_results[j].cf_city_address != undefined) {
+                                                    bug_address = bugzilla_results[j].cf_city_address;
+                                                }
                                             }
                                         }
 
                                         if (_kml == 0) {
-                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution+'"}';
+                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                             if (i < issue.length - 1) {
                                                 issue_return += ',';
                                             }
@@ -1877,6 +1916,7 @@ var get_issues = function (req, callback) {
                                         var bug_priority;
                                         var bug_severity;
                                         var bug_resolution;
+                                        var bug_address;
 
                                         for (var j = 0; j < bugzilla_results.length; j++) {
                                             if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -1897,11 +1937,16 @@ var get_issues = function (req, callback) {
                                                 if (bugzilla_results[j].resolution != undefined) {
                                                     bug_resolution = bugzilla_results[j].resolution;
                                                 }
+
+                                                if (bugzilla_results[j].cf_city_address != undefined) {
+                                                    bug_address = bugzilla_results[j].cf_city_address;
+                                                }
+
                                             }
                                         }
 
                                         if (_kml == 0) {
-                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution +'"}';
+                                            issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"}';
                                             if (i < issue.length - 1) {
                                                 issue_return += ',';
                                             }
@@ -2003,6 +2048,7 @@ var get_issues = function (req, callback) {
                                     var bug_priority;
                                     var bug_severity;
                                     var bug_resolution;
+                                    var bug_address;
 
                                     for (var j = 0; j < bugzilla_results.length; j++) {
                                         if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -2023,11 +2069,15 @@ var get_issues = function (req, callback) {
                                             if (bugzilla_results[j].resolution != undefined) {
                                                 bug_resolution = bugzilla_results[j].resolution;
                                             }
+
+                                            if (bugzilla_results[j].cf_city_address != undefined) {
+                                                bug_address = bugzilla_results[j].cf_city_address;
+                                            }
                                         }
                                     }
 
                                     if (_kml == 0) {
-                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution +'"} ';
+                                        issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"} ';
 
                                         if (i < issue.length - 1) {
                                             issue_return += ',';
@@ -2124,6 +2174,7 @@ var get_issues = function (req, callback) {
                                 var bug_priority;
                                 var bug_severity;
                                 var bug_resolution;
+                                var bug_address;
 
                                 for (var j = 0; j < bugzilla_results.length; j++) {
                                     if (bugzilla_results[j].alias[0] == issue[i]._id) {
@@ -2144,11 +2195,15 @@ var get_issues = function (req, callback) {
                                         if (bugzilla_results[j].resolution != undefined) {
                                             bug_resolution = bugzilla_results[j].resolution;
                                         }
+
+                                        if (bugzilla_results[j].cf_city_address != undefined) {
+                                            bug_address = bugzilla_results[j].cf_city_address;
+                                        }
                                     }
                                 }
 
                                 if (_kml == 0) {
-                                    issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution +'"} ';
+                                    issue_return += '{"_id":"' + issue[i]._id + '","municipality":"' + issue[i].municipality + '","image_name":"' + issue[i].image_name + '","issue":"' + issue[i].issue + '","device_id":"' + issue[i].device_id + '","value_desc":"' + issue[i].value_desc + '","comments":"' + issue[i].comments + '","create_at":"' + issue[i].create_at + '","loc":{"type":"Point","coordinates":[' + issue[i].loc.coordinates + ']},"status":"' + bug_status + '","bug_id":"' + bug_id + '","cf_authenticate":"' + bug_authenticate + '", "bug_component":"' + bug_component + '", "bug_priority":"' + bug_priority + '", "bug_severity":"' + bug_severity + '","name":"' + issue[i].user.name + '","phone":"' + issue[i].user.phone + '","email":"' + issue[i].user.email + '","resolution":"' + bug_resolution + '","bug_address":"' + bug_address + '"} ';
 
                                     if (i < issue.length - 1) {
                                         issue_return += ',';

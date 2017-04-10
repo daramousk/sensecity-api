@@ -181,11 +181,15 @@ router.post('/save_image', function (req, res) {
                     var base64Data = base64img.split(",");
 
                     console.log('test 2');
-                    console.log(base64Data[0]);
-                    console.log(base64Data[1]);
+                    //console.log(base64Data[0]);
+                    //console.log(base64Data[1]);
 
+                    require("fs").writeFile("./home/localadmin/out112.png", base64Data[1], 'base64', function (err) {
+                        console.log(err);
+                    });
 
                     if (response.length > 0) {
+
                         entry.municipality = response[0]["municipality"];
 
                         city_name = response[0].municipality_desc;

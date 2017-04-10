@@ -89,6 +89,7 @@ request({
 
 router.post('/save_image', authentication, function (req, res) {
 
+    console.log('Ini');
 
     if (req.body.mobile_num != undefined) {
         var _mobile_num = '';

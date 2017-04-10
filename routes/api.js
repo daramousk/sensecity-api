@@ -87,7 +87,7 @@ request({
     }
 });
 
-router.post('/save_image', authentication, function (req, res) {
+router.post('/save_image', function (req, res) {
 
     console.log('Ini');
 

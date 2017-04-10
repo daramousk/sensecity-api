@@ -176,7 +176,7 @@ router.post('/save_image', function (req, res) {
 
 
                     entry.image_name = '';
-                    cosnole.log('test 1');
+                    console.log('test 1');
                     var base64img = req.body.image_name;
                     var base64Data = base64img.replace("data:image\png;base64,", "");
 

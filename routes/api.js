@@ -184,7 +184,7 @@ router.post('/save_image', function (req, res) {
                     //console.log(base64Data[0]);
                     //console.log(base64Data[1]);
 
-                    require("fs").writeFile("./home/localadmin/out112.png", base64Data[1], 'base64', function (err) {
+                    require("fs").writeFile("/home/localadmin/out112.png", base64Data[1], 'base64', function (err) {
                         console.log(err);
                     });
 

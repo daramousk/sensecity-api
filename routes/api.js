@@ -180,7 +180,7 @@ router.post('/save_image', function (req, res) {
                     var base64img = req.body.image_name;
                     var base64Data = base64img.replace("data:image\png;base64,", "");
 
-                    cosnole.log('test 2');
+                    console.log('test 2');
                     console.log(base64Data);
 
 

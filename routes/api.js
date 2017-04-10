@@ -181,8 +181,8 @@ router.post('/save_image', function (req, res) {
                     var base64Data = base64img.split(",");
 
                     console.log('test 2');
+                    console.log(base64Data[0]);
                     console.log(base64Data[1]);
-
 
 
                     if (response.length > 0) {

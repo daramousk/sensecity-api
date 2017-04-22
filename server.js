@@ -4,6 +4,11 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var crypto = require('crypto-js');
 var request = require('request');
+var morgan = require('morgan');
+var fs = require('fs')
+var path = require('path');
+var rfs = require('rotating-file-stream');
+var config = require('app-config');
 
 // Mongo Db
 //mongoose.connect('mongodb://localhost/sensecity');
@@ -13,7 +18,26 @@ var app = express();
 /*app.use(bodyParser.urlencoded({limit: '10mb'},{extended: true}));*/
 app.use(bodyParser.json({limit: '100mb'}));
 
-var config = require('app-config');
+console.log(config.config.log_path);
+
+//var logDirectory = path.join(config.config.path_log, '');
+
+// ensure log directory exists
+fs.existsSync(config.config.log_path) || fs.mkdirSync(config.config.log_path);
+
+var dateObj = new Date();
+
+// create a rotating write stream
+var accessLogStream = rfs('access' + dateObj.getUTCDate() + '' + (dateObj.getUTCMonth() + 1) + '' + dateObj.getUTCFullYear()+'.log', {
+    interval: '1d', // rotate daily1
+    path: config.config.log_path
+});
+
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }));
+
+
+
 
 //headers
 app.use(function (req, res, next) {

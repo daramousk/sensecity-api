@@ -12,6 +12,11 @@ var base64 = require('base-64');
 
 var config = require('app-config');
 
+var morgan = require('morgan')
+var app = express();
+
+app.use(morgan('combined'));
+
 mongoose.connect('mongodb://' + config.config.my_hostname + '/' + config.config.database);
 
 // Models

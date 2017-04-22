@@ -10,5 +10,6 @@ module.exports = {
     bug_cc: '',
     key_geocoding: '',
     email: '',
-    password_email: ''
+    password_email: '',
+    log_path: ''
 }

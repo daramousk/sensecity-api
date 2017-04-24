@@ -3330,16 +3330,17 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
         json: req.body
     }, function (error, response, body) {
 
-        console.log(req.body);
+        //console.log(req.body);
 
-        if (req.body.cf_city_address != undefined || req.body.cf_city_address != '') {
-
-            request({
-                url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + req.body.cf_city_address +"&key=" + config.config.key_geocoding,
-                method: "GET"
-            }, function (error, response) {
-                //console.log(response);
-            });
+        if (req.body.cf_city_address != undefined) {
+            if (req.body.cf_city_address != '') {
+                request({
+                    url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + req.body.cf_city_address + "&key=" + config.config.key_geocoding,
+                    method: "GET"
+                }, function (error, response) {
+                    console.log(response);
+                });
+            }
         }
 
         if (!error && response.statusCode === 200) {

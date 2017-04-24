@@ -3340,6 +3340,8 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                     method: "GET"
                 }, function (error, response) {
                     console.log(response.body);
+                    console.log(response.body.results);
+                    console.log(response.body.results[0]);
                 });
             }
         }

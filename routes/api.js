@@ -3339,7 +3339,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                     url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(req.body.cf_city_address) + "&key=" + config.config.key_geocoding,
                     method: "GET"
                 }, function (error, response) {
-                    console.log(response.result);
+                    console.log(response);
                 });
             }
         }

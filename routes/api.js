@@ -3341,7 +3341,8 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                 }, function (error, response) {
                     console.log(response.body);
                     console.log(response.body.results);
-                    console.log(JSON.parse(response.body).results[0]);
+                    console.log(JSON.parse(response.body).results[0].geometry.location.lat);
+                    console.log(JSON.parse(response.body).results[0].geometry.location.lng);
                 });
             }
         }

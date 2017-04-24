@@ -3350,11 +3350,8 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                         url: bugUrlRest + "/rest/bug" + bugParams1,
                         method: "GET"
                     }, function (error, response, body) {
-                        console.log(body);
-                        console.log(JSON.stringify(body.bugs));
-                        console.log(JSON.parse(body.bugs));
-                        console.log(JSON.parse(body.bugs[0]));
-                        console.log(JSON.parse(body.bugs[0]).alias);
+                        console.log(body.bugs[0].alias[0]);
+                        
                         //Issue.update({})
                     });
                     

@@ -3343,6 +3343,17 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                     console.log(response.body.results);
                     console.log(JSON.parse(response.body).results[0].geometry.location.lat);
                     console.log(JSON.parse(response.body).results[0].geometry.location.lng);
+
+                    var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.ids[0] + "&include_fields=alias";
+
+                    request({
+                        url: bugUrlRest + "/rest/bug" + bugParams1,
+                        method: "GET"
+                    }, function (error, response, body) {
+                        console.log(body);
+                        //Issue.update({})
+                    });
+                    
                 });
             }
         }

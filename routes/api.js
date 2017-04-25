@@ -1358,7 +1358,7 @@ var get_issues = function (req, callback) {
                         _product = response[0]["municipality"];
 
                         var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
-                        //console.log(bugParams1);
+                        console.log(bugParams1);
 
                         var ids = [];
                         var bugzilla_results = [];

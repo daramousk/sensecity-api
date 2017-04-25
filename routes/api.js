@@ -1304,8 +1304,10 @@ var get_issues = function (req, callback) {
 
             if (req.query.status.indexOf("RESOLVED") > -1) {
                 var null_resolution = '';
-                if (req.query.status.indexOf("IN_PROGRESS") > -1 || req.query.status.indexOf("CONFIRMED") > -1) {
-                    null_resolution = ",---";
+                if (req.query.hasOwnProperty('resolution')) {
+                    if (req.query.status.indexOf("IN_PROGRESS") > -1 || req.query.status.indexOf("CONFIRMED") > -1) {
+                        null_resolution = ",---";
+                    }
                 }
 
                 if (!req.query.hasOwnProperty('resolution')) {

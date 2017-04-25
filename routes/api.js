@@ -3349,13 +3349,13 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                     request({
                         url: bugUrlRest + "/rest/bug" + bugParams1,
                         method: "GET"
-                    }, function (error, response, body) {
+                    }, function (error1, response, body) {
                         console.log(JSON.parse(body).bugs[0].alias[0]);
 
                         var object_id = JSON.parse(body).bugs[0].alias[0];
 
                         Issue.update({ "_id": JSON.parse(body).bugs[0].alias[0] }, { $set: { "loc": { "coordinates": [JSON.parse(response.body).results[0].geometry.location.lng, JSON.parse(response.body).results[0].geometry.location.lat] } } }, function (err, resp) {
-
+                            console.log(err);
                             if (!error && response.statusCode === 200) {
 
                                 if (response.body.result !== null) {

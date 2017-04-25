@@ -1303,13 +1303,13 @@ var get_issues = function (req, callback) {
             }
             
                     var null_resolution = '';
-                    if (req.query.hasOwnProperty('resolution')) {
+                    //if (req.query.hasOwnProperty('resolution')) {
                         console.log('1');
                         if (_status.indexOf("IN_PROGRESS") > -1 || _status.indexOf("CONFIRMED") > -1) {
                             null_resolution = ",---";
                             console.log('2');
                         }
-                    }
+                   // }
                     console.log(_status);
 
                     if (!req.query.hasOwnProperty('resolution')) {

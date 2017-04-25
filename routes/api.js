@@ -1055,6 +1055,7 @@ var get_issues = function (req, callback) {
         var mm2;
         var dd1;
         var dd2;
+        var _resolution;
 
         if (!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")) {
             res.send([{ "response": "no-data", "message": "You don't send city - coordinates values!" }]);
@@ -1301,6 +1302,34 @@ var get_issues = function (req, callback) {
                 }
             }
 
+            if (req.query.status.indexOf("RESOLVED") > -1) {
+                if (!req.query.hasOwnProperty('resolution')) {
+                    _resolution = "&f8=resolution&o8=anywordssubstr&v8=FIXED,INVALID,WONTFIX,DUPLICATE";
+                } else {
+                    var resolution_split = req.query.resolution.split("|");
+
+                    switch (resolution_split.length) {
+                        case 1:
+                            _resolution = "&f8=resolution&o8=anywordssubstr&v8=" + resolution_split[0];
+                            break;
+                        case 2:
+                            _resolution = "&f8=resolution&o8=anywordssubstr&v8=" + resolution_split[0] + ", " + resolution_split[1];
+                            break;
+                        case 3:
+                            _resolution = "&f8=resolution&o8=anywordssubstr&v8=" + resolution_split[0] + ", " + resolution_split[1] + ", " + resolution_split[2];
+                            break;
+                        default:
+                            _resolution = "&f8=resolution&o8=anywordssubstr&v8=FIXED,INVALID,WONTFIX,DUPLICATE";         
+                            break;
+                    }
+
+                               
+                }
+            }
+            else {
+                _resolution = '';
+            }
+            
 
             if (!req.query.hasOwnProperty('kml')) {
                 _kml = 0;
@@ -1325,7 +1354,7 @@ var get_issues = function (req, callback) {
 
                         _product = response[0]["municipality"];
 
-                        var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
+                        var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
                         var ids = [];
                         var bugzilla_results = [];
                         var issue_return = [];
@@ -1859,7 +1888,7 @@ var get_issues = function (req, callback) {
                 _product = req.query.city;
 
                 //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
-                var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
+                var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
 
                 var ids = [];
                 var bugzilla_results = [];
@@ -3334,15 +3363,15 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
 
         if (req.body.cf_city_address != undefined) {
             if (req.body.cf_city_address != '') {
-                console.log("TEST");
+               // console.log("TEST");
                 request({
                     url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(req.body.cf_city_address) + "&key=" + config.config.key_geocoding,
                     method: "GET"
                 }, function (error, response) {
-                    console.log(response.body);
-                    console.log(response.body.results);
-                    console.log(JSON.parse(response.body).results[0].geometry.location.lat);
-                    console.log(JSON.parse(response.body).results[0].geometry.location.lng);
+                    //console.log(response.body);
+                   // console.log(response.body.results);
+                   // console.log(JSON.parse(response.body).results[0].geometry.location.lat);
+                   // console.log(JSON.parse(response.body).results[0].geometry.location.lng);
 
                     var lat = JSON.parse(response.body).results[0].geometry.location.lat;
                     var lng = JSON.parse(response.body).results[0].geometry.location.lng;
@@ -3353,7 +3382,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                         url: bugUrlRest + "/rest/bug" + bugParams1,
                         method: "GET"
                     }, function (error1, response, body) {
-                        console.log(JSON.parse(body).bugs[0].alias[0]);
+                        //console.log(JSON.parse(body).bugs[0].alias[0]);
 
                         var object_id = JSON.parse(body).bugs[0].alias[0];
 

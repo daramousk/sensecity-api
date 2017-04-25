@@ -1309,7 +1309,7 @@ var get_issues = function (req, callback) {
                 }
 
                 if (!req.query.hasOwnProperty('resolution')) {
-                    _resolution = "&f8=resolution&o8=anywordssubstr&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
+                    _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
                 } else {
                     var resolution_split = req.query.resolution.split("|");
                     

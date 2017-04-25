@@ -3061,7 +3061,7 @@ router.post('/activate_city_policy', function (req, res) {
         res.send([{}]);
     }
 
-    Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "mandatory_sms": 1, "mandatory_email":1 }, function (req1, res1) {
+    Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "mandatory_sms": 1, "mandatory_email": 1, "active_sms_service":1 }, function (req1, res1) {
         res.send(res1);
     });
     

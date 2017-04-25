@@ -9,7 +9,8 @@ var municipalitySchema = new mongoose.Schema({
     boundaries: { coordinates: Number },
     sms_key_fibair: { type: String, default: "" },
     mandatory_email: { type: String, default: "false" },
-    mandatory_sms: { type: String, default: "false" }
+    mandatory_sms: { type: String, default: "false" },
+    active_sms_service: { type: String, default: "false" }
 });
 
 

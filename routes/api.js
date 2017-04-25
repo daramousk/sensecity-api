@@ -3357,7 +3357,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
 
                         var object_id = JSON.parse(body).bugs[0].alias[0];
 
-                        Issue.update({ "_id": JSON.parse(body).bugs[0].alias[0] }, { $set: { "loc": { "coordinates": [lng, lat] } } }, function (err, resp) {
+                        Issue.update({ "_id": JSON.parse(body).bugs[0].alias[0] }, { $set: { "loc": { "type": "Point",  "coordinates": [lng, lat] } } }, function (err, resp) {
                             console.log(err);
                             if (!error && response.statusCode === 200) {
 

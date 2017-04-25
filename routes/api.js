@@ -3344,6 +3344,9 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                     console.log(JSON.parse(response.body).results[0].geometry.location.lat);
                     console.log(JSON.parse(response.body).results[0].geometry.location.lng);
 
+                    var lat = JSON.parse(response.body).results[0].geometry.location.lat;
+                    var lng = JSON.parse(response.body).results[0].geometry.location.lng;
+
                     var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.ids[0] + "&include_fields=alias";
 
                     request({
@@ -3354,7 +3357,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
 
                         var object_id = JSON.parse(body).bugs[0].alias[0];
 
-                        Issue.update({ "_id": JSON.parse(body).bugs[0].alias[0] }, { $set: { "loc": { "coordinates": [JSON.parse(response.body).results[0].geometry.location.lng, JSON.parse(response.body).results[0].geometry.location.lat] } } }, function (err, resp) {
+                        Issue.update({ "_id": JSON.parse(body).bugs[0].alias[0] }, { $set: { "loc": { "coordinates": [lng, lat] } } }, function (err, resp) {
                             console.log(err);
                             if (!error && response.statusCode === 200) {
 

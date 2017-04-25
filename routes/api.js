@@ -1303,14 +1303,12 @@ var get_issues = function (req, callback) {
             }
             
                     var null_resolution = '';
-                    //if (req.query.hasOwnProperty('resolution')) {
-                        console.log('1');
+                    //if (req.query.hasOwnProperty('resolution')) {                    
                         if (_status.indexOf("IN_PROGRESS") > -1 || _status.indexOf("CONFIRMED") > -1) {
                             null_resolution = ",---";
-                            console.log('2');
                         }
                    // }
-                    console.log(_status);
+                    
 
                     if (!req.query.hasOwnProperty('resolution')) {
                         _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
@@ -1361,7 +1359,7 @@ var get_issues = function (req, callback) {
                         _product = response[0]["municipality"];
 
                         var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
-                        console.log(bugParams1);
+                        //console.log(bugParams1);
 
                         var ids = [];
                         var bugzilla_results = [];
@@ -1897,7 +1895,7 @@ var get_issues = function (req, callback) {
 
                 //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
                 var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
-                console.log(bugParams1);
+                //console.log(bugParams1);
 
                 var ids = [];
                 var bugzilla_results = [];

@@ -1301,41 +1301,37 @@ var get_issues = function (req, callback) {
                         break;
                 }
             }
-
-            if (req.query.status.indexOf("RESOLVED") > -1) {
-                var null_resolution = '';
-                if (req.query.hasOwnProperty('resolution')) {
-                    if (req.query.status.indexOf("IN_PROGRESS") > -1 || req.query.status.indexOf("CONFIRMED") > -1) {
-                        null_resolution = ",---";
-                    }
-                }
-
-                if (!req.query.hasOwnProperty('resolution')) {
-                    _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
-                } else {
-                    var resolution_split = req.query.resolution.split("|");
-                    
-                    switch (resolution_split.length) {
-                        case 1:
-                            _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + null_resolution;
-                            break;
-                        case 2:
-                            _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + null_resolution;
-                            break;
-                        case 3:
-                            _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + ", " + resolution_split[2] + null_resolution;
-                            break;
-                        default:
-                            _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;         
-                            break;
+            
+                    var null_resolution = '';
+                    if (req.query.hasOwnProperty('resolution')) {
+                        if (req.query.status.indexOf("IN_PROGRESS") > -1 || req.query.status.indexOf("CONFIRMED") > -1) {
+                            null_resolution = ",---";
+                        }
                     }
 
-                               
-                }
-            }
-            else {
-                _resolution = '';
-            }
+                    if (!req.query.hasOwnProperty('resolution')) {
+                        _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
+                    } else {
+                        var resolution_split = req.query.resolution.split("|");
+
+                        switch (resolution_split.length) {
+                            case 1:
+                                _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + null_resolution;
+                                break;
+                            case 2:
+                                _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + null_resolution;
+                                break;
+                            case 3:
+                                _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + ", " + resolution_split[2] + null_resolution;
+                                break;
+                            default:
+                                _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
+                                break;
+                        }
+
+
+                    }
+               
             
 
             if (!req.query.hasOwnProperty('kml')) {

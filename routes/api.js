@@ -2836,6 +2836,8 @@ router.post('/activate_user', function (req, res) {
                                     //console.log('Message sent: ' + info.response);
                                 });
 
+                            } else {
+                                res.send([{ "Status": "saved" }]);
                             }
                         });
 
@@ -2903,6 +2905,8 @@ router.post('/activate_user', function (req, res) {
                                     res.send([{ "Status": "send" }]);
                                     //  console.log('Message sent: ' + info.response);
                                 });
+                            } else {
+                                res.send([{ "Status": "saved" }]);
                             }
 
                            // res.send([{ "test": JSON.stringify(resp) }]);

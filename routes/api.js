@@ -2810,7 +2810,7 @@ router.post('/activate_user', function (req, res) {
                     //console.log(JSON.stringify(resp));
                     if (resp != '') {
                         act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission.communicate_with.email": "true", "activate": text_act, } }, function (err1, resp1) {
-                            if (resp1.ok == 1) {
+                            if (resp1.ok == 1 && req.query.email!="") {
                                 console.log("Send mail verify code");
 
 
@@ -2882,26 +2882,28 @@ router.post('/activate_user', function (req, res) {
                         });
 
                         entry_active_user.save(function (err1, resp) {
-                            // create reusable transporter object using the default SMTP transport 
-                            var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
+                            if (req.query.email != '') {
+                                // create reusable transporter object using the default SMTP transport 
+                                var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 
-                            // setup e-mail data with unicode symbols 
-                            var mailOptions = {
-                                from: '"Sense.City " <info@sense.city>', // sender address 
-                                to: req.query.email, // list of receivers 
-                                subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
-                                text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
-                                html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
-                            };
+                                // setup e-mail data with unicode symbols 
+                                var mailOptions = {
+                                    from: '"Sense.City " <info@sense.city>', // sender address 
+                                    to: req.query.email, // list of receivers 
+                                    subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+                                    text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
+                                    html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
+                                };
 
-                            // send mail with defined transport object 
-                            transporter.sendMail(mailOptions, function (error, info) {
-                                if (error) {
-                                    return console.log(error);
-                                }
-                                res.send([{ "Status": "send" }]);
-                              //  console.log('Message sent: ' + info.response);
-                            });
+                                // send mail with defined transport object 
+                                transporter.sendMail(mailOptions, function (error, info) {
+                                    if (error) {
+                                        return console.log(error);
+                                    }
+                                    res.send([{ "Status": "send" }]);
+                                    //  console.log('Message sent: ' + info.response);
+                                });
+                            }
 
                            // res.send([{ "test": JSON.stringify(resp) }]);
                         });

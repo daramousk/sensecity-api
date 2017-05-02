@@ -3376,7 +3376,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
 
         if (req.body.cf_city_address != undefined) {
             if (req.body.cf_city_address != '') {
-               // console.log("TEST");
+                console.log("https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(req.body.cf_city_address) + "&key=" + config.config.key_geocoding);
                 request({
                     url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(req.body.cf_city_address) + "&key=" + config.config.key_geocoding,
                     method: "GET"

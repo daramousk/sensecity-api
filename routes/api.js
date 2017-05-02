@@ -142,7 +142,7 @@ router.post('/save_image', function (req, res) {
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding,
             method: "GET"
         }, function (error, response) {
-
+            console.log(JSON.stringify(response));
             if (JSON.parse(response.body).status == "OK") {
                 city_address = JSON.parse(response.body).results[0].formatted_address;
             } else {
@@ -303,7 +303,7 @@ router.post('/issue', function (req, res) {
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0]+"&language=el&key=" + config.config.key_geocoding,
             method: "GET"
         }, function (error, response) {
-
+            console.log(JSON.stringify(response));
            // console.log("===================>"+JSON.parse(response.body).status);
 
             if (JSON.parse(response.body).status == "OK") {
@@ -3385,7 +3385,7 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                    // console.log(response.body.results);
                    // console.log(JSON.parse(response.body).results[0].geometry.location.lat);
                    // console.log(JSON.parse(response.body).results[0].geometry.location.lng);
-
+                    console.log(JSON.stringify(response));
                     var lat = JSON.parse(response.body).results[0].geometry.location.lat;
                     var lng = JSON.parse(response.body).results[0].geometry.location.lng;
 

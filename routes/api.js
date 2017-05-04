@@ -232,7 +232,7 @@ router.post('/save_image', function (req, res) {
                         }
                         return_var = { "_id": resp._id };
                         
-                        
+                        console.log(resp._id);
                         res.send(return_var);
                     });
                 });

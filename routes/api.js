@@ -95,7 +95,7 @@ request({
 router.get('/save_image', function (req, res) {
     console.log(req.query.bug_id);
     //res.sendFile("http://testcity1.sense.city/images/video_screen.png");
-    res.redirect(301, 'http://testcity1.sense.city/images/video_screen.png');
+    res.type('png').sendFile('/var/www/html/testweb/sensecity-web/images/video_screen.png');
 });
 
 router.post('/save_image', function (req, res) {

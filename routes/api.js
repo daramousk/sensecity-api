@@ -92,6 +92,11 @@ request({
     }
 });
 
+router.get('/save_image', function (req, res) {
+    console.log(res.body);
+    res.send("ok");
+});
+
 router.post('/save_image', function (req, res) {
 
     console.log('Ini');

@@ -93,7 +93,7 @@ request({
 });
 
 router.get('/save_image', function (req, res) {
-    console.log(req);
+    console.log(req.query.bug_id);
     res.send("ok");
 });
 

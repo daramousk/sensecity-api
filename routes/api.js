@@ -137,12 +137,12 @@ router.post('/save_image', function (req, res) {
     }
 
     if (city_address == '') {
-        console.log("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding);
+        //console.log("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding);
         request({
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding,
             method: "GET"
         }, function (error, response) {
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response));
             if (JSON.parse(response.body).status == "OK") {
                 city_address = JSON.parse(response.body).results[0].formatted_address;
             } else {

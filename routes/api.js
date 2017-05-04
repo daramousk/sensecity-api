@@ -94,7 +94,7 @@ request({
 
 router.get('/save_image', function (req, res) {
     console.log(req.query.bug_id);
-    res.send("ok");
+    res.sendFile("/home/localadmin/out112.png");
 });
 
 router.post('/save_image', function (req, res) {

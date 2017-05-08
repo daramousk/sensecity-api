@@ -231,6 +231,9 @@ router.post('/image_issue', function (req, res) {
                             //console.log(base64Data[0]);
                             //console.log(base64Data[1]);
 
+                            console.log(config.config.img_path);
+                            console.log(config.config.img_path + resp._id + ".png");
+
                             require("fs").writeFile(config.config.img_path + resp._id + ".png", base64Data[1], 'base64', function (err) {
                                 console.log(err);
 

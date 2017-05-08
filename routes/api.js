@@ -234,7 +234,7 @@ router.post('/image_issue', function (req, res) {
                             console.log(config.config.img_path);
                             console.log(config.config.img_path + resp._id + ".png");
 
-                            require("fs").writeFile(config.config.img_path + resp._id + ".png", base64Data[1], 'base64', function (err) {
+                            require("fs").writeFile(config.config.img_path + resp._id + "_0.png", base64Data[1], 'base64', function (err) {
                                 console.log(err);
 
                                 resizeCrop({
@@ -243,7 +243,7 @@ router.post('/image_issue', function (req, res) {
                                     height: 250,
                                     width: 200,
                                     gravity: "center"
-                                },function (err, filePath) {
+                                }, function (err, filePath) {                                    
                                     // do something 
                                     console.log(err);
                                     });

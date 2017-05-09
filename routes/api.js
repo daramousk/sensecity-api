@@ -227,9 +227,9 @@ router.post('/image_issue', function (req, res) {
 
                                 resizeCrop({
                                     src: source_img_file + ".png",
-                                    dest: source_img_file+"_200x250.png",
-                                    height: 250,
-                                    width: 200,
+                                    dest: source_img_file+"_144x144.png",
+                                    height: 144,
+                                    width: 144,
                                     gravity: "center"
                                 }, function (err, filePath) {                                    
                                     // do something 
@@ -239,9 +239,9 @@ router.post('/image_issue', function (req, res) {
 
                                 resizeCrop({
                                     src: source_img_file + ".png",
-                                    dest: source_img_file+"_100x100.png",
-                                    height: 100,
-                                    width: 100,
+                                    dest: source_img_file+"_450x450.png",
+                                    height: 450,
+                                    width: 450,
                                     gravity: "center"
                                 }, function (err, filePath) {
                                     // do something 

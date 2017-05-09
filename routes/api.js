@@ -200,17 +200,7 @@ router.post('/image_issue', function (req, res) {
 
 
                     entry.image_name = '';
-                    
-                    /*var base64img = req.body.image_name;
-                    var base64Data = base64img.split(",");
-                    */
-                    //console.log(base64Data[0]);
-                    //console.log(base64Data[1]);
-                    /*
-                    require("fs").writeFile(config.config.img_path + "/home/localadmin/out112.png", base64Data[1], 'base64', function (err) {
-                        console.log(err);
-                    });
-*/
+                   
                     if (response.length > 0) {
 
                         entry.municipality = response[0]["municipality"];
@@ -224,22 +214,20 @@ router.post('/image_issue', function (req, res) {
                         if (err1) {
                             console.log(err1);
                         } else {
-                            console.log(JSON.stringify(resp));
                             var base64img = req.body.image_name;
                             var base64Data = base64img.split(",");
 
                             //console.log(base64Data[0]);
                             //console.log(base64Data[1]);
+                            var default_img_id = 0;
+                            var source_img_file = config.config.img_path + resp._id + "_" + default_img_id ;
 
-                            console.log(config.config.img_path);
-                            console.log(config.config.img_path + resp._id + ".png");
-
-                            require("fs").writeFile(config.config.img_path + resp._id + "_0.png", base64Data[1], 'base64', function (err) {
+                            require("fs").writeFile(source_img_file + ".png", base64Data[1], 'base64', function (err) {
                                 console.log(err);
 
                                 resizeCrop({
-                                    src: config.config.img_path + resp._id + ".png",
-                                    dest: config.config.img_path + resp._id + "_200x250.png",
+                                    src: source_img_file + ".png",
+                                    dest: source_img_file+"_200x250.png",
                                     height: 250,
                                     width: 200,
                                     gravity: "center"
@@ -250,8 +238,8 @@ router.post('/image_issue', function (req, res) {
 
 
                                 resizeCrop({
-                                    src: config.config.img_path + resp._id + ".png",
-                                    dest: config.config.img_path + resp._id + "_100x100.png",
+                                    src: source_img_file + ".png",
+                                    dest: source_img_file+"_100x100.png",
                                     height: 100,
                                     width: 100,
                                     gravity: "center"
@@ -261,21 +249,7 @@ router.post('/image_issue', function (req, res) {
                                     });
 
                             });
-
-                            /*
-                            thumb({
-                                source: config.config.img_path + resp._id + ".png", // could be a filename: dest/path/image.jpg 
-                                destination: config.config.img_path,
-                                suffix: '_200x200',
-                                concurrency: 4,
-                                width: 200,
-                                height: 200
-                            }, function (files, err, stdout, stderr) {
-                                console.log('All done!');
-                                });      */
-                                                    /*
-                           
-                            */
+                          
                             if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
                                 if (response.length > 0) {
 

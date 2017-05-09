@@ -228,14 +228,14 @@ router.post('/image_issue', function (req, res) {
                             //console.log(base64Data[0]);
                             //console.log(base64Data[1]);
                             var default_img_id = 0;
-                            var source_img_file = config.config.img_path + resp._id + "_" + default_img_id ;
+                            var source_img_file = config.config.img_path;
 
-                            require("fs").writeFile(source_img_file + ".png", base64Data[1], 'base64', function (err) {
+                            require("fs").writeFile(source_img_file + "original/" + resp._id + "_" + default_img_id + ".png", base64Data[1], 'base64', function (err) {
                                 console.log(err);
 
                                 resizeCrop({
-                                    src: source_img_file + ".png",
-                                    dest: source_img_file+"_144x144.png",
+                                    src: source_img_file + "original/" + resp._id + "_" + default_img_id  + ".png",
+                                    dest: source_img_file + "small/" + resp._id + "_" + default_img_id +"_144x144.png",
                                     height: 144,
                                     width: 144,
                                     gravity: "center"
@@ -246,8 +246,8 @@ router.post('/image_issue', function (req, res) {
 
 
                                 resizeCrop({
-                                    src: source_img_file + ".png",
-                                    dest: source_img_file+"_450x450.png",
+                                    src: source_img_file + "original/" + resp._id + "_" + default_img_id  + ".png",
+                                    dest: source_img_file + "medium/" + resp._id + "_" + default_img_id +"_450x450.png",
                                     height: 450,
                                     width: 450,
                                     gravity: "center"

@@ -104,7 +104,8 @@ router.get('/image_issue', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
         console.log(JSON.parse(response.body).bugs[0].alias[0]);
-        //res.type('png').sendFile(config.config.img_path + resp._id + "_200x250.png");
+        var img_alias = JSON.parse(response.body).bugs[0].alias[0];
+        res.type('png').sendFile(config.config.img_path + img_alias + "_0_144x144.png");
     });
 
     //res.sendFile("http://testcity1.sense.city/images/video_screen.png");

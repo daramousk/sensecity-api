@@ -95,8 +95,6 @@ request({
 });
 
 router.get('/image_issue', function (req, res) {
-    console.log(req.query.bug_id);
-    console.log(req.query.resolution);
 
     var bugParams1 = "?id=" + req.query.bug_id + "&include_fields=id,alias";
 
@@ -104,14 +102,14 @@ router.get('/image_issue', function (req, res) {
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        console.log(JSON.parse(response.body).bugs[0].alias[0]);
+        
         var img_alias = JSON.parse(response.body).bugs[0].alias[0];
         if (req.query.resolution == "full") {
-            res.type('png').sendFile(config.config.img_path + img_alias + "_0.png");
+            res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");
         } else if (req.query.resolution == "medium") {
-            res.type('png').sendFile(config.config.img_path + img_alias + "_0_450x450.png");
+            res.type('png').sendFile(config.config.img_path + "medium/" + img_alias + "_0_450x450.png");
         } else if (req.query.resolution == "small") {
-            res.type('png').sendFile(config.config.img_path + img_alias + "_0_144x144.png");
+            res.type('png').sendFile(config.config.img_path + "small/" + img_alias + "_0_144x144.png");
         } else {
             res.send([{}]);
         }        

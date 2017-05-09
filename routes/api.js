@@ -96,6 +96,7 @@ request({
 
 router.get('/image_issue', function (req, res) {
     console.log(req.query.bug_id);
+    console.log(req.query.resolution);
 
     var bugParams1 = "?id=" + req.query.bug_id + "&include_fields=id,alias";
 
@@ -105,7 +106,15 @@ router.get('/image_issue', function (req, res) {
     }, function (error, response, body) {
         console.log(JSON.parse(response.body).bugs[0].alias[0]);
         var img_alias = JSON.parse(response.body).bugs[0].alias[0];
-        res.type('png').sendFile(config.config.img_path + img_alias + "_0_144x144.png");
+        if (req.query.resolution == "full") {
+            res.type('png').sendFile(config.config.img_path + img_alias + "_0.png");
+        } else if (req.query.resolution == "medium") {
+            res.type('png').sendFile(config.config.img_path + img_alias + "_0_450x450.png");
+        } else if (req.query.resolution == "small") {
+            res.type('png').sendFile(config.config.img_path + img_alias + "_0_144x144.png");
+        } else {
+            res.send([{}]);
+        }        
     });
 
     //res.sendFile("http://testcity1.sense.city/images/video_screen.png");

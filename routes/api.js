@@ -310,6 +310,195 @@ router.post('/image_issue', function (req, res) {
 
 //POST router
 router.post('/issue', function (req, res) {    
+
+
+    console.log('Ini');
+
+    if (req.body.mobile_num != undefined) {
+        var _mobile_num = '';
+        var _email_user = '';
+
+        if (req.body.mobile_num != undefined) {
+            _mobile_num = req.body.mobile_num;
+        }
+
+        if (req.body.email_user != undefined) {
+            _email_user = req.body.email_user;
+        }
+
+        // Start Check The logic send email - sms mandatory
+
+        Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.body.loc.coordinates[0], req.body.loc.coordinates[1]] } } } }, { "municipality": 1, "sms_key_fibair": 1, "mandatory_sms": 1, "mandatory_email": 1 }, function (req1, res1) {
+            var _res1 = JSON.stringify(res1);
+
+            if (JSON.parse(_res1)[0].mandatory_email == true && _email_user == '') {
+                //Forbidden
+                res.status(403).send([{ "error_msg": "Required_email" }]);
+            }
+
+            if (JSON.parse(_res1)[0].mandatory_sms == true && _mobile_num == '') {
+                res.status(403).send([{ "error_msg": "Required_sms" }]);
+            }
+        });
+
+        // end Check The logic send email - sms mandatory
+    }
+
+    var anonymous_status = "true";
+
+    var return_var;
+    var city_name = '';
+    var city_address = '';
+
+    if (req.body.hasOwnProperty('city_address')) {
+        city_address = req.body.city_address;
+    }
+
+    if (city_address == '') {
+        //console.log("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding);
+        request({
+            url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding,
+            method: "GET"
+        }, function (error, response) {
+            //console.log(JSON.stringify(response));
+            if (JSON.parse(response.body).status == "OK") {
+                city_address = JSON.parse(response.body).results[0].formatted_address;
+            } else {
+                city_address = "N/A";
+            }
+
+            if (!req.body.hasOwnProperty('issue') ||
+                !req.body.hasOwnProperty('loc') ||
+                !req.body.hasOwnProperty('value_desc') ||
+                !req.body.hasOwnProperty('device_id')) {
+                res.statusCode = 403;
+                return res.send({ "message": "Forbidden" });
+            } else {
+
+                Municipality.find({
+                    boundaries:
+                    {
+                        $geoIntersects:
+                        {
+                            $geometry: {
+                                "type": "Point",
+                                "coordinates": req.body.loc.coordinates
+                            }
+                        }
+                    }
+                }, function (err, response) {
+
+                    var entry = new Issue({
+                        loc: { type: 'Point', coordinates: req.body.loc.coordinates },
+                        issue: req.body.issue,
+                        device_id: req.body.device_id,
+                        value_desc: req.body.value_desc,
+                        comments: req.body.comments,
+                        city_address: city_address
+                    });
+
+
+                    entry.image_name = '';
+
+                    if (response.length > 0) {
+
+                        entry.municipality = response[0]["municipality"];
+
+                        city_name = response[0].municipality_desc;
+                    } else {
+                        entry.municipality = '';
+                        city_name = '';
+                    }
+                    entry.save(function (err1, resp) {
+                        if (err1) {
+                            console.log(err1);
+                        } else {
+                            var base64img = req.body.image_name;
+                            var base64Data = base64img.split(",");
+
+                            //console.log(base64Data[0]);
+                            //console.log(base64Data[1]);
+                            var default_img_id = 0;
+                            var source_img_file = config.config.img_path;
+
+                            require("fs").writeFile(source_img_file + "original/" + resp._id + "_" + default_img_id + ".png", base64Data[1], 'base64', function (err) {
+                                console.log(err);
+
+                                resizeCrop({
+                                    src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
+                                    dest: source_img_file + "small/" + resp._id + "_" + default_img_id + "_144x144.png",
+                                    height: 144,
+                                    width: 144,
+                                    gravity: "center"
+                                }, function (err, filePath) {
+                                    // do something 
+                                    console.log(err);
+                                });
+
+
+                                resizeCrop({
+                                    src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
+                                    dest: source_img_file + "medium/" + resp._id + "_" + default_img_id + "_450x450.png",
+                                    height: 450,
+                                    width: 450,
+                                    gravity: "center"
+                                }, function (err, filePath) {
+                                    // do something 
+                                    console.log(err);
+                                });
+
+                            });
+
+                            if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
+                                if (response.length > 0) {
+
+                                    var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
+
+                                    request({
+                                        url: bugUrlRest + "/rest/bug",
+                                        method: "POST",
+                                        json: bugData1
+                                    }, function (error, bugResponse, body) {
+                                        // console.log(JSON.stringify(bugResponse));
+                                        if (error != null) { console.log(error) };
+
+                                        if (!error && bugResponse.statusCode === 200) {
+                                            // console.log(body);
+                                        } else {
+                                            console.log("error: " + error);
+                                            console.log("bugResponse.statusCode: " + bugResponse.statusCode);
+                                            console.log("bugResponse.statusText: " + bugResponse.statusText);
+                                        }
+                                    });
+                                }
+                            }
+
+                        }
+                        return_var = { "_id": resp._id };
+
+                        console.log(resp._id);
+                        res.send(return_var);
+                    });
+                });
+            }
+
+
+
+
+
+
+
+
+        });
+    }
+
+
+
+
+
+
+
+/*
     if (req.body.mobile_num != undefined) {
         var _mobile_num = '';
         var _email_user = '';
@@ -423,21 +612,7 @@ router.post('/issue', function (req, res) {
                                 if (response.length > 0) {
 
                                     var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
-                                    /*
-                                    request({
-                                        url: bugUrlRest + "/rest/valid_login?login=" + config.config.login + "&token=" + bugToken,
-                                        method: "GET"
-                                    }, function (error, res_login) {
-                                        if (error != undefined) { console.log(error); }
-                                        if (res_login != undefined) {
-                                            if (res_login.statusCode == 200) {
-                                                console.log("result = " + JSON.parse(res_login.body).result);
-                                                if (JSON.parse(res_login.body).result) {
-                                                    console.log("true");
-                                                }
-                                            }
-                                        }
-                                    });*/
+                            
 
                                     //console.log(bugData1);
 
@@ -477,7 +652,7 @@ router.post('/issue', function (req, res) {
         });
     }
 
-   
+   */
 });
 
 router.post('/issue/:id', function (req, res) {

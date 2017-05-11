@@ -401,8 +401,10 @@ router.post('/issue', function (req, res) {
 
                     entry.image_name = '';
 
-                    console.log("msg=" + req.body.image_name);
-
+                    console.log("msg=" + req.body.image_name.indexOf("base64"));
+                    if (req.body.image_name.indexOf("base64") !== -1) {
+                        console.log("msg=" + req.body.image_name.indexOf("base64"));
+                    }
                     if (response.length > 0) {
 
                         entry.municipality = response[0]["municipality"];
@@ -416,6 +418,7 @@ router.post('/issue', function (req, res) {
                         if (err1) {
                             console.log(err1);
                         } else {
+                            
                             var base64img = req.body.image_name;
                             var base64Data = base64img.split(",");
 

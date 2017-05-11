@@ -125,8 +125,6 @@ router.get('/image_issue', function (req, res) {
             res.status(404).send('Not found');
         }
     });
-
-    //res.sendFile("http://testcity1.sense.city/images/video_screen.png");
     
 });
 
@@ -970,6 +968,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_severity = 1;
     req.send_priority = 1;
 
+    console.log(JSON.stringify(req));
 
     get_issues(req, function (result) {
 
@@ -3809,13 +3808,6 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             });
 
         });
-
-       
-        
-
-
-
-
 
         if (!error && response.statusCode === 201) {
             if (response.body.result !== null)

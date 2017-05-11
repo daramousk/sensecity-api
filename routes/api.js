@@ -991,7 +991,7 @@ router.get('/admin/issue', authentication, function (req, res) {
         }, function (error, response, body) {
             
             
-            console.log("===>"+body.bugs[0].component);
+            console.log("===>"+JSON.parse(body).bugs[0].component);
         });
     });
 

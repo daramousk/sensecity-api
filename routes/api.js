@@ -98,7 +98,7 @@ request({
 router.get('/image_issue', function (req, res) {
 
     var bugParams1 = "?id=" + req.query.bug_id + "&include_fields=id,alias";
-
+    console.log(bugParams1);
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"

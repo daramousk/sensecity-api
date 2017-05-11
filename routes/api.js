@@ -484,7 +484,39 @@ router.post('/issue', function (req, res) {
                         }
                         return_var = { "_id": resp._id };
 
+                        if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
+                            if (response.length > 0) {
+
+                                var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
+
+
+                                //console.log(bugData1);
+
+                                request({
+                                    url: bugUrlRest + "/rest/bug",
+                                    method: "POST",
+                                    json: bugData1
+                                }, function (error, bugResponse, body) {
+                                    //console.log(JSON.stringify(bugResponse));
+                                    if (error != null) { console.log(error) };
+
+                                    if (!error && bugResponse.statusCode === 200) {
+                                        // console.log(body);
+                                    } else {
+                                        console.log("error: " + error);
+                                        console.log("bugResponse.statusCode: " + bugResponse.statusCode);
+                                        console.log("bugResponse.statusText: " + bugResponse.statusText);
+                                    }
+                                });
+                            }
+                        }
+
+
                         console.log(resp._id);
+
+
+
+
                         res.send(return_var);
                     });
                 });

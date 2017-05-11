@@ -982,14 +982,16 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
         }
 
-        var bugParams = "?f1=component&o1=equals&product="+ resp[0].city+"&v1=Τμήμα επίλυσης προβλημάτων&include_fields=id,alias,status";
+        var bugParams = "?f1=component&o1=equals&product=" + resp[0].city + "&v1=Τμήμα επίλυσης προβλημάτων&f2=alias&o2=equals&v2=" + resp[0]._id + "&include_fields=id,alias,status";
        
 
         request({
             url: bugUrlRest + "/rest/bug" + bugParams,
             method: "GET"
         }, function (error, response, body) {
+            console.log(JSON.stringify(error));
             console.log(JSON.stringify(response));
+            console.log(JSON.stringify(body));
         });
     });
 

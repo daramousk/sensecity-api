@@ -103,9 +103,9 @@ router.get('/image_issue', function (req, res) {
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-
+        console.log(error);
         console.log("00==>" + JSON.stringify(response.body).bugs);
-        if (JSON.parse(response.body).bugs != undefined) {
+        if (JSON.stringify(response.body).bugs != undefined) {
             console.log("11==>" + JSON.stringify(response.body).bugs[0]);
 
             var img_alias = JSON.parse(response.body).bugs[0].alias[0];

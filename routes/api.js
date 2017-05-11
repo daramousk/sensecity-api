@@ -971,6 +971,10 @@ router.get('/admin/issue', authentication, function (req, res) {
     console.log(req.headers['x-role']);
     console.log(req.headers['x-uuid']);
 
+    Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1 }, function (error, resp) {
+        console.log("resp=>" + resp);
+    });
+
     get_issues(req, function (result) {
 
         //console.log(JSON.stringify(result));

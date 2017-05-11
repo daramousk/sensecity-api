@@ -973,7 +973,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     var _city_department;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
         //console.log(resp);
-        console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
+        //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
             if (resp[0].department == '') {
                 _city_department = 'Τμήμα επίλυσης προβλημάτων';

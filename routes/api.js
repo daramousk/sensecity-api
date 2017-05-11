@@ -973,7 +973,7 @@ router.get('/admin/issue', authentication, function (req, res) {
 
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
         console.log(resp);
-        console.log("department=>" + resp.department + " -- city==>" + resp.city);
+        console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
 
 
     });

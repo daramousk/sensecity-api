@@ -110,7 +110,7 @@ router.get('/image_issue', function (req, res) {
 
             var img_alias = JSON.parse(response.body).bugs[0].alias[0];
 
-            if (existsFile(config.config.img_path + "original/" + img_alias + "_0.png")) {
+            if (file_exitst(config.config.img_path + "original/" + img_alias + "_0.png")) {
                 console.log("true");
             }
 

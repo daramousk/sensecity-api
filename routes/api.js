@@ -125,6 +125,9 @@ router.get('/image_issue', function (req, res) {
                         res.send([{}]);
                     }
                 }
+                else {
+                    res.send([{}]);
+                }
             });
             /*if (file_exitst(config.config.img_path + "original/" + img_alias + "_0.png")) {
                 console.log("12123 true");

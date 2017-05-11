@@ -970,12 +970,27 @@ router.get('/admin/issue', authentication, function (req, res) {
 
     console.log(req.headers['x-role']);
     console.log(req.headers['x-uuid']);
-
+    var _city_name;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
         console.log(resp);
         console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
+        if (resp != undefined) {
+            if (resp[0].department == '') {
+                _city_name = 'Τμήμα επίλυσης προβλημάτων';
+            } else {
+                _city_name = resp[0].department;
+            }
+        }
 
+        var bugParams = "f1=component&o1=equals&product="+ resp[0].city+"&v1=Τμήμα επίλυσης προβλημάτων&include_fields=id,alias,status";
+       
 
+        request({
+            url: bugUrlRest + "/rest/bug" + bugParams,
+            method: "GET"
+        }, function (error, response, body) {
+            console.log(JSON.stringify(response));
+        });
     });
 
     get_issues(req, function (result) {

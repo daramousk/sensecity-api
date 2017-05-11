@@ -989,19 +989,22 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
             method: "GET"
         }, function (error, response, body) {
-            
-            
-            console.log("===>" + JSON.parse(body).bugs[0].component);
 
-            if (JSON.parse(body).bugs[0].component == _city_department) {
-                get_issues(req, function (result) {
-                
-                    res.send(result);
-                });
-            }
-            else {
+            if (JSON.parse(body).bugs != undefined) {
+                console.log("===>" + JSON.parse(body).bugs[0].component);
+
+                if (JSON.parse(body).bugs[0].component == _city_department) {
+                    get_issues(req, function (result) {
+
+                        res.send(result);
+                    });
+                }
+                else {
+                    res.status(403).send('Forbidden');
+                }
+            } else {
                 res.status(403).send('Forbidden');
-            }
+            } 
         });
     });
 

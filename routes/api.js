@@ -208,6 +208,8 @@ router.post('/image_issue', function (req, res) {
 
 
                     entry.image_name = '';
+
+                    console.log("msg="+req.body.image_name);
                    
                     if (response.length > 0) {
 
@@ -311,7 +313,6 @@ router.post('/image_issue', function (req, res) {
 //POST router
 router.post('/issue', function (req, res) {    
 
-
     console.log('Ini');
 
     if (req.body.mobile_num != undefined) {
@@ -399,6 +400,8 @@ router.post('/issue', function (req, res) {
 
 
                     entry.image_name = '';
+
+                    console.log("msg=" + req.body.image_name);
 
                     if (response.length > 0) {
 
@@ -491,7 +494,6 @@ router.post('/issue', function (req, res) {
 
         });
     }
-
 
 
 

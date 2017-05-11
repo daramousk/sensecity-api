@@ -989,9 +989,9 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
             method: "GET"
         }, function (error, response, body) {
-            console.log(JSON.stringify(error));
-            console.log(JSON.stringify(response));
-            console.log(JSON.stringify(body));
+            
+            
+            console.log("===>"+JSON.stringify(body.bugs[0].component));
         });
     });
 

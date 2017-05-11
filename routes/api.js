@@ -989,8 +989,8 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
             method: "GET"
         }, function (error, response, body) {
-            console.log(JSON.parse(body).bugs);
-            if (JSON.parse(body).bugs != null) {
+            console.log(JSON.parse(body).bugs[0]);
+            if (JSON.parse(body).bugs[0] != undefined) {
                 console.log("===>" + JSON.parse(body).bugs[0].component);
 
                 if (JSON.parse(body).bugs[0].component == _city_department) {

@@ -982,7 +982,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
         }
 
-        var bugParams = "?f1=component&o1=equals&v1=" + _city_department + "&f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3="+resp[0].city+"&include_fields=id,alias,status";
+        var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3="+resp[0].city+"&include_fields=id,alias,status,component";
        
 
         request({

@@ -982,7 +982,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
         }
 
-        var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3="+resp[0].city+"&include_fields=id,alias,status,component";
+        var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3="+resp[0].city+"1&include_fields=id,alias,status,component";
        
 
         request({
@@ -991,16 +991,22 @@ router.get('/admin/issue', authentication, function (req, res) {
         }, function (error, response, body) {
             
             
-            console.log("===>"+JSON.parse(body).bugs[0].component);
+            console.log("===>" + JSON.parse(body).bugs[0].component);
+
+            if (JSON.parse(body).bugs[0].component == _city_department) {
+                get_issues(req, function (result) {
+                
+                    res.send(result);
+                });
+            }
+            else {
+                res.status(403).send('Forbidden');
+            }
         });
     });
 
-    get_issues(req, function (result) {
-
-        //console.log(JSON.stringify(result));
-
-        res.send(result);
-    });
+   
+   
 
 });
 

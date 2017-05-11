@@ -970,19 +970,19 @@ router.get('/admin/issue', authentication, function (req, res) {
 
     console.log(req.headers['x-role']);
     console.log(req.headers['x-uuid']);
-    var _city_name;
+    var _city_department;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
         console.log(resp);
         console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
             if (resp[0].department == '') {
-                _city_name = 'Τμήμα επίλυσης προβλημάτων';
+                _city_department = 'Τμήμα επίλυσης προβλημάτων';
             } else {
-                _city_name = resp[0].department;
+                _city_department = resp[0].department;
             }
         }
 
-        var bugParams = "?f1=component&o1=equals&product=" + resp[0].city + "&v1=Τμήμα επίλυσης προβλημάτων&f2=alias&o2=equals&v2=" + resp[0]._id + "&f3=product&o3=equals&v3="+resp[0].city+"&include_fields=id,alias,status";
+        var bugParams = "?f1=component&o1=equals&v1=" + _city_department + "&f2=alias&o2=equals&v2=" + resp[0]._id + "&f3=product&o3=equals&v3="+resp[0].city+"&include_fields=id,alias,status";
        
 
         request({

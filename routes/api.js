@@ -16,7 +16,7 @@ var morgan = require('morgan');
 var app = express();
 
 var resizeCrop = require('resize-crop');
-var file_exitst = require('file-exists');
+var file_exitst = require('exists-file');
 
 app.use(morgan('combined'));
 
@@ -110,7 +110,7 @@ router.get('/image_issue', function (req, res) {
 
             var img_alias = JSON.parse(response.body).bugs[0].alias[0];
 
-            fileExists(config.config.img_path + "original/" + img_alias + "_0.png", (err, exists) => console.log(exists));
+            existsFile(config.config.img_path + "original/" + img_alias + "_0.png", console.log);
 
             if (req.query.resolution == "full") {
                 res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");

@@ -111,22 +111,25 @@ router.get('/image_issue', function (req, res) {
             var img_alias = JSON.parse(response.body).bugs[0].alias[0];
 
             file_exitst(config.config.img_path + "original/" + img_alias + "_0.png", function (err, resp) {
-                console.log(err);
-                console.log(resp);
+                
+                if (resp) {
+                    console.log(resp);
+
+                    if (req.query.resolution == "full") {
+                        res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");
+                    } else if (req.query.resolution == "medium") {
+                        res.type('png').sendFile(config.config.img_path + "medium/" + img_alias + "_0_450x450.png");
+                    } else if (req.query.resolution == "small") {
+                        res.type('png').sendFile(config.config.img_path + "small/" + img_alias + "_0_144x144.png");
+                    } else {
+                        res.send([{}]);
+                    }
+                }
             });
-            if (file_exitst(config.config.img_path + "original/" + img_alias + "_0.png")) {
+            /*if (file_exitst(config.config.img_path + "original/" + img_alias + "_0.png")) {
                 console.log("12123 true");
             }
-
-            if (req.query.resolution == "full") {
-                res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");
-            } else if (req.query.resolution == "medium") {
-                res.type('png').sendFile(config.config.img_path + "medium/" + img_alias + "_0_450x450.png");
-            } else if (req.query.resolution == "small") {
-                res.type('png').sendFile(config.config.img_path + "small/" + img_alias + "_0_144x144.png");
-            } else {
-                res.send([{}]);
-            }
+            */            
         }
         else {
             res.send([{}]);

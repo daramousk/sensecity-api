@@ -110,7 +110,9 @@ router.get('/image_issue', function (req, res) {
 
             var img_alias = JSON.parse(response.body).bugs[0].alias[0];
 
-            existsFile(config.config.img_path + "original/" + img_alias + "_0.png", console.log);
+            if (existsFile(config.config.img_path + "original/" + img_alias + "_0.png")) {
+                console.log("true");
+            }
 
             if (req.query.resolution == "full") {
                 res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");

@@ -103,18 +103,10 @@ router.get('/image_issue', function (req, res) {
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        console.log(error);
-        console.log("00==>" + JSON.parse(response.body).bugs);
         if (JSON.parse(response.body).bugs != undefined) {
-            console.log("11==>" + JSON.parse(response.body).bugs[0]);
-
             var img_alias = JSON.parse(response.body).bugs[0].alias[0];
-
             file_exitst(config.config.img_path + "original/" + img_alias + "_0.png", function (err, resp) {
-                
                 if (resp) {
-                    console.log(resp);
-
                     if (req.query.resolution == "full") {
                         res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");
                     } else if (req.query.resolution == "medium") {
@@ -122,11 +114,11 @@ router.get('/image_issue', function (req, res) {
                     } else if (req.query.resolution == "small") {
                         res.type('png').sendFile(config.config.img_path + "small/" + img_alias + "_0_144x144.png");
                     } else {
-                        res.send([{}]);
+                        res.status(404).send('Not found');
                     }
                 }
                 else {
-                    res.send([{}]);
+                    res.status(404).send('Not found');
                 }
             });
             /*if (file_exitst(config.config.img_path + "original/" + img_alias + "_0.png")) {
@@ -135,7 +127,7 @@ router.get('/image_issue', function (req, res) {
             */            
         }
         else {
-            res.send([{}]);
+            res.status(404).send('Not found');
         }
     });
 

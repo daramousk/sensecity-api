@@ -419,7 +419,7 @@ router.post('/issue', function (req, res) {
                             console.log(err1);
                         } else {
 
-                            if (has_img == 1) {
+                            if (has_img == 0) {
                                 var base64img = req.body.image_name;
                                 var base64Data = base64img.split(",");
 

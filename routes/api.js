@@ -401,9 +401,9 @@ router.post('/issue', function (req, res) {
 
                     entry.image_name = '';
 
-                    console.log("msg=" + req.body.image_name.indexOf("base64"));
+                    var has_img = 0;
                     if (req.body.image_name.indexOf("base64") !== -1) {
-                        console.log("msg=" + req.body.image_name.indexOf("base64"));
+                        has_img = 1;
                     }
                     if (response.length > 0) {
 
@@ -418,67 +418,69 @@ router.post('/issue', function (req, res) {
                         if (err1) {
                             console.log(err1);
                         } else {
-                            
-                            var base64img = req.body.image_name;
-                            var base64Data = base64img.split(",");
 
-                            //console.log(base64Data[0]);
-                            //console.log(base64Data[1]);
-                            var default_img_id = 0;
-                            var source_img_file = config.config.img_path;
+                            if (has_img == 1) {
+                                var base64img = req.body.image_name;
+                                var base64Data = base64img.split(",");
 
-                            require("fs").writeFile(source_img_file + "original/" + resp._id + "_" + default_img_id + ".png", base64Data[1], 'base64', function (err) {
-                                console.log(err);
+                                //console.log(base64Data[0]);
+                                //console.log(base64Data[1]);
+                                var default_img_id = 0;
+                                var source_img_file = config.config.img_path;
 
-                                resizeCrop({
-                                    src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
-                                    dest: source_img_file + "small/" + resp._id + "_" + default_img_id + "_144x144.png",
-                                    height: 144,
-                                    width: 144,
-                                    gravity: "center"
-                                }, function (err, filePath) {
-                                    // do something 
+                                require("fs").writeFile(source_img_file + "original/" + resp._id + "_" + default_img_id + ".png", base64Data[1], 'base64', function (err) {
                                     console.log(err);
-                                });
 
-
-                                resizeCrop({
-                                    src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
-                                    dest: source_img_file + "medium/" + resp._id + "_" + default_img_id + "_450x450.png",
-                                    height: 450,
-                                    width: 450,
-                                    gravity: "center"
-                                }, function (err, filePath) {
-                                    // do something 
-                                    console.log(err);
-                                });
-
-                            });
-
-                            if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
-                                if (response.length > 0) {
-
-                                    var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
-
-                                    request({
-                                        url: bugUrlRest + "/rest/bug",
-                                        method: "POST",
-                                        json: bugData1
-                                    }, function (error, bugResponse, body) {
-                                        // console.log(JSON.stringify(bugResponse));
-                                        if (error != null) { console.log(error) };
-
-                                        if (!error && bugResponse.statusCode === 200) {
-                                            // console.log(body);
-                                        } else {
-                                            console.log("error: " + error);
-                                            console.log("bugResponse.statusCode: " + bugResponse.statusCode);
-                                            console.log("bugResponse.statusText: " + bugResponse.statusText);
-                                        }
+                                    resizeCrop({
+                                        src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
+                                        dest: source_img_file + "small/" + resp._id + "_" + default_img_id + "_144x144.png",
+                                        height: 144,
+                                        width: 144,
+                                        gravity: "center"
+                                    }, function (err, filePath) {
+                                        // do something 
+                                        console.log(err);
                                     });
-                                }
-                            }
 
+
+                                    resizeCrop({
+                                        src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
+                                        dest: source_img_file + "medium/" + resp._id + "_" + default_img_id + "_450x450.png",
+                                        height: 450,
+                                        width: 450,
+                                        gravity: "center"
+                                    }, function (err, filePath) {
+                                        // do something 
+                                        console.log(err);
+                                    });
+
+                                });
+
+                                if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
+                                    if (response.length > 0) {
+
+                                        var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
+
+                                        request({
+                                            url: bugUrlRest + "/rest/bug",
+                                            method: "POST",
+                                            json: bugData1
+                                        }, function (error, bugResponse, body) {
+                                            // console.log(JSON.stringify(bugResponse));
+                                            if (error != null) { console.log(error) };
+
+                                            if (!error && bugResponse.statusCode === 200) {
+                                                // console.log(body);
+                                            } else {
+                                                console.log("error: " + error);
+                                                console.log("bugResponse.statusCode: " + bugResponse.statusCode);
+                                                console.log("bugResponse.statusText: " + bugResponse.statusText);
+                                            }
+                                        });
+                                    }
+                                }
+
+                            }
                         }
                         return_var = { "_id": resp._id };
 

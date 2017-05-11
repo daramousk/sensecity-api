@@ -982,7 +982,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
         }
 
-        var bugParams = "f1=component&o1=equals&product="+ resp[0].city+"&v1=Τμήμα επίλυσης προβλημάτων&include_fields=id,alias,status";
+        var bugParams = "?f1=component&o1=equals&product="+ resp[0].city+"&v1=Τμήμα επίλυσης προβλημάτων&include_fields=id,alias,status";
        
 
         request({

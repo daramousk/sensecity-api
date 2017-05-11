@@ -968,11 +968,11 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_severity = 1;
     req.send_priority = 1;
 
-    console.log(req);
-    console.log(req.headers['x-uuid']);
+    //console.log(req);
+    //console.log(req.headers['x-uuid']);
     var _city_department;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
-        console.log(resp);
+        //console.log(resp);
         console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
             if (resp[0].department == '') {
@@ -989,9 +989,9 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
             method: "GET"
         }, function (error, response, body) {
-            console.log(JSON.parse(body).bugs[0]);
+           // console.log(JSON.parse(body).bugs[0]);
             if (JSON.parse(body).bugs[0] != undefined) {
-                console.log("===>" + JSON.parse(body).bugs[0].component);
+                //console.log("===>" + JSON.parse(body).bugs[0].component);
 
                 if (JSON.parse(body).bugs[0].component == _city_department) {
                     get_issues(req, function (result) {

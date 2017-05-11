@@ -968,7 +968,8 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_severity = 1;
     req.send_priority = 1;
 
-    console.log(req.headers);
+    console.log(req.headers.x-role);
+    console.log(req.headers.x-uuid);
 
     get_issues(req, function (result) {
 

@@ -16,6 +16,7 @@ var morgan = require('morgan');
 var app = express();
 
 var resizeCrop = require('resize-crop');
+var file_exitst = require('file-exists');
 
 app.use(morgan('combined'));
 
@@ -102,17 +103,27 @@ router.get('/image_issue', function (req, res) {
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        
-        var img_alias = JSON.parse(response.body).bugs[0].alias[0];
-        if (req.query.resolution == "full") {
-            res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");
-        } else if (req.query.resolution == "medium") {
-            res.type('png').sendFile(config.config.img_path + "medium/" + img_alias + "_0_450x450.png");
-        } else if (req.query.resolution == "small") {
-            res.type('png').sendFile(config.config.img_path + "small/" + img_alias + "_0_144x144.png");
-        } else {
+        console.log("00==>" + JSON.stringify(response.body).bugs);
+        if (JSON.stringify(response.body).bugs !== undefined) {
+            console.log("11==>" + JSON.stringify(response.body).bugs[0]);
+
+            var img_alias = JSON.parse(response.body).bugs[0].alias[0];
+
+            fileExists(config.config.img_path + "original/" + img_alias + "_0.png", (err, exists) => console.log(exists));
+
+            if (req.query.resolution == "full") {
+                res.type('png').sendFile(config.config.img_path + "original/" + img_alias + "_0.png");
+            } else if (req.query.resolution == "medium") {
+                res.type('png').sendFile(config.config.img_path + "medium/" + img_alias + "_0_450x450.png");
+            } else if (req.query.resolution == "small") {
+                res.type('png').sendFile(config.config.img_path + "small/" + img_alias + "_0_144x144.png");
+            } else {
+                res.send([{}]);
+            }
+        }
+        else {
             res.send([{}]);
-        }        
+        }
     });
 
     //res.sendFile("http://testcity1.sense.city/images/video_screen.png");

@@ -576,10 +576,9 @@ router.post('/issue', function (req, res) {
         });
     }
 
-
-
     */
 
+    /**/
 
 
     if (req.body.mobile_num != undefined) {
@@ -734,7 +733,7 @@ router.post('/issue', function (req, res) {
 
         });
     }
-
+    /**/
    
 });
 
@@ -955,7 +954,8 @@ router.get('/issue', function (req, res) {
     req.send_severity = 0;
     req.send_priority = 0;
 
-    get_issues(req, function (result) {        
+    get_issues(req, function (result) {
+        console.log(result);
         res.send(result);
     });
 
@@ -993,7 +993,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             if (JSON.parse(body).bugs[0] != undefined) {
                 //console.log("===>" + JSON.parse(body).bugs[0].component);
 
-                if (JSON.parse(body).bugs[0].component == _city_department) {
+                if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
                     get_issues(req, function (result) {
 
                         res.send(result);

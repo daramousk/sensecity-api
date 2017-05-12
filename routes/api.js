@@ -356,7 +356,7 @@ router.post('/image_issue', function (req, res) {
 
 //POST router
 router.post('/issue', function (req, res) {    
-
+/*
     console.log('Ini');
 
     if (req.body.mobile_num != undefined) {
@@ -578,10 +578,10 @@ router.post('/issue', function (req, res) {
 
 
 
+    */
 
 
 
-/*
     if (req.body.mobile_num != undefined) {
         var _mobile_num = '';
         var _email_user = '';
@@ -735,7 +735,7 @@ router.post('/issue', function (req, res) {
         });
     }
 
-   */
+   
 });
 
 router.post('/issue/:id', function (req, res) {

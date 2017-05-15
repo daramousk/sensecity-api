@@ -962,7 +962,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_severity = 1;
     req.send_priority = 1;
 
-    console.log("00:" + JSON.stringify(req));
+    console.log("00:" + req);
 
 
 

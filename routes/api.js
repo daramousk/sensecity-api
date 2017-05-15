@@ -2269,7 +2269,7 @@ var get_issues = function (req, callback) {
 
 
                 console.log("5:" + bugParams1);
-
+                console.log("511111:");
 
                 //console.log("bugParams1=>"+bugParams1);
 
@@ -2283,7 +2283,7 @@ var get_issues = function (req, callback) {
 
 
                     console.log("6:" + response);
-
+                    console.log("61:" + error);
 
                     var i_count = 0;
                     var bugs_length = 0;

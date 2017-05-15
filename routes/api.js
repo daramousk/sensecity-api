@@ -1001,7 +1001,7 @@ router.get('/admin/issue', authentication, function (req, res) {
            // console.log(JSON.parse(body).bugs[0]);
 
 
-            console.log("2:" + JSON.stringify(response));
+            console.log("2:" + JSON.stringify(body));
 
 
             if (JSON.parse(body).bugs[0] != undefined) {

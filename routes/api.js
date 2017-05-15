@@ -970,13 +970,21 @@ router.get('/admin/issue', authentication, function (req, res) {
         }
 
         var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3="+resp[0].city+"&include_fields=id,alias,status,component";
-       
+
+
+        console.log("1:" + resp);
+
 
         request({
             url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
             method: "GET"
         }, function (error, response, body) {
            // console.log(JSON.parse(body).bugs[0]);
+
+
+            console.log("2:" + response);
+
+
             if (JSON.parse(body).bugs[0] != undefined) {
                 //console.log("===>" + JSON.parse(body).bugs[0].component);
 
@@ -1030,7 +1038,7 @@ var get_issues = function (req, callback) {
     }
 
     var x_uuid = req.get('x-uuid');
-    if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email"))) {
+    if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email"))) {        
         if (req.query.bug_id == "" && req.query.mobile == "" && req.query.email == "") {
             callback([{}]);
         } else {
@@ -1683,6 +1691,12 @@ var get_issues = function (req, callback) {
 
             _user = false;
 
+
+
+            console.log("3:");
+
+
+
             if (!req.query.hasOwnProperty('city') && _coordinates != '') {
 
                 var _cordinates_ar = JSON.parse(req.query.coordinates);
@@ -2225,10 +2239,18 @@ var get_issues = function (req, callback) {
                 //end else if there is coordinates
             } else {
 
+
+                console.log("4:");
+
+
                 _product = req.query.city;
 
                 //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
                 var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
+
+
+                console.log("5:" + bugParams1);
+
 
                 //console.log("bugParams1=>"+bugParams1);
 

@@ -2261,6 +2261,11 @@ var get_issues = function (req, callback) {
                     url: bugUrlRest + "/rest/bug" + bugParams1,
                     method: "GET"
                 }, function (error, response, body) {
+
+
+                    console.log("6:" + response);
+
+
                     var i_count = 0;
                     var bugs_length = 0;
 
@@ -2280,7 +2285,12 @@ var get_issues = function (req, callback) {
                         // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
                         if (_user_extra == 0) {
                             Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
-                            
+
+
+                                console.log("7:" + issue);
+
+
+
                                 //new start
                                 if (err != null) { console.log("err2   =   " + err); }
                                 if (_kml == 0) {
@@ -2408,7 +2418,12 @@ var get_issues = function (req, callback) {
                             }).sort({ "create_at": _sort_mongo });//.limit(_limit);
                         } else {
                             Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
-                            
+
+
+                                console.log("8:" + issue);
+
+
+
                                 //new start
                                 if (err != null) { console.log("err2   =   " + err); }
                                 if (_kml == 0) {
@@ -2540,7 +2555,13 @@ var get_issues = function (req, callback) {
                     } else {
                         if (_user_extra == 0) {
                             Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
-                            
+
+
+                                console.log("9:" + issue);
+
+
+
+
                                 //new start
                                 if (err != null) { console.log("err3   =   " + err); }
                                 if (_kml == 0) {
@@ -2665,7 +2686,14 @@ var get_issues = function (req, callback) {
                         } else {
                             //console.log("_user_extra===>" + _user_extra);
                             Issue.find({ "_id": { $in: ids } }, { /*"user": 0*/ }, function (err, issue) {
-                            
+
+
+
+                                console.log("10:" + issue);
+
+
+
+
                             //new start
                             if (err != null) { console.log("err3   =   " + err); }
                             if (_kml == 0) {

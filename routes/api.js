@@ -64,9 +64,6 @@ function authentication(req, res, next) {
     console.log("000:" + req.get('x-uuid'));
     if (req.get('x-uuid') != undefined) {
         Role.find({ uuid: req.get('x-uuid') }, function (err, response) {
-            console.log("001:" + response);
-            console.log("002:" + err);
-            console.log("003:" + err);
             response[0]["mongo"]
             if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
                 next();

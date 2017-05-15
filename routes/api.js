@@ -61,7 +61,6 @@ function authorization(req, res, next) {
 
 function authentication(req, res, next) {
 
-    console.log("000:" + req.get('x-uuid'));
     if (req.get('x-uuid') != undefined) {
         Role.find({ uuid: req.get('x-uuid') }, function (err, response) {
             response[0]["mongo"]
@@ -183,7 +182,7 @@ router.post('/image_issue', function (req, res) {
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding,
             method: "GET"
         }, function (error, response) {
-            //console.log(JSON.stringify(response));
+
             if (JSON.parse(response.body).status == "OK") {
                 city_address = JSON.parse(response.body).results[0].formatted_address;
             } else {
@@ -245,8 +244,7 @@ router.post('/image_issue', function (req, res) {
                                 var base64img = req.body.image_name;
                                 var base64Data = base64img.split(",");
 
-                                //console.log(base64Data[0]);
-                                //console.log(base64Data[1]);
+
                                 var default_img_id = 0;
                                 var source_img_file = config.config.img_path;
 
@@ -473,9 +471,7 @@ router.post('/issue', function (req, res) {
                             if (has_img == 1) {
                                 var base64img = req.body.image_name;
                                 var base64Data = base64img.split(",");
-
-                                //console.log(base64Data[0]);
-                                //console.log(base64Data[1]);
+                                
                                 var default_img_id = 0;
                                 var source_img_file = config.config.img_path;
 
@@ -992,23 +988,13 @@ router.get('/admin/issue', authentication, function (req, res) {
         } else {
             var bugParams = "?f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
         }
-
-        console.log("1:" + resp);
-
-
+        
         request({
             url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
             method: "GET"
         }, function (error, response, body) {
-           // console.log(JSON.parse(body).bugs[0]);
-
-
-            console.log("2:" + JSON.stringify(body));
-
-
             if (JSON.parse(body).bugs[0] != undefined) {
-                //console.log("===>" + JSON.parse(body).bugs[0].component);
-
+            
                 if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
                     get_issues(req, function (result) {
 
@@ -1023,10 +1009,6 @@ router.get('/admin/issue', authentication, function (req, res) {
             } 
         });
     });
-
-   
-   
-
 });
 
 var get_issues = function (req, callback) {
@@ -1275,9 +1257,7 @@ var get_issues = function (req, callback) {
                 }
                 else {
                     if (_user_extra == 0) {
-                        Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
-                        
-                            //console.log("bug_id=====2===>" + _user_extra );
+                        Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {                            
                             //new start
                             if (err != null) { console.log("err   =   " + err); }
                             
@@ -1332,7 +1312,6 @@ var get_issues = function (req, callback) {
                     }
                     else {
                         Issue.find({ "_id": { $in: ids } }, function (err, issue) {
-                           // console.log("mpika 2");
                             //new start
                             if (err != null) { console.log("err   =   " + err); }
                             
@@ -1711,13 +1690,7 @@ var get_issues = function (req, callback) {
             }
 
             _user = false;
-
-
-
-            console.log("3:");
-
-
-
+            
             if (!req.query.hasOwnProperty('city') && _coordinates != '') {
 
                 var _cordinates_ar = JSON.parse(req.query.coordinates);
@@ -1729,7 +1702,6 @@ var get_issues = function (req, callback) {
 
                         var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
                         
-                        //console.log("bugParams1===>"+bugParams1);
                         var ids = [];
                         var bugzilla_results = [];
                         var issue_return = [];
@@ -2259,22 +2231,12 @@ var get_issues = function (req, callback) {
                 });
                 //end else if there is coordinates
             } else {
-
-
-                console.log("4:");
-
-
+            
                 _product = req.query.city;
 
                 //var bugParams1 = "?product=" + _product + "&j_top=OR&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthan&v3=" + _startdate + "&f3=creation_ts&o3=greaterthan&v4=" + _issue + "&f4=cf_issues&o4=anywordssubstr&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + "&include_fields=id,alias,status,cf_authedicated";
                 var bugParams1 = "?product=" + _product + "&query_format=advanced&limit=" + _limit + _status + "&v2=" + _enddate + "&f2=creation_ts&o2=lessthaneq&v3=" + _startdate + "&f3=creation_ts&o3=greaterthaneq&v5=" + _cf_authedicated + _offset + "&f5=cf_authedicated&o5=" + _cf_authedicated_contition + _departments + _sort + _summary + _resolution + "&include_fields=id,alias,status,cf_authedicated,resolution,cf_city_address" + _bug_extra;
-
-
-                console.log("5:" + bugParams1);
-                console.log("511111:");
-
-                //console.log("bugParams1=>"+bugParams1);
-
+                
                 var ids = [];
                 var bugzilla_results = [];
                 var issue_return = [];
@@ -2282,16 +2244,10 @@ var get_issues = function (req, callback) {
                     url: bugUrlRest + "/rest/bug" + bugParams1,
                     method: "GET"
                 }, function (error, response, body) {
-
-
-                    console.log("6:" + response);
-                    console.log("61:" + error);
-
+                
                     var i_count = 0;
                     var bugs_length = 0;
-
-                    //console.log(JSON.stringify(response.body));
-
+                    
                     if (JSON.parse(body).bugs != undefined) {
                         bugs_length = JSON.parse(body).bugs.length;
                     }
@@ -2306,12 +2262,7 @@ var get_issues = function (req, callback) {
                         // if not we have error like {CastError: Cast to ObjectId failed for value "12345g43" at path "_id"}.
                         if (_user_extra == 0) {
                             Issue.find({ "_id": { $in: ids } }, { "user": 0, "image_name": _image }, function (err, issue) {
-
-
-                                console.log("7:" + issue);
-
-
-
+                            
                                 //new start
                                 if (err != null) { console.log("err2   =   " + err); }
                                 if (_kml == 0) {
@@ -2433,18 +2384,11 @@ var get_issues = function (req, callback) {
 
                                     callback(issue_return);
                                 }
-
-                                //new end
-                                //res.send(issue);
+                                
                             }).sort({ "create_at": _sort_mongo });//.limit(_limit);
                         } else {
                             Issue.find({ "_id": { $in: ids } }, { "image_name": _image }, function (err, issue) {
-
-
-                                console.log("8:" + issue);
-
-
-
+                            
                                 //new start
                                 if (err != null) { console.log("err2   =   " + err); }
                                 if (_kml == 0) {
@@ -2576,13 +2520,7 @@ var get_issues = function (req, callback) {
                     } else {
                         if (_user_extra == 0) {
                             Issue.find({ "_id": { $in: ids } }, { "user": 0 }, function (err, issue) {
-
-
-                                console.log("9:" + issue);
-
-
-
-
+                            
                                 //new start
                                 if (err != null) { console.log("err3   =   " + err); }
                                 if (_kml == 0) {
@@ -2705,16 +2643,8 @@ var get_issues = function (req, callback) {
                                 //res.send(issue);
                             }).sort({ "create_at": _sort_mongo });//.limit(_limit);
                         } else {
-                            //console.log("_user_extra===>" + _user_extra);
                             Issue.find({ "_id": { $in: ids } }, { /*"user": 0*/ }, function (err, issue) {
-
-
-
-                                console.log("10:" + issue);
-
-
-
-
+                            
                             //new start
                             if (err != null) { console.log("err3   =   " + err); }
                             if (_kml == 0) {
@@ -3147,7 +3077,6 @@ router.get('/fullissue/:id', function (req, res) {
 					
                     Issue.find({"_id":req.params.id}, {"user":0}, function (err, issue) {
 						
-                        //console.log("issue      ===============>>>>>>>>" + JSON.stringify(issue.length));
                         if (issue.length != 0) {
                             issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '", "city_address":"' + body_var.bugs[0].cf_city_address + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + ']';
 
@@ -3168,14 +3097,14 @@ router.get('/fullissue/:id', function (req, res) {
 });
 
 router.post('/is_activate_user', function (req, res) {
-    //console.log(req);
+
     var _activate_email = '';
     var _activate_sms = '';
 
     if (req.body.email != undefined || req.body.email != '') {
         act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
             var _res8 = JSON.stringify(res8);
-            //console.log("_res8.length" + _res8.length);
+
             if (_res8.length != '2') {
                 _activate_email = res8[0].activate;
             }
@@ -3183,11 +3112,11 @@ router.post('/is_activate_user', function (req, res) {
 
                 act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {
                     var _res9 = JSON.stringify(res9);
-                    //console.log("_res9.length" + _res9.length);
+
                     if (_res9.length != '2') {
                         _activate_sms = res9[0].activate_sms;
                     } 
-                    //console.log("activate_email" + _activate_email + "|activate_sms" + _activate_sms);
+
                     res.send([{ "activate_email": _activate_email, "activate_sms": _activate_sms}]);
                 });
             }
@@ -3213,7 +3142,7 @@ router.post('/activate_user', function (req, res) {
 
                     for (var i = 0; i < 4; i++)
                         text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-                    //console.log(JSON.stringify(resp));
+
                     if (resp != '') {
                         act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission.communicate_with.email": "true", "activate": text_act, } }, function (err1, resp1) {
                             if (resp1.ok == 1 && req.query.email!="") {
@@ -3245,33 +3174,10 @@ router.post('/activate_user', function (req, res) {
                             } else {
                                 res.send([{ "Status": "saved" }]);
                             }
-                        });
-
-                        /*
-                        request({
-                            url: "https://api.theansr.com/v1/sms",
-                            method: "POST",
-                            form: {'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΕΙΝΑΙ 5555'},
-                            headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data'}
-                        }, function (err, response) {
-                            res.send(response.body);
-                            //if call_id
-                            });
-                        */
-
-
-                        /*console.log("1="+JSON.stringify(resp));
-                        if (resp.permission.communicate_with.email != 1) {
-                            res.send([{ "test": "2" }]);
-                        }
-                        else {
-                            res.send([{ "test": "1a" }]);
-                        }*/
+                        });                        
 
                     } else {
-
-
-                       // console.log("resp1=" + resp);
+                    
 
                         var text_act = "";
                         var possible = "0123456789";
@@ -3309,13 +3215,12 @@ router.post('/activate_user', function (req, res) {
                                         return console.log(error);
                                     }
                                     res.send([{ "Status": "send" }]);
-                                    //  console.log('Message sent: ' + info.response);
+                                    
                                 });
                             } else {
                                 res.send([{ "Status": "saved" }]);
                             }
-
-                           // res.send([{ "test": JSON.stringify(resp) }]);
+                            
                         });
 
                     }
@@ -3328,30 +3233,21 @@ router.post('/activate_user', function (req, res) {
 
                 var mob_municipality = '';
                 var mob_sms_key_fibair = '';
-
-                //console.log(req.query.lat);
-                //console.log(req.query.long);
-                //console.log(req.query.city);
-
+                
                 if (req.query.lat != undefined && req.query.long != undefined) {
                     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1 }, function (req_mun, res_mun) {
                         if (res_mun != undefined) {
                             if (res_mun[0].sms_key_fibair != undefined) {
                                 mob_municipality = res_mun[0].municipality;
                                 mob_sms_key_fibair = res_mun[0].sms_key_fibair;
-                                //console.log(mob_municipality);
-                                //console.log(mob_sms_key_fibair);
-
 
                                 if (mob_sms_key_fibair != '') {
-                                    // console.log("test 2");
+                                    
                                     act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
                                         var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
                                         if (err)
                                             throw err;
-
-                                        //   console.log("");
-                                        //    console.log(resp);
+                                            
                                         if (resp != '') {
 
                                             request({
@@ -3366,36 +3262,9 @@ router.post('/activate_user', function (req, res) {
                                                 act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission.communicate_with.sms": "true", "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
                                                     res.send({ "status": "send sms" });
                                                 });
-
-
-                                                //if call_id
+                                                
                                             });
-
-                                            // user exist update the name & email
-                                            //var text_act = "";
-                                            //var possible = "0123456789";
-
-                                            //for (var i = 0; i < 4; i++)
-                                            //  text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-
-                                            //act_User.update({ "_id": resp[0]._id }, { "name": req.query.name, "mobile_num": req.query.mobile, "permission": { "communicate_with": { "sms": "true" } } }, { "upsert": true }, function (err1, resp1) {
-                                            //if (resp1.ok == 1) {
-                                            //    console.log("Send sms verify code");
-                                            /*
-                                            request({
-                                                url: "https://api.theansr.com/v1/sms",
-                                                method: "POST",
-                                                form: { 'sender': 'SenseCity', 'recipients': '306974037897', 'body': 'Ο ΚΩΔΙΚΟΣ ΠΙΣΤΟΠΟΙΗΣΗΣ ΕΙΝΑΙ ' + text_act },
-                                                headers: { "Authorization": 'Basic MDk0YTk1ZDlkZTc3MDQ2NTY2NjNkNDRkMjY5YjM3NTM1OTJkNTYwYTo=', 'content-type': 'application/form-data' }
-                                            }, function (err, response) {
-                                                res.send(response.body);
-                                                //if call_id
-                                            });*/
-
-                                            //  }
-                                            //});
-
-
+                                            
                                         } else {
 
                                             request({
@@ -3406,9 +3275,7 @@ router.post('/activate_user', function (req, res) {
                                             }, function (err1, response) {
                                                 if (err)
                                                     console.log(err1);
-
-                                                // console.log(JSON.parse(response.body).verification_pin);
-
+                                                    
                                                 var entry_active_user = new act_User({
                                                     uuid: req.query.uuid,
                                                     name: req.query.name,
@@ -3425,43 +3292,20 @@ router.post('/activate_user', function (req, res) {
 
                                                     res.send([{ "status": "send sms" }]);
                                                 });
-
-
-
-                                                //if call_id
                                             });
-
-                                            //User doesn't exist insert to active_users collection
-                                            // var text_act = "";
-                                            // var possible = "0123456789";
-
-                                            //  for (var i = 0; i < 4; i++)
-                                            //     text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-
-
-
                                         }
-
                                     });
                                 }
-                                
-
                             } else {
-                                //console.log("noresults");
                                 res.send([{}]);
                             }
                         } else {
-                            //console.log("noresults");
                             res.send([{}]);
                         }
                     });
                 }
-                
             }
-            
     }
-
-    
 });
 
 router.post('/activate_city_policy', function (req, res) {
@@ -3507,9 +3351,7 @@ router.post('/activate_email', function (req, res) {
 });
 
 router.post('/activate_mobile', function (req, res) {
-    //console.log("req=====>" + req.query);
     if (req.query.uuid != "web-site") {
-        //console.log(req);
         act_User.update({ "uuid": req.query.uuid, "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
             $set: {
                 "activate_sms": "1", "permission.communicate_with.sms": "true" 
@@ -3630,8 +3472,8 @@ router.post('/active_users', function (req, res) {
 							permission: {communicate_with: {email: req.body.permission.communicate_with.email, sms: req.body.permission.communicate_with.sms}}
 						}, function (err, resp1) {
 							if (err)
-								throw err;
-							//console.log(" Mobile use 1   =============>>>>>>>>  " + JSON.stringify(resp1));
+                                throw err;
+
 							if(resp1.activate != "1"){
 								
                                 var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
@@ -3770,28 +3612,19 @@ router.post('/admin/bugs/search', authorization, function (req, res) {
 router.post('/admin/bugs/update', authorization, function (req, res) {
     req.body.token = bugToken;
 
-    //console.log("request   =>> " + JSON.stringify(req.body));
-
     request({
         url: bugUrlRest + "/rest/bug/" + req.body.ids[0],
         method: "PUT",
         json: req.body
     }, function (error, response, body) {
 
-        //console.log(req.body);
-
         if (req.body.cf_city_address != undefined) {
-            if (req.body.cf_city_address != '') {
-                console.log("https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(req.body.cf_city_address) + "&key=" + config.config.key_geocoding);
+            if (req.body.cf_city_address != '') {                
                 request({
                     url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(req.body.cf_city_address) + "&key=" + config.config.key_geocoding,
                     method: "GET"
                 }, function (error, response) {
-                    //console.log(response.body);
-                   // console.log(response.body.results);
-                   // console.log(JSON.parse(response.body).results[0].geometry.location.lat);
-                   // console.log(JSON.parse(response.body).results[0].geometry.location.lng);
-                    console.log(JSON.stringify(response));
+
                     var lat = JSON.parse(response.body).results[0].geometry.location.lat;
                     var lng = JSON.parse(response.body).results[0].geometry.location.lng;
 
@@ -3801,7 +3634,6 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                         url: bugUrlRest + "/rest/bug" + bugParams1,
                         method: "GET"
                     }, function (error1, response, body) {
-                        //console.log(JSON.parse(body).bugs[0].alias[0]);
 
                         var object_id = JSON.parse(body).bugs[0].alias[0];
 
@@ -3849,17 +3681,14 @@ router.post('/admin/bugs/comment', authorization, function (req, res) {
 });
 
 router.post('/admin/bugs/comment/add', authorization, function (req, res) {
-    //console.log("req=====>" + req.body.id);
-
+   
     req.body.token = bugToken;
     request({
         url: bugUrlRest + "/rest/bug/" + req.body.id + " /comment",
         method: "POST",
         json: req.body
     }, function (error, response, body) {
-        //console.log("send sms");
-       // console.log(JSON.stringify(body));
-       // console.log("-------");
+       
         var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias,status,product,cf_mobile";
 
         request({
@@ -3876,7 +3705,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             }
 
             Municipality.find({ "municipality": JSON.parse(body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
-                //console.log(res11[0].sms_key_fibair);
+                
                 var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
 
                 if (mob_sms_key_fibair_base64 != undefined) {
@@ -3961,18 +3790,11 @@ router.get('/logout', authentication, function (req, res) {
 
 function is_authenticate(req, res) {
     if (req.uuid != undefined && req.role != undefined) {
-        Role.find({ "uuid": req.uuid, "role": req.role }, function (request, response) {
-           // console("resp => " + response);
+        Role.find({ "uuid": req.uuid, "role": req.role }, function (request, response) {     
         });
-
-    }
-    //console.log("req => " + JSON.stringify(req));
-   // console.log("res => " + req.uuid);
-
+    }    
     return true;
-
 }
-
 
 // Return router
 module.exports = router;

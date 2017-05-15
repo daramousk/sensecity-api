@@ -63,7 +63,9 @@ function authentication(req, res, next) {
 
     console.log("000:" + req);
 
-    Role.find({uuid: req.get('x-uuid')}, function (err, response) {
+    Role.find({ uuid: req.get('x-uuid') }, function (err, response) {
+        console.log("001:" + response);
+        console.log("002:" + err);
         if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
             next();
         } else {

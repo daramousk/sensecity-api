@@ -987,8 +987,11 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
         }
 
-        var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3="+resp[0].city+"&include_fields=id,alias,status,component";
-
+        if (req.query.bug_id != undefined) {
+            var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+        } else {
+            var bugParams = "?f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+        }
 
         console.log("1:" + resp);
 

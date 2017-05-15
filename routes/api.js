@@ -363,7 +363,7 @@ router.post('/image_issue', function (req, res) {
 
 //POST router
 router.post('/issue', function (req, res) {    
-/*
+/**/
     console.log('Ini');
 
     if (req.body.mobile_num != undefined) {
@@ -583,9 +583,9 @@ router.post('/issue', function (req, res) {
         });
     }
 
-    */
-
     /**/
+
+    /*
 
 
     if (req.body.mobile_num != undefined) {
@@ -727,7 +727,7 @@ router.post('/issue', function (req, res) {
 
         });
     }
-    /**/
+    */
    
 });
 
@@ -962,7 +962,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_severity = 1;
     req.send_priority = 1;
 
-
+    console.log("xxx:" + authentication);
     console.log("00:" + req);
 
 

@@ -943,6 +943,8 @@ router.get('/issue', function (req, res) {
     req.send_component = 0;
     req.send_severity = 0;
     req.send_priority = 0;
+    
+    console.log("1");
 
     get_issues(req, function (result) {
         console.log(result);
@@ -957,8 +959,9 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_component = 1;
     req.send_severity = 1;
     req.send_priority = 1;
+    console.log("1");
 
-    console.log("00:" + req);
+    
 
 
 
@@ -982,7 +985,6 @@ router.get('/admin/issue', authentication, function (req, res) {
                 _city_department = resp[0].department;
             }
         }
-
         if (req.query.bug_id != undefined) {
             var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
         } else {

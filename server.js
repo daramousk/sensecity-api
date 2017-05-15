@@ -18,12 +18,10 @@ var app = express();
 /*app.use(bodyParser.urlencoded({limit: '10mb'},{extended: true}));*/
 app.use(bodyParser.json({limit: '100mb'}));
 
-console.log(config.config.log_path);
-
 //var logDirectory = path.join(config.config.path_log, '');
 
 // ensure log directory exists
-fs.existsSync(config.config.log_path) || fs.mkdirSync(config.config.log_path);
+/*fs.existsSync(config.config.log_path) || fs.mkdirSync(config.config.log_path);
 
 var dateObj = new Date();
 
@@ -35,7 +33,7 @@ var accessLogStream = rfs('access' + dateObj.getUTCFullYear() + '' + (dateObj.ge
 
 // setup the logger
 app.use(morgan('combined', { stream: accessLogStream }));
-
+*/
 
 
 

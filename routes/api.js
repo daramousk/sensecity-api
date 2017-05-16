@@ -986,13 +986,13 @@ router.get('/admin/issue', authentication, function (req, res) {
         } else {
             var bugParams = "?f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
         }
-        
+        console.log("1::=>" + bugParams);
         request({
             url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
             method: "GET"
         }, function (error, response, body) {
             if (JSON.parse(body).bugs[0] != undefined) {
-            
+                console.log("1:::::->" + JSON.parse(body).bugs[0].component +"=="+ _city_department));
                 if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
                     get_issues(req, function (result) {
 

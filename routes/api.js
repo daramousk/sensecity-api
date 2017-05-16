@@ -999,9 +999,10 @@ router.get('/admin/issue', authentication, function (req, res) {
         }
         console.log("1::=>" + bugParams);
         request({
-            url: bugUrlRest + "/rest/bug" + bugParams,//encodeURIComponent(bugParams),
+            url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
             method: "GET"
         }, function (error, response, body) {
+            console.log("1:::==>=>" + body);
             if (JSON.parse(body).bugs[0] != undefined) {
                 console.log("1:::::->" + JSON.parse(body).bugs[0].component +"=="+ _city_department);
                 if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {

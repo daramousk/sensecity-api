@@ -971,7 +971,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     var _city_department;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
 
-        console.log("1:->" + JSON.stringify(resp));
+        console.log("1:->" + resp[0].department);
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
@@ -981,6 +981,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                 _city_department = resp[0].department;
             }
         }
+
         if (req.query.bug_id != undefined) {
             var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
         } else {

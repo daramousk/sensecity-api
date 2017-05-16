@@ -992,7 +992,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             method: "GET"
         }, function (error, response, body) {
             if (JSON.parse(body).bugs[0] != undefined) {
-                console.log("1:::::->" + JSON.parse(body).bugs[0].component +"=="+ _city_department));
+                console.log("1:::::->" + JSON.parse(body).bugs[0].component +"=="+ _city_department);
                 if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
                     get_issues(req, function (result) {
 

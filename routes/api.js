@@ -332,7 +332,7 @@ router.post('/image_issue', function (req, res) {
                         }
 
 
-                        console.log(resp._id);
+                        //console.log(resp._id);
 
 
 
@@ -559,7 +559,7 @@ router.post('/issue', function (req, res) {
                         }
 
 
-                        console.log(resp._id);
+                        //console.log(resp._id);
 
 
 
@@ -879,7 +879,7 @@ router.post('/issue/:id', function (req, res) {
                                                                             form: { 'sender': JSON.parse(_resp).municipality, 'recipients': '30' + req.body.mobile_num, 'body': JSON.parse(_resp).municipality + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ ' + body_parse.bugs[0].id + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(_resp).municipality + '.sense.city/bugid.html?issue=' + body_parse.bugs[0].id },
                                                                             headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                                                         }, function (err, response) {
-                                                                            console.log(response);
+                                                                            //console.log(response);
                                                                             //if call_id
                                                                         });
 
@@ -944,10 +944,9 @@ router.get('/issue', function (req, res) {
     req.send_severity = 0;
     req.send_priority = 0;
     
-    console.log("1");
 
     get_issues(req, function (result) {
-        console.log(result);
+        //console.log(result);
         res.send(result);
     });
 
@@ -959,19 +958,10 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_component = 1;
     req.send_severity = 1;
     req.send_priority = 1;
-    console.log("1");
-
-    
 
 
-
-
-    //console.log(req);
-    //console.log(req.headers['x-uuid']);
     var _city_department;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
-
-        console.log("1:->" + resp[0].department);
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
@@ -997,14 +987,14 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
             
         }
-        console.log("1::=>" + bugParams);
+        
         request({
             url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
             method: "GET"
         }, function (error, response, body) {
-            console.log("1:::==>=>" + body);
+            
             if (JSON.parse(body).bugs[0] != undefined) {
-                console.log("1:::::->" + JSON.parse(body).bugs[0].component +"=="+ _city_department);
+            
                 if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
                     get_issues(req, function (result) {
 
@@ -1012,10 +1002,10 @@ router.get('/admin/issue', authentication, function (req, res) {
                     });
                 }
                 else {
-                    res.status(403).send('Forbidden1');
+                    res.status(403).send('Forbidden');
                 }
             } else {
-                res.status(403).send('Forbidden2');
+                res.status(403).send('Forbidden');
             } 
         });
     });

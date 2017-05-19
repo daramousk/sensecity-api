@@ -3812,6 +3812,11 @@ router.post('/issue_subscribe', function (req, res) {
     }, function (err, resp) {
 
         console.log(resp);
+        if (resp == []) {
+            console.log("-1-");
+        } else {
+            console.log("-2-");
+        }
     });
 
 

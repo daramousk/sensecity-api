@@ -3804,7 +3804,7 @@ router.post('/issue_subscribe', function (req, res) {
     console.log(req.body.comment);
     console.log(req.body.bug_id);
 
-    var bugParams1 = "?bug_id=" + req.query.bug_id + "&include_fields=cf_city_address,cf_mobile";
+    var bugParams1 = "?bug_id=" + req.body.bug_id + "&include_fields=cf_city_address,cf_mobile";
 
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,

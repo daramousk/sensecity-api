@@ -3812,9 +3812,12 @@ router.post('/issue_subscribe', function (req, res) {
     }, function (error, response, body) {
         console.log(JSON.parse(body));
         if (JSON.parse(body.bugs)[0] == undefined) {
+            console.log("1");
             if (JSON.parse(body.bugs)[0].cf_email == req.body.email || JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
+                console.log("2");
                 res.send("ok");  
             }
+            console.log("3");
         }
         console.log(JSON.parse(body.bugs)[0].cf_email);
         console.log(JSON.parse(body.bugs)[0].cf_mobile);

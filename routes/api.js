@@ -3829,9 +3829,10 @@ router.post('/issue_subscribe', function (req, res) {
 
             }
         }
-        console.log(JSON.parse(body.bugs)[0].cf_email);
-        console.log(JSON.parse(body.bugs)[0].cf_mobile);
-
+        else {
+            res.send("Forbiden");
+        }
+        
 
     });
 

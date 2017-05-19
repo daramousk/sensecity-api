@@ -3811,8 +3811,8 @@ router.post('/issue_subscribe', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
         console.log(JSON.parse(body));
-        console.log("body.bugs ====>>>" + JSON.parse(body.bugs)[0]);
-        if (JSON.parse(body.bugs)[0] == undefined) {
+        console.log("body.bugs ====>>>" + JSON.parse(body.bugs)[0].cf_mobile);
+        if (JSON.parse(body.bugs)== undefined) {
             console.log("1");
             if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
                 console.log("2"); console.log("Add comment");

@@ -3808,7 +3808,7 @@ router.post('/issue_subscribe', function (req, res) {
     console.log(bugParams1);
 
     act_User.find({
-        $and: [{ "uuid":"web-site"}, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile }] }]
+        $and: [{ "uuid":"d4575f58-c2e2-a76b-8625-970270174928"}, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile }] }]
     }, function (err, resp) {
 
         console.log(resp);

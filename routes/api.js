@@ -3812,7 +3812,7 @@ router.post('/issue_subscribe', function (req, res) {
     }, function (err, resp) {
 
         console.log(resp);
-        if (resp == null) {
+        if (resp.length == 0) {
             console.log("-1-");
         } else {
             console.log("-2-");

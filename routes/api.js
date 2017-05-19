@@ -3796,5 +3796,25 @@ function is_authenticate(req, res) {
     return true;
 }
 
+
+// Subscribe citizen to issue
+router.post('/issue_subscribe', function (req, res) {
+    /*req.query.email
+    req.query.mobile
+    req.query.comment
+    req.query.bug_id*/
+    console.log(JSON.stingify(req));
+
+    var bugParams1 = "?bug_id=" + req.query.bug_id + "&include_fields=cf_city_address,cf_mobile";
+
+    request({
+        url: bugUrlRest + "/rest/bug" + bugParams1,
+        method: "GET"
+    }, function (error, response, body) {
+        console.log(JSON.stringify(response));
+    });
+
+});
+
 // Return router
 module.exports = router;

@@ -3811,13 +3811,25 @@ router.post('/issue_subscribe', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
         console.log(JSON.parse(body));
+        console.log("body.bugs ====>>>" + JSON.parse(body.bugs)[0]);
         if (JSON.parse(body.bugs)[0] == undefined) {
             console.log("1");
-            if (JSON.parse(body.bugs)[0].cf_email == req.body.email || JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
-                console.log("2");
-                res.send("ok");  
+            if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
+                console.log("2"); console.log("Add comment");
+                res.send("ok");
+            } else if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
+                console.log("3");
+                console.log("Add comment");
+            } else if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
+                console.log("4");
+                console.log("Add comment");
+            } else if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
+                console.log("5");
+                console.log("Add User and comment");
             }
-            console.log("3");
+            else {
+
+            }
         }
         console.log(JSON.parse(body.bugs)[0].cf_email);
         console.log(JSON.parse(body.bugs)[0].cf_mobile);

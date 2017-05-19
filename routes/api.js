@@ -3807,7 +3807,9 @@ router.post('/issue_subscribe', function (req, res) {
     var bugParams1 = "?bug_id=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile";
     console.log(bugParams1);
 
-    act_User.find({ $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile}]}, function (err, resp) {
+    act_User.find({
+        $and: [{ "uuid":"web-site"}, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile }] }]
+    }, function (err, resp) {
 
         console.log(resp);
     });

@@ -3810,6 +3810,7 @@ router.post('/issue_subscribe', function (req, res) {
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
+        console.log(JSON.parse(body));
         if (JSON.parse(body.bugs)[0] == undefined) {
             if (JSON.parse(body.bugs)[0].cf_email == req.body.email || JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
                 res.send("ok");  

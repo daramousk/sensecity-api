@@ -3804,14 +3804,14 @@ router.post('/issue_subscribe', function (req, res) {
     console.log(req.body.comment);
     console.log(req.body.bug_id);
 
-    var bugParams1 = "?bug_id=" + req.body.bug_id + "&include_fields=cf_city_address,cf_mobile";
+    var bugParams1 = "?bug_id=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile";
 
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        console.log(JSON.stringify(response));
-
+        console.log(JSON.parse(body.bugs)[0].cf_email);
+        console.log(JSON.parse(body.bugs)[0].cf_mobile);
 
     });
 

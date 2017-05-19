@@ -3799,11 +3799,10 @@ function is_authenticate(req, res) {
 
 // Subscribe citizen to issue
 router.post('/issue_subscribe', function (req, res) {
-    /*req.query.email
-    req.query.mobile
-    req.query.comment
-    req.query.bug_id*/
-    console.log(req);
+    console.log(req.body.email);
+    console.log(req.body.mobile);
+    console.log(req.body.comment);
+    console.log(req.body.bug_id);
 
     var bugParams1 = "?bug_id=" + req.query.bug_id + "&include_fields=cf_city_address,cf_mobile";
 

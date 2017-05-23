@@ -3800,7 +3800,7 @@ function is_authenticate(req, res) {
 // Subscribe citizen to issue
 router.post('/issue_subscribe', function (req, res) {
     console.log(req.body.email);
-    console.log(req.body.mobile);
+    console.log(req.body.mobile_num);
     console.log(req.body.comment);
     console.log(req.body.bug_id);
     
@@ -3808,7 +3808,7 @@ router.post('/issue_subscribe', function (req, res) {
     console.log(bugParams1);
 
     act_User.find({
-        $and: [{ "uuid":"web-site"}, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile }] }]
+        $and: [{ "uuid": "web-site" }, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile_num }] }]
     }, function (err, resp) {
         console.log("---"); console.log("---"); console.log("---"); console.log("---");
         console.log(resp);
@@ -3854,15 +3854,15 @@ router.post('/issue_subscribe', function (req, res) {
                     if (JSON.parse(response.body).bugs[0].cf_email != req.body.email) {
                         add_cc_list = 1;
                     }
-                    if (JSON.parse(response.body).bugs[0].cf_mobile != req.body.mobile) {
+                    if (JSON.parse(response.body).bugs[0].cf_mobile != req.body.mobile_num) {
                         add_mobile_number = 1;
                     }
 
                     var bodyParams_add;
                     if (add_cc_list == 1 && add_mobile_number == 1) {
-                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": "," + req.body.mobile };
+                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": "," + req.body.mobile_num };
                     } else if (add_cc_list == 0 && add_mobile_number == 1) {
-                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cf_mobile": "," + req.body.mobile };
+                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cf_mobile": "," + req.body.mobile_num };
                     } else if (add_cc_list == 1 && add_mobile_number == 0) {
                         bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] } };
                     } 
@@ -3875,11 +3875,11 @@ router.post('/issue_subscribe', function (req, res) {
                         console.log("5");
                         console.log("Add User and comment");
                         //bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "cf_issues": resp.issue };
-                        bodyParams = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": ","+req.body.mobile};
+                        //bodyParams = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": ","+req.body.mobile};
                         request({
                             url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
                             method: "PUT",
-                            json: bodyParams
+                            json: bodyParams_add
                         }, function (error1, response1, body1) {
                             console.log("---"); console.log("---"); console.log("---"); console.log("---");
                             console.log(JSON.stringify(response1));

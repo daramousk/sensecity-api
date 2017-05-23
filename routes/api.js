@@ -994,8 +994,9 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
             method: "GET"
         }, function (error, response, body) {
+            console.log(JSON.parse(response.body));
             console.log("---"); console.log("---"); console.log("---");
-            console.log(response);
+            console.log(JSON.parse(response.body).bugs[0]);
             if (JSON.parse(body).bugs[0] != undefined) {
             
                 if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {

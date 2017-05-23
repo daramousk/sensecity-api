@@ -3824,7 +3824,13 @@ router.post('/issue_subscribe', function (req, res) {
                 method: "GET"
             }, function (error, response, body) {
 
-                console.log(JSON.stringify(response.bugs));
+                console.log(JSON.stringify(body));
+                console.log("---"); console.log("---");
+                console.log(JSON.stringify(body).bugs);
+                console.log("---"); console.log("---");
+                console.log(JSON.stringify(response).bugs);
+                console.log("---"); console.log("---");
+                console.log(JSON.parse(response).bugs);
 
                 if (JSON.stringify(body).bugs != undefined) {
                     console.log("---"); console.log("---");

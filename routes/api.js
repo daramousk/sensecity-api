@@ -3803,8 +3803,8 @@ router.post('/issue_subscribe', function (req, res) {
     console.log(req.body.mobile);
     console.log(req.body.comment);
     console.log(req.body.bug_id);
-
-    var bugParams1 = "?bug_id=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile";
+    
+    var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile";
     console.log(bugParams1);
 
     act_User.find({
@@ -3823,7 +3823,9 @@ router.post('/issue_subscribe', function (req, res) {
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"
             }, function (error, response, body) {
+
                 console.log(JSON.stringify(body).bugs);
+
                 if (JSON.stringify(body).bugs != undefined) {
                     console.log("---"); console.log("---");
                     console.log("1");

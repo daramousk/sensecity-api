@@ -8,7 +8,8 @@ var roleSchema = new mongoose.Schema({
 	password: String,
 	role: String,
 	email: String,
-	department: String,
+    department: String,
+    departments: { type: Array, "default": [] },
         city: String,
         uuid: String,
         timestamp: Number

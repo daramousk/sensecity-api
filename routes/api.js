@@ -3843,7 +3843,7 @@ router.post('/issue_subscribe', function (req, res) {
                         console.log("Add comment");
                     } else */
 
-                    if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
+                    if (JSON.parse(response.body).bugs[0].cf_email != req.body.email && JSON.parse(response.body).bugs[0].cf_mobile != req.body.mobile) {
                         console.log("5");
                         console.log("Add User and comment");
                         //bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "cf_issues": resp.issue };

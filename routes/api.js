@@ -3826,10 +3826,10 @@ router.post('/issue_subscribe', function (req, res) {
             }, function (error, response, body) {
                 console.log("-3-");
                 console.log(JSON.parse(response.body));
-                console.log(JSON.parse(response.body).bugs);
+                console.log(JSON.parse(response.body).bugs[0].cf_email);
                 
 
-                if (JSON.stringify(body).bugs != undefined) {
+                if (JSON.parse(response.body).bugs[0] != undefined) {
                     console.log("---"); console.log("---");
                     console.log("1");
                     /*if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {

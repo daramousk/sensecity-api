@@ -3865,8 +3865,9 @@ router.post('/issue_subscribe', function (req, res) {
                             }, function (error2, bugResponse2, body2) {
                                 console.log("---"); console.log("---"); console.log("---");
                                 console.log(JSON.stringify(bugResponse2));
-
-
+                                console.log("---"); console.log("---"); console.log("---");
+                                console.log(bugResponse2.body.id);
+                                /*
                                 request({
                                     url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                     method: "PUT",
@@ -3877,7 +3878,7 @@ router.post('/issue_subscribe', function (req, res) {
                                     console.log("---"); console.log("---"); console.log("---");
                                     console.log(JSON.stringify(response4));
 
-                                });
+                                });*/
 
 
                             });

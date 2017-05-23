@@ -3810,46 +3810,98 @@ router.post('/issue_subscribe', function (req, res) {
     act_User.find({
         $and: [{ "uuid":"d4575f58-c2e2-a76b-8625-970270174928"}, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile }] }]
     }, function (err, resp) {
-
+        console.log("---"); console.log("---"); console.log("---"); console.log("---");
         console.log(resp);
         if (resp.length == 0) {
+            //no user existx
+            res.status(403).send('Forbidden');
             console.log("-1-");
         } else {
             console.log("-2-");
+
+            request({
+                url: bugUrlRest + "/rest/bug" + bugParams1,
+                method: "GET"
+            }, function (error, response, body) {
+                console.log(JSON.stringify(body).bugs);
+                if (JSON.stringify(body).bugs != undefined) {
+                    console.log("---"); console.log("---");
+                    console.log("1");
+                    /*if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
+                        console.log("2"); console.log("Add comment");
+                        res.send("ok");
+                    } else if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
+                        console.log("3");
+                        console.log("Add comment");
+                    } else if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
+                        console.log("4");
+                        console.log("Add comment");
+                    } else */
+
+                    if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
+                        console.log("5");
+                        console.log("Add User and comment");
+                        //bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "cf_issues": resp.issue };
+                        bodyParams = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": ","+req.body.mobile};
+                        request({
+                            url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
+                            method: "PUT",
+                            json: bodyParams
+                        }, function (error1, response1, body1) {
+                            console.log("---"); console.log("---"); console.log("---"); console.log("---");
+                            console.log(JSON.stringify(response1));
+
+                            var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": resp.comments };
+
+                            request({
+                                url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
+                                method: "POST",
+                                json: bugComment1
+                            }, function (error2, bugResponse2, body2) {
+                                console.log("---"); console.log("---"); console.log("---");
+                                console.log(JSON.stringify(bugResponse2));
+                                request({
+                                    url: bugUrlRest + "/rest/bug/comment/" + req.body.bug_id + "/tags",
+                                    method: "PUT",
+                                    json: { "add": ["user_comment"], "id": req.body.bug_id, "token": bugToken }
+                                }, function (error4, response4, body4) {
+                                    //console.log("Insert Tags to comment");
+
+                                    console.log("---"); console.log("---"); console.log("---");
+                                    console.log(JSON.stringify(response4));
+
+                                });
+
+
+                            });
+                        });
+
+
+
+
+                        
+
+                       
+
+
+                    }
+                    else {
+                     //add comment
+                    }
+                }
+                else {
+                    res.send("Forbidden");
+                }
+
+
+                });
+
+
         }
     });
 
 
-    request({
-        url: bugUrlRest + "/rest/bug" + bugParams1,
-        method: "GET"
-    }, function (error, response, body) {
-        console.log(JSON.stringify(body).bugs);
-        if (JSON.stringify(body).bugs != undefined) {
-            console.log("1");
-            if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
-                console.log("2"); console.log("Add comment");
-                res.send("ok");
-            } else if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
-                console.log("3");
-                console.log("Add comment");
-            } else if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
-                console.log("4");
-                console.log("Add comment");
-            } else if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
-                console.log("5");
-                console.log("Add User and comment");
-            }
-            else {
-
-            }
-        }
-        else {
-            res.send("Forbiden");
-        }
-        
-
-    });
+    
 
 });
 

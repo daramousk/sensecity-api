@@ -3814,8 +3814,9 @@ router.post('/issue_subscribe', function (req, res) {
         console.log(resp);
         if (resp.length == 0) {
             //no user existx
-            res.status(403).send('Forbidden');
             console.log("-1-");
+            res.status(403).send('Forbidden');
+            
         } else {
             console.log("-2-");
 
@@ -3823,14 +3824,10 @@ router.post('/issue_subscribe', function (req, res) {
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"
             }, function (error, response, body) {
-
-                console.log(JSON.stringify(body));
+            
+                console.log(JSON.stringify(response));
                 console.log("---"); console.log("---");
-                console.log(JSON.stringify(body).bugs);
-                console.log("---"); console.log("---");
-                console.log(JSON.stringify(response).bugs);
-                console.log("---"); console.log("---");
-                console.log(JSON.parse(response).bugs);
+                console.log(JSON.parse(response));
 
                 if (JSON.stringify(body).bugs != undefined) {
                     console.log("---"); console.log("---");

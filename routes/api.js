@@ -3892,6 +3892,29 @@ router.post('/issue_subscribe', function (req, res) {
                     }
                     else {
                      //add comment
+                        var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment };
+
+                        request({
+                            url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
+                            method: "POST",
+                            json: bugComment1
+                        }, function (error2, bugResponse2, body2) {
+                            console.log("---"); console.log("---"); console.log("---");
+                            console.log(JSON.stringify(bugResponse2));
+                            request({
+                                url: bugUrlRest + "/rest/bug/comment/" + req.body.bug_id + "/tags",
+                                method: "PUT",
+                                json: { "add": ["user_comment"], "id": req.body.bug_id, "token": bugToken }
+                            }, function (error4, response4, body4) {
+                                //console.log("Insert Tags to comment");
+
+                                console.log("---"); console.log("---"); console.log("---");
+                                console.log(JSON.stringify(response4));
+                                res.send("OK");
+                            });
+
+
+                        });
                     }
                 }
                 else {

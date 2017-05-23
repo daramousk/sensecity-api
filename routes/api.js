@@ -1009,7 +1009,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                     res.status(403).send('Forbidden');
                 }
             } else {
-                res.status(403).send('Forbidden');
+                res.send([]);
             } 
         });
     });

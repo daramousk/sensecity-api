@@ -3824,10 +3824,9 @@ router.post('/issue_subscribe', function (req, res) {
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"
             }, function (error, response, body) {
-            
-                console.log(JSON.stringify(response));
-                console.log("---"); console.log("---");
-                console.log(JSON.parse(response));
+                console.log("-3-");
+                console.log(response);
+                
 
                 if (JSON.stringify(body).bugs != undefined) {
                     console.log("---"); console.log("---");

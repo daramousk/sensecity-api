@@ -3865,8 +3865,10 @@ router.post('/issue_subscribe', function (req, res) {
                             }, function (error2, bugResponse2, body2) {
                                 console.log("---"); console.log("---"); console.log("---");
                                 console.log(JSON.stringify(bugResponse2));
+
+
                                 request({
-                                    url: bugUrlRest + "/rest/bug/comment/" + req.body.bug_id + "/tags",
+                                    url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                     method: "PUT",
                                     json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
                                 }, function (error4, response4, body4) {

@@ -3868,7 +3868,7 @@ router.post('/issue_subscribe', function (req, res) {
                                 request({
                                     url: bugUrlRest + "/rest/bug/comment/" + req.body.bug_id + "/tags",
                                     method: "PUT",
-                                    json: { "add": ["All","user_comment"], "id": req.body.bug_id, "token": bugToken }
+                                    json: { "add": ["All", "user_comment"], "id": response4.body.id, "token": bugToken }
                                 }, function (error4, response4, body4) {
                                     //console.log("Insert Tags to comment");
 

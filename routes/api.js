@@ -64,6 +64,7 @@ function authentication(req, res, next) {
     if (req.get('x-uuid') != undefined) {
         Role.find({ uuid: req.get('x-uuid') }, function (err, response) {
             //response[0]["mongo"]
+
             if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
                 next();
             } else {
@@ -960,7 +961,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_priority = 1;
 
     var _city_department;
-    Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1 }, function (error, resp) {
+    Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
         console.log(resp);
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
@@ -1060,6 +1061,8 @@ var get_issues = function (req, callback) {
             var _sort;
             var _offset;
             var _image;
+
+
 
             if (req.query.hasOwnProperty("bug_id")) {
                 _bug_id = req.query.bug_id;

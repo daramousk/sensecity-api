@@ -964,7 +964,14 @@ router.get('/admin/issue', authentication, function (req, res) {
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
 
         console.log(resp[0].departments);
-        
+        console.log(resp[0].departments.length);
+        /*for (var i = 0; i < data.length; i++) {
+            var newPerson = new Person();
+            newPerson.firstname = data[i].firstname;
+            newPerson.lastname = data[i].lastname;
+            newPerson.age = data[i].age;
+            newPerson.save(function (err) { });
+        }*/
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {

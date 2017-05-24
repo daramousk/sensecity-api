@@ -987,7 +987,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             
         }
 
-        console.log(bugParams);
+        console.log(encodeURIComponent(bugParams));
         request({
             url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
             method: "GET"

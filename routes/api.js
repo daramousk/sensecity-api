@@ -975,19 +975,19 @@ router.get('/admin/issue', authentication, function (req, res) {
             if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
                 var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             } else {
-                var bugParams = "?f4=component&o4=equals&v4=" + _city_department +"&f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+                var bugParams = "?f4=component&o4=equals&v4=" + _city_department.replace("&", "\u0026") +"&f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             }
             //var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
         } else {
             if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
                 var bugParams = "?f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             } else {
-                var bugParams = "?f4=component&o4=equals&v4=" + _city_department +"&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+                var bugParams = "?f4=component&o4=equals&v4=" + _city_department.replace("&","\u0026") +"&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             }
             
         }
-
-        console.log(encodeURIComponent(bugParams));
+        
+        console.log(bugParams);
         request({
             url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
             method: "GET"

@@ -1001,8 +1001,9 @@ router.get('/admin/issue', authentication, function (req, res) {
             if (JSON.parse(body).bugs[0] != undefined) {
 
                 console.log(body);
-
-                if (JSON.parse(body).bugs[0].component == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
+                var _component_dep = JSON.parse(body).bugs[0].component
+                _component_dep = _component_dep.replace('&', '%26');
+                if (_component_dep == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
                     get_issues(req, function (result) {
 
                         res.send(result);

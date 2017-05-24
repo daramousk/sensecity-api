@@ -965,13 +965,9 @@ router.get('/admin/issue', authentication, function (req, res) {
 
         console.log(resp[0].departments);
         console.log(resp[0].departments.length);
-        /*for (var i = 0; i < data.length; i++) {
-            var newPerson = new Person();
-            newPerson.firstname = data[i].firstname;
-            newPerson.lastname = data[i].lastname;
-            newPerson.age = data[i].age;
-            newPerson.save(function (err) { });
-        }*/
+        for (var i = 0; i < resp[0].departments.length; i++) {
+            console.log(resp[0].departments[i].department);
+        }
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {

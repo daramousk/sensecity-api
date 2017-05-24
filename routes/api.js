@@ -963,15 +963,20 @@ router.get('/admin/issue', authentication, function (req, res) {
     var _city_department;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
 
-        console.log(resp[0].departments);
-        console.log(resp[0].departments.length);
-        for (var i = 0; i < resp[0].departments.length; i++) {
-            console.log(resp[0].departments[i].department);
-        }
+        
+        
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
-            if (resp[0].department == '') {
+            if (resp[0].department == '' && resp[0].departments.length > 0) {
+                for (var i = 0; i < resp[0].departments.length; i++) {
+                    if (i > 0) {
+                        _city_department += ",";
+                    }
+                    _city_department += resp[0].departments[i].department;
+
+                }
+            } else if (resp[0].department == '' && resp[0].departments.length == 0) {
                 _city_department = 'Τμήμα επίλυσης προβλημάτων';
             } else {
                 _city_department = resp[0].department;
@@ -1010,7 +1015,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                 console.log(body);
                 var _component_dep = JSON.parse(body).bugs[0].component
                 _component_dep = _component_dep.replace('&', '%26');
-                if (_component_dep == _city_department || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
+                if ( _city_department.indexOf(_component_dep)>-1 || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
                     get_issues(req, function (result) {
 
                         res.send(result);

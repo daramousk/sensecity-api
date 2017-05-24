@@ -968,7 +968,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                 _city_department = 'Τμήμα επίλυσης προβλημάτων';
             } else {
                 _city_department = resp[0].department;
-                _city_department = _city_department.replace('&', '1');
+                _city_department = _city_department.replace('&', '&amp;');
             }
         }
         console.log("------------");

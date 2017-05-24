@@ -972,6 +972,8 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
         }
         console.log("------------");
+        console.log(encodeURIComponent('&'));
+        console.log("------------");
         console.log(_city_department);
         console.log("------------");
         if (req.query.bug_id != undefined) {

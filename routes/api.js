@@ -963,7 +963,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     var _city_department;
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
 
-        console.log(JSON.stringify(resp));
+        console.log(JSON.stringify(resp)[0].departments);
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {

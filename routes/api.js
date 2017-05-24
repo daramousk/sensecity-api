@@ -63,7 +63,7 @@ function authentication(req, res, next) {
 
     if (req.get('x-uuid') != undefined) {
         Role.find({ uuid: req.get('x-uuid') }, function (err, response) {
-            response[0]["mongo"]
+            //response[0]["mongo"]
             if (response.length > 0 && response[0]["timestamp"] >= Date.now()) {
                 next();
             } else {

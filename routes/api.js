@@ -1017,6 +1017,9 @@ router.get('/admin/issue', authentication, function (req, res) {
                     console.log(body);
                     var _component_dep = JSON.parse(body).bugs[0].component
                     _component_dep = _component_dep.replace('&', '%26');
+                    console.log(_component_dep);
+                    console.log("---------------------");
+                    console.log(_city_department);
                     if (_city_department.indexOf(_component_dep) > -1 || _city_department == 'Τμήμα επίλυσης προβλημάτων') {
                         get_issues(req, function (result) {
 

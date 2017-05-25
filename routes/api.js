@@ -989,11 +989,7 @@ router.get('/admin/issue', authentication, function (req, res) {
 
             }
         }
-        console.log("------------");
-        console.log(encodeURIComponent('&'));
-        console.log("------------");
-        console.log(_city_department);
-        console.log("------------");
+        
         if (req.query.bug_id != undefined) {
             if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
                 var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
@@ -1012,19 +1008,20 @@ router.get('/admin/issue', authentication, function (req, res) {
         
         console.log(bugParams);
         request({
-            url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
+            url: bugUrlRest + "/rest/bug" + bugParams,//bugParams,
             method: "GET"
         }, function (error, response, body) {
             console.log(JSON.parse(body).bugs);
             if (JSON.parse(body).bugs != undefined) {
                 if (JSON.parse(body).bugs.length > 0) {
-                    console.log(body);
+                    //console.log(body);
                     var _component_dep = JSON.parse(body).bugs[0].component
                     _component_dep = _component_dep.replace('&', '%26');
                     console.log(_component_dep);
                     console.log("---------------------");
                     console.log(_city_department);
                     if (_city_department.indexOf(_component_dep) > -1 || _city_department == 'Τμήμα επίλυσης προβλημάτων') {
+                        console.log("get");
                         get_issues(req, function (result) {
 
                             res.send(result);

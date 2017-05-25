@@ -3807,8 +3807,9 @@ router.post('/dashboard', function (req, res) {
         
     var wordArray = '';
     var uuid = '';
-    
-    if (req.body.username != '' && req.bodypassword != '') {
+    console.log(req.body.username);
+    console.log(req.body.password);
+    if (req.body.username != '' && req.body.password != '') {
         wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);
         uuid = crypto.enc.Base64.stringify(wordArray);     
     

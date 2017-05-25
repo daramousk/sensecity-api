@@ -3817,7 +3817,7 @@ router.post('/dashboard', function (req, res) {
             console.log("---------"); console.log("doc=====>>>>" + JSON.stringify(doc)); console.log("---------"); console.log("---------");
             console.log(wordArray); console.log("---------");
 
-            res.send(doc);
+            res.send([doc]);
         });
     } else {
         res.send("failure");

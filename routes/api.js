@@ -970,7 +970,10 @@ router.get('/admin/issue', authentication, function (req, res) {
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
             if (resp[0].department == '' && resp[0].departments.length > 0) {
-                for (var i = 0; i < resp[0].departments.length; i++) {                   
+                for (var i = 0; i < resp[0].departments.length; i++) {  
+                    if (i > 0) {
+                        _city_department += "&";
+                    }
                     _city_department_count = resp[0].departments[i].department;
                     _city_department_count = _city_department_count.replace('&', '%26');
                     _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + _city_department_count;

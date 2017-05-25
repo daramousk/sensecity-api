@@ -1021,7 +1021,8 @@ router.get('/admin/issue', authentication, function (req, res) {
                 if (JSON.parse(body).bugs.length > 0) {
                     //console.log(body);
                     var _component_dep = JSON.parse(body).bugs[0].component
-                    _component_dep = _component_dep.replace('&', '%26');
+                    //_component_dep = _component_dep.replace('&', '%26');
+                    _component_dep = encodeURIComponent(_component_dep);
                     console.log(_component_dep);
                     console.log("---------------------");
                     console.log(_city_department);

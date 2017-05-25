@@ -975,8 +975,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                         _city_department += ",";
                     }
                     _city_department += resp[0].departments[i].department;
-                    _condition = 'anywordssubstr';
-                    //anywordssubstr
+                    _condition = 'allwords';
                 }
             } else if (resp[0].department == '' && resp[0].departments.length == 0) {
                 _city_department = 'Τμήμα επίλυσης προβλημάτων';

@@ -975,7 +975,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                         _city_department += ",";
                     }
                     _city_department += resp[0].departments[i].department;
-                    _condition = 'substring';
+                    _condition = 'anywordssubstr';
                     //anywordssubstr
                 }
             } else if (resp[0].department == '' && resp[0].departments.length == 0) {

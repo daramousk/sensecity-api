@@ -3805,20 +3805,28 @@ router.post('/dashboard', function (req, res) {
   //  Role.find({ username: req.body.username, password: req.body.password, city: req.body.city }, function (err, response) {
 
         
-    var wordArray = '';
+   // var wordArray = '';
     var uuid = '';
 
-    console.log(req.body.username);
-    console.log(req.body.password);
+   // console.log(req.body.username);
+   // console.log(req.body.password);
+    var currentdate1 = new Date();
     if (req.body.username != '' && req.body.password != '') {
-        wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);
-        uuid = crypto.enc.Base64.stringify(wordArray);
+        //console.log(currentdate1.getTime());
+        //wordArray = currentdate.toString('base64');
+        //console.log(wordArray);
+        var currentdate = currentdate1.toString();
+        var buffer = new Buffer(req.body.username + req.body.password + currentdate);
+        var toBase64 = buffer.toString('base64');
 
-        Role.findOneAndUpdate({ username: req.body.username, password: req.body.password, city: req.body.city }, { $set: { uuid: uuid, timestamp: Date.now() * 1000 * 3600 } }, function (err, doc) {
+        //uuid = new Buffer(currentdate.toString('base64'));
+        uuid = toBase64;
+        console.log(uuid);
+        Role.findOneAndUpdate({ "username": req.body.username, "password": req.body.password, "city": req.body.city }, { $set: { "uuid": uuid, "timestamp": Date.now() * 1000 * 3600 } }, {"new":true}, function (err, doc) {
             if (err)
                     console.log(err);
-            console.log("---------"); console.log("doc=====>>>>" + JSON.stringify(doc)); console.log("---------"); console.log("---------");
-            console.log(wordArray); console.log("---------");
+            //console.log("---------"); console.log("doc=====>>>>" + JSON.stringify(doc)); console.log("---------"); console.log("---------");
+           // console.log(wordArray); console.log("---------");
             if (doc != null) {
                 res.send([doc]);
             } else {

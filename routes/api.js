@@ -3807,6 +3807,7 @@ router.post('/dashboard', function (req, res) {
         
     var wordArray = '';
     var uuid = '';
+
     console.log(req.body.username);
     console.log(req.body.password);
     if (req.body.username != '' && req.body.password != '') {
@@ -3816,8 +3817,11 @@ router.post('/dashboard', function (req, res) {
         Role.findOneAndUpdate({ username: req.body.username, password: req.body.password }, { $set: { "uuid": uuid, "timestamp": Date.now() * 1000 * 3600 } }, function (err, doc) {
             console.log("---------"); console.log("doc=====>>>>" + JSON.stringify(doc)); console.log("---------"); console.log("---------");
             console.log(wordArray); console.log("---------");
-
-            res.send([doc]);
+            if (doc != null) {
+                res.send([doc]);
+            } else {
+                res.send("failure");
+            }
         });
     } else {
         res.send("failure");

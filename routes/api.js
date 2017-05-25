@@ -1010,7 +1010,7 @@ router.get('/admin/issue', authentication, function (req, res) {
         
         console.log(bugParams);
         request({
-            url: bugUrlRest + "/rest/bug" + bugParams,//bugParams,
+            url: bugUrlRest + "/rest/bug" + encodeURI(bugParams),//bugParams,
             method: "GET"
         }, function (error1, response, body) {
             console.log(bugUrlRest + "/rest/bug" + bugParams); console.log("-------------------");

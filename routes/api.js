@@ -1011,7 +1011,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             method: "GET"
         }, function (error, response, body) {
             console.log(JSON.parse(body).bugs);
-            if (JSON.parse(body).bugs[0] != undefined) {
+            if (JSON.parse(body).bugs != undefined) {
 
                 console.log(body);
                 var _component_dep = JSON.parse(body).bugs[0].component

@@ -3802,7 +3802,11 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
 });
 
 router.post('/dashboard', function (req, res) {
-    Role.find({username: req.body.username, password: req.body.password, city: req.body.city}, function (err, response) {
+    Role.find({ username: req.body.username, password: req.body.password, city: req.body.city }, function (err, response) {
+
+        console.log(JSON.stringify(response));
+        console.log(error);
+
         if (response.length > 0) {
             var wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);
             var uuid = crypto.enc.Base64.stringify(wordArray);

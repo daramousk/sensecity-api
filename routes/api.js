@@ -963,13 +963,15 @@ router.get('/admin/issue', authentication, function (req, res) {
     var _city_department = '';
     var _city_department_count = '';
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
-
+    var bugParams = '';
         
         
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
-        if (resp != undefined) {
+    if (resp != undefined) {
+
             if (resp[0].department == '' && resp[0].departments.length > 0) {
+                
                 for (var i = 0; i < resp[0].departments.length; i++) {  
                     if (i > 0) {
                         _city_department += "&";
@@ -978,7 +980,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                     _city_department_count = _city_department_count.replace('&', '%26');
                     _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + _city_department_count;
                 }
-                _city_department += "&j_top=OR";
+                _city_department += "&j_top=OR&f3=OP&f"+(i+4)+"=CP";
             } else if (resp[0].department == '' && resp[0].departments.length == 0) {
                 _city_department = "f4=component&o4=equals&v4=Τμήμα επίλυσης προβλημάτων";
                 
@@ -992,16 +994,16 @@ router.get('/admin/issue', authentication, function (req, res) {
         
         if (req.query.bug_id != undefined) {
             if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
-                var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+                 bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             } else {
-                var bugParams = "?" + _city_department + "&f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+                 bugParams = "?" + _city_department + "&f1=bug_id&o1=equals&v1=" + req.query.bug_id + "&f2=product&o2=equals&v2=" + resp[0].city + "&include_fields=id,alias,status,component";
             }
             //var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
         } else {
             if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
-                var bugParams = "?f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+                 bugParams = "?f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             } else {
-                var bugParams = "?" + _city_department + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
+                 bugParams = "?" + _city_department + "&f1=product&o1=equals&v1=" + resp[0].city + "&include_fields=id,alias,status,component";
             }
             
         }

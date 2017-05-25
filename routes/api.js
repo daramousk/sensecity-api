@@ -980,7 +980,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                     _city_department_count = _city_department_count.replace('&', '%26');
                     _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + _city_department_count;
                 }
-                _city_department += "&j4=OR&f3=OP&f"+(i+4)+"=CP";
+                _city_department += "&j3=OR&f3=OP&f"+(i+4)+"=CP";
             } else if (resp[0].department == '' && resp[0].departments.length == 0) {
                 _city_department = "f4=component&o4=equals&v4=Τμήμα επίλυσης προβλημάτων";
                 

@@ -961,7 +961,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_priority = 1;
 
     var _city_department = '';
-    var _condition = 'equals';
+    var _city_department_count = '';
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
 
         
@@ -970,18 +970,19 @@ router.get('/admin/issue', authentication, function (req, res) {
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
         if (resp != undefined) {
             if (resp[0].department == '' && resp[0].departments.length > 0) {
-                for (var i = 0; i < resp[0].departments.length; i++) {
-                    if (i > 0) {
-                        _city_department += ",";
-                    }
-                    _city_department += resp[0].departments[i].department;
-                    _condition = 'allwords';
+                for (var i = 0; i < resp[0].departments.length; i++) {                   
+                    _city_department_count = resp[0].departments[i].department;
+                    _city_department_count = _city_department_count.replace('&', '%26');
+                    _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + _city_department_count;
                 }
             } else if (resp[0].department == '' && resp[0].departments.length == 0) {
-                _city_department = 'Τμήμα επίλυσης προβλημάτων';
+                _city_department = "f4=component&o4=equals&v4=Τμήμα επίλυσης προβλημάτων";
+                
             } else {
-                _city_department = resp[0].department;
-                _city_department = _city_department.replace('&', '%26');
+                _city_department_count = resp[0].department;
+                _city_department_count = _city_department_count.replace('&', '%26');
+                _city_department = "f4=component&o4=equals&v4=" + _city_department_count;
+
             }
         }
         console.log("------------");

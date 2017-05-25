@@ -3804,7 +3804,7 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
 router.post('/dashboard', function (req, res) {
     Role.find({ username: req.body.username, password: req.body.password, city: req.body.city }, function (err, response) {
 
-        console.log(JSON.stringify(response));
+        
         
 
         if (response.length > 0) {
@@ -3812,9 +3812,13 @@ router.post('/dashboard', function (req, res) {
             var uuid = crypto.enc.Base64.stringify(wordArray);
             Role.update({username: req.body.username, password: req.body.password}, {$set: {"uuid": uuid, "timestamp": Date.now() * 1000 * 3600}}, {multi: true}, function (err, doc) {});
             //return res.send(response[0]["city"] + ";" + response[0]["role"] + ";" + response[0]["department"] + ";" + response[0]["email"] + ";" + uuid + ";" + req.body.username + ";" + response[0]["departments"]);
-            return res.send(response);
+            console.log(JSON.stringify(doc));
+            console.log(wordArray);
+            console.log(uuid);
+            console.log(JSON.stringify(response));
+            res.send(response);
         } else {
-            return res.send("failure");
+            res.send("failure");
         }
     });
 }

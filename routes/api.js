@@ -1010,7 +1010,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
             method: "GET"
         }, function (error, response, body) {
-            
+            console.log(JSON.parse(body).bugs);
             if (JSON.parse(body).bugs[0] != undefined) {
 
                 console.log(body);

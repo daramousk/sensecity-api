@@ -1013,6 +1013,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams,//bugParams,
             method: "GET"
         }, function (error, response, body) {
+            console.log(bugUrlRest + "/rest/bug" + bugParams);
             console.log(JSON.parse(body).bugs);
             if (JSON.parse(body).bugs != undefined) {
                 if (JSON.parse(body).bugs.length > 0) {

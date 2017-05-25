@@ -977,7 +977,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                         _city_department += "&";
                     }
                     _city_department_count = resp[0].departments[i].department;
-                    _city_department_count = _city_department_count.replace('&', '%26');
+                   // _city_department_count = _city_department_count.replace('&', '%26');
                     _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + _city_department_count;
                 }
                 _city_department += "&j3=OR&f3=OP&f"+(i+4)+"=CP";
@@ -986,7 +986,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                 
             } else {
                 _city_department_count = resp[0].department;
-                _city_department_count = _city_department_count.replace('&', '%26');
+                //_city_department_count = _city_department_count.replace('&', '%26');
                 _city_department = "f4=component&o4=equals&v4=" + _city_department_count;
 
             }
@@ -1013,7 +1013,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + encodeURI(bugParams),//bugParams,
             method: "GET"
         }, function (error1, response, body) {
-            console.log(bugUrlRest + "/rest/bug" + bugParams); console.log("-------------------");
+            console.log(bugUrlRest + "/rest/bug" + encodeURI(bugParams)); console.log("-------------------");
             console.log(error1); console.log("-------------------");
             console.log(JSON.parse(body)); console.log("-------------------");
             console.log(JSON.parse(body).bugs); console.log("-------------------");

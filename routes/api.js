@@ -3811,14 +3811,15 @@ router.post('/dashboard', function (req, res) {
     if (req.body.hasOwnProperty('username') && req.body.hasOwnProperty('password')) {
         wordArray = crypto.enc.Utf8.parse(req.body.username, req.body.password);
         uuid = crypto.enc.Base64.stringify(wordArray);     
-    }
+    
             Role.findOneAndUpdate({ username: req.body.username, password: req.body.password }, { $set: { "uuid": uuid, "timestamp": Date.now() * 1000 * 3600 } }, function(err,doc){                
                 console.log("---------");console.log("doc=====>>>>"+JSON.stringify(doc)); console.log("---------"); console.log("---------");
                 console.log(wordArray); console.log("---------");
                 console.log(uuid); console.log("---------");
                 console.log(JSON.stringify(response)); console.log("---------");
                 res.send(response); console.log("---------");
-            });
+        });
+    }
         /*} else {
             res.send("failure");
         }*/

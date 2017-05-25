@@ -3812,9 +3812,9 @@ router.post('/dashboard', function (req, res) {
             var uuid = crypto.enc.Base64.stringify(wordArray);
             //Role.update({ username: req.body.username, password: req.body.password }, { $set: { "uuid": uuid, "timestamp": Date.now() * 1000 * 3600 } }, { multi: true }, function (err, doc) {
 
-            Role.findOneAndUpdate({ username: req.body.username, password: req.body.password }, { $set: { "uuid": uuid, "timestamp": Date.now() * 1000 * 3600 } }, function(err,doc){
+            Role.findOneAndUpdate({ username: req.body.username, password: req.body.password }, { $set: { "uuid": uuid, "timestamp": Date.now() * 1000 * 3600 } }, { "username": 1, "email": 1, "department": 1, "role": 1, "departments": 1, "uuid": 1, "city":1}, function(err,doc){
                 //return res.send(response[0]["city"] + ";" + response[0]["role"] + ";" + response[0]["department"] + ";" + response[0]["email"] + ";" + uuid + ";" + req.body.username + ";" + response[0]["departments"]);
-                console.log("---------");console.log(JSON.stringify(doc)); console.log("---------"); console.log("---------");
+                console.log("---------");console.log("doc=====>>>>"+JSON.stringify(doc)); console.log("---------"); console.log("---------");
                 console.log(wordArray); console.log("---------");
                 console.log(uuid); console.log("---------");
                 console.log(JSON.stringify(response)); console.log("---------");

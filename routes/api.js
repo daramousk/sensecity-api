@@ -982,7 +982,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                 }
                 _city_department += "&j3=OR&f3=OP&f"+(i+4)+"=CP";
             } else if (resp[0].department == '' && resp[0].departments.length == 0) {
-                _city_department = "f4=component&o4=equals&v4=Τμήμα επίλυσης προβλημάτων";
+                _city_department = "f4=component&o4=equals&v4=" +encodeURIComponent("Τμήμα επίλυσης προβλημάτων";
                 
             } else {
                 _city_department_count = resp[0].department;
@@ -1026,7 +1026,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                     console.log(_component_dep);
                     console.log("---------------------");
                     console.log(_city_department);
-                    if (_city_department.indexOf(_component_dep) > -1 || _city_department == 'Τμήμα επίλυσης προβλημάτων') {
+                    if (_city_department.indexOf(_component_dep) > -1 || _city_department == encodeURIComponent('Τμήμα επίλυσης προβλημάτων')) {
                         console.log("get");
                         get_issues(req, function (result) {
 

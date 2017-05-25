@@ -1010,10 +1010,10 @@ router.get('/admin/issue', authentication, function (req, res) {
         
         console.log(bugParams);
         request({
-            url: bugUrlRest + "/rest/bug" + encodeURI(bugParams),//bugParams,
+            url: bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams),//bugParams,
             method: "GET"
         }, function (error1, response, body) {
-            console.log(bugUrlRest + "/rest/bug" + encodeURI(bugParams)); console.log("-------------------");
+            console.log(bugUrlRest + "/rest/bug" + encodeURIComponent(bugParams)); console.log("-------------------");
             console.log(error1); console.log("-------------------");
             console.log(JSON.parse(body)); console.log("-------------------");
             console.log(JSON.parse(body).bugs); console.log("-------------------");

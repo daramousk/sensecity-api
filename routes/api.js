@@ -976,6 +976,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                     }
                     _city_department += resp[0].departments[i].department;
                     _condition = 'substring';
+                    //anywordssubstr
                 }
             } else if (resp[0].department == '' && resp[0].departments.length == 0) {
                 _city_department = 'Τμήμα επίλυσης προβλημάτων';
@@ -1012,18 +1013,21 @@ router.get('/admin/issue', authentication, function (req, res) {
         }, function (error, response, body) {
             console.log(JSON.parse(body).bugs);
             if (JSON.parse(body).bugs != undefined) {
+                if (JSON.parse(body).bugs.length > 0) {
+                    console.log(body);
+                    var _component_dep = JSON.parse(body).bugs[0].component
+                    _component_dep = _component_dep.replace('&', '%26');
+                    if (_city_department.indexOf(_component_dep) > -1 || _city_department == 'Τμήμα επίλυσης προβλημάτων') {
+                        get_issues(req, function (result) {
 
-                console.log(body);
-                var _component_dep = JSON.parse(body).bugs[0].component
-                _component_dep = _component_dep.replace('&', '%26');
-                if ( _city_department.indexOf(_component_dep)>-1 || _city_department == 'Τμήμα επίλυσης προβλημάτων' ) {
-                    get_issues(req, function (result) {
-
-                        res.send(result);
-                    });
-                }
-                else {
-                    res.status(403).send('Forbidden');
+                            res.send(result);
+                        });
+                    }
+                    else {
+                        res.status(403).send('Forbidden');
+                    }
+                } else {
+                    res.send([{}]);
                 }
             } else {
                 res.status(403).send('Forbidden');

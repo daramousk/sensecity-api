@@ -3949,7 +3949,7 @@ router.post('/issue_subscribe', function (req, res) {
                             console.log("---"); console.log("---"); console.log("---"); console.log("---");
                             console.log(JSON.stringify(response1));
 
-                            var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": resp.comments };
+                            var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment};
                             console.log("1:=>" + JSON.stringify(bugComment1));
                             console.log("----------------");
                             console.log(req.body.bug_id);
@@ -3984,7 +3984,7 @@ router.post('/issue_subscribe', function (req, res) {
                     }
                     else {
                      //add comment
-                        var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment };
+                        var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment};
 
                         console.log("2:=>" + JSON.stringify(bugComment1));
                         console.log("----------------");

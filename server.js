@@ -26,8 +26,12 @@ fs.existsSync(config.config.log_path) || fs.mkdirSync(config.config.log_path);
 var dateObj = new Date();
 
 // create a rotating write stream
-var accessLogStream = rfs('access' + dateObj.getUTCFullYear() + '' + (dateObj.getUTCMonth() + 1) + '' +dateObj.getUTCDate() +'.log', {
-    interval: '1d', // rotate daily1
+//var accessLogStream = rfs(dateObj.getUTCFullYear() + '' + (dateObj.getUTCMonth() + 1) + '' +dateObj.getUTCDate() +'.log', {
+
+var accessLogStream = rfs("API.log", {
+    history: "API.log",
+    interval: '1d', // rotate daily1\
+    maxSize: '10M',
     path: config.config.log_path
 });
 

@@ -3950,6 +3950,9 @@ router.post('/issue_subscribe', function (req, res) {
                             console.log(JSON.stringify(response1));
 
                             var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": resp.comments };
+                            console.log("1:=>" + bugComment1);
+                            console.log("----------------");
+                            console.log(req.body.bug_id);
 
                             request({
                                 url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
@@ -3977,19 +3980,15 @@ router.post('/issue_subscribe', function (req, res) {
                             });
                         });
 
-
-
-
                         
-
-                       
-
-
                     }
                     else {
                      //add comment
                         var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment };
 
+                        console.log("2:=>" + bugComment1);
+                        console.log("----------------");
+                        console.log(req.body.bug_id);
                         request({
                             url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
                             method: "POST",
@@ -4000,7 +3999,7 @@ router.post('/issue_subscribe', function (req, res) {
                             request({
                                 url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                 method: "PUT",
-                                json: { "add": ["user_comment"], "id": bugResponse2.body.id, "token": bugToken }
+                                json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
                             }, function (error4, response4, body4) {
                                 //console.log("Insert Tags to comment");
 
@@ -4008,8 +4007,6 @@ router.post('/issue_subscribe', function (req, res) {
                                 console.log(JSON.stringify(response4));
                                 res.send("OK");
                             });
-
-
                         });
                     }
                 }

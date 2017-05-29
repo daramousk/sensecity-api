@@ -3714,9 +3714,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams1,
             method: "GET"
         }, function (error, response, body) {
-
-            console.log(JSON.stringify(body));
-
+        
             var _status_field = ' ';
             if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
                 _status_field = ' ΕΙΝΑΙ ΣΕ ΕΞΕΛΙΞΗ';
@@ -3741,8 +3739,9 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                                 form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
                                 headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                             }, function (err, response) {
-                                //console.log(response);
-                                //if call_id
+
+                                console.log(JSON.stringify("response=====>>>>"+response));
+
                             });
                             
                         }

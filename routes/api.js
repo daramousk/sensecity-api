@@ -3730,19 +3730,22 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                 if (mob_sms_key_fibair_base64 != undefined) {
 
                     if (mob_sms_key_fibair_base64 != '') {
-
+                        
                         if (JSON.parse(body).bugs[0].cf_mobile != '') {
-                            console.log("send sms");
-                            request({
-                                url: "https://api.theansr.com/v1/sms",
-                                method: "POST",
-                                form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
-                                headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
-                            }, function (err, response) {
+                            var mobile_array = JSON.parse(body).bugs[0].cf_mobile.split(",");
+                            for (var j = 0; j < mobile_array.length; j++) {
+                                console.log("send sms");
+                                request({
+                                    url: "https://api.theansr.com/v1/sms",
+                                    method: "POST",
+                                    form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + mobile_array[j], 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
+                                    headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                                }, function (err, response) {
 
-                                console.log(JSON.stringify("response=====>>>>"+response));
+                                    console.log(JSON.stringify("response=====>>>>" + response));
 
-                            });
+                                });
+                            }
                             
                         }
                     }
@@ -3911,44 +3914,7 @@ router.post('/issue_subscribe', function (req, res) {
                                     method: "PUT",
                                     json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
                                 }, function (error4, response4, body4) {
-                                    /* ----------- Send SMS ----------- */
-
-                                    Municipality.find({ "municipality": JSON.parse(response.body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
-
-                                        var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
-
-                                        if (mob_sms_key_fibair_base64 != undefined) {
-
-                                            if (mob_sms_key_fibair_base64 != '') {
-
-                                                if (JSON.parse(response.body).bugs[0].cf_mobile != '') {
-                                                    var mobile_array = JSON.parse(response.body).bugs[0].cf_mobile.split(",");
-
-                                                    console.log("mobile_array.length" + mobile_array.length);
-
-                                                    console.log("send sms");
-                                                    for (var j = 0; j < mobile_array.length; j++) {
-
-                                                        console.log("1=====>>>>>>" + mobile_array[j]);
-
-                                                        request({
-                                                            url: "https://api.theansr.com/v1/sms",
-                                                            method: "POST",
-                                                            form: { 'sender': JSON.parse(response.body).bugs[0].product, 'recipients': '30' + mobile_array[j], 'body': JSON.parse(response.body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
-                                                            headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
-                                                        }, function (err, response) {
-
-                                                            console.log("mobile_array[j]====>" + mobile_array[j]);
-                                                            console.log(JSON.stringify("response=====>>>>" + response));
-
-                                                        });
-                                                    }
-
-                                                }
-                                            }
-                                        }
-                                    });
-                                    /* ----------- Send SMS ----------- */
+                                   
 
                                     res.send("OK");
                                 });
@@ -3974,45 +3940,6 @@ router.post('/issue_subscribe', function (req, res) {
                                 method: "PUT",
                                 json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
                             }, function (error4, response4, body4) {
-
-
-                                /* ----------- Send SMS ----------- */
-
-                                Municipality.find({ "municipality": JSON.parse(response.body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
-
-                                    var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
-
-                                    if (mob_sms_key_fibair_base64 != undefined) {
-
-                                        if (mob_sms_key_fibair_base64 != '') {
-
-                                            if (JSON.parse(response.body).bugs[0].cf_mobile != '') {
-                                                var mobile_array = JSON.parse(response.body).bugs[0].cf_mobile.split(",");
-
-                                                console.log("mobile_array.length" + mobile_array.length);
-
-                                                console.log("send sms");
-                                                for (var j = 0; j < mobile_array.length; j++) {
-                                                    request({
-                                                        url: "https://api.theansr.com/v1/sms",
-                                                        method: "POST",
-                                                        form: { 'sender': JSON.parse(response.body).bugs[0].product, 'recipients': '30' + mobile_array[j], 'body': JSON.parse(response.body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
-                                                        headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
-                                                    }, function (err, response) {
-
-                                                        console.log("mobile_array[j]====>" + mobile_array[j]);
-                                                        console.log(JSON.stringify("response=====>>>>" + response));
-
-                                                    });
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                });
-                                    /* ----------- Send SMS ----------- */
-
-
                                 res.send("OK");
                             });
                         });

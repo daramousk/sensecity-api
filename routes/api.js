@@ -3847,58 +3847,33 @@ function is_authenticate(req, res) {
 
 // Subscribe citizen to issue
 router.post('/issue_subscribe', function (req, res) {
-    console.log(req.body.email);
-    console.log(req.body.mobile_num);
-    console.log(req.body.comment);
-    console.log(req.body.bug_id);
     
-    var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile";
-    console.log(bugParams1);
-
+    var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile,product";
+    
     act_User.find({
         $and: [{ "uuid": "web-site" }, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile_num }] }]
     }, function (err, resp) {
-        console.log("---"); console.log("---"); console.log("---"); console.log("---");
-        console.log(resp);
+    
         if (resp.length == 0) {
             //no user existx
-            console.log("-1-");
             res.status(403).send('Forbidden');
             
         } else {
-            console.log("-2-");
+    
 
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,
                 method: "GET"
             }, function (error, response, body) {
-                console.log("-3-");
                 console.log(JSON.parse(response.body));
                 console.log(JSON.parse(response.body).bugs[0].cf_email);
                 
 
                 if (JSON.parse(response.body).bugs[0] != undefined) {
-                    console.log("---"); console.log("---");
-                    console.log("1");
-                    /*if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
-                        console.log("2"); console.log("Add comment");
-                        res.send("ok");
-                    } else if (JSON.parse(body.bugs)[0].cf_email != req.body.email && JSON.parse(body.bugs)[0].cf_mobile == req.body.mobile) {
-                        console.log("3");
-                        console.log("Add comment");
-                    } else if (JSON.parse(body.bugs)[0].cf_email == req.body.email && JSON.parse(body.bugs)[0].cf_mobile != req.body.mobile) {
-                        console.log("4");
-                        console.log("Add comment");
-                    } else */
+    
                     var add_cc_list = 0;
                     var add_mobile_number = 0;
-                    console.log("---"); console.log("---");
-                    console.log(JSON.parse(response.body).bugs[0].cf_email);
-                    console.log("---"); console.log("---");
-                    console.log(req.body.email);
-                    console.log("---"); console.log("---");
-
-
+    
                     if (JSON.parse(response.body).bugs[0].cf_email != req.body.email) {
                         add_cc_list = 1;
                     }
@@ -3914,48 +3889,64 @@ router.post('/issue_subscribe', function (req, res) {
                     } else if (add_cc_list == 1 && add_mobile_number == 0) {
                         bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] } };
                     } 
-                    console.log("---"); console.log("---"); console.log("---"); console.log("---");
-                    console.log(add_cc_list);
-                    console.log("---"); console.log("---"); console.log("---"); console.log("---");
-                    console.log(add_mobile_number);
-                    console.log("---"); console.log("---"); console.log("---"); console.log("---");
+
                     if (add_cc_list != 0 || add_mobile_number != 0)  {
-                        console.log("5");
-                        console.log("Add User and comment");
-                        //bodyParams = { "token": bugToken, "ids": [body_parse.bugs[0].id], "cf_issues": resp.issue };
-                        //bodyParams = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": ","+req.body.mobile};
+                        
                         request({
                             url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
                             method: "PUT",
                             json: bodyParams_add
                         }, function (error1, response1, body1) {
-                            console.log("---"); console.log("---"); console.log("---"); console.log("---");
-                            console.log(JSON.stringify(response1));
-
+                    
                             var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment};
-                            console.log("1:=>" + JSON.stringify(bugComment1));
-                            console.log("----------------");
-                            console.log(req.body.bug_id);
-
+                    
                             request({
                                 url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
                                 method: "POST",
                                 json: bugComment1
                             }, function (error2, bugResponse2, body2) {
-                                console.log("---"); console.log("---"); console.log("---");
-                                console.log(JSON.stringify(bugResponse2));
-                                console.log("---"); console.log("---"); console.log("---");
-                                console.log(bugResponse2.body.id);
                                 
                                 request({
                                     url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                     method: "PUT",
                                     json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
                                 }, function (error4, response4, body4) {
-                                    //console.log("Insert Tags to comment");
+                                    /* ----------- Send SMS ----------- */
 
-                                    console.log("---"); console.log("---"); console.log("---");
-                                    console.log(JSON.stringify(response4));
+                                    Municipality.find({ "municipality": JSON.parse(response.body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
+
+                                        var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
+
+                                        if (mob_sms_key_fibair_base64 != undefined) {
+
+                                            if (mob_sms_key_fibair_base64 != '') {
+
+                                                if (JSON.parse(response.body).bugs[0].cf_mobile != '') {
+                                                    var mobile_array = JSON.parse(response.body).bugs[0].cf_mobile.split(",");
+
+                                                    console.log("mobile_array.length" + mobile_array.length);
+
+                                                    console.log("send sms");
+                                                    for (var j = 0; j < mobile_array.length; j++) {
+                                                        request({
+                                                            url: "https://api.theansr.com/v1/sms",
+                                                            method: "POST",
+                                                            form: { 'sender': JSON.parse(response.body).bugs[0].product, 'recipients': '30' + mobile_array[j], 'body': JSON.parse(response.body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
+                                                            headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                                                        }, function (err, response) {
+
+                                                            console.log("mobile_array[j]====>" + mobile_array[j]);
+                                                            console.log(JSON.stringify("response=====>>>>" + response));
+
+                                                        });
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    });
+                                    /* ----------- Send SMS ----------- */
+
                                     res.send("OK");
                                 });
 
@@ -3968,26 +3959,57 @@ router.post('/issue_subscribe', function (req, res) {
                     else {
                      //add comment
                         var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment};
-
-                        console.log("2:=>" + JSON.stringify(bugComment1));
-                        console.log("----------------");
-                        console.log(req.body.bug_id);
+                        
                         request({
                             url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
                             method: "POST",
                             json: bugComment1
                         }, function (error2, bugResponse2, body2) {
-                            console.log("---"); console.log("---"); console.log("---");
-                            console.log(JSON.stringify(bugResponse2));
+
                             request({
                                 url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                 method: "PUT",
                                 json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
                             }, function (error4, response4, body4) {
-                                //console.log("Insert Tags to comment");
 
-                                console.log("---"); console.log("---"); console.log("---");
-                                console.log(JSON.stringify(response4));
+
+                                /* ----------- Send SMS ----------- */
+
+                                Municipality.find({ "municipality": JSON.parse(response.body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
+
+                                    var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
+
+                                    if (mob_sms_key_fibair_base64 != undefined) {
+
+                                        if (mob_sms_key_fibair_base64 != '') {
+
+                                            if (JSON.parse(response.body).bugs[0].cf_mobile != '') {
+                                                var mobile_array = JSON.parse(response.body).bugs[0].cf_mobile.split(",");
+
+                                                console.log("mobile_array.length" + mobile_array.length);
+
+                                                console.log("send sms");
+                                                for (var j = 0; j < mobile_array.length; j++) {
+                                                    request({
+                                                        url: "https://api.theansr.com/v1/sms",
+                                                        method: "POST",
+                                                        form: { 'sender': JSON.parse(response.body).bugs[0].product, 'recipients': '30' + mobile_array[j], 'body': JSON.parse(response.body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
+                                                        headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                                                    }, function (err, response) {
+
+                                                        console.log("mobile_array[j]====>" + mobile_array[j]);
+                                                        console.log(JSON.stringify("response=====>>>>" + response));
+
+                                                    });
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                });
+                                    /* ----------- Send SMS ----------- */
+
+
                                 res.send("OK");
                             });
                         });

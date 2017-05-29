@@ -969,9 +969,10 @@ router.get('/admin/issue', authentication, function (req, res) {
 
         //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
     if (resp != undefined) {
+        console.log("departments=====>>>>>>>"+resp[0].departments.length);
 
-            if (resp[0].department == '' && resp[0].departments.length > 0) {
-                
+            //if (resp[0].department == '' && resp[0].departments.length > 0) {
+        if (resp[0].departments.length > 0) {                
                 for (var i = 0; i < resp[0].departments.length; i++) {  
                     if (i > 0) {
                         _city_department += "&";
@@ -981,11 +982,11 @@ router.get('/admin/issue', authentication, function (req, res) {
                     _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + encodeURIComponent(_city_department_count);
                 }
                 _city_department += "&j3=OR&f3=OP&f"+(i+4)+"=CP";
-            } else if (resp[0].department == '' && resp[0].departments.length == 0) {
+            } else if (resp[0].departments.length == 0) {
                 _city_department = "f4=component&o4=equals&v4=" +encodeURIComponent("Τμήμα επίλυσης προβλημάτων");
                 
-            } else {
-                _city_department_count = resp[0].department;
+        } else {
+            _city_department_count = resp[0].departments[0].department;
                 //_city_department_count = _city_department_count.replace('&', '\/u0026');
                 _city_department = "f4=component&o4=equals&v4=" + encodeURIComponent(_city_department_count);
 

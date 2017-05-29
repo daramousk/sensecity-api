@@ -962,7 +962,7 @@ router.get('/admin/issue', authentication, function (req, res) {
 
     var _city_department = '';
     var _city_department_count = '';
-    Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
+    Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "city": 1, "departments": 1 }, function (error, resp) {
     var bugParams = '';
         
     if (resp != undefined) {
@@ -3706,14 +3706,17 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
         method: "POST",
         json: req.body
     }, function (error, response, body) {
-       
+
+        
         var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias,status,product,cf_mobile";
 
         request({
             url: bugUrlRest + "/rest/bug" + bugParams1,
             method: "GET"
         }, function (error, response, body) {
-           
+
+            console.log(JSON.stringify(body));
+
             var _status_field = ' ';
             if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
                 _status_field = ' ΕΙΝΑΙ ΣΕ ΕΞΕΛΙΞΗ';

@@ -979,7 +979,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                     }
                     console.log("0====>" + resp[0].departments[0].department);
                     console.log("1====>" + resp[0].departments[1].department);
-                    console.log("2====>" + resp[0].departments[2].department);
+                    
 
                     _city_department_count = resp[0].departments[i].department;
                     //_city_department_count = _city_department_count.replace('&', '\/u0026');

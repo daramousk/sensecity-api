@@ -965,36 +965,24 @@ router.get('/admin/issue', authentication, function (req, res) {
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "department": 1, "city": 1, "departments": 1 }, function (error, resp) {
     var bugParams = '';
         
-        
-
-        //console.log("department=>" + resp[0].department + " -- city==>" + resp[0].city);
     if (resp != undefined) {
-        console.log("departments=====>>>>>>>"+resp[0].departments.length);
-
-            //if (resp[0].department == '' && resp[0].departments.length > 0) {
-        if (resp[0].departments.length > 1) {            
-                for (var i = 0; i < resp[0].departments.length; i++) {  
-                    if (i > 0) {
-                        _city_department += "&";
-                    }
-                    console.log("0====>" + resp[0].departments[0].department);
-                    console.log("1====>" + resp[0].departments[1].department);
-                    console.log(JSON.stringify(resp));
-
-                    _city_department_count = resp[0].departments[i].department;
-                    //_city_department_count = _city_department_count.replace('&', '\/u0026');
-                    _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + encodeURIComponent(_city_department_count);
-                    console.log("_city_department======>>>>" + _city_department);
+        if (resp[0].departments.length > 1) {
+            for (var i = 0; i < resp[0].departments.length; i++) {
+                if (i > 0) {
+                    _city_department += "&";
                 }
-                _city_department += "&j3=OR&f3=OP&f" + (i + 4) + "=CP";
+
+                _city_department_count = resp[0].departments[i].department;
+                _city_department += "f" + (4 + i) + "=component&o" + (4 + i) + "=equals&v" + (4 + i) + "=" + encodeURIComponent(_city_department_count);
+            }
+            _city_department += "&j3=OR&f3=OP&f" + (i + 4) + "=CP";
         } else if (resp[0].departments.length == 1 && resp[0].departments[0].department == undefined) {
-                _city_department = "f4=component&o4=equals&v4=" +encodeURIComponent("Τμήμα επίλυσης προβλημάτων");
+            _city_department = "f4=component&o4=equals&v4=" + encodeURIComponent("Τμήμα επίλυσης προβλημάτων");
         } else {
             _city_department_count = resp[0].departments[0].department;
-                //_city_department_count = _city_department_count.replace('&', '\/u0026');
-                _city_department = "f4=component&o4=equals&v4=" + encodeURIComponent(_city_department_count);
-            }
+            _city_department = "f4=component&o4=equals&v4=" + encodeURIComponent(_city_department_count);
         }
+    }
         
         if (req.query.bug_id != undefined) {
             if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
@@ -1011,29 +999,18 @@ router.get('/admin/issue', authentication, function (req, res) {
             }
             
         }
-        
-        console.log(bugParams);
+     
         request({
             url: bugUrlRest + "/rest/bug" + bugParams,//bugParams,
             method: "GET"
-        }, function (error1, response, body) {
-            console.log(bugUrlRest + "/rest/bug" + bugParams); console.log("-------------------");
-            console.log(error1); console.log("-------------------");
-            console.log(JSON.parse(body)); console.log("-------------------");
-            console.log(JSON.parse(body).bugs); console.log("-------------------");
+        }, function (error1, response, body) {     
             if (JSON.parse(body).bugs != undefined) {
                 if (JSON.parse(body).bugs.length > 0) {
-                    //console.log(body);
                     var _component_dep = JSON.parse(body).bugs[0].component
-                    //_component_dep = _component_dep.replace('&', '%26');
-                    _component_dep = encodeURIComponent(_component_dep);
-                    console.log(_component_dep);
-                    console.log("---------------------");
-                    console.log(_city_department);
-                    if (_city_department.indexOf(_component_dep) > -1 || _city_department == encodeURIComponent('Τμήμα επίλυσης προβλημάτων')) {
-                        console.log("get");
-                        get_issues(req, function (result) {
 
+                    _component_dep = encodeURIComponent(_component_dep);
+                    if (_city_department.indexOf(_component_dep) > -1 || _city_department == encodeURIComponent('Τμήμα επίλυσης προβλημάτων')) {
+                        get_issues(req, function (result) {
                             res.send(result);
                         });
                     }

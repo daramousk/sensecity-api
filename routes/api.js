@@ -3928,6 +3928,9 @@ router.post('/issue_subscribe', function (req, res) {
 
                                                     console.log("send sms");
                                                     for (var j = 0; j < mobile_array.length; j++) {
+
+                                                        console.log("1=====>>>>>>" + JSON.stringify(mobile_array[j]));
+
                                                         request({
                                                             url: "https://api.theansr.com/v1/sms",
                                                             method: "POST",

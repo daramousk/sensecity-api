@@ -3886,7 +3886,7 @@ router.post('/issue_subscribe', function (req, res) {
 
                     var bodyParams_add;
                     if (add_cc_list == 1 && add_mobile_number == 1) {
-                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": "," + req.body.mobile_num };
+                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": (JSON.parse(response.body).bugs[0].cf_email+","+req.body.mobile_num) };
                     } else if (add_cc_list == 0 && add_mobile_number == 1) {
                         bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cf_mobile": "," + req.body.mobile_num };
                     } else if (add_cc_list == 1 && add_mobile_number == 0) {

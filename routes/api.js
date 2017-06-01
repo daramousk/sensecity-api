@@ -3914,10 +3914,16 @@ router.post('/issue_subscribe', function (req, res) {
                                         json: bugComment1
                                     }, function (error2, bugResponse2, body2) {
 
+                                        console.log("name=>"+req.body.name);
+                                        console.log('-1-');
+                                        console.log("email=>" + req.body.email);
+                                        console.log('-2-');
+                                        console.log("mobile=>" + req.body.mobile_num);
+
                                         request({
                                             url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                             method: "PUT",
-                                            json: { "add": ["name:" + req.body.email, "email:" + req.body.email, "mobile:" + req.body.mobile_num], "id": bugResponse2.body.id, "token": bugToken }
+                                            json: { "add": ["name:" + req.body.name, "email:" + req.body.email, "mobile:" + req.body.mobile_num], "id": bugResponse2.body.id, "token": bugToken }
                                         }, function (error4, response4, body4) {
                                             res.send("OK");
                                         });
@@ -3934,10 +3940,16 @@ router.post('/issue_subscribe', function (req, res) {
                                     json: bugComment1
                                 }, function (error2, bugResponse2, body2) {
 
+                                    console.log("name=>" + req.body.name);
+                                    console.log('-3-');
+                                    console.log("email=>" + req.body.email);
+                                    console.log('-4-');
+                                    console.log("mobile=>" + req.body.mobile_num);
+
                                     request({
                                         url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                         method: "PUT",
-                                        json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
+                                        json: { "add": ["name:" + req.body.name, "email:" + req.body.email, "mobile:" + req.body.mobile_num], "id": bugResponse2.body.id, "token": bugToken }
                                     }, function (error4, response4, body4) {
                                         res.send("OK");
                                     });

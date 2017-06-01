@@ -3924,17 +3924,17 @@ router.post('/issue_subscribe', function (req, res) {
                                         if (req.body.name != undefined) {
                                             tag_name = "name:" + req.body.name;
                                         } else {
-                                            tag_name = "name:undefined";
+                                            tag_name = "name:";
                                         }
                                         if (req.body.email != undefined) {
                                             tag_email = ",email:test@test.gr";// + req.body.email;
                                         } else {
-                                            tag_email = ",email:undefined";
+                                            tag_email = ",email:";
                                         }
                                         if (req.body.mobile_num != undefined) {
                                             tag_mobile = ",mobile:" + req.body.mobile_num;
                                         } else {
-                                            tag_mobile = ",mobile:undefined";
+                                            tag_mobile = ",mobile:";
                                         }
                                         console.log(tag_name);
                                         console.log(tag_email);

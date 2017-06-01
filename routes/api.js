@@ -3942,6 +3942,9 @@ router.post('/issue_subscribe', function (req, res) {
                                             method: "PUT",
                                             json: { "add": ['"' + tag_name + "'", '"' + tag_email + "'", '"' + tag_mobile + "'"] , "id": bugResponse2.body.id, "token": bugToken }
                                         }, function (error4, response4, body4) {
+
+                                            console.log(JSON.stringify(response4));
+
                                             res.send("OK");
                                         });
                                     });

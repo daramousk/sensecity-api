@@ -3939,7 +3939,7 @@ router.post('/issue_subscribe', function (req, res) {
                                         console.log(tag_name);
                                         console.log(tag_email);
                                         console.log(tag_mobile);
-                                        var json_data = { "add": [escape(tag_name), escape(tag_email), escape(tag_mobile)], "id": bugResponse2.body.id, "token": bugToken };
+                                        var json_data = { "add": [tag_name, tag_email, tag_mobile], "id": bugResponse2.body.id, "token": bugToken };
                                         console.log("json_data=>" + json_data);
 
                                         request({

@@ -3919,11 +3919,28 @@ router.post('/issue_subscribe', function (req, res) {
                                         console.log("email=>" + req.body.email);
                                         console.log('-2-');
                                         console.log("mobile=>" + req.body.mobile_num);
+                                        var tag_name, tag_email, tag_mobile;
+
+                                        if (req.body.name != undefined) {
+                                            tag_name = "name:" + req.body.name;
+                                        } else {
+                                            tag_name = '';
+                                        }
+                                        if (req.body.email != undefined) {
+                                            tag_email = "name:" + req.body.email;
+                                        } else {
+                                            tag_email = '';
+                                        }
+                                        if (req.body.mobile_num != undefined) {
+                                            tag_mobile = "name:" + req.body.mobile_num;
+                                        } else {
+                                            tag_mobile = '';
+                                        }
 
                                         request({
                                             url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                             method: "PUT",
-                                            json: { "add": ["name:" + req.body.name, "email:" + req.body.email, "mobile:" + req.body.mobile_num], "id": bugResponse2.body.id, "token": bugToken }
+                                            json: { "add": [tag_name, tag_email, tag_mobile], "id": bugResponse2.body.id, "token": bugToken }
                                         }, function (error4, response4, body4) {
                                             res.send("OK");
                                         });
@@ -3946,10 +3963,28 @@ router.post('/issue_subscribe', function (req, res) {
                                     console.log('-4-');
                                     console.log("mobile=>" + req.body.mobile_num);
 
+                                    var tag_name,tag_email, tag_mobile;
+
+                                    if (req.body.name != undefined) {
+                                        tag_name = "name:" + req.body.name;
+                                    } else {
+                                        tag_name = '';
+                                    }
+                                    if (req.body.email != undefined) {
+                                        tag_email = "name:" + req.body.email;
+                                    } else {
+                                        tag_email = '';
+                                    }
+                                    if (req.body.mobile_num != undefined) {
+                                        tag_mobile = "name:" + req.body.mobile_num;
+                                    } else {
+                                        tag_mobile = '';
+                                    }
+
                                     request({
                                         url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                         method: "PUT",
-                                        json: { "add": ["name:" + req.body.name, "email:" + req.body.email, "mobile:" + req.body.mobile_num], "id": bugResponse2.body.id, "token": bugToken }
+                                        json: { "add": [tag_name, tag_email, tag_mobile], "id": bugResponse2.body.id, "token": bugToken }
                                     }, function (error4, response4, body4) {
                                         res.send("OK");
                                     });

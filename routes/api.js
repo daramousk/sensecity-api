@@ -3922,19 +3922,19 @@ router.post('/issue_subscribe', function (req, res) {
                                         var tag_name, tag_email, tag_mobile;
 
                                         if (req.body.name != undefined) {
-                                            tag_name = "name" + req.body.name;
+                                            tag_name = "name:" + req.body.name;
                                         } else {
-                                            tag_name = "name";
+                                            tag_name = "name:";
                                         }
                                         if (req.body.email != undefined) {
-                                            tag_email = "emailtesttest.gr";// + req.body.email;
+                                            tag_email = "email:testtest.gr";// + req.body.email;
                                         } else {
-                                            tag_email = "email";
+                                            tag_email = "email:";
                                         }
                                         if (req.body.mobile_num != undefined) {
-                                            tag_mobile = "mobile" + req.body.mobile_num;
+                                            tag_mobile = "mobile:" + req.body.mobile_num;
                                         } else {
-                                            tag_mobile = "mobile";
+                                            tag_mobile = "mobile:";
                                         }
                                         console.log(tag_name);
                                         console.log(tag_email);

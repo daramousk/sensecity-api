@@ -3922,25 +3922,25 @@ router.post('/issue_subscribe', function (req, res) {
                                         var tag_name, tag_email, tag_mobile;
 
                                         if (req.body.name != undefined) {
-                                            tag_name = "name " + req.body.name;
+                                            tag_name = "name:" + req.body.name;
                                         } else {
-                                            tag_name = "name undefined";
+                                            tag_name = "name:undefined";
                                         }
                                         if (req.body.email != undefined) {
-                                            tag_email = "email " + req.body.email;
+                                            tag_name += ",email:" + req.body.email;
                                         } else {
-                                            tag_email = "email undefined";
+                                            tag_name += ",email:undefined";
                                         }
                                         if (req.body.mobile_num != undefined) {
-                                            tag_mobile = "mobile " + req.body.mobile_num;
+                                            tag_name += ",mobile:" + req.body.mobile_num;
                                         } else {
-                                            tag_mobile = "mobile undefined";
+                                            tag_name += ",mobile:undefined";
                                         }
-
+                                        console.log(tag_name);
                                         request({
                                             url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                             method: "PUT",
-                                            json: { "add": [tag_name.toString(), tag_email.toString(), tag_mobile.toString()] , "id": bugResponse2.body.id, "token": bugToken }
+                                            json: { "add": [tag_name.toString() , tag_email.toString() , tag_mobile.toString()] , "id": bugResponse2.body.id, "token": bugToken }
                                         }, function (error4, response4, body4) {
 
                                             console.log(JSON.stringify(response4));

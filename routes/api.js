@@ -3927,7 +3927,7 @@ router.post('/issue_subscribe', function (req, res) {
                                             tag_name = "name:undefined";
                                         }
                                         if (req.body.email != undefined) {
-                                            tag_email = "email:testtest.gr";// + req.body.email;
+                                            tag_email = "email:" + req.body.email;
                                         } else {
                                             tag_email = "email:undefined";
                                         }

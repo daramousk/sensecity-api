@@ -3939,13 +3939,13 @@ router.post('/issue_subscribe', function (req, res) {
                                         console.log(tag_name);
                                         console.log(tag_email);
                                         console.log(tag_mobile);
-                                        console.log(encodeURIComponent("qwertopemail@easdfghjkmail.com"));
+                                        var json_data = { "add": [escape(tag_name), escape(tag_email), escape(tag_mobile)], "id": bugResponse2.body.id, "token": bugToken };
+                                        console.log("json_data=>" + json_data);
+
                                         request({
                                             url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                             method: "PUT",
-                                            json: {
-                                                "add": ["name", encodeURI("qiljjjjjeasdfghjkmailcom"), "mobile"], "id": bugResponse2.body.id, "token": bugToken
-                                            }
+                                            json: json_data
                                         }, function (error4, response4, body4) {
 
                                             console.log(JSON.stringify(response4));
@@ -3988,11 +3988,12 @@ router.post('/issue_subscribe', function (req, res) {
                                     } else {
                                         tag_mobile = ",'mobile:undefined'";
                                     }
-
+                                    var json_data = { "add": [tag_name, tag_email, tag_mobile], "id": bugResponse2.body.id, "token": bugToken };
+                                    console.log("json_data=>" + json_data);
                                     request({
                                         url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                         method: "PUT",
-                                        json: { "add": [tag_name + tag_email+ tag_mobile], "id": bugResponse2.body.id, "token": bugToken }
+                                        json: json_data
                                     }, function (error4, response4, body4) {
                                         res.send("OK");
                                     });

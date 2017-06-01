@@ -3927,14 +3927,14 @@ router.post('/issue_subscribe', function (req, res) {
                                             tag_name = "name";
                                         }
                                         if (req.body.email != undefined) {
-                                            tag_email = ",emailtest@test.gr";// + req.body.email;
+                                            tag_email = "emailtesttest.gr";// + req.body.email;
                                         } else {
-                                            tag_email = ",email";
+                                            tag_email = "email";
                                         }
                                         if (req.body.mobile_num != undefined) {
-                                            tag_mobile = ",mobile" + req.body.mobile_num;
+                                            tag_mobile = "mobile" + req.body.mobile_num;
                                         } else {
-                                            tag_mobile = ",mobile";
+                                            tag_mobile = "mobile";
                                         }
                                         console.log(tag_name);
                                         console.log(tag_email);

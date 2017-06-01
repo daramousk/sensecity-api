@@ -3850,114 +3850,126 @@ function is_authenticate(req, res) {
 
 // Subscribe citizen to issue
 router.post('/issue_subscribe', function (req, res) {
-    
-    var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile,product";
-    
-    act_User.find({
-        $and: [{ "uuid": "web-site" }, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile_num }] }]
-    }, function (err, resp) {
-    
-        if (resp.length == 0) {
-            //no user existx
-            res.status(403).send('Forbidden');
-            
-        } else {
-    
 
-            request({
-                url: bugUrlRest + "/rest/bug" + bugParams1,
-                method: "GET"
-            }, function (error, response, body) {
-                console.log(JSON.parse(response.body));
-                console.log(JSON.parse(response.body).bugs[0].cf_email);
-                
+    console.log(req.body.bug_id);
+    if (req.body.bug_id != undefined && req.body.email != undefined && req.body.mobile_num != undefined) {
+        if (req.body.bug_id != '' && (req.body.email != '' || req.body.mobile_num != '')) {
+            console.log("1");
+            var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile,product,cf_cc_mobile,cf_cc_name,cc";
 
-                if (JSON.parse(response.body).bugs[0] != undefined) {
-    
-                    var add_cc_list = 0;
-                    var add_mobile_number = 0;
-    
-                    if (JSON.parse(response.body).bugs[0].cf_email != req.body.email) {
-                        add_cc_list = 1;
-                    }
-                    if (JSON.parse(response.body).bugs[0].cf_mobile != req.body.mobile_num) {
-                        add_mobile_number = 1;
-                    }
+            act_User.find({
+                $and: [{ "uuid": "web-site" }, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile_num }] }]
+            }, function (err, resp) {
 
-                    var bodyParams_add;
-                    if (add_cc_list == 1 && add_mobile_number == 1) {
-                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_mobile": (JSON.parse(response.body).bugs[0].cf_mobile+","+req.body.mobile_num) };
-                    } else if (add_cc_list == 0 && add_mobile_number == 1) {
-                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cf_mobile": "," + req.body.mobile_num };
-                    } else if (add_cc_list == 1 && add_mobile_number == 0) {
-                        bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] } };
-                    } 
+                if (resp.length == 0) {
+                    //no user existx
+                    console.log("123");
+                    res.status(403).send('Forbidden');
 
-                    if (add_cc_list != 0 || add_mobile_number != 0)  {
-                        
-                        request({
-                            url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
-                            method: "PUT",
-                            json: bodyParams_add
-                        }, function (error1, response1, body1) {
-                    
-                            var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment};
-                    
-                            request({
-                                url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
-                                method: "POST",
-                                json: bugComment1
-                            }, function (error2, bugResponse2, body2) {
-                                
+                } else {
+
+
+                    request({
+                        url: bugUrlRest + "/rest/bug" + bugParams1,
+                        method: "GET"
+                    }, function (error, response, body) {
+                        console.log(JSON.parse(response.body));
+                        console.log(JSON.parse(response.body).bugs[0].cf_email);
+
+
+                        if (JSON.parse(response.body).bugs[0] != undefined) {
+
+                            var add_cc_list = 0;
+                            var add_mobile_number = 0;
+
+                            if (JSON.parse(response.body).bugs[0].cf_email != req.body.email) {
+                                add_cc_list = 1;
+                            }
+                            if (JSON.parse(response.body).bugs[0].cf_mobile != req.body.mobile_num) {
+                                add_mobile_number = 1;
+                            }
+
+                            var bodyParams_add;
+                            if (add_cc_list == 1 && add_mobile_number == 1) {
+                                bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_cc_mobile": (JSON.parse(response.body).bugs[0].cf_cc_mobile + "," + req.body.mobile_num), "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name) };
+                            } else if (add_cc_list == 0 && add_mobile_number == 1) {
+                                bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cf_cc_mobile": (JSON.parse(response.body).bugs[0].cf_cc_mobile + "," + req.body.mobile_num), "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name) };
+                            } else if (add_cc_list == 1 && add_mobile_number == 0) {
+                                bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name)};
+                            }
+
+                            if (add_cc_list != 0 || add_mobile_number != 0) {
+
                                 request({
-                                    url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
+                                    url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
                                     method: "PUT",
-                                    json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
-                                }, function (error4, response4, body4) {
-                                   
+                                    json: bodyParams_add
+                                }, function (error1, response1, body1) {
 
-                                    res.send("OK");
+                                    var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment };
+
+                                    request({
+                                        url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
+                                        method: "POST",
+                                        json: bugComment1
+                                    }, function (error2, bugResponse2, body2) {
+
+                                        request({
+                                            url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
+                                            method: "PUT",
+                                            json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
+                                        }, function (error4, response4, body4) {
+                                            res.send("OK");
+                                        });
+                                    });
                                 });
+                            }
+                            else {
+                                //add comment
+                                var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment };
 
+                                request({
+                                    url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
+                                    method: "POST",
+                                    json: bugComment1
+                                }, function (error2, bugResponse2, body2) {
 
-                            });
-                        });
-
-                        
-                    }
-                    else {
-                     //add comment
-                        var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment};
-                        
-                        request({
-                            url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
-                            method: "POST",
-                            json: bugComment1
-                        }, function (error2, bugResponse2, body2) {
-
-                            request({
-                                url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
-                                method: "PUT",
-                                json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
-                            }, function (error4, response4, body4) {
-                                res.send("OK");
-                            });
-                        });
-                    }
+                                    request({
+                                        url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
+                                        method: "PUT",
+                                        json: { "add": ["All", "user_comment"], "id": bugResponse2.body.id, "token": bugToken }
+                                    }, function (error4, response4, body4) {
+                                        res.send("OK");
+                                    });
+                                });
+                            }
+                        }
+                        else {
+                            console.log("456");
+                            res.send("Forbidden");
+                        }
+                    });
                 }
-                else {
-                    res.send("Forbidden");
-                }
-
-
-                });
-
-
+            });
+        } else {
+            res.status(400).send('Bad Request');
         }
-    });
+
+    } else {
+        res.status(400).send('Bad Request');
+    }
+});
 
 
-    
+
+// Recommend issue
+router.post('/issue_recommendation', function (req, res) {
+// ->req.query.lat
+// ->req.query.long
+// ->req.query.issue
+
+    console.log(JSON.stringify(req));
+
 
 });
 

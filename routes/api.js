@@ -3927,20 +3927,20 @@ router.post('/issue_subscribe', function (req, res) {
                                             tag_name = "name:undefined";
                                         }
                                         if (req.body.email != undefined) {
-                                            tag_name += ",email:" + req.body.email;
+                                            tag_email += ",email:" + req.body.email;
                                         } else {
-                                            tag_name += ",email:undefined";
+                                            tag_email += ",email:undefined";
                                         }
                                         if (req.body.mobile_num != undefined) {
-                                            tag_name += ",mobile:" + req.body.mobile_num;
+                                            tag_mobile += ",mobile:" + req.body.mobile_num;
                                         } else {
-                                            tag_name += ",mobile:undefined";
+                                            tag_mobile += ",mobile:undefined";
                                         }
                                         console.log(tag_name);
                                         request({
                                             url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                             method: "PUT",
-                                            json: { "add": [tag_name] , "id": bugResponse2.body.id, "token": bugToken }
+                                            json: { "add": [tag_name+tag_email+tag_mobile] , "id": bugResponse2.body.id, "token": bugToken }
                                         }, function (error4, response4, body4) {
 
                                             console.log(JSON.stringify(response4));

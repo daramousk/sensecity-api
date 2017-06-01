@@ -3927,14 +3927,14 @@ router.post('/issue_subscribe', function (req, res) {
                                             tag_name = "name:undefined";
                                         }
                                         if (req.body.email != undefined) {
-                                            tag_email += ",email:" + req.body.email;
+                                            tag_email = ",email:" + req.body.email;
                                         } else {
-                                            tag_email += ",email:undefined";
+                                            tag_email = ",email:undefined";
                                         }
                                         if (req.body.mobile_num != undefined) {
-                                            tag_mobile += ",mobile:" + req.body.mobile_num;
+                                            tag_mobile = ",mobile:" + req.body.mobile_num;
                                         } else {
-                                            tag_mobile += ",mobile:undefined";
+                                            tag_mobile = ",mobile:undefined";
                                         }
                                         console.log(tag_name);
                                         console.log(tag_email);
@@ -3976,14 +3976,14 @@ router.post('/issue_subscribe', function (req, res) {
                                         tag_name = "'name:undefined'";
                                     }
                                     if (req.body.email != undefined) {
-                                        tag_email += ",'email:" + req.body.email + "'";
+                                        tag_email = ",'email:" + req.body.email + "'";
                                     } else {
-                                        tag_email += ",'email:undefined'";
+                                        tag_email = ",'email:undefined'";
                                     }
                                     if (req.body.mobile_num != undefined) {
-                                        tag_mobile += ",'mobile:" + req.body.mobile_num + "'";
+                                        tag_mobile = ",'mobile:" + req.body.mobile_num + "'";
                                     } else {
-                                        tag_mobile += ",'mobile:undefined'";
+                                        tag_mobile = ",'mobile:undefined'";
                                     }
 
                                     request({

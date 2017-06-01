@@ -3943,7 +3943,7 @@ router.post('/issue_subscribe', function (req, res) {
                                             url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                             method: "PUT",
                                             json: {
-                                                "add": ["name -","email -","mobile -"] , "id": bugResponse2.body.id, "token": bugToken }
+                                                "add": ["name|","email -","mobile -"] , "id": bugResponse2.body.id, "token": bugToken }
                                         }, function (error4, response4, body4) {
 
                                             console.log(JSON.stringify(response4));

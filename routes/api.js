@@ -3922,19 +3922,19 @@ router.post('/issue_subscribe', function (req, res) {
                                         var tag_name, tag_email, tag_mobile;
 
                                         if (req.body.name != undefined) {
-                                            tag_name = "name:" + req.body.name;
+                                            tag_name = "name " + req.body.name;
                                         } else {
-                                            tag_name = "name:undefined";
+                                            tag_name = "name undefined";
                                         }
                                         if (req.body.email != undefined) {
-                                            tag_email = "email:" + req.body.email;
+                                            tag_email = "email " + req.body.email;
                                         } else {
-                                            tag_email = "email:undefined";
+                                            tag_email = "email undefined";
                                         }
                                         if (req.body.mobile_num != undefined) {
-                                            tag_mobile = "mobile:" + req.body.mobile_num;
+                                            tag_mobile = "mobile " + req.body.mobile_num;
                                         } else {
-                                            tag_mobile = "mobile:undefined";
+                                            tag_mobile = "mobile undefined";
                                         }
 
                                         request({
@@ -3969,19 +3969,19 @@ router.post('/issue_subscribe', function (req, res) {
                                     var tag_name,tag_email, tag_mobile;
 
                                     if (req.body.name != undefined) {
-                                        tag_name = "name:" + req.body.name;
+                                        tag_name = "name" + req.body.name;
                                     } else {
-                                        tag_name = "name:undefined";
+                                        tag_name = "name undefined";
                                     }
                                     if (req.body.email != undefined) {
-                                        tag_email = "email:" + req.body.email;
+                                        tag_email = "email" + req.body.email;
                                     } else {
-                                        tag_email = "email:undefined";
+                                        tag_email = "email undefined";
                                     }
                                     if (req.body.mobile_num != undefined) {
-                                        tag_mobile = "mobile:" + req.body.mobile_num;
+                                        tag_mobile = "mobile" + req.body.mobile_num;
                                     } else {
-                                        tag_mobile = "mobile:undefined";
+                                        tag_mobile = "mobile undefined";
                                     }
 
                                     request({

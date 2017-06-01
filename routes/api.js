@@ -3944,7 +3944,7 @@ router.post('/issue_subscribe', function (req, res) {
                                             url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
                                             method: "PUT",
                                             json: {
-                                                "add": ["name", encodeURIComponent("qil@easdfghjkmail.com"), "mobile"], "id": bugResponse2.body.id, "token": bugToken
+                                                "add": ["name", encodeURI("qil@easdfghjkmailcom"), "mobile"], "id": bugResponse2.body.id, "token": bugToken
                                             }
                                         }, function (error4, response4, body4) {
 

@@ -768,7 +768,7 @@ router.post('/issue/:id', function (req, res) {
                                 request({
                                     url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
                                     method: "PUT",
-                                    json: { "add": ["all", "CONFIRMED"], "id": body2.id, "token": bugToken }
+                                    json: { "add": ["DEPARTMENT:all", "STATUS:CONFIRMED"], "id": body2.id, "token": bugToken }
                                 }, function (error4, response4, body4) {
                                     //console.log("Insert Tags to comment");
                                 });
@@ -892,7 +892,7 @@ router.post('/issue/:id', function (req, res) {
                                                         request({
                                                             url: bugUrlRest + "/rest/bug/comment/" + body2.id + "/tags",
                                                             method: "PUT",
-                                                            json: { "add": ["all", "CONFIRMED"], "id": body2.id, "token": bugToken }
+                                                            json: { "add": ["DEPARTMENT:all", "STATUS:CONFIRMED"], "id": body2.id, "token": bugToken }
                                                         }, function (error4, response4, body4) {
 
                                                             console.log("Insert Tags to comment");
@@ -3769,6 +3769,9 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
 
 router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
     req.body.token = bugToken;
+
+    console.log(req.body);
+
     request({
         url: bugUrlRest + "/rest/bug/comment/" + req.body.id + "/tags",
         method: "PUT",

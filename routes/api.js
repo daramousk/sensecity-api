@@ -4033,16 +4033,21 @@ router.post('/issue_recommendation', function (req, res) {
 
     console.log(req.body);
     console.log(req.body.lat);
-    
+    console.log('===>>>> { "issue": req.body.issue, $nearSphere: {  $geometry: {  type: "Point", coordinates: [req.body.long, req.body.lat] }, $minDistance: 100  } }');
+
     Issue.find({
         "issue": req.body.issue, $nearSphere: {
             $geometry: {
                 type: "Point", coordinates: [req.body.long, req.body.lat]
-            }, $minDistance: 10
+            }, $minDistance: 100
         }
-    }, {}, function (request, response) {
+    }, function (request, response) {
         console.log("response" + response);
-        res.send(response);
+        if (response != undefined) {
+            res.send(response);
+        } else {
+            res.send([{}]);
+        }
     });
     
 });

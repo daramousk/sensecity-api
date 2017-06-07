@@ -4051,7 +4051,7 @@ router.post('/issue_recommendation', function (req, res) {
     console.log(my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString());
     Issue.find({
         "issue": req.body.issue, "municipality": "testcity1", "create_at": {
-            $gte: new ISODate(my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString())
+            $gte: my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString()
         }, "loc": {
             $nearSphere: {
                 $geometry: {

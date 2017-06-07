@@ -4037,7 +4037,7 @@ router.post('/issue_recommendation', function (req, res) {
 
     var mydate = new Date();
     var my_year = mydate.getFullYear();
-    var my_month = mydate.getMonth();
+    var my_month = mydate.getMonth()+1;
     if (my_month < 10) {
         my_month = "0" + my_month;
     }

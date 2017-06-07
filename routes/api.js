@@ -3122,10 +3122,12 @@ router.post('/is_activate_user', function (req, res) {
     if (req.body.email != undefined || req.body.email != '') {
         act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
             var _res8 = JSON.stringify(res8);
+            console.log(JSON.stringify(res8));
 
             if (_res8.length != '2') {
                 _activate_email = res8[0].activate;
             }
+
             if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
 
                 act_User.find({ "uuid": "web-site", "mobile_num": req.body.mobile }, { "activate_sms": 1 }, function (req9, res9) {

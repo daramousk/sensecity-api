@@ -3118,8 +3118,10 @@ router.post('/is_activate_user', function (req, res) {
 
     var _activate_email = '';
     var _activate_sms = '';
+    console.log(req);
 
     if (req.body.email != undefined || req.body.email != '') {
+        console.log("1");
         act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
             var _res8 = JSON.stringify(res8);
             console.log(JSON.stringify(res8));

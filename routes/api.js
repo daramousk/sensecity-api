@@ -4033,17 +4033,18 @@ router.post('/issue_recommendation', function (req, res) {
 
     console.log(req.body);
     console.log(req.body.lat);
-    /*
+    
     Issue.find({
-        "issue": req.query.issue, $nearSphere: {
+        "issue": req.body.issue, $nearSphere: {
             $geometry: {
-                type: "Point", coordinates: [req.query.long, req.query.lat]
+                type: "Point", coordinates: [req.body.long, req.body.lat]
             }, $minDistance: 10
         }
     }, {}, function (request, response) {
         console.log("response" + response);
+        res.send(response);
     });
-    */
+    
 });
 
 // Return router

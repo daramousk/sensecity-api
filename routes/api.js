@@ -4038,7 +4038,16 @@ router.post('/issue_recommendation', function (req, res) {
     var mydate = new Date();
     var my_year = mydate.getFullYear();
     var my_month = mydate.getMonth();
-    var my_date = mydate.getDate()-3;
+    if (my_month < 10) {
+        my_month = "0" + my_month;
+    }
+    
+    var my_date = mydate.getDate() - 3;
+
+    if (my_date < 10) {
+        my_date = "0" + my_date;
+    }
+
     console.log(my_year + "-" + my_month + "-" + my_date);
     Issue.find({
         "issue": req.body.issue, "municipality": "testcity1", "create_at": {

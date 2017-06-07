@@ -4035,8 +4035,14 @@ router.post('/issue_recommendation', function (req, res) {
     console.log(req.body.lat);
     console.log('===>>>> { "issue": req.body.issue, $nearSphere: {  $geometry: {  type: "Point", coordinates: [req.body.long, req.body.lat] }, $minDistance: 100  } }');
 
+    var mydate = new Date();
+    var my_year = mydate.getFullYear();
+    var my_month = mydate.getMonth();
+    var my_date = mydate.getDate()-3;
+    console.log(my_year + "-" + my_month + "-" + my_date);
     Issue.find({
-        "issue": req.body.issue, "loc": {
+        "issue": req.body.issue, "municipality": "testcity1", "create_at": {
+            $gte: new ISODate(my_year + "-" + my_month + "-" + my_date) }, "loc": {
             $nearSphere: {
                 $geometry: {
                     type: "Point", coordinates: [req.body.long, req.body.lat]

@@ -4031,7 +4031,8 @@ router.post('/issue_recommendation', function (req, res) {
 
 
 
-    console.log(req);
+    console.log(req.body);
+    console.log(req.body.lat);
     /*
     Issue.find({
         "issue": req.query.issue, $nearSphere: {

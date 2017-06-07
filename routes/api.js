@@ -3769,10 +3769,11 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
 
 router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
     req.body.token = bugToken;
-    req.body.add[0] = "STATUS:" + req.body.add[0];
-    req.body.add[0] = "DEPARTMENT:" + req.body.add[1];
     console.log("1=>" + req.body.add[0]);
     console.log("2=>" + req.body.add[1]);
+    req.body.add[0] = "STATUS:" + req.body.add[0];
+    req.body.add[1] = "DEPARTMENT:" + req.body.add[1];
+    
 
     request({
         url: bugUrlRest + "/rest/bug/comment/" + req.body.id + "/tags",

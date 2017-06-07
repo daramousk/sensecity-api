@@ -4036,10 +4036,12 @@ router.post('/issue_recommendation', function (req, res) {
     console.log('===>>>> { "issue": req.body.issue, $nearSphere: {  $geometry: {  type: "Point", coordinates: [req.body.long, req.body.lat] }, $minDistance: 100  } }');
 
     Issue.find({
-        "issue": req.body.issue, $nearSphere: {
-            $geometry: {
-                type: "Point", coordinates: [req.body.long, req.body.lat]
-            }, $minDistance: 100
+        "issue": req.body.issue, "loc": {
+            $nearSphere: {
+                $geometry: {
+                    type: "Point", coordinates: [req.body.long, req.body.lat]
+                }, $minDistance: 10
+            }
         }
     }, function (request, response) {
         console.log("response" + response);

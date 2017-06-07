@@ -3769,8 +3769,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
 
 router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
     req.body.token = bugToken;
-    console.log("1=>" + req.body.add[0]);
-    console.log("2=>" + req.body.add[1]);
+
     req.body.add[0] = "STATUS:" + req.body.add[0];
     req.body.add[1] = "DEPARTMENT:" + req.body.add[1];
     
@@ -4030,9 +4029,20 @@ router.post('/issue_recommendation', function (req, res) {
 // ->req.query.long
 // ->req.query.issue
 
-    console.log(JSON.stringify(req));
 
 
+    console.log(req);
+    /*
+    Issue.find({
+        "issue": req.query.issue, $nearSphere: {
+            $geometry: {
+                type: "Point", coordinates: [req.query.long, req.query.lat]
+            }, $minDistance: 10
+        }
+    }, {}, function (request, response) {
+        console.log("response" + response);
+    });
+    */
 });
 
 // Return router

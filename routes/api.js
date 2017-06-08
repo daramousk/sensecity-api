@@ -221,7 +221,7 @@ router.post('/image_issue', function (req, res) {
                     });
 
 
-                    entry.image_name = '';
+                   // entry.image_name = '';
 
                     var has_img = 0;
                     if (req.body.image_name.indexOf("base64") !== -1) {

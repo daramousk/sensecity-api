@@ -10,7 +10,7 @@ var issueSchema = new mongoose.Schema({
 	device_id: String,
 	value_desc: String,
 	comments: {type:String, default : ""},
-    image_name: String,
+    /*image_name: String,*/
 	municipality: String,
     user: { uuid: { type: String, default: "" }, name: { type: String, default: "" }, email: { type: String, default: "" }, phone: { type: String, default: "" } },
     city_address: { type: String, default: "" }

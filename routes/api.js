@@ -3640,17 +3640,20 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
         json: req.body
     }, function (error, response, body) {
 
-        if (req.body.cf_city_address != undefined) {
+        /*if (req.body.cf_city_address != undefined) {
             if (req.body.cf_city_address != '') {                
                 request({
                     url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(req.body.cf_city_address) + "&key=" + config.config.key_geocoding,
                     method: "GET"
-                }, function (error, response) {
+                }, function (error, response) {*/
+        if (req.body.cf_city_address == undefined) {
+            req.body.cf_city_address = "";
+        }
 
-                    var lat = JSON.parse(response.body).results[0].geometry.location.lat;
-                    var lng = JSON.parse(response.body).results[0].geometry.location.lng;
+        var lat = JSON.parse(response.body).results[0].geometry.location.lat;
+        var lng = JSON.parse(response.body).results[0].geometry.location.lng;
 
-                    var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.ids[0] + "&include_fields=alias";
+        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.ids[0] + "&include_fields=alias";
 
                     request({
                         url: bugUrlRest + "/rest/bug" + bugParams1,
@@ -3659,12 +3662,22 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
 
                         var object_id = JSON.parse(body).bugs[0].alias[0];
 
-                        Issue.update({ "_id": JSON.parse(body).bugs[0].alias[0] }, { $set: { "loc": { "type": "Point",  "coordinates": [lng, lat] } } }, function (err, resp) {
-                            console.log(err);
+                        Issue.update({ "_id": JSON.parse(body).bugs[0].alias[0] }, { $set: { "loc": { "type": "Point", "coordinates": [lng, lat] }, "city_address": req.body.cf_city_address } }, function (err, resp) {
+                            if (err) { console.log(err); }
                             if (!error && response.statusCode === 200) {
 
                                 if (response.body.result !== null) {
-                                    res.send("ok");
+
+                                    bodyParam_Update = { "token": bugToken, "ids": [req.body.ids[0]], "cf_city_address": req.body.cf_city_address };
+
+                                    request({
+                                        url: bugUrlRest + "/rest/bug/" + req.body.ids[0],
+                                        method: "PUT",
+                                        json: bodyParam_Update
+                                    }, function (error1, response1, body1) {
+
+                                        res.send("ok");
+                                    });
                                 } else {
                                     res.send([response.body.error]);
                                 }
@@ -3674,9 +3687,9 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                         });
                     });
                     
-                });
-            }
-        }
+                //});
+          //  }
+       // }
 
         
     });

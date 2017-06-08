@@ -572,15 +572,7 @@ router.post('/issue', function (req, res) {
                         res.send(return_var);
                     });
                 });
-            }
-
-
-
-
-
-
-
-
+            }            
         });
     }
 
@@ -3654,8 +3646,8 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
             req.body.cf_city_address = "";
         }
 
-        var lat = JSON.parse(response.body).results[0].geometry.location.lat;
-        var lng = JSON.parse(response.body).results[0].geometry.location.lng;
+        var lat = req.body.lat; //JSON.parse(response.body).results[0].geometry.location.lat;
+        var lng = req.body.lng; //JSON.parse(response.body).results[0].geometry.location.lng;
 
         var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.ids[0] + "&include_fields=alias";
 
@@ -3663,6 +3655,8 @@ router.post('/admin/bugs/update', authorization, function (req, res) {
                         url: bugUrlRest + "/rest/bug" + bugParams1,
                         method: "GET"
                     }, function (error1, response, body) {
+
+                        console.log(JSON.stringify(response));
 
                         var object_id = JSON.parse(body).bugs[0].alias[0];
 

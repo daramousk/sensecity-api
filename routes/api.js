@@ -407,6 +407,9 @@ router.post('/issue', function (req, res) {
         city_address = req.body.city_address;
     }
 
+
+    console.log("city_address" + city_address);
+
     if (city_address == '') {
         //console.log("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding);
         request({
@@ -518,12 +521,14 @@ router.post('/issue', function (req, res) {
 
                                         var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
 
+                                        console.log('"token":' + bugToken + ', "summary": ' + resp.issue + ', "priority": "normal", "bug_severity": "normal", "cf_city_name":' + city_name + ', "alias":' + [resp._id.toString()] + ', "url":' + resp.value_desc + ', "product":' + response[0]["municipality"] + ', "component":' + config.config.bug_component + ', "version": "unspecified", "cf_city_address":' + city_address);
+                                        res.send("ok");
                                         request({
                                             url: bugUrlRest + "/rest/bug",
                                             method: "POST",
                                             json: bugData1
                                         }, function (error, bugResponse, body) {
-                                            console.log("3");
+                                            console.log("3--");
                                             console.log(JSON.stringify(bugResponse));
                                             if (error != null) { console.log(error) };
 

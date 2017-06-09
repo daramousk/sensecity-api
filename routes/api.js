@@ -524,7 +524,7 @@ router.post('/issue', function (req, res) {
                                         var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
 
                                         console.log('"token":' + bugToken + ', "summary": ' + resp.issue + ', "priority": "normal", "bug_severity": "normal", "cf_city_name":' + city_name + ', "alias":' + [resp._id.toString()] + ', "url":' + resp.value_desc + ', "product":' + response[0]["municipality"] + ', "component":' + config.config.bug_component + ', "version": "unspecified", "cf_city_address":' + city_address);
-                                        res.send("ok");
+
                                         request({
                                             url: bugUrlRest + "/rest/bug",
                                             method: "POST",

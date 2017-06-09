@@ -742,7 +742,9 @@ router.post('/issue', function (req, res) {
 
 router.post('/issue/:id', function (req, res) {
     var bodyParams;
-   // console.log("is=====>"+req.params.id);
+    console.log("- - - -  - - -  - - - - -  - - - - - -  - - - -  - - - -  - - - - -  -");
+    console.log("is=====>" + req);
+    console.log("- - - -  - - -  - - - - -  - - - - - -  - - - -  - - - -  - - - - -  -");
     Issue.find({ "_id": req.params.id }, { "municipality": 1, "issue": 1 }, function (req1, res1) {
         if (res1 != undefined) {
             //console.log("res1=====>" + res1);

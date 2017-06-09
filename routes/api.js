@@ -3794,6 +3794,10 @@ router.post('/admin/bugs/comment/tags', authorization, function (req, res) {
         method: "PUT",
         json: req.body
     }, function (error, response, body) {
+
+        console.log(JSON.stringify(response));
+        console.log(response);
+
         if (!error && response.statusCode === 200) {
 
             if (response.body.result !== null)

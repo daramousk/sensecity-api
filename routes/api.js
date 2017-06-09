@@ -403,6 +403,8 @@ router.post('/issue', function (req, res) {
     var city_name = '';
     var city_address = '';
 
+    console.log(req);
+
     if (req.body.hasOwnProperty('city_address')) {
         city_address = req.body.city_address;
     }

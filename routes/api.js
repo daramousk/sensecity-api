@@ -991,7 +991,9 @@ router.get('/admin/issue', authentication, function (req, res) {
     var _city_department_count = '';
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "city": 1, "departments": 1 }, function (error, resp) {
     var bugParams = '';
-        
+
+    console.log(resp);
+
     if (resp != undefined) {
         if (resp[0].departments.length > 1) {
             for (var i = 0; i < resp[0].departments.length; i++) {

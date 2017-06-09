@@ -536,6 +536,8 @@ router.post('/issue', function (req, res) {
 
                                             if (!error && bugResponse.statusCode === 200) {
                                                 // console.log(body);
+                                                //return_var = { "_id": resp._id };
+                                                res.send({ "_id": resp._id });
                                             } else {
                                                 console.log("error: " + error);
                                                 console.log("bugResponse.statusCode: " + bugResponse.statusCode);
@@ -546,7 +548,7 @@ router.post('/issue', function (req, res) {
                                 }
 
 
-                                return_var = { "_id": resp._id };
+                                
                             } else {
 
                                 if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
@@ -568,6 +570,7 @@ router.post('/issue', function (req, res) {
 
                                             if (!error && bugResponse.statusCode === 200) {
                                                 // console.log(body);
+                                                res.send({ "_id": resp._id });
                                             } else {
                                                 console.log("error: " + error);
                                                 console.log("bugResponse.statusCode: " + bugResponse.statusCode);
@@ -585,7 +588,7 @@ router.post('/issue', function (req, res) {
 
 
 
-                        res.send(return_var);
+                        
                     });
                 });
             }            

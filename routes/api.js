@@ -1042,7 +1042,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                     var _component_dep = JSON.parse(body).bugs[0].component
 
                     _component_dep = encodeURIComponent(_component_dep);
-                    if (_city_department.indexOf(_component_dep) > -1 || _city_department == encodeURIComponent('Τμήμα επίλυσης προβλημάτων')) {
+                    if (_city_department.indexOf(_component_dep) > -1 || depart_ini == 'Τμήμα επίλυσης προβλημάτων') {
                         get_issues(req, function (result) {
                             res.send(result);
                         });

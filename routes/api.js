@@ -508,6 +508,13 @@ router.post('/issue', function (req, res) {
 
                                 if (resp.issue == "garbage" || resp.issue == "road-constructor" || resp.issue == "lighting" || resp.issue == "plumbing" || resp.issue == "protection-policy" || resp.issue == "green" || resp.issue == "environment") {
                                     if (response.length > 0) {
+                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - -");
+                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - -");
+
+                                        console.log(resp._id);
+
+                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - -");
+                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - -");
 
                                         var bugData1 = { "token": bugToken, "summary": resp.issue, "priority": "normal", "bug_severity": "normal", "cf_city_name": city_name, "alias": [resp._id.toString()], "url": resp.value_desc, "product": response[0]["municipality"], "component": config.config.bug_component, "version": "unspecified", "cf_city_address": city_address };
 

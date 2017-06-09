@@ -3775,7 +3775,11 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                         console.log("send sms (add comment)");
                         console.log("- - - - - - - - - - - - - - - - - - - - - -");
                         console.log("- - - - - - - - - - - - - - - - - - - - - -");
-                        console.log("'sender': " + JSON.parse(body).bugs[0].product + ", 'recipients': '30'" + mobile_array[j] + ", 'body':" + JSON.parse(body).bugs[0].product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req.body.id + _status_field + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + JSON.parse(body).bugs[0].product + "'.sense.city/bugid.html?issue='" + req.body.id);
+                        console.log("product  ===>>  " + JSON.parse(body).bugs[0].product);
+                        console.log("cf_mobile  ===>>  " + JSON.parse(body).bugs[0].cf_mobile);
+                        console.log("id  ===>>  " + req.body.id);
+                        console.log("_status_field  ===>>  " + _status_field);
+                        console.log("'sender': " + JSON.parse(body).bugs[0].product + ", 'recipients': '30'" + JSON.parse(body).bugs[0].cf_mobile + ", 'body':" + JSON.parse(body).bugs[0].product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req.body.id + _status_field + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + JSON.parse(body).bugs[0].product + "'.sense.city/bugid.html?issue='" + req.body.id);
                         console.log("- - - - - - - - - - - - - - - - - - - - - -");
                         console.log("- - - - - - - - - - - - - - - - - - - - - -");
 

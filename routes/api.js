@@ -1033,6 +1033,9 @@ router.get('/admin/issue', authentication, function (req, res) {
             url: bugUrlRest + "/rest/bug" + bugParams,//bugParams,
             method: "GET"
         }, function (error1, response, body) {     
+            console.log("- - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+            console.log(JSON.stringify(response));
+            console.log("- - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
             if (JSON.parse(body).bugs != undefined) {
                 if (JSON.parse(body).bugs.length > 0) {
                     var _component_dep = JSON.parse(body).bugs[0].component

@@ -869,7 +869,13 @@ router.post('/issue/:id', function (req, res) {
                                                                 if (mob_sms_key_fibair_base64 != '') {
 
                                                                     if (req.body.mobile_num != '') {
+                                                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - " );
                                                                         console.log("send sms");
+                                                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+                                                                        console.log("----------------------------");
+                                                                        console.log("'sender':" + JSON.parse(_resp).municipality + ", 'recipients': '30'" + req.body.mobile_num + ", 'body':" + JSON.parse(_resp).municipality + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΚΑΤΑΧΩΡΗΘΗΚΕ ΣΤΟ ΔΗΜΟ ΜΕ ΚΩΔΙΚΟ '" + body_parse.bugs[0].id + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + JSON.parse(_resp).municipality + "'.sense.city/bugid.html?issue='" + body_parse.bugs[0].id);
+                                                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+                                                                        console.log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
                                                                         request({
                                                                             url: "https://api.theansr.com/v1/sms",
                                                                             method: "POST",
@@ -3723,7 +3729,7 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
     }, function (error, response, body) {
 
         
-        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias,status,product,cf_mobile";
+        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.id + "&include_fields=alias,status,product,cf_mobile,cf_cc_mobile";
 
         request({
             url: bugUrlRest + "/rest/bug" + bugParams1,
@@ -3745,23 +3751,40 @@ router.post('/admin/bugs/comment/add', authorization, function (req, res) {
                 if (mob_sms_key_fibair_base64 != undefined) {
 
                     if (mob_sms_key_fibair_base64 != '') {
-                        
-                        if (JSON.parse(body).bugs[0].cf_mobile != '') {
-                            var mobile_array = JSON.parse(body).bugs[0].cf_mobile.split(",");
+                        console.log("send sms (add comment)");
+                        console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                        console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                        console.log("'sender': " + JSON.parse(body).bugs[0].product + ", 'recipients': '30'" + mobile_array[j] + ", 'body':" + JSON.parse(body).bugs[0].product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req.body.id + _status_field + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + JSON.parse(body).bugs[0].product + "'.sense.city/bugid.html?issue='" + req.body.id);
+                        console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                        console.log("- - - - - - - - - - - - - - - - - - - - - -");
+
+                        request({
+                            url: "https://api.theansr.com/v1/sms",
+                            method: "POST",
+                            form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + mobile_array[j], 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
+                            headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                        }, function (err, response) {
+                            console.log(JSON.stringify("response=====>>>>" + response));
+                        });
+
+                        if (JSON.parse(body).bugs[0].cf_cc_mobile != '') {
+                            var mobile_array = JSON.parse(body).bugs[0].cf_cc_mobile.split(",");
                             for (var j = 0; j < mobile_array.length; j++) {
-                                console.log("send sms");
+                                console.log("send sms list (add comment)");
+                                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                                console.log("'sender': " + JSON.parse(body).bugs[0].product + ", 'recipients': '30'" + mobile_array[j] + ", 'body':" + JSON.parse(body).bugs[0].product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req.body.id + _status_field + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + JSON.parse(body).bugs[0].product + "'.sense.city/bugid.html?issue='" + req.body.id);
+                                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                                console.log("- - - - - - - - - - - - - - - - - - - - - -");
                                 request({
                                     url: "https://api.theansr.com/v1/sms",
                                     method: "POST",
                                     form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + mobile_array[j], 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
                                     headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                                 }, function (err, response) {
-
                                     console.log(JSON.stringify("response=====>>>>" + response));
-
-                                });
+                               });
                             }
-                            
                         }
                     }
                 }

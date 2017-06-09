@@ -984,7 +984,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     req.send_priority = 1;
 
 
-    console.log(JSON.stringify(req));
+    console.log(req);
 
 
     var _city_department = '';

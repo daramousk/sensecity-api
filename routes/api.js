@@ -412,18 +412,18 @@ router.post('/issue', function (req, res) {
 
     console.log("city_address" + city_address);
 
-    if (city_address == '') {
+   // if (city_address == '') {
         //console.log("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding);
-        request({
+        /*request({
             url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.loc.coordinates[1] + "," + req.body.loc.coordinates[0] + "&language=el&key=" + config.config.key_geocoding,
             method: "GET"
-        }, function (error, response) {
+        }, function (error, response) {*/
             //console.log(JSON.stringify(response));
-            if (JSON.parse(response.body).status == "OK") {
+            /*if (JSON.parse(response.body).status == "OK") {
                 city_address = JSON.parse(response.body).results[0].formatted_address;
             } else {
                 city_address = "N/A";
-            }
+            }*/
 
             if (!req.body.hasOwnProperty('issue') ||
                 !req.body.hasOwnProperty('loc') ||
@@ -587,8 +587,8 @@ router.post('/issue', function (req, res) {
                     });
                 });
             }            
-        });
-    }
+       // });
+  //  }
 
     /**/
 

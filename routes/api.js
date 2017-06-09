@@ -991,7 +991,7 @@ router.get('/admin/issue', authentication, function (req, res) {
     var _city_department_count = '';
     Role.find({ "uuid": req.headers['x-uuid'], "role": req.headers['x-role'] }, { "city": 1, "departments": 1 }, function (error, resp) {
     var bugParams = '';
-
+    var depart_ini = '';
     console.log(resp);
 
     if (resp != undefined) {
@@ -1007,6 +1007,7 @@ router.get('/admin/issue', authentication, function (req, res) {
             _city_department += "&j3=OR&f3=OP&f" + (i + 4) + "=CP";
         } else if (resp[0].departments.length == 1 && resp[0].departments[0].department == undefined) {
             _city_department = "f4=component&o4=equals&v4=" + encodeURIComponent("Τμήμα επίλυσης προβλημάτων");
+            depart_ini = 'Τμήμα επίλυσης προβλημάτων';
         } else {
             _city_department_count = resp[0].departments[0].department;
             _city_department = "f4=component&o4=equals&v4=" + encodeURIComponent(_city_department_count);
@@ -1014,14 +1015,14 @@ router.get('/admin/issue', authentication, function (req, res) {
     }
         
         if (req.query.bug_id != undefined) {
-            if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
+            if (depart_ini == 'Τμήμα επίλυσης προβλημάτων') {
                  bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             } else {
                  bugParams = "?" + _city_department + "&f1=bug_id&o1=equals&v1=" + req.query.bug_id + "&f2=product&o2=equals&v2=" + resp[0].city + "&include_fields=id,alias,status,component";
             }
             //var bugParams = "?f2=bug_id&o2=equals&v2=" + req.query.bug_id + "&f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
         } else {
-            if (_city_department == 'Τμήμα επίλυσης προβλημάτων') {
+            if (depart_ini == 'Τμήμα επίλυσης προβλημάτων') {
                  bugParams = "?f3=product&o3=equals&v3=" + resp[0].city + "&include_fields=id,alias,status,component";
             } else {
                  bugParams = "?" + _city_department + "&f1=product&o1=equals&v1=" + resp[0].city + "&include_fields=id,alias,status,component";

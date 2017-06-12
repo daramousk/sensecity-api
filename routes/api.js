@@ -3209,7 +3209,7 @@ router.post('/is_activate_user', function (req, res) {
 
 router.post('/activate_user', function (req, res) {
     console.log(req);
-    if (req.query.uuid != undefined){         
+    if (req.query.uuid != undefined) {
         if (req.query.hasOwnProperty('uuid')) {
             if (req.query.uuid == "web-site") {
                 if (req.query.email != undefined) {
@@ -3344,9 +3344,9 @@ router.post('/activate_user', function (req, res) {
 
 
 
-            if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
+        if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
 
-
+            if (req.query.uuid != "web-site") {
                 act_User.find({ "uuid": req.query.uuid }, function (err, resp) {
 
                     if (err) {
@@ -3360,7 +3360,7 @@ router.post('/activate_user', function (req, res) {
 
                     if (resp != '') {
                         act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "email": req.query.email, "permission.communicate_with.email": "true", "activate": text_act, } }, function (err1, resp1) {
-                            if (resp1.ok == 1 && req.query.email!="") {
+                            if (resp1.ok == 1 && req.query.email != "") {
                                 console.log("Send mail verify code");
 
 
@@ -3389,10 +3389,10 @@ router.post('/activate_user', function (req, res) {
                             } else {
                                 res.send([{ "Status": "saved" }]);
                             }
-                        });                        
+                        });
 
                     } else {
-                    
+
 
                         var text_act = "";
                         var possible = "0123456789";
@@ -3435,7 +3435,7 @@ router.post('/activate_user', function (req, res) {
                             } else {
                                 res.send([{ "Status": "saved" }]);
                             }
-                            
+
                         });
 
                     }
@@ -3448,7 +3448,7 @@ router.post('/activate_user', function (req, res) {
 
                 var mob_municipality = '';
                 var mob_sms_key_fibair = '';
-                
+
                 if (req.query.lat != undefined && req.query.long != undefined) {
                     Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1 }, function (req_mun, res_mun) {
                         if (res_mun != undefined) {
@@ -3457,12 +3457,12 @@ router.post('/activate_user', function (req, res) {
                                 mob_sms_key_fibair = res_mun[0].sms_key_fibair;
 
                                 if (mob_sms_key_fibair != '') {
-                                    
+
                                     act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
                                         var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
                                         if (err)
                                             throw err;
-                                            
+
                                         if (resp != '') {
 
                                             request({
@@ -3477,9 +3477,9 @@ router.post('/activate_user', function (req, res) {
                                                 act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission.communicate_with.sms": "true", "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
                                                     res.send({ "status": "send sms" });
                                                 });
-                                                
+
                                             });
-                                            
+
                                         } else {
 
                                             request({
@@ -3490,7 +3490,7 @@ router.post('/activate_user', function (req, res) {
                                             }, function (err1, response) {
                                                 if (err)
                                                     console.log(err1);
-                                                    
+
                                                 var entry_active_user = new act_User({
                                                     uuid: req.query.uuid,
                                                     name: req.query.name,
@@ -3502,7 +3502,7 @@ router.post('/activate_user', function (req, res) {
                                                 });
 
                                                 entry_active_user.save(function (err2, resp2) {
-                                                    if(err2)
+                                                    if (err2)
                                                         console.log(err2);
 
                                                     res.send([{ "status": "send sms" }]);
@@ -3520,6 +3520,7 @@ router.post('/activate_user', function (req, res) {
                     });
                 }
             }
+        }
     }
 });
 

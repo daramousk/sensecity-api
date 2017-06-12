@@ -3165,6 +3165,8 @@ router.post('/is_activate_user', function (req, res) {
                 act_mobile.find({ "mobile_num": req.body.mobile }, { "activate": 1 }, function (req9, res9) {
 
                     _activate_sms = res9[0].activate;
+                    console.log([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);
+
                     res.send([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);
 
                 });

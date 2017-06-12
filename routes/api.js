@@ -25,6 +25,8 @@ mongoose.connect('mongodb://' + config.config.my_hostname + '/' + config.config.
 // Models
 var Issue = require('../models/issue');
 var act_User = require('../models/active_user');
+var act_email = require('../models/activate_email');
+var act_mobile = require('../models/activate_mobile');
 var Role = require('../models/roles.js');
 var Municipality = require('../models/municipality');
 var cityPolicy = require('../models/citypolicy');
@@ -3154,6 +3156,25 @@ router.post('/is_activate_user', function (req, res) {
     console.log(req);
 
     if (req.body.email != undefined || req.body.email != '') {
+        act_email.find({ "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
+
+            _activate_email = res8[0].activate;
+
+            if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
+
+                act_mobile.find({ "mobile_num": req.body.mobile }, { "activate": 1 }, function (req9, res9) {
+
+                    _activate_sms = res9[0].activate;
+                    res.send([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);
+
+                });
+            }
+        });
+    }
+
+    
+    /*
+    if (req.body.email != undefined || req.body.email != '') {
         console.log("1");
         act_User.find({ "uuid": "web-site", "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
             var _res8 = JSON.stringify(res8);
@@ -3177,7 +3198,7 @@ router.post('/is_activate_user', function (req, res) {
             }
         });
     }
-    
+    */
 });
 
 router.post('/activate_user', function (req, res) {

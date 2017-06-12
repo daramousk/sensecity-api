@@ -4118,6 +4118,13 @@ router.post('/issue_subscribe', function (req, res) {
             console.log("1");
             var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile,product,cf_cc_mobile,cf_cc_name,cc";
 
+            request({
+                url: bugUrlRest + "/rest/bug" + bugParams1,
+                method: "GET"
+            }, function (error, response, body) {
+                console.log(JSON.stringify(body));
+            });
+            /*
             act_User.find({
                 $and: [{ "uuid": "web-site" }, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile_num }] }]
             }, function (err, resp) {
@@ -4267,7 +4274,8 @@ router.post('/issue_subscribe', function (req, res) {
                         }
                     });
                 }
-            });
+                });
+            */
         } else {
             res.status(400).send('Bad Request');
         }

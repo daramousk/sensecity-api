@@ -4111,7 +4111,7 @@ function is_authenticate(req, res) {
 
 // Subscribe citizen to issue
 router.post('/issue_subscribe', function (req, res) {
-
+    console.log(req.body);
     console.log(req.body.bug_id);
     if (req.body.bug_id != undefined && req.body.email != undefined && req.body.mobile_num != undefined) {
         if (req.body.bug_id != '' && (req.body.email != '' || req.body.mobile_num != '')) {

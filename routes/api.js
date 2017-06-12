@@ -3225,8 +3225,8 @@ router.post('/activate_user', function (req, res) {
                                 text_act += possible.charAt(Math.floor(Math.random() * possible.length));
                             
                             act_email.update({ "_id": resp1._id}, { $set: { "email": req.query.email, "activate": text_act, } }, function (err2, resp2) {
-                                if (err1)
-                                    console.log(err1);
+                                if (err2)
+                                    console.log(err2);
 
                                 console.log("resp2===>"+resp2);
                                 // create reusable transporter object using the default SMTP transport 

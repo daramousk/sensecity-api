@@ -3158,7 +3158,7 @@ router.post('/is_activate_user', function (req, res) {
     if (req.body.email != undefined || req.body.email != '') {
         act_email.find({ "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
             console.log("res8" + res8.length);
-            if (res8 != undefined || res8 != '') {
+            if (res8.length>0) {
                 _activate_email = res8[0].activate;
             } 
 
@@ -3166,7 +3166,7 @@ router.post('/is_activate_user', function (req, res) {
 
                 act_mobile.find({ "mobile_num": req.body.mobile }, { "activate": 1 }, function (req9, res9) {
                     console.log("res9" + res9);        
-                    if (res9 != undefined) {
+                    if (res9.length > 0) {
                         _activate_sms = res9[0].activate;
                     }
                     console.log([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);

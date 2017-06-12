@@ -3223,7 +3223,7 @@ router.post('/activate_user', function (req, res) {
 
                             for (var i = 0; i < 4; i++)
                                 text_act += possible.charAt(Math.floor(Math.random() * possible.length));
-                            var o_id = new mongoose.ObjectID(resp1._id);
+                            var o_id = mongoose.Types.ObjectId(resp1._id);
 
                             act_email.update({ "_id": o_id }, { $set: { "email": req.query.email, "activate": text_act, } }, function (err2, resp2) {
                                 if (err2)

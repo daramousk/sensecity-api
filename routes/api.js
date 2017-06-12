@@ -4123,7 +4123,7 @@ router.post('/issue_subscribe', function (req, res) {
                 method: "GET"
             }, function (error, response, body) {
                 console.log(JSON.stringify(body));
-                console.log(body.cf_email);
+                console.log(body.cf_email.bugs[0].cc_detail[0].email);
                 console.log(body.cf_mobile);
             });
             /*

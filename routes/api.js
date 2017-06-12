@@ -3228,7 +3228,7 @@ router.post('/activate_user', function (req, res) {
                                 if (err2)
                                     console.log(err2);
 
-                                console.log("resp2===>"+resp2);
+                                console.log("resp2===>" + JSON.stringify(resp2));
                                 // create reusable transporter object using the default SMTP transport 
                                 var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 

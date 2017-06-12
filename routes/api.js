@@ -3554,7 +3554,10 @@ router.post('/activate_email', function (req, res) {
         });
     } else if (req.query.uuid == "web-site") {
         console.log("activate email");
-        act_email.update({ "email": req.query.email, "activate": req.query.code }, {
+
+        console.log("email" + req.query.email + "activate" + req.query.code);
+
+        act_email.update({ "email": req.query.email.toString(), "activate": req.query.code.toString() }, {
             $set: {
                 "activate": "1"
             }

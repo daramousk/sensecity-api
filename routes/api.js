@@ -3224,9 +3224,10 @@ router.post('/activate_user', function (req, res) {
                             for (var i = 0; i < 4; i++)
                                 text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
-                            act_email.update({ "_id": ObjectId(resp1._id) }, { $set: { "email": req.query.email, "activate": text_act, } }, function (err1, resp1) {
+                            act_email.update({ "_id": resp1._id}, { $set: { "email": req.query.email, "activate": text_act, } }, function (err1, resp1) {
                                 if (err1)
                                     console.log(err1);
+                                console.log("resp1===>"+resp1);
                                 // create reusable transporter object using the default SMTP transport 
                                 var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
 

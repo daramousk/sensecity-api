@@ -3553,7 +3553,7 @@ router.post('/activate_email', function (req, res) {
             res.send(activate_user);
         });
     } else if (req.query.uuid == "web-site") {
-
+        console.log("activate email");
         act_email.update({ "email": req.query.email, "activate": req.query.code }, {
             $set: {
                 "activate": "1"
@@ -3561,6 +3561,7 @@ router.post('/activate_email', function (req, res) {
         }, function (error, activate_user) {
 
             console.log(error);
+            console.log(activate_user);
             res.send(activate_user);
         });
     } else {

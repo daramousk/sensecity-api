@@ -3217,17 +3217,130 @@ router.post('/activate_user', function (req, res) {
                 act_email.find({ "email": req.query.email }, function (err, resp1) {
 
                     console.log("resp1===>" + resp1);
+                    if (resp1.length > 0) {
+                        var possible = "0123456789";
 
-                    /*if (resp1.email != undefined) {
+                        for (var i = 0; i < 4; i++)
+                            text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
-                    }*/
+                        act_User.update({ "_id": resp1._id }, { $set: { "email": req.query.email, "activate": text_act, } }, function (err1, resp1) {
+                            if (err1)
+                                console.log(err1);
+                            // create reusable transporter object using the default SMTP transport 
+                            var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
+
+                            // setup e-mail data with unicode symbols 
+                            var mailOptions = {
+                                from: '"Sense.City " <info@sense.city>', // sender address 
+                                to: req.query.email, // list of receivers 
+                                subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+                                text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
+                                html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
+                            };
+
+                            // send mail with defined transport object 
+                            transporter.sendMail(mailOptions, function (error, info) {
+                                if (error) {
+                                    return console.log(error);
+                                }
+                                res.send([{ "Status": "send" }]);
+
+                                //console.log('Message sent: ' + info.response);
+                            });
+                        });
+                    } else {//insert email to collection
+                        var possible = "0123456789";
+
+                        for (var i = 0; i < 4; i++)
+                            text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+                        var activate_email = new act_email({
+                            email: req.query.email,
+                            activate: text_act
+                        });
+
+                        activate_email.save(function (err1, resp) {
+                            // create reusable transporter object using the default SMTP transport 
+                            var transporter = nodemailer.createTransport('smtps://' + config.config.email + ':' + config.config.password_email + '@smtp.gmail.com');
+
+                            // setup e-mail data with unicode symbols 
+                            var mailOptions = {
+                                from: '"Sense.City " <info@sense.city>', // sender address 
+                                to: req.query.email, // list of receivers 
+                                subject: 'Αποστολή κωδικού ενεργοποίησης ', // Subject line 
+                                text: 'Κωδικός ενεργοποίησης : ', // plaintext body 
+                                html: 'Κωδικός ενεργοποίησης :' + text_act // html body 
+                            };
+
+                            // send mail with defined transport object 
+                            transporter.sendMail(mailOptions, function (error, info) {
+                                if (error) {
+                                    return console.log(error);
+                                }
+                                res.send([{ "Status": "send" }]);
+                            });
+
+
+
+                        });
+
+                    }
                 });
 
 
 
                 //Check mobile number
+                act_mobile.find({ "mobile_num": req.query.mobile }, function (err, resp1) {
+                    if (resp1.length > 0) {
+
+                        request({
+                            url: "https://api.theansr.com/v1/sms/verification_pin",
+                            method: "POST",
+                            form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
+                            headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
+                        }, function (err1, response) {                        
+                            act_mobile.update({ "_id": resp1._id }, { $set: { "mobile_num": req.query.mobile, "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
+                                res.send({ "status": "send sms" });
+                            });
+
+                        });
+
+                    } else {//insert send sms
+
+                        var activate_mobile = new act_email({
+                            mobile_num: req.query.mobile,
+                            activate: JSON.parse(response.body).verification_pin
+                        });
+
+                        
+                            request({
+                                url: "https://api.theansr.com/v1/sms/verification_pin",
+                                method: "POST",
+                                form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
+                                headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
+                            }, function (err1, response) {
+                                activate_email.save(function (err1, resp) {
+                                    res.send({ "status": "send sms" });
+                                });
+
+                            });
+                       
+                    }
+                });
+
+
+
+
+
+
+
             }
         }
+
+
+
+
+
+
             if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
 
 

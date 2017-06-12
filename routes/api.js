@@ -3218,6 +3218,7 @@ router.post('/activate_user', function (req, res) {
 
                     console.log("resp1===>" + resp1);
                     if (resp1.length > 0) {
+                        var text_act = '';
                         var possible = "0123456789";
 
                         for (var i = 0; i < 4; i++)
@@ -3249,10 +3250,12 @@ router.post('/activate_user', function (req, res) {
                             });
                         });
                     } else {//insert email to collection
+                        var text_act = '';
                         var possible = "0123456789";
 
                         for (var i = 0; i < 4; i++)
                             text_act += possible.charAt(Math.floor(Math.random() * possible.length));
+
                         var activate_email = new act_email({
                             email: req.query.email,
                             activate: text_act

@@ -3540,6 +3540,7 @@ router.post('/activate_city_policy', function (req, res) {
 });
 
 router.post('/activate_email', function (req, res) {
+    console.log(req);
     if (req.query.uuid != "web-site") {
 
         act_User.update({ "uuid": req.query.uuid, "email": req.query.email, "activate": req.query.code }, {
@@ -3553,7 +3554,7 @@ router.post('/activate_email', function (req, res) {
         });
     } else if (req.query.uuid == "web-site") {
 
-        act_email.findOneAndUpdate({ "email": req.query.email, "activate": req.query.code }, {
+        act_email.update({ "email": req.query.email, "activate": req.query.code }, {
             $set: {
                 "activate": "1"
             }

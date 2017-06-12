@@ -3225,7 +3225,7 @@ router.post('/activate_user', function (req, res) {
                                 text_act += possible.charAt(Math.floor(Math.random() * possible.length));
 
                             
-                            act_email.update({ "_id": resp1._id }, { $set: { "email": resp1.email, "activate": text_act, } }, function (err2, resp2) {
+                            act_email.update({ "_id": resp1._id }, { $set: {"activate": text_act, } }, function (err2, resp2) {
                                 if (err2)
                                     console.log(err2);
 

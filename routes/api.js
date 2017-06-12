@@ -3552,9 +3552,10 @@ router.post('/activate_email', function (req, res) {
             res.send(activate_user);
         });
     } else if (req.query.uuid == "web-site") {
-        act_User.findOneAndUpdate({ "uuid": req.query.uuid, "email": req.query.email, "activate": req.query.code }, {
+
+        act_email.findOneAndUpdate({ "email": req.query.email, "activate": req.query.code }, {
             $set: {
-                "activate": "1", "permission.communicate_with.email": "true"
+                "activate": "1"
             }
         }, function (error, activate_user) {
 
@@ -3578,9 +3579,9 @@ router.post('/activate_mobile', function (req, res) {
             res.send(activate_user);
         });
     } else if (req.query.uuid == "web-site") {
-        act_User.update({ "uuid": "web-site", "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
+        act_mobile.update({ "mobile_num": req.query.mobile, "activate_sms": req.query.code }, {
             $set: {
-                "activate_sms": "1", "permission.communicate_with.sms": "true"
+                "activate_sms": "1"
             }
         }, function (error, activate_user) {
 

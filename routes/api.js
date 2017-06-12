@@ -3210,7 +3210,24 @@ router.post('/is_activate_user', function (req, res) {
 router.post('/activate_user', function (req, res) {
     console.log(req);
     if (req.query.uuid != undefined){         
+        if (req.query.hasOwnProperty('uuid')) {
+            if (req.query.uuid == "web-site") {
 
+                //check email
+                act_email.find({ "email": req.query.email }, function (err, resp1) {
+
+                    console.log("resp1===>" + resp1);
+
+                    /*if (resp1.email != undefined) {
+
+                    }*/
+                });
+
+
+
+                //Check mobile number
+            }
+        }
             if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {
 
 

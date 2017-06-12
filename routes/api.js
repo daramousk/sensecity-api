@@ -3572,7 +3572,11 @@ router.post('/activate_email', function (req, res) {
 
             console.log(error);
             console.log(activate_user);
-            res.send(activate_user);
+            if (activate_user.nModified == 1) {
+                res.send(activate_user);
+            } else {
+                res.send([{}]);
+            }
         });
     } else {
         res.send([{}]);

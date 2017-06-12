@@ -3571,11 +3571,12 @@ router.post('/activate_email', function (req, res) {
         }, function (error, activate_user) {
 
             console.log(error);
-            console.log(activate_user);
+            console.log(activate_user.nModified);
+
             if (activate_user.nModified == 1) {
                 res.send(activate_user);
             } else {
-                res.send([{}]);
+                res.send("");
             }
         });
     } else {

@@ -3157,7 +3157,7 @@ router.post('/is_activate_user', function (req, res) {
 
     if (req.body.email != undefined || req.body.email != '') {
         act_email.find({ "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
-            console.log("res8" + res8);
+            console.log("res8" + res8.length);
             if (res8 != undefined || res8 != '') {
                 _activate_email = res8[0].activate;
             } 

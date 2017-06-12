@@ -3208,7 +3208,7 @@ router.post('/is_activate_user', function (req, res) {
 });
 
 router.post('/activate_user', function (req, res) {
-
+    console.log(req);
     if (req.query.uuid != undefined){         
 
             if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {

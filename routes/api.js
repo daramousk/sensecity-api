@@ -3382,7 +3382,7 @@ router.post('/activate_user', function (req, res) {
                                         return console.log(error);
                                     }
                                     res.send([{ "Status": "send" }]);
-
+                                    transporter.close();
                                     //console.log('Message sent: ' + info.response);
                                 });
 
@@ -3430,7 +3430,7 @@ router.post('/activate_user', function (req, res) {
                                         return console.log(error);
                                     }
                                     res.send([{ "Status": "send" }]);
-                                    
+                                    transporter.close();
                                 });
                             } else {
                                 res.send([{ "Status": "saved" }]);

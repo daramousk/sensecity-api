@@ -4465,9 +4465,9 @@ router.post('/issue_recommendation', function (req, res) {
 
             for (var i = 0; i < resp.length; i++) {
                
-                bugParams1 += "?f" + i + "=alias&o" + i + "=equals&v" + i + "=" + resp[i]._id;
+                bugParams1 += "?f" + (i + 1) + "=alias&o" + (i + 1) + "=equals&v" + (i + 1) + "=" + resp[i]._id;
             }
-            bugParams1 += "&include_fields=bug_status"
+            bugParams1 += "&bug_status=CONFIRMED&bug_status=IN_PROGRESS&j_top=OR&include_fields=bug_status"
             console.log("bugParams1==>" + bugParams1);
 
             request({

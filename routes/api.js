@@ -4143,10 +4143,14 @@ router.post('/issue_subscribe', function (req, res) {
                 }
 
                 if (JSON.parse(body).bugs[0].cf_mobile != req.body.mobile_num) {
+                    console.log("1");
                     if (JSON.parse(body).bugs[0].cf_cc_mobile != req.body.mobile_num) {
+                        console.log("2");
                         if (JSON.parse(body).bugs[0].cf_cc_mobile != null) {
+                            console.log("3");
                             var mobile_cc = JSON.parse(body).bugs[0].cf_cc_mobile;
-                            if (mobile_cc.indexOf(req.body.mobile_num) != -1) {
+                            if (mobile_cc.indexOf(req.body.mobile_num) > -1) {
+                                console.log("4");
                                 var bodyParams_add_2 = { "token": bugToken, "ids": [req.body.bug_id], "cf_cc_mobile": (JSON.parse(response.body).bugs[0].cf_cc_mobile + "," + req.body.mobile_num) };
                                 request({
                                     url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
@@ -4157,6 +4161,7 @@ router.post('/issue_subscribe', function (req, res) {
                                 });
                             }
                         } else {
+                            console.log("5");
                             var bodyParams_add_2 = { "token": bugToken, "ids": [req.body.bug_id], "cf_cc_mobile": req.body.mobile_num};
                             request({
                                 url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
@@ -4173,7 +4178,7 @@ router.post('/issue_subscribe', function (req, res) {
                     if (JSON.parse(body).bugs[0].cf_cc_name != req.body.name) {
                         if (JSON.parse(body).bugs[0].cf_cc_name != null) {
                             var name_cc = JSON.parse(body).bugs[0].cf_cc_name;
-                            if (name_cc.indexOf(req.body.name) != -1) {
+                            if (name_cc.indexOf(req.body.name) > -1) {
                                 var bodyParams_add_2 = { "token": bugToken, "ids": [req.body.bug_id], "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name) };
                                 request({
                                     url: bugUrlRest + "/rest/bug/" + req.body.bug_id,

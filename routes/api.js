@@ -4146,9 +4146,11 @@ router.post('/issue_subscribe', function (req, res) {
                     console.log("1");
                     if (JSON.parse(body).bugs[0].cf_cc_mobile != req.body.mobile_num) {
                         console.log("2");
-                        if (JSON.parse(body).bugs[0].cf_cc_mobile != null) {
+                        if (JSON.parse(body).bugs[0].cf_cc_mobile != "") {
                             console.log("3");
+
                             var mobile_cc = JSON.parse(body).bugs[0].cf_cc_mobile;
+                            console.log(mobile_cc);
                             if (mobile_cc.indexOf(req.body.mobile_num) > -1) {
                                 console.log("4");
                                 var bodyParams_add_2 = { "token": bugToken, "ids": [req.body.bug_id], "cf_cc_mobile": (JSON.parse(response.body).bugs[0].cf_cc_mobile + "," + req.body.mobile_num) };

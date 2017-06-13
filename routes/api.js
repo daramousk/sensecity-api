@@ -4488,7 +4488,7 @@ var get_result = function (req, callback) {
         if (error) { console.log(error); }
 
         console.log(JSON.stringify(resp1));
-        console.log(i + "=>" + body);
+        console.log("==>"+body);
         callback(body);
     });
 

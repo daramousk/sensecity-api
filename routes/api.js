@@ -4458,7 +4458,7 @@ router.post('/issue_recommendation', function (req, res) {
 
             for (var i = 0; i < response.length; i++) {
                
-                bugParams1 += "?f" + i + "=alias&o" + i + "=equals&v" + i + "=" + response[i]._id + ;
+                bugParams1 += "?f" + i + "=alias&o" + i + "=equals&v" + i + "=" + response[i]._id;
             }
             bugParams1 += "&include_fields=bug_status"
             console.log("bugParams1==>" + bugParams1);

@@ -4448,7 +4448,7 @@ router.post('/issue_recommendation', function (req, res) {
                 }, $minDistance: 10
             }
         }
-    }, function (request, response) {
+    }, function (req, response) {
         console.log("response" + response);
         if (response != undefined) {
             console.log(response.length);

@@ -4431,7 +4431,7 @@ router.post('/issue_recommendation', function (req, res) {
         my_month = "0" + my_month;
     }
     
-    var my_date = mydate.getDate() - 3;
+    var my_date = mydate.getDate() - 30;
 
     if (my_date < 10) {
         my_date = "0" + my_date;
@@ -4455,18 +4455,21 @@ router.post('/issue_recommendation', function (req, res) {
             console.log(response[0]._id);
 
             for (var i = 0; i < response.length; i++) {
-
-                    
-                console.log("======>" + i);
-                get_result(response[i], function (result) {
-                    //console.log(result);
-                    console.log(i + "=>" + result);
-                    res.send(result);
-                });
-
-                
+               
+                var bugParams1 = "?f" + i + "=alias&o" + i + "=equals&v" + i + "=" + response[i]._id + "&include_fields=bug_status";
             }
-            
+            console.log("bugParams1==>" + bugParams1);
+            request({
+                url: bugUrlRest + "/rest/bug" + bugParams1,
+                method: "GET"
+            }, function (error, resp1, body) {
+                if (error) { console.log(error); }
+
+                console.log(JSON.stringify(resp1));
+                console.log("==>" + body);
+                res.send(body);
+            });
+
 
         } else {
             res.send([{}]);
@@ -4474,25 +4477,6 @@ router.post('/issue_recommendation', function (req, res) {
     });
     
 });
-var get_result = function (req, callback) {
-
-    var bugParams1 = "?f1=alias&o1=equals&v1=" + req._id + "&include_fields=bug_status";
-
-    console.log(bugParams1);
-    console.log(bugUrlRest + "/rest/bug" + bugParams1);   
-
-    request({
-        url: bugUrlRest + "/rest/bug" + bugParams1,
-        method: "GET"
-    }, function (error, resp1, body) {
-        if (error) { console.log(error); }
-
-        console.log(JSON.stringify(resp1));
-        console.log("==>"+body);
-        callback(body);
-    });
-
-}
 
 // Return router
 module.exports = router;

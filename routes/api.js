@@ -4446,7 +4446,7 @@ router.post('/issue_recommendation', function (req, res) {
 
     console.log(my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString());
     Issue.find({
-        "issue": req.body.issue, "municipality": "testcity1", "create_at": {
+        "issue": req.body.issue, "create_at": {
             $gte: my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString()
         }, "loc": {
             $nearSphere: {
@@ -4467,8 +4467,8 @@ router.post('/issue_recommendation', function (req, res) {
                
                 bugParams1 += "?f" + (i + 1) + "=alias&o" + (i + 1) + "=equals&v" + (i + 1) + "=" + resp[i]._id;
             }
-            bugParams1 += "&bug_status=CONFIRMED&bug_status=IN_PROGRESS&j_top=OR&include_fields=bug_status"
-            console.log("bugParams1==>" + bugParams1);
+            bugParams1 += "&j_top=OR&include_fields=bug_status"
+            console.log(bugUrlRest + "/rest/bug" + bugParams1);
 
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,
@@ -4476,8 +4476,8 @@ router.post('/issue_recommendation', function (req, res) {
             }, function (error, resp1, body) {
                 if (error) { console.log(error); }
 
-                console.log(JSON.stringify(resp1));
-                console.log("==>" + body);
+                //console.log(JSON.stringify(resp1));
+                //console.log("==>" + body);
                 res.send(body);
             });
 

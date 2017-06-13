@@ -4456,20 +4456,15 @@ router.post('/issue_recommendation', function (req, res) {
 
             for (var i = 0; i < response.length; i++) {
 
-                var bugParams1 = "?f1=alias&o1=equals&v1=" + response[i]._id + "&include_fields=bug_status";
+                    
 
-                console.log(bugParams1);
-                console.log(bugUrlRest + "/rest/bug" + bugParams1);       
-                request({
-                    url: bugUrlRest + "/rest/bug" + bugParams1,
-                    method: "GET"
-                }, function (error, resp1, body) {
-                    if (error) { console.log(error); }
-
-                    console.log(JSON.stringify(resp1));
-                    console.log(i + "=>" + body);
-                    res.send(resp1);
+                get_result(response, function (result) {
+                    //console.log(result);
+                    console.log(i + "=>" + result);
+                    res.send(result);
                 });
+
+                
             }
             
 
@@ -4479,6 +4474,25 @@ router.post('/issue_recommendation', function (req, res) {
     });
     
 });
+var get_result = function (req, callback) {
+
+    var bugParams1 = "?f1=alias&o1=equals&v1=" + response[i]._id + "&include_fields=bug_status";
+
+    console.log(bugParams1);
+    console.log(bugUrlRest + "/rest/bug" + bugParams1);   
+
+    request({
+        url: bugUrlRest + "/rest/bug" + bugParams1,
+        method: "GET"
+    }, function (error, resp1, body) {
+        if (error) { console.log(error); }
+
+        console.log(JSON.stringify(resp1));
+        console.log(i + "=>" + body);
+        callback(body);
+    });
+
+}
 
 // Return router
 module.exports = router;

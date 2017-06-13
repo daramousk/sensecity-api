@@ -4468,9 +4468,10 @@ router.post('/issue_recommendation', function (req, res) {
 
                     console.log(JSON.stringify(resp1));
                     console.log(i + "=>" + body);
+                    res.send(resp1);
                 });
             }
-            res.send(response);
+            
 
         } else {
             res.send([{}]);

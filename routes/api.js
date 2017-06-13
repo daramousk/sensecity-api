@@ -4457,7 +4457,7 @@ router.post('/issue_recommendation', function (req, res) {
             for (var i = 0; i < response.length; i++) {
 
                     
-
+                console.log("======>" + i);
                 get_result(response[i], function (result) {
                     //console.log(result);
                     console.log(i + "=>" + result);

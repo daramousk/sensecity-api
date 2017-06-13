@@ -4476,7 +4476,7 @@ router.post('/issue_recommendation', function (req, res) {
 });
 var get_result = function (req, callback) {
 
-    var bugParams1 = "?f1=alias&o1=equals&v1=" + response[i]._id + "&include_fields=bug_status";
+    var bugParams1 = "?f1=alias&o1=equals&v1=" + req[i]._id + "&include_fields=bug_status";
 
     console.log(bugParams1);
     console.log(bugUrlRest + "/rest/bug" + bugParams1);   

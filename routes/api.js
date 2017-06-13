@@ -4433,6 +4433,8 @@ router.post('/issue_recommendation', function (req, res) {
     
     var my_date = mydate.getDate() - 30;
 
+    console.log("my_date" + my_date);
+
     if (my_date < 10) {
         my_date = "0" + my_date;
     }

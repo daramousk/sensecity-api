@@ -4453,6 +4453,18 @@ router.post('/issue_recommendation', function (req, res) {
         if (response != undefined) {
             console.log(response.length);
             console.log(response[0]._id);
+
+            for (var i = 0; i < response.length; i++) {
+
+                var bugParams1 = "?f1=alias&o1=equals&v1=" + response[0]._id + "&include_fields=bug_status";
+
+                request({
+                    url: bugUrlRest + "/rest/bug" + bugParams1,
+                    method: "GET"
+                }, function (error, resp1, body) {
+                    console.log(i + "=>" + body);
+                });
+            }
             res.send(response);
 
         } else {

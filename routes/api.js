@@ -4136,13 +4136,10 @@ router.post('/issue_subscribe', function (req, res) {
                                 method: "PUT",
                                 json: bodyParams_add
                             }, function (error1, response1, body1) {
-
+                                console.log("add cc");
                             });
                         }
                     }
-
-
-                    
                 }
 
                 if (JSON.parse(body).bugs[0].cf_mobile != req.body.mobile_num) {
@@ -4156,7 +4153,7 @@ router.post('/issue_subscribe', function (req, res) {
                                     method: "PUT",
                                     json: bodyParams_add_2
                                 }, function (error1, response1, body1) {
-
+                                    console.log("add cf_cc_mobile 1");
                                 });
                             }
                         } else {
@@ -4166,7 +4163,7 @@ router.post('/issue_subscribe', function (req, res) {
                                 method: "PUT",
                                 json: bodyParams_add_2
                             }, function (error1, response1, body1) {
-
+                                console.log("add cf_cc_mobile 2");
                             });
                         }
                     }
@@ -4183,7 +4180,7 @@ router.post('/issue_subscribe', function (req, res) {
                                     method: "PUT",
                                     json: bodyParams_add_2
                                 }, function (error1, response1, body1) {
-
+                                    console.log("add cf_cc_name 1");
                                 });
                             }
                         } else {
@@ -4193,7 +4190,7 @@ router.post('/issue_subscribe', function (req, res) {
                                 method: "PUT",
                                 json: bodyParams_add_2
                             }, function (error1, response1, body1) {
-
+                                console.log("add cf_cc_name 2");
                             });
                         }
                     }
@@ -4233,7 +4230,7 @@ router.post('/issue_subscribe', function (req, res) {
                         json: json_data
                     }, function (error4, response4, body4) {
 
-                        console.log(JSON.stringify(response4));
+                        console.log("====>>>>" + JSON.stringify(response4));
 
                         res.send("OK");
                         });

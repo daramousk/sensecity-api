@@ -4451,7 +4451,10 @@ router.post('/issue_recommendation', function (req, res) {
     }, function (request, response) {
         console.log("response" + response);
         if (response != undefined) {
+            console.log(response.length);
+            console.log(response[0]._id);
             res.send(response);
+
         } else {
             res.send([{}]);
         }

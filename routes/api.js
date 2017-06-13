@@ -4178,7 +4178,7 @@ router.post('/issue_subscribe', function (req, res) {
 
                 if (JSON.parse(body).bugs[0].cf_creator != req.body.name) {
                     if (JSON.parse(body).bugs[0].cf_cc_name != req.body.name) {
-                        if (JSON.parse(body).bugs[0].cf_cc_name != null) {
+                        if (JSON.parse(body).bugs[0].cf_cc_name != "") {
                             var name_cc = JSON.parse(body).bugs[0].cf_cc_name;
                             if (name_cc.indexOf(req.body.name) > -1) {
                                 var bodyParams_add_2 = { "token": bugToken, "ids": [req.body.bug_id], "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name) };

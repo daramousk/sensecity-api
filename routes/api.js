@@ -4448,17 +4448,17 @@ router.post('/issue_recommendation', function (req, res) {
                 }, $minDistance: 10
             }
         }
-    }, function (req, response) {
-        console.log("response" + response);
-        if (response != undefined) {
-            console.log(response.length);
-            console.log(response[0]._id);
+    }, function (req, resp) {
+        
+        if (resp != undefined) {
+            console.log(resp.length);
+            console.log(resp[0]._id);
 
             var bugParams1 = '';
 
-            for (var i = 0; i < response.length; i++) {
+            for (var i = 0; i < resp.length; i++) {
                
-                bugParams1 += "?f" + i + "=alias&o" + i + "=equals&v" + i + "=" + response[i]._id;
+                bugParams1 += "?f" + i + "=alias&o" + i + "=equals&v" + i + "=" + resp[i]._id;
             }
             bugParams1 += "&include_fields=bug_status"
             console.log("bugParams1==>" + bugParams1);

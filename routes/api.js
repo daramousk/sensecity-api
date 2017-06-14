@@ -4239,7 +4239,7 @@ router.post('/issue_subscribe', function (req, res) {
                     }, function (error4, response4, body4) {
 
                               
-                        Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
+                        Municipality.find({ "municipality": JSON.parse(body).bug[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
                             var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
                             if (mob_sms_key_fibair_base64 != undefined) {
 

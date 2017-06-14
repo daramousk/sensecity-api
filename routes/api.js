@@ -4268,18 +4268,24 @@ router.post('/issue_subscribe', function (req, res) {
                                         });
                                     }
 
+                                    var bugParams3 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_cc_mobile";
 
-                                    if (JSON.parse(body).bugs[0].cf_cc_mobile != '') {
-                                        var str = JSON.parse(body).bugs[0].cf_cc_mobile;
-                                        var mobile_ = str.split(",");
+                                    request({
+                                        url: bugUrlRest + "/rest/bug" + bugParams3,
+                                        method: "GET"
+                                    }, function (error3, response3, body3) {
+                                        if (JSON.parse(body3).bugs[0].cf_cc_mobile != '') {
+                                            var str = JSON.parse(body3).bugs[0].cf_cc_mobile;
+                                            var mobile_ = str.split(",");
 
-                                        for (var j = 0; j < mobile_.length; j++) {
-                                            sendsms_function(mobile_[j], JSON.parse(body).bugs[0].product, _status_gr, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
-                                                console.log(send_sms);
-                                            });
+                                            for (var j = 0; j < mobile_.length; j++) {
+                                                sendsms_function(mobile_[j], JSON.parse(body).bugs[0].product, _status_gr, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
+                                                    console.log(send_sms);
+                                                });
+                                            }
+
                                         }
-
-                                    }
+                                    });
                                     //sendsms_function(JSON.parse(body).bugs[0].product, function (send_sms) {
                                     //  console.log(send_sms);
                                     //});

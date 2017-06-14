@@ -4115,7 +4115,7 @@ router.post('/issue_subscribe', function (req, res) {
     if (req.body.bug_id != undefined && req.body.email != undefined && req.body.mobile_num != undefined) {
         if (req.body.bug_id != '' && (req.body.email != '' || req.body.mobile_num != '')) {
             console.log("1");
-            var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile,product,cf_cc_mobile,cf_cc_name,cc,cf_creator";
+            var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_email,cf_mobile,product,cf_cc_mobile,cf_cc_name,cc,cf_creator,status";
 
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,
@@ -4369,7 +4369,7 @@ router.post('/issue_recommendation', function (req, res) {
                 console.log(i);
                 bugParams1 += "&f" + (i + 6) + "=alias&o" + (i + 6) + "=equals&v" + (i + 6) + "=" + resp[i]._id;
             }
-            bugParams1 += "&include_fields=alias,status,id,url";
+            bugParams1 += "&include_fields=alias,status,id,url,cf_city_address";
 
 
 

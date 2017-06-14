@@ -4111,8 +4111,12 @@ function is_authenticate(req, res) {
 
 // Subscribe citizen to issue
 router.post('/issue_subscribe', function (req, res) {
-    console.log(req.body);
-    console.log(req.body.bug_id);
+
+    var _sms_city = '';
+    var _sms_bug_id = '';
+    var _sms_mobile = '';
+    var _sms_status = '';
+    
     if (req.body.bug_id != undefined && req.body.email != undefined && req.body.mobile_num != undefined) {
         if (req.body.bug_id != '' && (req.body.email != '' || req.body.mobile_num != '')) {
             console.log("1");
@@ -4239,168 +4243,27 @@ router.post('/issue_subscribe', function (req, res) {
                         json: json_data
                     }, function (error4, response4, body4) {
 
-                        console.log("====>>>>" + JSON.stringify(response4));
+                        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_mobile,cf_cc_mobile";
+
+                        request({
+                            url: bugUrlRest + "/rest/bug" + bugParams1,
+                            method: "GET"
+                        }, function (error, response, body) {
+                            console.log(JSON.stringify(body));
+                            });
+
+                        //sendsms_function(JSON.parse(body).bugs[0].product, function (send_sms) {
+                          //  console.log(send_sms);
+                        //});
 
                         res.send("OK");
-                        });
-
-
-                });
-
-
-            });
-            /*
-            act_User.find({
-                $and: [{ "uuid": "web-site" }, { $or: [{ "email": req.body.email }, { "mobile_num": req.body.mobile_num }] }]
-            }, function (err, resp) {
-
-                if (resp.length == 0) {
-                    //no user existx
-                    console.log("123");
-                    res.status(403).send('Forbidden');
-
-                } else {
-
-
-                    request({
-                        url: bugUrlRest + "/rest/bug" + bugParams1,
-                        method: "GET"
-                    }, function (error, response, body) {
-                        console.log(JSON.parse(response.body));
-                        console.log(JSON.parse(response.body).bugs[0].cf_email);
-
-
-                        if (JSON.parse(response.body).bugs[0] != undefined) {
-
-                            var add_cc_list = 0;
-                            var add_mobile_number = 0;
-
-                            if (JSON.parse(response.body).bugs[0].cf_email != req.body.email) {
-                                add_cc_list = 1;
-                            }
-                            if (JSON.parse(response.body).bugs[0].cf_mobile != req.body.mobile_num) {
-                                add_mobile_number = 1;
-                            }
-
-                            var bodyParams_add;
-                            if (add_cc_list == 1 && add_mobile_number == 1) {
-                                bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_cc_mobile": (JSON.parse(response.body).bugs[0].cf_cc_mobile + "," + req.body.mobile_num), "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name) };
-                            } else if (add_cc_list == 0 && add_mobile_number == 1) {
-                                bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cf_cc_mobile": (JSON.parse(response.body).bugs[0].cf_cc_mobile + "," + req.body.mobile_num), "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name) };
-                            } else if (add_cc_list == 1 && add_mobile_number == 0) {
-                                bodyParams_add = { "token": bugToken, "ids": [req.body.bug_id], "cc": { "add": [req.body.email] }, "cf_cc_name": (JSON.parse(response.body).bugs[0].cf_cc_name + "," + req.body.name)};
-                            }
-
-                            if (add_cc_list != 0 || add_mobile_number != 0) {
-
-                                request({
-                                    url: bugUrlRest + "/rest/bug/" + req.body.bug_id,
-                                    method: "PUT",
-                                    json: bodyParams_add
-                                }, function (error1, response1, body1) {
-
-                                    var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment };
-
-                                    request({
-                                        url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
-                                        method: "POST",
-                                        json: bugComment1
-                                    }, function (error2, bugResponse2, body2) {
-
-                                        console.log("name=>"+req.body.name);
-                                        console.log('-1-');
-                                        console.log("email=>" + req.body.email);
-                                        console.log('-2-');
-                                        console.log("mobile=>" + req.body.mobile_num);
-                                        var tag_name, tag_email, tag_mobile;
-
-                                        if (req.body.name != undefined) {
-                                            tag_name = "name:" + req.body.name;
-                                        } else {
-                                            tag_name = "name:undefined";
-                                        }
-                                        if (req.body.email != undefined) {
-                                            tag_email = "email:" + req.body.email;
-                                        } else {
-                                            tag_email = "email:undefined";
-                                        }
-                                        if (req.body.mobile_num != undefined) {
-                                            tag_mobile = "mobile:" + req.body.mobile_num;
-                                        } else {
-                                            tag_mobile = "mobile:undefined";
-                                        }
-                                        console.log(tag_name);
-                                        console.log(tag_email);
-                                        console.log(tag_mobile);
-                                        var json_data = { "add": [tag_name, tag_email, tag_mobile], "id": bugResponse2.body.id, "token": bugToken };
-                                        console.log("json_data=>" + JSON.stringify(json_data));
-
-                                        request({
-                                            url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
-                                            method: "PUT",
-                                            json: json_data
-                                        }, function (error4, response4, body4) {
-
-                                            console.log(JSON.stringify(response4));
-
-                                            res.send("OK");
-                                        });
-                                    });
-                                });
-                            }
-                            else {
-                                //add comment
-                                var bugComment1 = { "token": bugToken, "id": req.body.bug_id, "comment": req.body.comment };
-
-                                request({
-                                    url: bugUrlRest + "/rest/bug/" + req.body.bug_id + "/comment",
-                                    method: "POST",
-                                    json: bugComment1
-                                }, function (error2, bugResponse2, body2) {
-
-                                    console.log("name=>" + req.body.name);
-                                    console.log('-3-');
-                                    console.log("email=>" + req.body.email);
-                                    console.log('-4-');
-                                    console.log("mobile=>" + req.body.mobile_num);
-
-                                    var tag_name,tag_email, tag_mobile;
-
-                                    if (req.body.name != undefined) {
-                                        tag_name = "'name:" + req.body.name + "'";
-                                    } else {
-                                        tag_name = "'name:undefined'";
-                                    }
-                                    if (req.body.email != undefined) {
-                                        tag_email = ",'email:" + req.body.email + "'";
-                                    } else {
-                                        tag_email = ",'email:undefined'";
-                                    }
-                                    if (req.body.mobile_num != undefined) {
-                                        tag_mobile = ",'mobile:" + req.body.mobile_num + "'";
-                                    } else {
-                                        tag_mobile = ",'mobile:undefined'";
-                                    }
-                                    var json_data = { "add": [tag_name, tag_email, tag_mobile], "id": bugResponse2.body.id, "token": bugToken };
-                                    console.log("json_data=>" + json_data);
-                                    request({
-                                        url: bugUrlRest + "/rest/bug/comment/" + bugResponse2.body.id + "/tags",
-                                        method: "PUT",
-                                        json: json_data
-                                    }, function (error4, response4, body4) {
-                                        res.send("OK");
-                                    });
-                                });
-                            }
-                        }
-                        else {
-                            console.log("456");
-                            res.send("Forbidden");
-                        }
                     });
-                }
+
+
                 });
-            */
+
+
+            });         
         } else {
             res.status(400).send('Bad Request');
         }
@@ -4410,19 +4273,36 @@ router.post('/issue_subscribe', function (req, res) {
     }
 });
 
+function sendsms_function(req_sms, callback) {
 
+    console.log("send sms (add comment)");
+    console.log("- - - - - - - - - - - - - - - - - - - - - -");
+    console.log("- - - - - - - - - - - - - - - - - - - - - -");
+    console.log("product  ===>>  " + JSON.parse(body).bugs[0].product);
+    console.log("cf_mobile  ===>>  " + JSON.parse(body).bugs[0].cf_mobile);
+    console.log("id  ===>>  " + req.body.id);
+    console.log("_status_field  ===>>  " + _status_field);
+    console.log("'sender': " + JSON.parse(body).bugs[0].product + ", 'recipients': '30'" + JSON.parse(body).bugs[0].cf_mobile + ", 'body':" + JSON.parse(body).bugs[0].product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req.body.id + _status_field + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + JSON.parse(body).bugs[0].product + "'.sense.city/bugid.html?issue='" + req.body.id);
+    console.log("- - - - - - - - - - - - - - - - - - - - - -");
+    console.log("- - - - - - - - - - - - - - - - - - - - - -");
+
+    request({
+        url: "https://api.theansr.com/v1/sms",
+        method: "POST",
+        form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
+        headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+    }, function (err, response) {
+        console.log(JSON.stringify("response=====>>>>" + response));
+        });
+
+    callback("OK");
+}
 
 // Recommend issue
 router.post('/issue_recommendation', function (req, res) {
 // ->req.query.lat
 // ->req.query.long
 // ->req.query.issue
-
-
-
-    console.log(req.body);
-    console.log(req.body.lat);
-    console.log('===>>>> { "issue": req.body.issue, $nearSphere: {  $geometry: {  type: "Point", coordinates: [req.body.long, req.body.lat] }, $minDistance: 100  } }');
 
     var mydate = new Date();
     var my_year = mydate.getFullYear();
@@ -4437,14 +4317,12 @@ router.post('/issue_recommendation', function (req, res) {
     }
 
     var my_date = mydate.getDate();
-
-    console.log("my_date" + my_date);
+    
 
     if (my_date < 10) {
         my_date = "0" + my_date;
     }
-
-    console.log(my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString());
+    
     Issue.find({
         "issue": req.body.issue, "create_at": {
             $gte: my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString()
@@ -4458,8 +4336,6 @@ router.post('/issue_recommendation', function (req, res) {
     }, function (req, resp) {
         
         if (resp != undefined) {
-            console.log(resp.length);
-            console.log(resp[0]._id);
 
             var bugParams1 = "?f1=OP&j1=OR&f2=bug_status&o2=equals&v2=CONFIRMED&f3=bug_status&o3=equals&v3=IN_PROGRESS&f4=CP&f5=OP&j5=OR";
 
@@ -4469,7 +4345,7 @@ router.post('/issue_recommendation', function (req, res) {
             }
             bugParams1 += "&include_fields=alias,status,id,url";
 
-            console.log(bugParams1);
+
 
 
             request({

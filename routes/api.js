@@ -4452,7 +4452,7 @@ router.post('/issue_recommendation', function (req, res) {
             $nearSphere: {
                 $geometry: {
                     type: "Point", coordinates: [req.body.long, req.body.lat]
-                }, $minDistance: 10
+                }, $minDistance: 1
             }
         }
     }, function (req, resp) {

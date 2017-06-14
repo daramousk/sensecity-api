@@ -4246,7 +4246,7 @@ router.post('/issue_subscribe', function (req, res) {
                                 if (mob_sms_key_fibair_base64 != '') {
                                     //elegxos gia apostoli sms
 
-                                    if (JSON.parse(body).bug[0].cf_mobile != '') {
+                                    if (JSON.parse(body).bugs[0].cf_mobile != '') {
                                         //send sms
                                         sendsms_function(JSON.parse(body).bugs[0].cf_mobile, JSON.parse(body).bugs[0].product, JSON.parse(body).bugs[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
                                             console.log(send_sms);

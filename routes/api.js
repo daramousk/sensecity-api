@@ -4240,15 +4240,8 @@ router.post('/issue_subscribe', function (req, res) {
                         json: json_data
                     }, function (error4, response4, body4) {
 
-                        var _status_gr = '';
-                        if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
-                            _status_gr = ' ΑΛΛΑΞΕ ΣΕ ΕΞΕΛΙΞΗ';
-                        }
-                        else if (JSON.parse(body).bugs[0].status == "RESOLVED") {
-                            _status_gr = ' ΟΛΟΚΛΗΡΩΘΗΚΕ';
-                        } else {
-                            _status_gr = ' ΑΛΛΑΞΕ';
-                        }
+                        var _status_gr = ' ΑΛΛΑΞΕ';
+                        
 
                         Municipality.find({ "municipality": JSON.parse(body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
                             var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");

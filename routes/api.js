@@ -4306,7 +4306,7 @@ function sendsms_function(req_mobile, req_product, req_status, req_bugid, mob_sm
                 console.log("- - - - - - - - - - - - - - - - - - - - - -");
                 console.log("_status_field  ===>>  " + req_status);
                 console.log("- - - - - - - - - - - - - - - - - - - - - -");
-                console.log("'sender': " + req_product + ", 'recipients': '30'" + req_mobile + ", 'body':" + req_product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req_bugid + req_status + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + req_product + "'.sense.city/bugid.html?issue='" + req_bugid);
+                console.log("'sender': " + req_product + ", 'recipients': '30'" + req_mobile + ", 'body':" + req_product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req_bugid + "' '" + req_status + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + req_product + "'.sense.city/bugid.html?issue='" + req_bugid);
                 console.log("- - - - - - - - - - - - - - - - - - - - - -");
                 console.log("mob_sms_key_fibair_base64 ====>>>" + mob_sms_key_fibair_base64);
                 console.log("- - - - - - - - - - - - - - - - - - - - - -");
@@ -4314,7 +4314,7 @@ function sendsms_function(req_mobile, req_product, req_status, req_bugid, mob_sm
                 request({
                     url: "https://api.theansr.com/v1/sms",
                     method: "POST",
-                    form: { 'sender': req_product, 'recipients': '30' + req_mobile, 'body': req_product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req_bugid + req_status + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + req_product + '.sense.city/bugid.html?issue=' + req_bugid },
+                    form: { 'sender': req_product, 'recipients': '30' + req_mobile, 'body': req_product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req_bugid + ' ' + req_status + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + req_product + '.sense.city/bugid.html?issue=' + req_bugid },
                     headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
                 }, function (err, response) {
                     console.log(JSON.stringify("response=====>>>>" + response));

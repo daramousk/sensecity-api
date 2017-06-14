@@ -4241,14 +4241,25 @@ router.post('/issue_subscribe', function (req, res) {
                               
                         Municipality.find({ "municipality": JSON.parse(body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
                             var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
+                            var _status_gr = '';
                             if (mob_sms_key_fibair_base64 != undefined) {
+                                if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
+                                    _status_gr = ' ΑΛΛΑΞΕ ΣΕ ΕΞΕΛΙΞΗ';
+                                }
+                                else if (JSON.parse(body).bugs[0].status == "RESOLVED") {
+                                    _status_gr = ' ΑΛΛΑΞΕ ΣΕ ΟΛΟΚΛΗΡΩΘΗΚΕ';
+                                } else {
+                                    _status_gr = ' ΑΛΛΑΞΕ';
+                                }
+
+
 
                                 if (mob_sms_key_fibair_base64 != '') {
                                     //elegxos gia apostoli sms
-
+                                    
                                     if (JSON.parse(body).bugs[0].cf_mobile != '') {
                                         //send sms
-                                        sendsms_function(JSON.parse(body).bugs[0].cf_mobile, JSON.parse(body).bugs[0].product, JSON.parse(body).bugs[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
+                                        sendsms_function(JSON.parse(body).bugs[0].cf_mobile, JSON.parse(body).bugs[0].product, _status_gr, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
                                             console.log(send_sms);
                                         });
                                     }

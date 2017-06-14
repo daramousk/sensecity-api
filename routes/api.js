@@ -4461,11 +4461,11 @@ router.post('/issue_recommendation', function (req, res) {
             console.log(resp.length);
             console.log(resp[0]._id);
 
-            var bugParams1 = "?j_top=OR&f1=bug_status&o1=equals&v1=CONFIRMED&f2=bug_status&o2=equals&v2=IN_PROGRESS";
+            var bugParams1 = "?f1=bug_status&o1=equals&v1=CONFIRMED&f2=bug_status&o2=equals&v2=IN_PROGRESS&f3=OP&j3=OR";
 
             for (var i = 0; i < resp.length; i++) {
                 console.log(i);
-                bugParams1 += "&f" + (i + 3) + "=alias&o" + (i + 3) + "=equals&v" + (i + 3) + "=" + resp[i]._id;
+                bugParams1 += "&f" + (i + 4) + "=alias&o" + (i + 4) + "=equals&v" + (i + 4) + "=" + resp[i]._id;
             }
             bugParams1 += "&include_fields=alias,status,id,url";
 

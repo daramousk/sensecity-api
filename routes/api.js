@@ -4111,11 +4111,6 @@ function is_authenticate(req, res) {
 
 // Subscribe citizen to issue
 router.post('/issue_subscribe', function (req, res) {
-
-    var _sms_city = '';
-    var _sms_bug_id = '';
-    var _sms_mobile = '';
-    var _sms_status = '';
     
     if (req.body.bug_id != undefined && req.body.email != undefined && req.body.mobile_num != undefined) {
         if (req.body.bug_id != '' && (req.body.email != '' || req.body.mobile_num != '')) {
@@ -4243,20 +4238,46 @@ router.post('/issue_subscribe', function (req, res) {
                         json: json_data
                     }, function (error4, response4, body4) {
 
-                        var bugParams1 = "?f1=bug_id&o1=equals&v1=" + req.body.bug_id + "&include_fields=cf_mobile,cf_cc_mobile";
+                              
+                        Municipality.find({ "municipality": JSON.parse(_resp).municipality }, { "sms_key_fibair": 1 }, function (req11, res11) {
+                            var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
+                            if (mob_sms_key_fibair_base64 != undefined) {
 
-                        request({
-                            url: bugUrlRest + "/rest/bug" + bugParams1,
-                            method: "GET"
-                        }, function (error, response, body) {
-                            console.log(JSON.stringify(body));
-                            });
+                                if (mob_sms_key_fibair_base64 != '') {
+                                    //elegxos gia apostoli sms
 
-                        //sendsms_function(JSON.parse(body).bugs[0].product, function (send_sms) {
-                          //  console.log(send_sms);
-                        //});
+                                    if (JSON.parse(body).bug[0].cf_mobile != '') {
+                                        //send sms
+                                        sendsms_function(JSON.parse(body).bug[0].cf_mobile, JSON.parse(body).bug[0].product, JSON.parse(body).bug[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
+                                            console.log(send_sms);
+                                        });
+                                    }
 
-                        res.send("OK");
+
+                                    if (JSON.parse(body).bug[0].cf_cc_mobile != '') {
+                                        var str = JSON.parse(body).bug[0].cf_cc_mobile;
+                                        var mobile_ = str.split(",");
+
+                                        for (var j = 0; j < mobile_.length; j++) {
+                                            sendsms_function(mobile_[j], JSON.parse(body).bug[0].product, JSON.parse(body).bug[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
+                                                console.log(send_sms);
+                                            });
+                                        }
+
+                                    }
+                                    //sendsms_function(JSON.parse(body).bugs[0].product, function (send_sms) {
+                                    //  console.log(send_sms);
+                                    //});
+
+                                    res.send("OK");
+                                } else {
+                                    //not send
+                                }
+                            } else {
+                                //not send
+                            }
+                        });
+
                     });
 
 
@@ -4273,29 +4294,34 @@ router.post('/issue_subscribe', function (req, res) {
     }
 });
 
-function sendsms_function(req_sms, callback) {
+function sendsms_function(req_mobile, req_product, req_status, req_bugid, mob_sms_key_fibair_base64, callback) {
+    
+                console.log("send sms (add comment)");
+                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                console.log("product  ===>>  " + req_product);
+                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                console.log("cf_mobile  ===>>  " + req_mobile);
+                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                console.log("id  ===>>  " + req_bugid);
+                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                console.log("_status_field  ===>>  " + req_status);
+                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                console.log("'sender': " + req_product + ", 'recipients': '30'" + req_mobile + ", 'body':" + req_product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req_bugid + req_status + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + req_product + "'.sense.city/bugid.html?issue='" + req_bugid);
+                console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                console.log("mob_sms_key_fibair_base64 ====>>>" + mob_sms_key_fibair_base64);
+                console.log("- - - - - - - - - - - - - - - - - - - - - -");
 
-    console.log("send sms (add comment)");
-    console.log("- - - - - - - - - - - - - - - - - - - - - -");
-    console.log("- - - - - - - - - - - - - - - - - - - - - -");
-    console.log("product  ===>>  " + JSON.parse(body).bugs[0].product);
-    console.log("cf_mobile  ===>>  " + JSON.parse(body).bugs[0].cf_mobile);
-    console.log("id  ===>>  " + req.body.id);
-    console.log("_status_field  ===>>  " + _status_field);
-    console.log("'sender': " + JSON.parse(body).bugs[0].product + ", 'recipients': '30'" + JSON.parse(body).bugs[0].cf_mobile + ", 'body':" + JSON.parse(body).bugs[0].product + "'.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ '" + req.body.id + _status_field + "'. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://'" + JSON.parse(body).bugs[0].product + "'.sense.city/bugid.html?issue='" + req.body.id);
-    console.log("- - - - - - - - - - - - - - - - - - - - - -");
-    console.log("- - - - - - - - - - - - - - - - - - - - - -");
+                request({
+                    url: "https://api.theansr.com/v1/sms",
+                    method: "POST",
+                    form: { 'sender': req_product, 'recipients': '30' + req_mobile, 'body': req_product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req_bugid + req_status + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + req_product + '.sense.city/bugid.html?issue=' + req_bugid },
+                    headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
+                }, function (err, response) {
+                    console.log(JSON.stringify("response=====>>>>" + response));
+                });
 
-    request({
-        url: "https://api.theansr.com/v1/sms",
-        method: "POST",
-        form: { 'sender': JSON.parse(body).bugs[0].product, 'recipients': '30' + JSON.parse(body).bugs[0].cf_mobile, 'body': JSON.parse(body).bugs[0].product + '.sense.city! ΤΟ ΑΙΤΗΜΑ ΣΑΣ ΜΕ ΚΩΔΙΚΟ ' + req.body.id + _status_field + '. ΛΕΠΤΟΜΕΡΕΙΕΣ: http://' + JSON.parse(body).bugs[0].product + '.sense.city/bugid.html?issue=' + req.body.id },
-        headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64, 'content-type': 'application/form-data' }
-    }, function (err, response) {
-        console.log(JSON.stringify("response=====>>>>" + response));
-        });
-
-    callback("OK");
+                callback("OK");
+            
 }
 
 // Recommend issue

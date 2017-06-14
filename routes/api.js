@@ -4461,14 +4461,13 @@ router.post('/issue_recommendation', function (req, res) {
             console.log(resp.length);
             console.log(resp[0]._id);
 
-            var bugParams1 = "?j_top=OR&f1=status&o1=equals&v1=CONFIRMED&f2=status&o2=equals&v2=IN_PROGRESS";
+            var bugParams1 = "?j_top=OR&f1=bug_status&o1=equals&v1=CONFIRMED&f2=bug_status&o2=equals&v2=IN_PROGRESS";
 
             for (var i = 0; i < resp.length; i++) {
                
                 bugParams1 += "&f" + (i + 3) + "=alias&o" + (i + 3) + "=equals&v" + (i + 3) + "=" + resp[i]._id;
             }
-            bugParams1 += "&include_fields=alias,status,bug_file_loc,bug_id"
-            console.log(bugUrlRest + "/rest/bug" + bugParams1);
+            bugParams1 += "&include_fields=alias,status,id,url"            
 
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,

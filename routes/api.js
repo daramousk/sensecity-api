@@ -4171,6 +4171,8 @@ router.post('/issue_subscribe', function (req, res) {
                                 method: "PUT",
                                 json: bodyParams_add_2
                             }, function (error1, response1, body1) {
+                                console.log(JSON.stringify(body1));
+
                                 console.log("add cf_cc_mobile 2");
                             });
                         }
@@ -4238,19 +4240,21 @@ router.post('/issue_subscribe', function (req, res) {
                         json: json_data
                     }, function (error4, response4, body4) {
 
-                              
+                        var _status_gr = '';
+                        if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
+                            _status_gr = ' ΑΛΛΑΞΕ ΣΕ ΕΞΕΛΙΞΗ';
+                        }
+                        else if (JSON.parse(body).bugs[0].status == "RESOLVED") {
+                            _status_gr = ' ΟΛΟΚΛΗΡΩΘΗΚΕ';
+                        } else {
+                            _status_gr = ' ΑΛΛΑΞΕ';
+                        }
+
                         Municipality.find({ "municipality": JSON.parse(body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
                             var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
-                            var _status_gr = '';
+                            
                             if (mob_sms_key_fibair_base64 != undefined) {
-                                if (JSON.parse(body).bugs[0].status == "IN_PROGRESS") {
-                                    _status_gr = ' ΑΛΛΑΞΕ ΣΕ ΕΞΕΛΙΞΗ';
-                                }
-                                else if (JSON.parse(body).bugs[0].status == "RESOLVED") {
-                                    _status_gr = ' ΑΛΛΑΞΕ ΣΕ ΟΛΟΚΛΗΡΩΘΗΚΕ';
-                                } else {
-                                    _status_gr = ' ΑΛΛΑΞΕ';
-                                }
+                                
 
 
 
@@ -4270,7 +4274,7 @@ router.post('/issue_subscribe', function (req, res) {
                                         var mobile_ = str.split(",");
 
                                         for (var j = 0; j < mobile_.length; j++) {
-                                            sendsms_function(mobile_[j], JSON.parse(body).bugs[0].product, JSON.parse(body).bugs[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
+                                            sendsms_function(mobile_[j], JSON.parse(body).bugs[0].product, _status_gr, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
                                                 console.log(send_sms);
                                             });
                                         }

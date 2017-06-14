@@ -4467,7 +4467,7 @@ router.post('/issue_recommendation', function (req, res) {
                
                 bugParams1 += "&f" + (i + 3) + "=alias&o" + (i + 3) + "=equals&v" + (i + 3) + "=" + resp[i]._id;
             }
-            //bugParams1 += "&include_fields=alias,status,id,bug_file_loc"            
+            bugParams1 += "&include_fields=alias,status,id,url";
 
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,

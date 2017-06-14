@@ -4239,7 +4239,7 @@ router.post('/issue_subscribe', function (req, res) {
                     }, function (error4, response4, body4) {
 
                               
-                        Municipality.find({ "municipality": JSON.parse(body).bug[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
+                        Municipality.find({ "municipality": JSON.parse(body).bugs[0].product }, { "sms_key_fibair": 1 }, function (req11, res11) {
                             var mob_sms_key_fibair_base64 = new Buffer(res11[0].sms_key_fibair + ":").toString("base64");
                             if (mob_sms_key_fibair_base64 != undefined) {
 
@@ -4248,18 +4248,18 @@ router.post('/issue_subscribe', function (req, res) {
 
                                     if (JSON.parse(body).bug[0].cf_mobile != '') {
                                         //send sms
-                                        sendsms_function(JSON.parse(body).bug[0].cf_mobile, JSON.parse(body).bug[0].product, JSON.parse(body).bug[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
+                                        sendsms_function(JSON.parse(body).bugs[0].cf_mobile, JSON.parse(body).bugs[0].product, JSON.parse(body).bugs[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
                                             console.log(send_sms);
                                         });
                                     }
 
 
-                                    if (JSON.parse(body).bug[0].cf_cc_mobile != '') {
-                                        var str = JSON.parse(body).bug[0].cf_cc_mobile;
+                                    if (JSON.parse(body).bugs[0].cf_cc_mobile != '') {
+                                        var str = JSON.parse(body).bugs[0].cf_cc_mobile;
                                         var mobile_ = str.split(",");
 
                                         for (var j = 0; j < mobile_.length; j++) {
-                                            sendsms_function(mobile_[j], JSON.parse(body).bug[0].product, JSON.parse(body).bug[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
+                                            sendsms_function(mobile_[j], JSON.parse(body).bugs[0].product, JSON.parse(body).bugs[0].status, req.body.bug_id, mob_sms_key_fibair_base64, function (send_sms) {
                                                 console.log(send_sms);
                                             });
                                         }

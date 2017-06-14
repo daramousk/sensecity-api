@@ -4452,7 +4452,7 @@ router.post('/issue_recommendation', function (req, res) {
             $nearSphere: {
                 $geometry: {
                     type: "Point", coordinates: [req.body.long, req.body.lat]
-                }, $minDistance: 1
+                }, $minDistance: 10
             }
         }
     }, function (req, resp) {
@@ -4464,10 +4464,13 @@ router.post('/issue_recommendation', function (req, res) {
             var bugParams1 = "?j_top=OR&f1=bug_status&o1=equals&v1=CONFIRMED&f2=bug_status&o2=equals&v2=IN_PROGRESS";
 
             for (var i = 0; i < resp.length; i++) {
-               
+                console.log(i);
                 bugParams1 += "&f" + (i + 3) + "=alias&o" + (i + 3) + "=equals&v" + (i + 3) + "=" + resp[i]._id;
             }
             bugParams1 += "&include_fields=alias,status,id,url";
+
+            console.log(bugParams1);
+
 
             request({
                 url: bugUrlRest + "/rest/bug" + bugParams1,

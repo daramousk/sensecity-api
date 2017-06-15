@@ -1053,7 +1053,7 @@ router.get('/admin/issue', authentication, function (req, res) {
                         res.status(403).send('Forbidden');
                     }
                 } else {
-                    res.send([{}]);
+                    res.send([]);
                 }
             } else {
                 res.status(403).send('Forbidden');

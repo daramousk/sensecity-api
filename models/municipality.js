@@ -6,7 +6,10 @@ var mongoose = restful.mongoose;
 var municipalitySchema = new mongoose.Schema({
 	municipality: String,
 	municipality_desc: String,
-    boundaries: { coordinates: Number },
+    boundaries: {
+        type: String,
+        coordinates: Array
+    },
     sms_key_fibair: { type: String, default: "" },
     mandatory_email: { type: String, default: "false" },
     mandatory_sms: { type: String, default: "false" },

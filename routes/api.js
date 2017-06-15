@@ -4407,5 +4407,13 @@ router.post('/issue_recommendation', function (req, res) {
     
 });
 
+router.get('/city_coordinates', function (req, res) {
+    console.log(JSON.stringify(req));
+
+    Municipality.find({ "municipality": "patra" }, { "boundaries.coordinates": 1 }, function (req1, res1) {
+        res.send(res1);
+    });
+});
+
 // Return router
 module.exports = router;

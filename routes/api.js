@@ -1094,7 +1094,7 @@ var get_issues = function (req, callback) {
     var x_uuid = req.get('x-uuid');
     if ((req.query.hasOwnProperty("bug_id") || req.query.hasOwnProperty("mobile") || req.query.hasOwnProperty("email"))) {        
         if (req.query.bug_id == "" && req.query.mobile == "" && req.query.email == "") {
-            callback([{}]);
+            callback([]);
         } else {
             var _bug_id;
             var _mobile;

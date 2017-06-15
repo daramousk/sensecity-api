@@ -2279,7 +2279,7 @@ var get_issues = function (req, callback) {
                         });
                     } else {
                         _product = '';
-                        callback([{}]);
+                        callback([]);
                     }
                 });
                 //end else if there is coordinates
@@ -2552,7 +2552,7 @@ var get_issues = function (req, callback) {
                                     }
                                 }
                                 else {
-                                    issue_return = "{}";
+                                    issue_return = ""; //issue_return = "{}";
                                 }
 
                                 if (_kml == 0) {
@@ -2828,7 +2828,7 @@ var get_issues = function (req, callback) {
         } //end else if no city AND coordinates
     }
     else {
-        callback([{}]);
+        callback([]);
     }
 }
 

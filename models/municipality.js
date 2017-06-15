@@ -7,8 +7,8 @@ var municipalitySchema = new mongoose.Schema({
 	municipality: String,
 	municipality_desc: String,
     boundaries: {
-        type: String,
-        coordinates: Array
+        type: { type: String },
+        coordinates: { type: Array }
     },
     sms_key_fibair: { type: String, default: "" },
     mandatory_email: { type: String, default: "false" },

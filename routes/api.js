@@ -4411,7 +4411,7 @@ router.get('/city_coordinates', function (req, res) {
     console.log(req);
     var city = req.query.city;
     console.log(city);
-    Municipality.find({ "municipality": city }, { "boundaries.coordinates": 1 }, function (req1, res1) {
+    Municipality.find({ "municipality": city }, { "boundaries": 1 }, function (req1, res1) {
         console.log("=====>>>" + req1);
         res.send(res1);
     });

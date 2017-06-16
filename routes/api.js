@@ -3300,8 +3300,9 @@ router.post('/activate_user', function (req, res) {
                 if (req.query.mobile != undefined) {
                     //Check mobile number
                     act_mobile.find({ "mobile_num": req.query.mobile }, function (err, resp1) {
+                        console.log(JSON.stringify(resp1));
                         if (resp1.length > 0) {
-
+                            console.log("1");
                             request({
                                 url: "https://api.theansr.com/v1/sms/verification_pin",
                                 method: "POST",
@@ -3316,7 +3317,7 @@ router.post('/activate_user', function (req, res) {
 
                         } else {//insert send sms
 
-                           
+                            console.log("2");
                             var mob_municipality = '';
                             var mob_sms_key_fibair = '';
 
@@ -3328,8 +3329,8 @@ router.post('/activate_user', function (req, res) {
                                             mob_sms_key_fibair = res_mun[0].sms_key_fibair;
 
                                             if (mob_sms_key_fibair != '') {
-
-                                                act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
+                                                
+                                              //  act_mobile.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
                                                     var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
 
                                                     request({
@@ -3350,7 +3351,7 @@ router.post('/activate_user', function (req, res) {
 
                                                         });
 
-                                                });
+                                               // });
                                             }
                                         }
                                     }

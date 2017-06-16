@@ -3480,7 +3480,7 @@ router.post('/activate_user', function (req, res) {
 
             }
             else if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('mobile')) {
-
+                console.log("sms");
                 var mob_municipality = '';
                 var mob_sms_key_fibair = '';
 
@@ -3492,8 +3492,9 @@ router.post('/activate_user', function (req, res) {
                                 mob_sms_key_fibair = res_mun[0].sms_key_fibair;
 
                                 if (mob_sms_key_fibair != '') {
-
+                                    console.log("pre resp");
                                     act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
+                                        console.log("resp" + JSON.stringify(resp));
                                         var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
                                         if (err)
                                             throw err;
@@ -3507,7 +3508,7 @@ router.post('/activate_user', function (req, res) {
                                                 headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
                                             }, function (err1, response) {
 
-                                                // console.log(err1);
+                                                console.log(JSON.stringify(response));
 
                                                 act_User.update({ "_id": resp[0]._id }, { $set: { "name": req.query.name, "mobile_num": req.query.mobile, "permission.communicate_with.sms": "true", "activate_sms": JSON.parse(response.body).verification_pin } }, { "upsert": true }, function (err1, resp1) {
                                                     res.send({ "status": "send sms" });

@@ -3315,6 +3315,7 @@ router.post('/activate_user', function (req, res) {
                             });
 
                         } else {//insert send sms
+                            console.log(JSON.stringify(response));
 
                             var activate_mobile = new act_email({
                                 mobile_num: req.query.mobile,

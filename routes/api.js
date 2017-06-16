@@ -3317,25 +3317,49 @@ router.post('/activate_user', function (req, res) {
                         } else {//insert send sms
 
                            
+                            var mob_municipality = '';
+                            var mob_sms_key_fibair = '';
 
+                            if (req.query.lat != undefined && req.query.long != undefined) {
+                                Municipality.find({ boundaries: { $geoIntersects: { $geometry: { "type": "Point", "coordinates": [req.query.long, req.query.lat] } } } }, { "municipality": 1, "sms_key_fibair": 1 }, function (req_mun, res_mun) {
+                                    if (res_mun != undefined) {
+                                        if (res_mun[0].sms_key_fibair != undefined) {
+                                            mob_municipality = res_mun[0].municipality;
+                                            mob_sms_key_fibair = res_mun[0].sms_key_fibair;
 
-                            request({
-                                url: "https://api.theansr.com/v1/sms/verification_pin",
-                                method: "POST",
-                                form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
-                                headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
-                            }, function (err1, response) {
+                                            if (mob_sms_key_fibair != '') {
 
-                                var activate_mobile = new act_email({
-                                    mobile_num: req.query.mobile,
-                                    activate: JSON.parse(response.body).verification_pin
+                                                act_User.find({ "uuid": req.query.uuid, "name": req.query.name/*, "mobile_num": req.query.mobile*/ }, function (err, resp) {
+                                                    var mob_sms_key_fibair_base64 = new Buffer(mob_sms_key_fibair + ":").toString("base64");
+
+                                                    request({
+                                                        url: "https://api.theansr.com/v1/sms/verification_pin",
+                                                        method: "POST",
+                                                        form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
+                                                        headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
+                                                    }, function (err1, response) {
+
+                                                        var activate_mobile = new act_email({
+                                                            mobile_num: req.query.mobile,
+                                                            activate: JSON.parse(response.body).verification_pin
+                                                        });
+
+                                                        activate_email.save(function (err1, resp) {
+                                                            res.send({ "status": "send sms" });
+                                                        });
+
+                                                        });
+
+                                                });
+                                            }
+                                        }
+                                    }
                                 });
+                            }
 
-                                activate_email.save(function (err1, resp) {
-                                    res.send({ "status": "send sms" });
-                                });
 
-                            });
+
+                            
 
                         }
                     });

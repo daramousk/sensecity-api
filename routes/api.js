@@ -3208,8 +3208,9 @@ router.post('/is_activate_user', function (req, res) {
 });
 
 router.post('/activate_user', function (req, res) {
-    console.log(req);
+   // console.log(req);
     if (req.query.uuid != undefined) {
+        console.log("7");
         if (req.query.hasOwnProperty('uuid')) {
             if (req.query.uuid == "web-site") {
                 if (req.query.email != undefined) {
@@ -3376,7 +3377,7 @@ router.post('/activate_user', function (req, res) {
 
 
 
-
+        console.log("9");
 
 
         if (req.query.hasOwnProperty('uuid') && req.query.hasOwnProperty('name') && req.query.hasOwnProperty('email')) {

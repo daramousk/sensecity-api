@@ -3344,7 +3344,7 @@ router.post('/activate_user', function (req, res) {
                                                             activate: JSON.parse(response.body).verification_pin
                                                         });
 
-                                                        activate_email.save(function (err1, resp) {
+                                                        activate_mobile.save(function (err1, resp) {
                                                             res.send({ "status": "send sms" });
                                                         });
 

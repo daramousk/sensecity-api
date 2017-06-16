@@ -3315,12 +3315,8 @@ router.post('/activate_user', function (req, res) {
                             });
 
                         } else {//insert send sms
-                            console.log(JSON.stringify(response));
 
-                            var activate_mobile = new act_email({
-                                mobile_num: req.query.mobile,
-                                activate: JSON.parse(response.body).verification_pin
-                            });
+                           
 
 
                             request({
@@ -3329,6 +3325,12 @@ router.post('/activate_user', function (req, res) {
                                 form: { 'sender': mob_municipality, 'recipients': '30' + req.query.mobile },
                                 headers: { "Authorization": 'Basic ' + mob_sms_key_fibair_base64 }
                             }, function (err1, response) {
+
+                                var activate_mobile = new act_email({
+                                    mobile_num: req.query.mobile,
+                                    activate: JSON.parse(response.body).verification_pin
+                                });
+
                                 activate_email.save(function (err1, resp) {
                                     res.send({ "status": "send sms" });
                                 });

@@ -35,6 +35,7 @@ var accessLogStream = rfs("API.log", {
     path: config.config.log_path
 });
 
+console.log("accessLogStream===>>>>" + accessLogStream);
 // setup the logger
 app.use(morgan('combined', { stream: accessLogStream }));
 

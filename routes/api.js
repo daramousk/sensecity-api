@@ -3153,7 +3153,7 @@ router.get('/fullissue/:id', function (req, res) {
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[0]));
 
                             request({
-                                url: bugUrlRest + "/rest/bug/" + body_var.bugs[0][q].alias[0] + "/comment",
+                                url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
                                 method: "GET"
                             }, function (error1, response1, body1) {
                                 if (error1)

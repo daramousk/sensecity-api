@@ -3086,7 +3086,7 @@ router.get('/city_policy', function (req, res) {
 
 router.get('/fullissue/:id', function (req, res) {
 
-    console.log(JSON.stringify(req));
+    console.log(req);
 
 
     var id = req.params.id;

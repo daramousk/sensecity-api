@@ -3165,7 +3165,7 @@ router.get('/fullissue/:id', function (req, res) {
                                     issue_rtrn.push(callback);
                                     console.log(callback);
                                     console.log("===========>>>>>>>>>" + q + "<<<<<<<<<<======>>>>>>>>>" + (body_var.bugs.length - 1));
-                                    if (q == (body_var.bugs.length - 1)) {
+                                    if (q == body_var.bugs.length) {
                                         
                                         res.send(issue_rtrn);
                                     }

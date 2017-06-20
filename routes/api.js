@@ -3091,11 +3091,20 @@ router.get('/fullissue/:id', function (req, res) {
 
     var id = req.params.id;
     var issue_rtrn = [];
-
+    console.log(id);
     var split_alias = id.split("|");
+
+    console.log(split_alias.length);
+
     var alias_array = '';
     for (var k = 0; k < split_alias.length; k++) {
+        console.log(split_alias[k]);
+        if (k > 0) {
+            alias_array += "&";
+        }
         alias_array += "alias=" + split_alias[k];
+
+
     }
 
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address";

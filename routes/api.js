@@ -3140,26 +3140,46 @@ router.get('/fullissue/:id', function (req, res) {
 
 				res.send([{}]);
 
-			} else {
-				request({
-                    url: bugUrlRest + "/rest/bug/" + body_var.bugs[0].alias[0] + "/comment",
-					method: "GET"
-				}, function (error1, response1, body1) {
-					if(error1)
-						cosnole.log("/fullissue/:id error :"+error1);
-					
-                    Issue.find({"_id":req.params.id}, {"user":0}, function (err, issue) {
-						
-                        if (issue.length != 0) {
-                            issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '", "city_address":"' + body_var.bugs[0].cf_city_address + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + ']';
+                    } else {
 
-							res.send(issue_rtrn);
-						}
-						else{
-							res.send([]);
-						}
-					});
-				});
+                    //for
+                        issue_rtrn += '[';
+                        for (var q = 0; q < body_var.length; q++) {
+                            if (q > 0) {
+                                issue_rtrn += ',';
+                            }
+
+                            request({
+                                url: bugUrlRest + "/rest/bug/" + body_var[q].bugs[0].alias[0] + "/comment",
+                                method: "GET"
+                            }, function (error1, response1, body1) {
+                                if (error1)
+                                    cosnole.log("/fullissue/:id error :" + error1);
+
+                                Issue.find({ "_id": req.params.id }, { "user": 0 }, function (err, issue) {
+
+                                    if (issue.length != 0) {
+                                        issue_rtrn += '{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '", "city_address":"' + body_var.bugs[0].cf_city_address + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + '';
+
+                                       
+                                    }
+                                    else {
+                                        res.send([]);
+                                    }
+
+                                    if (q = body_var.length - 1) {
+                                        issue_rtrn += ']';
+                                        res.send(issue_rtrn);
+                                    }
+                                });
+                            });
+
+                        }
+
+                            //end for
+
+                        
+
 			}
 		}
 		else{

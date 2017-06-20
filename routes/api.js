@@ -3151,7 +3151,7 @@ router.get('/fullissue/:id', function (req, res) {
                                 issue_rtrn += ',';
                             }
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
-
+                            console.log("id=========>>>>>>>>" + JSON.stringify(body_var.bugs[q]).id);
                             request({
                                 url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
                                 method: "GET"
@@ -3161,7 +3161,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 
                                 console.log("=========>>>>>>>>" + JSON.stringify(body1));
-                                console.log("=========>>>>>>>>" + JSON.parse(body_var.bugs[q]).id);
+                                
 
 
                                 Issue.find({ "_id": body_var.bugs[q].id }, { "user": 0 }, function (err, issue) {

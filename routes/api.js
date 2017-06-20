@@ -3161,7 +3161,7 @@ router.get('/fullissue/:id', function (req, res) {
 
                                 console.log("allias_issue=========>>>>>>>>" + allias_issue);
 
-                                isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, function (callback) {
+                                isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
                                     issue_rtrn.push(callback);
                                     if (q == (body_var.bugs.length - 1)) {
                                         console.log("===========>>>>>>>>>"+q +"<<<<<<<<<<======>>>>>>>>>"+ (body_var.bugs.length - 1));
@@ -3188,7 +3188,7 @@ router.get('/fullissue/:id', function (req, res) {
 	
 });
 
-function isseu_rtn_function(allias_issue, myid, cf_city_address, status, callback) {
+function isseu_rtn_function(allias_issue, myid, cf_city_address, status, body1, callback) {
     
     Issue.find({ "_id": allias_issue }, { "user": 0 }, function (err, issue) {
 

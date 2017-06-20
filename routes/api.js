@@ -3145,11 +3145,9 @@ router.get('/fullissue/:id', function (req, res) {
                     } else {
 
                     //for
-                        issue_rtrn += '[';
+                        
                         for (var q = 0; q < body_var.bugs.length; q++) {
-                            if (q > 0) {
-                                issue_rtrn += ',';
-                            }
+                            
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
                             console.log("id=========>>>>>>>>" + body_var.bugs[q].id);
                             var allias_issue = body_var.bugs[q].alias[0];
@@ -3162,29 +3160,17 @@ router.get('/fullissue/:id', function (req, res) {
 
 
                                 console.log("allias_issue=========>>>>>>>>" + allias_issue);
-                                
 
-
-                                Issue.find({ "_id": allias_issue }, { "user": 0 }, function (err, issue) {
-
-                                    console.log("issue" + JSON.stringify(issue));
-
-                                    if (issue.length != 0) {
-                                        issue_rtrn += '{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '", "city_address":"' + body_var.bugs[0].cf_city_address + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + '';
-                                        console.log("issue_rtrn====>>>" + issue_rtrn);
-                                        console.log(q);
-                                        if (q == (body_var.bugs.length - 1)) {
-                                            issue_rtrn += ']';
-                                            console.log("12");
-                                            res.send(issue_rtrn);
-                                        }
-                                       
+                                isseu_rtn_function(allias_issue, function (callback) {
+                                    issue_rtrn.push(callback);
+                                    if (q == (body_var.bugs.length - 1)) {
+                                        console.log("===========>>>>>>>>>"+q +"<<<<<<<<<<======>>>>>>>>>"+ (body_var.bugs.length - 1));
+                                        res.send(issue_rtrn);
                                     }
-                                    else {
-                                        res.send([]);
-                                    }
-                                    
+
                                 });
+
+                               
                             });
 
                         }
@@ -3201,6 +3187,30 @@ router.get('/fullissue/:id', function (req, res) {
 	});
 	
 });
+
+function isseu_rtn_function(allias_issue, callback) {
+    
+    Issue.find({ "_id": allias_issue }, { "user": 0 }, function (err, issue) {
+
+        console.log("issue" + JSON.stringify(issue));
+
+        if (issue.length != 0) {
+            var issue_rtrn = '{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '", "city_address":"' + body_var.bugs[0].cf_city_address + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + '';
+            console.log("issue_rtrn====>>>" + issue_rtrn);
+            console.log(q);
+            if (q == (body_var.bugs.length - 1)) {
+                
+                console.log("12");
+                callback(issue_rtrn);
+            }
+
+        }
+        else {
+            callback([]);
+        }
+
+    });
+}
 
 router.post('/is_activate_user', function (req, res) {
 

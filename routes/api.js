@@ -3166,7 +3166,7 @@ router.get('/fullissue/:id', function (req, res) {
 
                                 Issue.find({ "_id": body_var.bugs[q].id }, { "user": 0 }, function (err, issue) {
 
-                                    console.log(JSON.stringify(issue));
+                                    console.log("issue" + JSON.stringify(issue));
 
                                     if (issue.length != 0) {
                                         issue_rtrn += '{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + body_var.bugs[0].status + '", "city_address":"' + body_var.bugs[0].cf_city_address + '","bug_id":"' + body_var.bugs[0].id + '"},' + body1 + '';

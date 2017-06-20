@@ -3146,7 +3146,7 @@ router.get('/fullissue/:id', function (req, res) {
 
                     //for
                         issue_rtrn += '[';
-                        for (var q = 0; q < body_var.length; q++) {
+                        for (var q = 0; q < body_var.bugs.length; q++) {
                             if (q > 0) {
                                 issue_rtrn += ',';
                             }

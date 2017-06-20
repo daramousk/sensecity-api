@@ -3086,6 +3086,9 @@ router.get('/city_policy', function (req, res) {
 
 router.get('/fullissue/:id', function (req, res) {
 
+    console.log(JSON.stringify(req));
+
+
     var id = req.params.id;
     var issue_rtrn = [];
 
@@ -3117,6 +3120,8 @@ router.get('/fullissue/:id', function (req, res) {
                 url: bugUrlRest +"/rest/bug"+ bugParams1,
                 method: "GET"
             }, function (error, response, body) {
+
+                console.log(JSON.parse(body));
 
                 var body_var = JSON.parse(body);
 

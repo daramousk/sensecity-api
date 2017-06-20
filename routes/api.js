@@ -3151,7 +3151,7 @@ router.get('/fullissue/:id', function (req, res) {
                                 issue_rtrn += ',';
                             }
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
-                            console.log("id=========>>>>>>>>" + JSON.parse(body_var.bugs[q]).id);
+                            console.log("id=========>>>>>>>>" + body_var.bugs[q].id);
                             request({
                                 url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
                                 method: "GET"

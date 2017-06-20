@@ -3133,7 +3133,9 @@ router.get('/fullissue/:id', function (req, res) {
                 console.log(JSON.parse(body));
 
                 var body_var = JSON.parse(body);
-                console.log("body_var====>>>>>>" + body_var);
+                console.log("body_var ====>>>>>> " + JSON.stringify(body_var));
+                console.log("body_var.length ====>>>>>> " + body_var.length);
+                console.log("body_var.bugs.length ====>>>>>> " + body_var.bugs.length);
                 if (body_var.bugs.length !== 0){
 			
                     if (body_var.length < 1) {

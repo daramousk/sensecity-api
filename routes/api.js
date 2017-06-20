@@ -3152,6 +3152,7 @@ router.get('/fullissue/:id', function (req, res) {
                             }
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
                             console.log("id=========>>>>>>>>" + body_var.bugs[q].id);
+                            var allias_issue = body_var.bugs[q].alias[0];
                             request({
                                 url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
                                 method: "GET"
@@ -3160,11 +3161,11 @@ router.get('/fullissue/:id', function (req, res) {
                                     cosnole.log("/fullissue/:id error :" + error1);
 
 
-                                console.log("=========>>>>>>>>" + JSON.stringify(body1));
+                                console.log("allias_issue=========>>>>>>>>" + allias_issue);
                                 
 
 
-                                Issue.find({ "_id": body_var.bugs[q].alias[0] }, { "user": 0 }, function (err, issue) {
+                                Issue.find({ "_id": allias_issue }, { "user": 0 }, function (err, issue) {
 
                                     console.log("issue" + JSON.stringify(issue));
 

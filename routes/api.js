@@ -3178,7 +3178,7 @@ router.get('/fullissue/:id', function (req, res) {
                                         res.send([]);
                                     }
 
-                                    if (q == (body_var.length - 1)) {
+                                    if (q == (body_var.bugs.length - 1)) {
                                         issue_rtrn += ']';
                                         res.send(issue_rtrn);
                                     }

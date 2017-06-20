@@ -3163,8 +3163,10 @@ router.get('/fullissue/:id', function (req, res) {
 
                                 isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
                                     issue_rtrn.push(callback);
+                                    console.log(callback);
+                                    console.log("===========>>>>>>>>>" + q + "<<<<<<<<<<======>>>>>>>>>" + (body_var.bugs.length - 1));
                                     if (q == (body_var.bugs.length - 1)) {
-                                        console.log("===========>>>>>>>>>"+q +"<<<<<<<<<<======>>>>>>>>>"+ (body_var.bugs.length - 1));
+                                        
                                         res.send(issue_rtrn);
                                     }
 

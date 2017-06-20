@@ -3197,12 +3197,8 @@ function isseu_rtn_function(allias_issue, myid, cf_city_address, status, body1, 
         if (issue.length != 0) {
             var issue_rtrn = '{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + status + '", "city_address":"' + cf_city_address + '","bug_id":"' + myid + '"},' + body1 + '';
             console.log("issue_rtrn====>>>" + issue_rtrn);
-            console.log(q);
-            if (q == (body_var.bugs.length - 1)) {
-                
-                console.log("12");
+
                 callback(issue_rtrn);
-            }
 
         }
         else {

@@ -3160,8 +3160,8 @@ router.get('/fullissue/:id', function (req, res) {
                                     cosnole.log("/fullissue/:id error :" + error1);
 
 
-                                console.log(JSON.stringify(body1));
-                            console.log(body_var.bugs[q].id);
+                                console.log("=========>>>>>>>>" + JSON.stringify(body1));
+                                console.log("=========>>>>>>>>" + JSON.parse(body_var.bugs[q].id));
 
 
                                 Issue.find({ "_id": body_var.bugs[q].id }, { "user": 0 }, function (err, issue) {

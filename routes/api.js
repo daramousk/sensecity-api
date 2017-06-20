@@ -3088,8 +3088,14 @@ router.get('/fullissue/:id', function (req, res) {
 
     var id = req.params.id;
     var issue_rtrn = [];
-    
-    var bugParams1 = "?alias=" + id + "&include_fields=id,component,alias,status,cf_city_address";
+
+    var split_alias = id.split("|");
+    var alias_array = '';
+    for (var k = 0; k < split_alias.length; k++) {
+        alias_array += "alias=" + split_alias[k];
+    }
+
+    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address";
     
     /*var bugParams =
             {

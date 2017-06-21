@@ -3107,23 +3107,7 @@ router.get('/fullissue/:id', function (req, res) {
 
     }
 
-    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address";
-    
-    /*var bugParams =
-            {
-                "method": "Bug.search",
-                "params": [{"alias": id, "include_fields": ["id", "component", "alias", "status"]}],
-                "id": 1
-            };
-            
-            
-       
-        request({
-            url: bugUrl,
-            method: "POST",
-            json: bugParams
-        }, function (error, response, body) {*/
-
+    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address";   
 
             request({
                 url: bugUrlRest +"/rest/bug"+ bugParams1,
@@ -3165,7 +3149,7 @@ router.get('/fullissue/:id', function (req, res) {
                                     issue_rtrn.push(callback);
                                     console.log(callback);
                                     console.log("===========>>>>>>>>>" + q + "<<<<<<<<<<======>>>>>>>>>" + (body_var.bugs.length - 1));
-                                    if (q == body_var.bugs.length) {
+                                    if (q == body_var.bugs.length && callback.length>0) {
                                         
                                         res.send(issue_rtrn);
                                     }

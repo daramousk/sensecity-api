@@ -3149,9 +3149,10 @@ router.get('/fullissue/:id', function (req, res) {
                                     issue_rtrn.push(callback);
                                     console.log(callback);
                                     console.log("===========>>>>>>>>>" + q + "<<<<<<<<<<======>>>>>>>>>" + (body_var.bugs.length - 1));
-                                    if (q == body_var.bugs.length && callback.length>0) {
-
-                                        res.send(JSON.parse(issue_rtrn));
+                                    if (q == body_var.bugs.length && callback.length > 0) {
+                                        console(issue_rtrn);
+                                        var xxx = JSON.parse(issue_rtrn);
+                                        res.send(xxx);
                                     }
 
                                 });

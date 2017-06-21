@@ -3090,7 +3090,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 
     var id = req.params.id;
-    var issue_rtrn = [];
+    var issue_rtrn;
     console.log(id);
     var split_alias = id.split("|");
 
@@ -3146,7 +3146,7 @@ router.get('/fullissue/:id', function (req, res) {
                                 console.log("allias_issue=========>>>>>>>>" + allias_issue);
 
                                 isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
-                                    callback += callback;
+                                    issue_rtrn += callback;
                                     if (q == body_var.bugs.length && callback.length > 0) {
                                       
                                         res.send(callback);

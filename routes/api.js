@@ -3146,7 +3146,7 @@ router.get('/fullissue/:id', function (req, res) {
                                 console.log("allias_issue=========>>>>>>>>" + allias_issue);
 
                                 isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
-                                  
+                                    callback += callback;
                                     if (q == body_var.bugs.length && callback.length > 0) {
                                       
                                         res.send(callback);

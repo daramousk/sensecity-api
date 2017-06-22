@@ -3204,7 +3204,7 @@ function isseu_rtn_function(allias_issue, myid, cf_city_address, status, callbac
     //var allias_issue = body_var.bugs[q].alias[0];
 
     request({
-        url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
+        url: bugUrlRest + "/rest/bug/" + allias_issue + "/comment",
         method: "GET"
     }, function (error1, response1, body1) {
         if (error1)

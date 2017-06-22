@@ -3130,26 +3130,32 @@ router.get('/fullissue/:id', function (req, res) {
 
                     //for
                         var counter_alias = 0;
+                        var counter_alias_pev = -1;
+
                         console.log(body_var.bugs.length + "<=>" + counter_alias);
 
                         while (body_var.bugs.length > counter_alias) {
                             console.log("<===========>" + counter_alias);
-                            isseu_rtn_function(body_var.bugs[counter_alias].alias[0], body_var.bugs[counter_alias].id, body_var.bugs[counter_alias].cf_city_address, body_var.bugs[counter_alias].status, function (callback) {
-                                issue_rtrn += callback;
-                                counter_alias++;
-                                console.log(counter_alias);
-
-
-                                if (counter_alias == (body_var.bugs.length - 1)) {
-
-                                    res.send(issue_rtrn);
-                                } else {
+                            if (counter_alias > counter_alias_pev) {
+                                isseu_rtn_function(body_var.bugs[counter_alias].alias[0], body_var.bugs[counter_alias].id, body_var.bugs[counter_alias].cf_city_address, body_var.bugs[counter_alias].status, function (callback) {
+                                    issue_rtrn += callback;
                                     counter_alias++;
-                                }
-                                
-                            });
+                                    console.log("counter_alias===" + counter_alias);
+                                    
 
-                            
+                                    if (counter_alias == (body_var.bugs.length - 1)) {
+
+                                        res.send(issue_rtrn);
+                                    } else {
+                                        counter_alias++;
+                                    }
+
+                                });
+
+                                console.log("counter_alias_pev==" + counter_alias_pev);
+                                counter_alias_pev++;
+                            }
+
                         }
                         /*
                         for (var q = 0; q < body_var.bugs.length; q++) {

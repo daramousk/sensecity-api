@@ -3159,7 +3159,7 @@ router.get('/fullissue/:id', function (req, res) {
 
                                
                                 }).end();
-
+                            console.log("OK"+q);
                         }
 
                             //end for

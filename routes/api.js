@@ -3130,6 +3130,7 @@ router.get('/fullissue/:id', function (req, res) {
 
                     //for
                         var counter = 0;
+
                         for (var q = 0; q < body_var.bugs.length; q++) {
                             
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
@@ -3148,6 +3149,7 @@ router.get('/fullissue/:id', function (req, res) {
                                 isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
                                     issue_rtrn += callback;
                                     counter++;
+                                    console.log(counter);
                                     if (counter == (body_var.bugs.length -1)) {
                                       
                                         res.send(issue_rtrn);
@@ -3156,7 +3158,7 @@ router.get('/fullissue/:id', function (req, res) {
                                 });
 
                                
-                            });
+                                }).end();
 
                         }
 

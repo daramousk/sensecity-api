@@ -3130,8 +3130,10 @@ router.get('/fullissue/:id', function (req, res) {
 
                     //for
                         var counter_alias = 0;
+                        console.log(body_var.bugs.length + "<=>" + counter_alias);
 
-                        while (body_var.bugs.length  < counter_alias) {
+                        while (body_var.bugs.length > counter_alias) {
+                            console.log("<===========>" + counter_alias);
                             isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body_var.bugs[q].alias[0], body1, function (callback) {
                                 issue_rtrn += callback;
                                 counter_alias++;

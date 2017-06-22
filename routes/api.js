@@ -3131,11 +3131,14 @@ router.get('/fullissue/:id', function (req, res) {
                     //for
                         var counter = 0;
 
+                        var promises = [];
+
                         for (var q = 0; q < body_var.bugs.length; q++) {
                             
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
                             console.log("id=========>>>>>>>>" + body_var.bugs[q].id);
                             var allias_issue = body_var.bugs[q].alias[0];
+                            
                             request({
                                 url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
                                 method: "GET"
@@ -3147,21 +3150,24 @@ router.get('/fullissue/:id', function (req, res) {
                                 console.log("allias_issue=========>>>>>>>>" + allias_issue);
                                 
                                 isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
-                                    issue_rtrn += callback;
+                                    /*issue_rtrn += callback;
                                     counter++;
-                                    console.log(counter);
+                                    console.log(counter);*/
+                                    promises.push(callback);
+                                    /*
                                     if (counter == (body_var.bugs.length -1)) {
-                                      
+                                        
                                         res.send(issue_rtrn);
                                     }
-
+                                    */
                                 });
 
                                
                                 }).end();
-                            console.log("OK"+q);
+                            console.log("OK" + q);
                         }
 
+                        $q.all(promises).then(res.send(promises));
                             //end for
 
                         

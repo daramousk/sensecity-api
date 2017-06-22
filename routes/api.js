@@ -3129,10 +3129,27 @@ router.get('/fullissue/:id', function (req, res) {
                     } else {
 
                     //for
-                        var counter = 0;
+                        var counter_alias = 0;
 
-                        var promises = [];
+                        while ((body_var.bugs.length - 1) < counter_alias) {
+                            isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body_var.bugs[q].alias[0], body1, function (callback) {
+                                issue_rtrn += callback;
+                                counter_alias++;
+                                console.log(counter_alias);
 
+
+                                if (counter_alias == (body_var.bugs.length - 1)) {
+
+                                    res.send(issue_rtrn);
+                                } else {
+                                    counter_alias++;
+                                }
+                                
+                            });
+
+                            
+                        }
+                        /*
                         for (var q = 0; q < body_var.bugs.length; q++) {
                             
                             console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
@@ -3150,16 +3167,15 @@ router.get('/fullissue/:id', function (req, res) {
                                 console.log("allias_issue=========>>>>>>>>" + allias_issue);
                                 
                                 isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
-                                    /*issue_rtrn += callback;
+                                    issue_rtrn += callback;
                                     counter++;
-                                    console.log(counter);*/
-                                    promises.push(callback);
-                                    /*
+                                    console.log(counter);
+
                                     if (counter == (body_var.bugs.length -1)) {
                                         
                                         res.send(issue_rtrn);
                                     }
-                                    */
+                                   
                                 });
 
                                
@@ -3167,7 +3183,7 @@ router.get('/fullissue/:id', function (req, res) {
                             console.log("OK" + q);
                         }
 
-                        $q.all(promises).then(res.send(promises));
+                        $q.all(promises).then(res.send(promises));*/
                             //end for
 
                         
@@ -3181,24 +3197,39 @@ router.get('/fullissue/:id', function (req, res) {
 	
 });
 
+
 function isseu_rtn_function(allias_issue, myid, cf_city_address, status, body1, callback) {
-    
-    Issue.find({ "_id": allias_issue }, { "user": 0 }, function (err, issue) {
+    var allias_issue = body_var.bugs[q].alias[0];
 
-        console.log("issue" + JSON.stringify(issue));
+    request({
+        url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
+        method: "GET"
+    }, function (error1, response1, body1) {
+        if (error1)
+            cosnole.log("/fullissue/:id error :" + error1);
 
-        if (issue.length != 0) {
-            var issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + status + '", "city_address":"' + cf_city_address + '","bug_id":"' + myid + '"},' + body1 + ']';
-            console.log("issue_rtrn====>>>" + issue_rtrn);
+
+        console.log("allias_issue=========>>>>>>>>" + allias_issue);
+
+        Issue.find({ "_id": allias_issue }, { "user": 0 }, function (err, issue) {
+
+            console.log("issue" + JSON.stringify(issue));
+
+            if (issue.length != 0) {
+                var issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","image_name":"' + issue[0].image_name + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + status + '", "city_address":"' + cf_city_address + '","bug_id":"' + myid + '"},' + body1 + ']';
+                console.log("issue_rtrn====>>>" + issue_rtrn);
 
                 callback(issue_rtrn);
 
-        }
-        else {
-            callback([]);
-        }
+            }
+            else {
+                callback([]);
+            }
 
+        });
     });
+    
+    
 }
 
 router.post('/is_activate_user', function (req, res) {

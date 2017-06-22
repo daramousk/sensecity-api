@@ -3134,7 +3134,7 @@ router.get('/fullissue/:id', function (req, res) {
 
                         while (body_var.bugs.length > counter_alias) {
                             console.log("<===========>" + counter_alias);
-                            isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body_var.bugs[q].alias[0], body1, function (callback) {
+                            isseu_rtn_function(body_var.bugs[counter_alias].alias[0], body_var.bugs[counter_alias].id, body_var.bugs[counter_alias].cf_city_address, body_var.bugs[counter_alias].status, body1, function (callback) {
                                 issue_rtrn += callback;
                                 counter_alias++;
                                 console.log(counter_alias);

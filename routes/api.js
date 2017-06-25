@@ -3092,6 +3092,7 @@ router.get('/fullissue/:id', function (req, res) {
 
     var id = req.params.id;
     var split_alias = id.split("|");
+    var alias_array = '';
 
     for (var k = 0; k < split_alias.length; k++) {
         console.log(split_alias[k]);

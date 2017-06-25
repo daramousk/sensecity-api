@@ -3105,11 +3105,14 @@ router.get('/fullissue/:id', function (req, res) {
 
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
     
-    var getissue_details = async(function (bugParams1, result) {
-                     
-        await(firstAsyncCall(bugParams1, callback));
-        console.log("result=========>>>>" + result);        
-        return result;
+    var compoundOperation = async(function () {
+
+        var result1  = await(firstAsyncCall(bugParams1, callback));
+        console.log("result=========>>>>" + result1);
+        return result1;
+    });
+
+    compoundOperation().then(function (result) { console.log(result); });
 
             /*
             if (body_var.bugs.length !== 0) {
@@ -3188,10 +3191,10 @@ router.get('/fullissue/:id', function (req, res) {
             }
 
             })*/               
-    });
+    
 
 
-    console.log("getissue_details====>>>>>>>" + getissue_details(bugParams1, result));
+    
 
 
     /*

@@ -3108,7 +3108,7 @@ router.get('/fullissue/:id', function (req, res) {
     var getissue_details = async(function (bugParams1) {
         var resultA = await(firstAsyncCall());        
 
-            
+        return resultA;
 
             /*
             if (body_var.bugs.length !== 0) {

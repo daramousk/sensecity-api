@@ -3106,13 +3106,7 @@ router.get('/fullissue/:id', function (req, res) {
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
     
     var getissue_details = async(function (bugParams1) {
-        var _issues = await(request({
-            url: bugUrlRest + "/rest/bug" + bugParams1,
-            method: "GET"
-        }, function (error, response, body) {
-            return JSON.parse(body);
-
-        })
+        var resultA = await(firstAsyncCall());        
 
             
 
@@ -3192,17 +3186,12 @@ router.get('/fullissue/:id', function (req, res) {
                 return [];
             }
 
-            })*/
-        );
-        console.log("_issue =======>>>>>>" + JSON.stringify(_issues));
-        console.log("");
-        console.log(""); 
-        console.log("getissue_details =======>>>>>>" + JSON.stringify(getissue_details));
+            })*/               
     });
 
     getissue_details(bugParams1)
         .then(function (body_var) {
-            console.log('There are ' + _issues + ' files in ');
+            console.log('There are ' + resultA + ' files in ');
         })
         .catch(function (err) {
             console.log('Something went wrong: ' + err);
@@ -3327,6 +3316,19 @@ router.get('/fullissue/:id', function (req, res) {
 	});
 	*/
 });
+
+
+
+function firstAsyncCall() {
+    request({
+        url: bugUrlRest + "/rest/bug" + bugParams1,
+        method: "GET"
+    }, function (error, response, body) {
+        return JSON.parse(body);
+
+    });
+
+}
 
 
 function isseu_rtn_function(allias_issue, myid, cf_city_address, status, callback) {

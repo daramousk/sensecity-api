@@ -3189,13 +3189,18 @@ router.get('/fullissue/:id', function (req, res) {
             })*/               
     });
 
+
+    console.log("getissue_details" + JSON.stringify(getissue_details));
+
+
+    /*
     getissue_details(bugParams1)
         .then(function (body_var) {
             console.log('There are ' + resultA + ' files in ');
         })
         .catch(function (err) {
             console.log('Something went wrong: ' + err);
-        });
+        });*/
 /*
     console.log(req);
 

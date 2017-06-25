@@ -3106,7 +3106,7 @@ router.get('/fullissue/:id', function (req, res) {
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
     
     var getissue_details = async(function (bugParams1) {
-        var resultA = await(firstAsyncCall());        
+        var resultA = await(firstAsyncCall(bugParams1));        
 
         return resultA;
 
@@ -3190,7 +3190,7 @@ router.get('/fullissue/:id', function (req, res) {
     });
 
 
-    console.log("getissue_details" + JSON.stringify(getissue_details));
+    console.log("getissue_details" + JSON.stringify(getissue_details(bugParams1)));
 
 
     /*
@@ -3324,7 +3324,8 @@ router.get('/fullissue/:id', function (req, res) {
 
 
 
-function firstAsyncCall() {
+function firstAsyncCall(bugParams1) {
+    console.log("bugParams1====>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + bugParams1);
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"

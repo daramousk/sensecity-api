@@ -3107,7 +3107,7 @@ router.get('/fullissue/:id', function (req, res) {
     
     var compoundOperation = async(function () {
 
-        var result1 = await(firstAsyncCall(bugParams1));
+        var result1 = await(firstAsyncCall(bugParams1, callback));
         console.log("result=========>>>>" + result1);
         return result1;
     });
@@ -3328,13 +3328,13 @@ router.get('/fullissue/:id', function (req, res) {
 
 
 
-function firstAsyncCall(bugParams1) {
+function firstAsyncCall(bugParams1, callback) {
     console.log("bugParams1====>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + bugParams1);
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        return response;
+        callback(body);
 
     });
 

@@ -3324,13 +3324,13 @@ router.get('/fullissue/:id', function (req, res) {
 
 
 
-function firstAsyncCall(bugParams1) {
+function firstAsyncCall(bugParams1,callback) {
     console.log("bugParams1====>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + bugParams1);
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        return JSON.parse(body);
+        callback(JSON.parse(body));
 
     });
 

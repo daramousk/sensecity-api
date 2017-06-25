@@ -8,6 +8,10 @@ var nodemailer = require('nodemailer');
 var querystring = require('querystring');
 var crypto = require('crypto-js');
 //var xml = require('xml');
+
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
+
 var base64 = require('base-64');
 
 var config = require('app-config');
@@ -3086,9 +3090,116 @@ router.get('/city_policy', function (req, res) {
 
 router.get('/fullissue/:id', function (req, res) {
 
+    var id = req.params.id;
+    var split_alias = id.split("|");
+
+    for (var k = 0; k < split_alias.length; k++) {
+        console.log(split_alias[k]);
+        if (k > 0) {
+            alias_array += "&";
+        }
+        alias_array += "alias=" + split_alias[k];
+    }
+
+    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
+
+    var getissue_details = async(function (bugParams1) {
+        var _issues = await(request({
+            url: bugUrlRest + "/rest/bug" + bugParams1,
+            method: "GET"
+        }, function (error, response, body) {
+            var body_var = JSON.parse(body);
+            if (body_var.bugs.length !== 0) {
+
+                if (body_var.length < 1) {
+
+                    return [];
+
+                } else {
+
+                    //for
+                    var counter_alias = 0;
+                    var counter_alias_pev = -1;
+
+                    console.log(body_var.bugs.length + "<=>" + counter_alias);
+
+                    console.log("<===========>" + counter_alias);
+                    if (counter_alias > counter_alias_pev) {
+                        isseu_rtn_function(body_var.bugs[counter_alias].alias[0], body_var.bugs[counter_alias].id, body_var.bugs[counter_alias].cf_city_address, body_var.bugs[counter_alias].status, function (callback) {
+                            issue_rtrn += callback;
+                            counter_alias++;
+                            console.log("counter_alias===" + counter_alias);
+
+
+                            if (counter_alias == (body_var.bugs.length - 1)) {
+
+                                res.send(issue_rtrn);
+                            } else {
+                                counter_alias++;
+                            }
+
+                        });
+
+                        console.log("counter_alias_pev==" + counter_alias_pev);
+                        counter_alias_pev++;
+                    }
+
+
+
+                    for (var q = 0; q < body_var.bugs.length; q++) {
+
+                        console.log("body_var.bugs[0]====" + JSON.stringify(body_var.bugs[q]));
+                        console.log("id=========>>>>>>>>" + body_var.bugs[q].id);
+                        var allias_issue = body_var.bugs[q].alias[0];
+
+                        request({
+                            url: bugUrlRest + "/rest/bug/" + body_var.bugs[q].alias[0] + "/comment",
+                            method: "GET"
+                        }, function (error1, response1, body1) {
+                            if (error1)
+                                cosnole.log("/fullissue/:id error :" + error1);
+
+
+                            console.log("allias_issue=========>>>>>>>>" + allias_issue);
+
+                            isseu_rtn_function(allias_issue, body_var.bugs[0].id, body_var.bugs[0].cf_city_address, body_var.bugs[0].status, body1, function (callback) {
+                                issue_rtrn += callback;
+                                counter++;
+                                console.log(counter);
+
+                                if (counter == (body_var.bugs.length - 1)) {
+
+                                    return issue_rtrn;
+                                }
+
+                            });
+
+
+                        }).end();
+                        console.log("OK" + q);
+                    }
+                }
+            }
+            else {
+                return [];
+            }
+
+            })
+        );
+        
+    });
+
+    getissue_details(bugParams1)
+        .then(function (_issues) {
+            console.log('There are ' + _issues + ' files in ');
+        })
+        .catch(function (err) {
+            console.log('Something went wrong: ' + err);
+        });
+/*
     console.log(req);
 
-
+    
     var id = req.params.id;
     var issue_rtrn;
     console.log(id);
@@ -3097,6 +3208,8 @@ router.get('/fullissue/:id', function (req, res) {
     console.log(split_alias.length);
 
     var alias_array = '';
+
+    var allpromise = Promise.all([]);
     for (var k = 0; k < split_alias.length; k++) {
         console.log(split_alias[k]);
         if (k > 0) {
@@ -3190,7 +3303,7 @@ router.get('/fullissue/:id', function (req, res) {
                             console.log("OK" + q);
                         }
 
-                        $q.all(promises).then(res.send(promises));*/
+                        //$q.all(promises).then(res.send(promises));
                             //end for
 
                         
@@ -3201,7 +3314,7 @@ router.get('/fullissue/:id', function (req, res) {
 			res.send([]);
 		}
 	});
-	
+	*/
 });
 
 

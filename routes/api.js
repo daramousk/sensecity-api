@@ -3334,6 +3334,7 @@ function firstAsyncCall(bugParams1) {
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
+        console.log(JSON.parse(body));
         return body;
 
     });

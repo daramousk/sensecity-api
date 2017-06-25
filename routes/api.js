@@ -3104,13 +3104,13 @@ router.get('/fullissue/:id', function (req, res) {
     }
 
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
-
+    var body_var;
     var getissue_details = async(function (bugParams1) {
         var _issues = await(request({
             url: bugUrlRest + "/rest/bug" + bugParams1,
             method: "GET"
         }, function (error, response, body) {
-            var body_var = JSON.parse(body);
+            body_var = JSON.parse(body);
 
         })
 
@@ -3195,6 +3195,9 @@ router.get('/fullissue/:id', function (req, res) {
             })*/
         );
         console.log("_issue =======>>>>>>" + JSON.stringify(_issues));
+        console.log("");
+        console.log(""); 
+        console.log("body_var =======>>>>>>" + JSON.stringify(body_var));
     });
 
     getissue_details(bugParams1)

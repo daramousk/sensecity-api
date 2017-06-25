@@ -3194,7 +3194,7 @@ router.get('/fullissue/:id', function (req, res) {
 
             })*/
         );
-        console.log("_issue =======>>>>>>" + _issues);
+        console.log("_issue =======>>>>>>" + JSON.stringify(_issues));
     });
 
     getissue_details(bugParams1)

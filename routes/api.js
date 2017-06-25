@@ -3107,8 +3107,8 @@ router.get('/fullissue/:id', function (req, res) {
     
     var compoundOperation = async(function () {
 
-        var result1 = await(firstAsyncCall(bugParams1, callback));
-        console.log("callback=========>>>>" + callback);
+        var result1 = await(firstAsyncCall(bugParams1, result));
+        console.log("callback=========>>>>" + result);
         return result1;
     });
 

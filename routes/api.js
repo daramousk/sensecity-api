@@ -3111,6 +3111,12 @@ router.get('/fullissue/:id', function (req, res) {
             method: "GET"
         }, function (error, response, body) {
             var body_var = JSON.parse(body);
+
+        })
+
+            
+
+            /*
             if (body_var.bugs.length !== 0) {
 
                 if (body_var.length < 1) {
@@ -3186,9 +3192,9 @@ router.get('/fullissue/:id', function (req, res) {
                 return [];
             }
 
-            })
+            })*/
         );
-        
+        console.log("_issue =======>>>>>>" + _issues);
     });
 
     getissue_details(bugParams1)

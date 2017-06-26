@@ -3144,16 +3144,6 @@ router.get('/fullissue/:id', function (req, res) {
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        console.log("length ===>>>" + JSON.parse(body).bugs.length);
-        console.log("id ===>>>" + JSON.parse(body).bugs[0].id);
-        console.log("alias===>>>" + JSON.parse(body).bugs[0].alias[0]);
-        console.log("id1 ===>>>" + JSON.parse(body).bugs[1].id);
-        console.log("alias1 ===>>>" + JSON.parse(body).bugs[1].alias[0]);
-
-
-
-        console.log("00");
-
         var _counter = 0;
         var array_callback = [];
         var _old_counter = -1;

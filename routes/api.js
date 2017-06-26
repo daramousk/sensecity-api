@@ -3128,24 +3128,24 @@ router.get('/fullissue/:id', function (req, res) {
 
                 while (_counter <= (JSON.parse(body).bugs.length - 1)) {
                     console.log("counter == " + _counter);
-                    if (_counter == (JSON.parse(body).bugs.length - 1)) {
-                        console.log("2");
-                        console.log("");
-                        console.log(callback);
-                        console.log("");
-                        res.send(callback);
-                    }
-                    else {
-                        console.log("1");
-                        console.log("");
-                        console.log("");
-                        console.log(callback);
-                        console.log("");
-                        console.log("");
-                        sleep.sleep(5);
-                        _counter++;
-                    }
+
+                    console.log("1");
+                    console.log("");
+                    console.log("");
+                    console.log(callback);
+                    console.log("");
+                    console.log("");
+                    _counter++;
+                    sleep.sleep(5);
+
+
                 }
+                
+                    console.log("2");
+                    console.log("");
+                    console.log(callback);
+                    console.log("");
+                    res.send(callback);
             });
 
         }

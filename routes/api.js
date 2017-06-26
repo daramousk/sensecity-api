@@ -3183,6 +3183,11 @@ router.get('/fullissue/:id', function (req, res) {
                     array_callback.push(callback);
                     //sleep.sleep(3);
                     // }
+
+                    setInterval(function () {
+                        console.log('test');
+                    }, 10 * 1000);  
+
                     if (_counter == JSON.parse(body).bugs.length) {
 
                         console.log("2");

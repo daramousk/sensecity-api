@@ -3111,8 +3111,10 @@ router.get('/fullissue/:id', function (req, res) {
         method: "GET"
     }, function (error, response, body) {
         console.log("length ===>>>" + JSON.parse(body).bugs.length);
-        console.log("length ===>>>" + JSON.parse(body).bugs.id);
-        console.log("length ===>>>" + JSON.parse(body).bugs.alias[0]);
+        console.log("id ===>>>" + JSON.parse(body).bugs[0].id);
+        console.log("alias===>>>" + JSON.parse(body).bugs[0].alias[0]);
+        console.log("id1 ===>>>" + JSON.parse(body).bugs[1].id);
+        console.log("alias1 ===>>>" + JSON.parse(body).bugs[1].alias[0]);
 
 
 

@@ -3167,10 +3167,11 @@ router.get('/fullissue/:id', function (req, res) {
                     console.log("callback------------------------------------>" + callback);
                     console.log("");
                     console.log("");
+                    console.log("w"+w);
+                    console.log("length" + (JSON.parse(body).bugs.length-1));
                     
-                    sleep.sleep(5);
                     array_callback.push(callback);
-
+                    sleep.sleep(5);
                // }
                 if (w == (JSON.parse(body).bugs.length - 1)) {
 

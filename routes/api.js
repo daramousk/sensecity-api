@@ -3086,6 +3086,7 @@ router.get('/city_policy', function (req, res) {
 
 function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
     console.log("dzfsdfsdfsd");
+    console.log(bugUrlRest + "/rest/bug/" + id + "/comment" + id + alias + status + cf_city_address);
     request({
         url: bugUrlRest + "/rest/bug/" + id + "/comment",
         method: "GET"

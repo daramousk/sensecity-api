@@ -4,7 +4,6 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 var request = require('request');
-let async_request = require('async-request'),response;
 var nodemailer = require('nodemailer');
 var querystring = require('querystring');
 var crypto = require('crypto-js');
@@ -3105,15 +3104,18 @@ router.get('/fullissue/:id', function (req, res) {
     }
 
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
+
+
+
     
-    
+    /*
     try {
-        response = await async_request(bugUrlRest + "/rest/bug" + bugParams1, { method: "GET" });
+        response = await async_request(bugUrlRest + "/rest/bug", { method: 'GET', data: bugParams1 });
         console.log("response=====>>>>" + JSON.stringify(response));
 
     } catch (e) {
         console.log(e);
-    }
+    }*/
 
         /*var result1 = await(
             async_request({
@@ -3127,9 +3129,7 @@ router.get('/fullissue/:id', function (req, res) {
         );*/
 
 
-        console.log("result1=========>>>>" + result1);
-    
-    
+        
     
 
             /*

@@ -9,11 +9,6 @@ var querystring = require('querystring');
 var crypto = require('crypto-js');
 //var xml = require('xml');
 
-var rp = require('request-promise');
-
-//var async = require('asyncawait/async');
-//var await = require('asyncawait/await');
-
 var base64 = require('base-64');
 
 var config = require('app-config');
@@ -3089,6 +3084,10 @@ router.get('/city_policy', function (req, res) {
     });
 });
 
+function return_fullissue_resp(body, callback) {
+    
+    callback("OK");
+}
 
 router.get('/fullissue/:id', function (req, res) {
 
@@ -3105,23 +3104,39 @@ router.get('/fullissue/:id', function (req, res) {
         alias_array += "alias=" + split_alias[k];
     }
 
-    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
+    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address";
 
-    var option = {
-        method: 'GET',
-        uri: bugUrlRest + "/rest/bug" + bugParams1,
-        json: true // Automatically stringifies the body to JSON 
-    };
+    request({
+        url: bugUrlRest + "/rest/bug" + bugParams1,
+        method: "GET"
+    }, function (error, response, body) {
+        console.log(JSON.parse(body));
 
-    rp(option)
-        .then(function (parsedBody) {
-            // POST succeeded... 
-            console.log(JSON.stringify(parsedBody));
-        })
-        .catch(function (err) {
-            // POST failed... 
+        return_fullissue_resp(body, function (callback) {
+            res.send(callback);
+
         });
-    console.log("test");
+
+
+    });
+   
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+
     /*
     try {
         response = await async_request(bugUrlRest + "/rest/bug", { method: 'GET', data: bugParams1 });

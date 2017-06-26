@@ -970,7 +970,7 @@ router.post('/issue/:id', function (req, res) {
 router.get('/issue', function (req, res) {
 
     req.send_user = 0;
-    req.send_component = 0;
+    req.send_component = 1;
     req.send_severity = 0;
     req.send_priority = 0;
     
@@ -3330,6 +3330,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 function firstAsyncCall(bugParams1) {
     console.log("bugParams1====>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + bugParams1);
+
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"

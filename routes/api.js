@@ -3092,6 +3092,12 @@ function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
         console.log("body1--------->" + JSON.stringify(body1));
         console.log("body1.bugs--------->" + JSON.parse(body1).bugs);
         console.log("body1.bugs--------->" + JSON.parse(body1.bugs));
+        console.log("body1.bugs--------->" + body1.bugs);
+        console.log("body1.bugs--------->" + JSON.stringify(body1.bugs));
+        var xxx = JSON.stringify(body1);
+        console.log("body1.bugs--------->" + xxx.bugs);
+        console.log("");
+        console.log(""); console.log(""); console.log(""); console.log(""); console.log(""); console.log("");
         Issue.find({ "_id": alias }, { "user": 0 }, function (err, issue) {
 
             console.log("issue" + JSON.stringify(issue));

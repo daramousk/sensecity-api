@@ -3084,7 +3084,7 @@ router.get('/city_policy', function (req, res) {
     });
 });
 
-function return_fullissue_resp(body, callback) {
+function return_fullissue_resp(id, alias, callback) {
     
     callback("OK");
 }

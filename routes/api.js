@@ -3158,7 +3158,7 @@ router.get('/fullissue/:id', function (req, res) {
         var _old_counter = -1;
         //for (var w = 0; w < JSON.parse(body).bugs.length; w++) {
         while (_counter < JSON.parse(body).bugs.length) {
-            console.log("11");
+            //console.log("11");
             if (_old_counter < _counter) {
                 console.log("12");
                 _old_counter = _counter;

@@ -3104,16 +3104,62 @@ router.get('/fullissue/:id', function (req, res) {
         alias_array += "alias=" + split_alias[k];
     }
 
-    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address";
+    var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address,product,cf_issues,creation_ts";
 
     request({
         url: bugUrlRest + "/rest/bug" + bugParams1,
         method: "GET"
     }, function (error, response, body) {
-        console.log(JSON.parse(body));
+        console.log("length ===>>>" + JSON.parse(body).bugs.length);
+        console.log("length ===>>>" + JSON.parse(body).bugs.id);
+        console.log("length ===>>>" + JSON.parse(body).bugs.alias[0]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         return_fullissue_resp(body, function (callback) {
-
+            
             res.send(callback);
 
         });

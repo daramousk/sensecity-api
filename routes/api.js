@@ -3091,7 +3091,7 @@ function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
     }, function (error1, response1, body1) {
         console.log("body1--------->" + JSON.stringify(body1));
         console.log("body1--------->" + JSON.stringify(response1.body.bugs));
-        console.log("body1--------->" + response1.body);
+        console.log("body1--------->" + JSON.parse(response1.body).bugs);
         console.log("body1.bugs--------->" + JSON.parse(body1).bugs);
         //console.log("body1.bugs--------->" + JSON.parse(body1.bugs));
         console.log("body1.bugs--------->" + body1.bugs);

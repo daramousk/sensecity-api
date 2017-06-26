@@ -3084,9 +3084,30 @@ router.get('/city_policy', function (req, res) {
     });
 });
 
-function return_fullissue_resp(id, alias, callback) {
+function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
+    request({
+        url: bugUrlRest + "/rest/bug/" + id + "/comment",
+        method: "GET"
+    }, function (error1, response1, body1) {
+        Issue.find({ "_id": alias }, { "user": 0 }, function (err, issue) {
+
+            console.log("issue" + JSON.stringify(issue));
+
+            if (issue.length != 0) {
+                var issue_rtrn = '[{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + status + '", "city_address":"' + cf_city_address + '","bug_id":"' + id + '"},' + body1 + ']';
+                console.log("issue_rtrn====>>>" + issue_rtrn);
+
+                callback(issue_rtrn);
+
+            }
+            else {
+                callback([]);
+            }
+
+        });
+    });
+
     
-    callback("OK");
 }
 
 router.get('/fullissue/:id', function (req, res) {
@@ -3124,7 +3145,7 @@ router.get('/fullissue/:id', function (req, res) {
         var array_callback = [];
         for (var w = 0; w < JSON.parse(body).bugs.length; w++) {
 
-            return_fullissue_resp(JSON.parse(body).bugs[w].id, JSON.parse(body).bugs[w].alias[0], function (callback) {
+            return_fullissue_resp(JSON.parse(body).bugs[w].id, JSON.parse(body).bugs[w].alias[0], JSON.parse(body).bugs[w].status, JSON.parse(body).bugs[w].cf_city_address, function (callback) {
 
                // while (_counter <= (JSON.parse(body).bugs.length - 1)) {
                     console.log("counter == " + _counter);

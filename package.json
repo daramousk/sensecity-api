@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-request": "^1.2.0",
     "asyncawait": "^1.0.6",
     "base-64": "^0.1.0",
     "body-parser": "^1.14.2",

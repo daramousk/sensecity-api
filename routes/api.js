@@ -4,6 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var fs = require('fs');
 var request = require('request');
+var async_request = require('async-request');
 var nodemailer = require('nodemailer');
 var querystring = require('querystring');
 var crypto = require('crypto-js');
@@ -3107,7 +3108,18 @@ router.get('/fullissue/:id', function (req, res) {
     
     var compoundOperation = async(function () {
 
-        var result1 = await(firstAsyncCall(bugParams1));
+        var result1 = await(
+            async_request({
+                url: bugUrlRest + "/rest/bug" + bugParams1,
+                method: "GET"
+            }, function (error, response, body) {
+                console.log(JSON.parse(body));
+                return body;
+
+            })
+        );
+
+
         console.log("result1=========>>>>" + result1);
         return result1;
     });
@@ -3326,21 +3338,6 @@ router.get('/fullissue/:id', function (req, res) {
 	*/
 });
 
-
-
-function firstAsyncCall(bugParams1) {
-    console.log("bugParams1====>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + bugParams1);
-
-    request({
-        url: bugUrlRest + "/rest/bug" + bugParams1,
-        method: "GET"
-    }, function (error, response, body) {
-        console.log(JSON.parse(body));
-        return body;
-
-    });
-
-}
 
 
 function isseu_rtn_function(allias_issue, myid, cf_city_address, status, callback) {

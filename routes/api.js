@@ -3179,7 +3179,7 @@ router.get('/fullissue/:id', function (req, res) {
                     console.log("length" + (JSON.parse(body).bugs.length - 1));
 
                     array_callback.push(callback);
-                    sleep.sleep(3);
+                    //sleep.sleep(3);
                     // }
                     if (_counter == (JSON.parse(body).bugs.length - 1)) {
 
@@ -3193,7 +3193,7 @@ router.get('/fullissue/:id', function (req, res) {
                     _counter++;
                 });
             }
-            sleep.sleep(3);
+            //sleep.sleep(3);
         }
 
 

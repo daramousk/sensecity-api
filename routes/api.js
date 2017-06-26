@@ -3108,7 +3108,7 @@ router.get('/fullissue/:id', function (req, res) {
     
     
     try {
-        response = await request(bugUrlRest + "/rest/bug" + bugParams1, { method: "GET" });
+        response = await async_request(bugUrlRest + "/rest/bug" + bugParams1, { method: "GET" });
         console.log("response=====>>>>" + JSON.stringify(response));
 
     } catch (e) {

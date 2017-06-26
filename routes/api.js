@@ -3089,6 +3089,7 @@ function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
         url: bugUrlRest + "/rest/bug/" + id + "/comment",
         method: "GET"
     }, function (error1, response1, body1) {
+        console.log("body1--------->" + JSON.stringify(body1));
         Issue.find({ "_id": alias }, { "user": 0 }, function (err, issue) {
 
             console.log("issue" + JSON.stringify(issue));

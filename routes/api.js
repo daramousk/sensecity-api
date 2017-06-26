@@ -3157,6 +3157,9 @@ router.get('/fullissue/:id', function (req, res) {
         var _counter = 0;
         var array_callback = [];
         var _old_counter = -1;
+        var expected_responses = JSON.parse(body).bugs.length;
+        var received_responses = 0;
+
         for (var _counter = 0; _counter < JSON.parse(body).bugs.length; _counter++) {
         //while (_counter < JSON.parse(body).bugs.length) {
             //console.log("11");            
@@ -3167,6 +3170,8 @@ router.get('/fullissue/:id', function (req, res) {
                 console.log("id---" + JSON.parse(body).bugs[_counter].id);
                 console.log("alias---" + JSON.parse(body).bugs[_counter].alias[0]);
                 return_fullissue_resp(JSON.parse(body).bugs[_counter].id, JSON.parse(body).bugs[_counter].alias[0], JSON.parse(body).bugs[_counter].status, JSON.parse(body).bugs[_counter].cf_city_address, function (callback) {
+
+                    received_responses++;
                     console.log("13");
                     // while (_counter <= (JSON.parse(body).bugs.length - 1)) {
                     console.log("counter == " + _counter);
@@ -3184,17 +3189,17 @@ router.get('/fullissue/:id', function (req, res) {
                     //sleep.sleep(3);
                     // }
 
-                    setInterval(function () {
-                        console.log('test');
-                    }, 10 * 1000);  
+              
 
-                    if (_counter == JSON.parse(body).bugs.length) {
+                    if (received_responses == expected_responses) {
 
                         console.log("2");
                         console.log("");
                         console.log(callback);
                         console.log("");
                         res.send(array_callback);
+                    } else {
+                        console.log("wait...");
                     }
 
                     

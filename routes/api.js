@@ -3121,7 +3121,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 
         var _counter = 0;
-
+        var array_callback = [];
         for (var w = 0; w < JSON.parse(body).bugs.length; w++) {
 
             return_fullissue_resp(JSON.parse(body).bugs[w].id, JSON.parse(body).bugs[w].alias[0], function (callback) {
@@ -3135,19 +3135,19 @@ router.get('/fullissue/:id', function (req, res) {
                     console.log(callback);
                     console.log("");
                     console.log("");
-                    _counter++;
+                    
                     sleep.sleep(5);
-
+                    array_callback = push(callback);
 
                // }
-                if (_counter == (JSON.parse(body).bugs.length - 1)) {
+                if (w == (JSON.parse(body).bugs.length - 1)) {
 
                     console.log("2");
                     console.log("");
                     console.log(callback);
                     console.log("");
-                    res.send(callback);
-                }
+                    res.send(array_callback);
+                    }
             });
 
         }

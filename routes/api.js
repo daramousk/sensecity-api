@@ -3153,11 +3153,11 @@ router.get('/fullissue/:id', function (req, res) {
                     console.log("1");
                     console.log("");
                     console.log("");
-                    console.log(callback);
+                    console.log("callback------------------------------------>" + callback);
                     console.log("");
                     console.log("");
                     
-                    //sleep.sleep(5);
+                    sleep.sleep(5);
                     array_callback.push(callback);
 
                // }

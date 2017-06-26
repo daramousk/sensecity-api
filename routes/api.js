@@ -3126,7 +3126,7 @@ router.get('/fullissue/:id', function (req, res) {
 
             return_fullissue_resp(JSON.parse(body).bugs[w].id, JSON.parse(body).bugs[w].alias[0], function (callback) {
 
-               
+                while (_counter <= (JSON.parse(body).bugs.length - 1)) {
                     console.log("counter == )" + _counter);
                     if (_counter == (JSON.parse(body).bugs.length - 1)) {
                         console.log(""); console.log(callback); console.log("");
@@ -3138,7 +3138,7 @@ router.get('/fullissue/:id', function (req, res) {
                         sleep.sleep(2);
                         _counter++;
                     }
-                
+                }
             });
 
         }

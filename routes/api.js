@@ -9,8 +9,10 @@ var querystring = require('querystring');
 var crypto = require('crypto-js');
 //var xml = require('xml');
 
-var async = require('asyncawait/async');
-var await = require('asyncawait/await');
+var rp = require('request-promise');
+
+//var async = require('asyncawait/async');
+//var await = require('asyncawait/await');
 
 var base64 = require('base-64');
 
@@ -3105,9 +3107,21 @@ router.get('/fullissue/:id', function (req, res) {
 
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
 
+    var option = {
+        method: 'GET',
+        uri: bugUrlRest + "/rest/bug" + bugParams1,
+        json: true // Automatically stringifies the body to JSON 
+    };
 
+    rp(options)
+        .then(function (parsedBody) {
+            // POST succeeded... 
+            console.log(JSON.stringify(parsedBody));
+        })
+        .catch(function (err) {
+            // POST failed... 
+        });
 
-    
     /*
     try {
         response = await async_request(bugUrlRest + "/rest/bug", { method: 'GET', data: bugParams1 });

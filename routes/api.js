@@ -8,7 +8,7 @@ var nodemailer = require('nodemailer');
 var querystring = require('querystring');
 var crypto = require('crypto-js');
 //var xml = require('xml');
-
+var sleep = require('sleep');
 var base64 = require('base-64');
 
 var config = require('app-config');
@@ -3120,6 +3120,28 @@ router.get('/fullissue/:id', function (req, res) {
 
 
 
+        var _counter = 0;
+
+        for (var w = 0; w < JSON.parse(body).bugs.length; w++) {
+
+            return_fullissue_resp(JSON.parse(body).bugs[w].id, JSON.parse(body).bugs[w].alias[0], function (callback) {
+
+                while (_counter <= (JSON.parse(body).bugs.length - 1))
+                
+                if (_counter == (JSON.parse(body).bugs.length - 1)) {
+                    callback += callback; console.log(""); console.log(callback); console.log("");
+                    res.send(callback);
+                }
+                else {
+                    console.log("1");
+                    console.log(""); console.log(""); console.log(""); console.log("");
+                    sleep.sleep(2);
+                    _counter++;
+                }
+
+            });
+
+        }
 
 
 
@@ -3157,14 +3179,7 @@ router.get('/fullissue/:id', function (req, res) {
 
 
 
-
-
-
-        return_fullissue_resp(body, function (callback) {
-            
-            res.send(callback);
-
-        });
+        
 
 
     });

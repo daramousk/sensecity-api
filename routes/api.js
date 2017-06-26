@@ -3121,7 +3121,7 @@ router.get('/fullissue/:id', function (req, res) {
         .catch(function (err) {
             // POST failed... 
         });
-
+    console.log("test");
     /*
     try {
         response = await async_request(bugUrlRest + "/rest/bug", { method: 'GET', data: bugParams1 });

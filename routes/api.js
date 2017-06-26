@@ -3157,8 +3157,8 @@ router.get('/fullissue/:id', function (req, res) {
         var _counter = 0;
         var array_callback = [];
         var _old_counter = -1;
-        //for (var w = 0; w < JSON.parse(body).bugs.length; w++) {
-        while (_counter < JSON.parse(body).bugs.length) {
+        for (var _counter = 0; _counter < JSON.parse(body).bugs.length; _counter++) {
+        //while (_counter < JSON.parse(body).bugs.length) {
             //console.log("11");
             if (_old_counter < _counter) {
                 console.log("12");
@@ -3182,7 +3182,7 @@ router.get('/fullissue/:id', function (req, res) {
                     console.log("length" + (JSON.parse(body).bugs.length - 1));
 
                     array_callback.push(callback);
-                    //sleep.sleep(3);
+                    sleep.sleep(3);
                     // }
                     if (_counter == (JSON.parse(body).bugs.length - 1)) {
 
@@ -3196,7 +3196,7 @@ router.get('/fullissue/:id', function (req, res) {
                     _counter++;
                 });
             }
-            //sleep.sleep(3);
+            sleep.sleep(10);
         }
 
 

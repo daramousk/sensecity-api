@@ -3106,7 +3106,7 @@ router.get('/fullissue/:id', function (req, res) {
 
     var bugParams1 = "?" + alias_array + "&include_fields=id,component,alias,status,cf_city_address"; 
     
-    var compoundOperation = async(function () {
+    
 
         var result1 = await(
             async_request({
@@ -3121,10 +3121,9 @@ router.get('/fullissue/:id', function (req, res) {
 
 
         console.log("result1=========>>>>" + result1);
-        return result1;
-    });
-
-    compoundOperation().then(function (result) { console.log(result); });
+    
+    
+    
 
             /*
             if (body_var.bugs.length !== 0) {

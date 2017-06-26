@@ -3113,6 +3113,7 @@ router.get('/fullissue/:id', function (req, res) {
         console.log(JSON.parse(body));
 
         return_fullissue_resp(body, function (callback) {
+
             res.send(callback);
 
         });

@@ -3164,6 +3164,8 @@ router.get('/fullissue/:id', function (req, res) {
                 _old_counter = _counter;
                 console.log("_old_counter---" + _old_counter);
                 console.log("_counter---" + _counter);
+                console.log("id---" + JSON.parse(body).bugs[_counter].id);
+                console.log("alias---" + JSON.parse(body).bugs[_counter].alias[0]);
                 return_fullissue_resp(JSON.parse(body).bugs[_counter].id, JSON.parse(body).bugs[_counter].alias[0], JSON.parse(body).bugs[_counter].status, JSON.parse(body).bugs[_counter].cf_city_address, function (callback) {
                     console.log("13");
                     // while (_counter <= (JSON.parse(body).bugs.length - 1)) {

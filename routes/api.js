@@ -3127,14 +3127,14 @@ router.get('/fullissue/:id', function (req, res) {
             return_fullissue_resp(JSON.parse(body).bugs[w].id, JSON.parse(body).bugs[w].alias[0], function (callback) {
 
                 while (_counter <= (JSON.parse(body).bugs.length - 1)) {
-                    console.log(_counter);
+                    console.log("counter == )" + _counter);
                     if (_counter == (JSON.parse(body).bugs.length - 1)) {
-                        callback += callback; console.log(""); console.log(callback); console.log("");
+                        console.log(""); console.log(callback); console.log("");
                         res.send(callback);
                     }
                     else {
                         console.log("1");
-                        console.log(""); console.log(""); console.log(""); console.log("");
+                        console.log(""); console.log(""); console.log(callback); console.log(""); console.log("");
                         sleep.sleep(2);
                         _counter++;
                     }

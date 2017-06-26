@@ -3190,7 +3190,7 @@ router.get('/fullissue/:id', function (req, res) {
                     _counter++;
                 });
             }
-
+            sleep.sleep(3);
         }
 
 

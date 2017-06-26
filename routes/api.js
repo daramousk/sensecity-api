@@ -3113,7 +3113,7 @@ router.get('/fullissue/:id', function (req, res) {
         json: true // Automatically stringifies the body to JSON 
     };
 
-    rp(options)
+    rp(option)
         .then(function (parsedBody) {
             // POST succeeded... 
             console.log(JSON.stringify(parsedBody));

@@ -3090,8 +3090,8 @@ function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
         method: "GET"
     }, function (error1, response1, body1) {
         console.log("body1--------->" + JSON.stringify(body1));
-        console.log("body1.bugs--------->" + JSON.stringify(body1).bugs);
-        console.log("body1.bugs--------->" + JSON.stringify(body1.bugs));
+        console.log("body1.bugs--------->" + JSON.parse(body1).bugs);
+        console.log("body1.bugs--------->" + JSON.parse(body1.bugs));
         Issue.find({ "_id": alias }, { "user": 0 }, function (err, issue) {
 
             console.log("issue" + JSON.stringify(issue));

@@ -4507,70 +4507,76 @@ router.post('/issue_recommendation', function (req, res) {
     console.log(req.query.long); console.log(""); console.log("");
     console.log(req.query.issue); console.log(""); console.log("");
     console.log(""); console.log(""); console.log("");
-    var mydate = new Date();
-    var my_year = mydate.getFullYear();
-    var my_month = mydate.getMonth() + 1;
-    if (my_month == 1) {
-        my_month = 12;
-    } else {
-        my_month = my_month - 1;
-    }    
-    if (my_month < 10) {
-        my_month = "0" + my_month;
+
+
+    if (req.query.lat == undefined && req.query.long == undefined && req.query.issue == undefined) {
+        res.send([{}]);
     }
-
-    var my_date = mydate.getDate();
-    
-
-    if (my_date < 10) {
-        my_date = "0" + my_date;
-    }
-    
-    Issue.find({
-        "issue": req.body.issue, "create_at": {
-            $gte: my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString()
-        }, "loc": {
-            $near: { //$nearSphere:
-                $geometry: {
-                    type: "Point", coordinates: [req.body.long, req.body.lat]
-                }, $minDistance: 10,
-                $maxDistance: 10
-            }
-        }
-    }, function (req, resp) {
-
-        console.log("resp recommendation====>" + JSON.stringify(resp));
-
-        if (resp != undefined) {
-
-            var bugParams1 = "?f1=OP&j1=OR&f2=bug_status&o2=equals&v2=CONFIRMED&f3=bug_status&o3=equals&v3=IN_PROGRESS&f4=CP&f5=OP&j5=OR";
-
-            for (var i = 0; i < resp.length; i++) {
-                console.log(i);
-                bugParams1 += "&f" + (i + 6) + "=alias&o" + (i + 6) + "=equals&v" + (i + 6) + "=" + resp[i]._id;
-            }
-            bugParams1 += "&include_fields=alias,status,id,url,cf_city_address";
-
-
-
-
-            request({
-                url: bugUrlRest + "/rest/bug" + bugParams1,
-                method: "GET"
-            }, function (error, resp1, body) {
-                if (error) { console.log(error); }
-
-                //console.log(JSON.stringify(resp1));
-                //console.log("==>" + body);
-                res.send(body);
-            });
-
-
+    else {
+        var mydate = new Date();
+        var my_year = mydate.getFullYear();
+        var my_month = mydate.getMonth() + 1;
+        if (my_month == 1) {
+            my_month = 12;
         } else {
-            res.send([{}]);
+            my_month = my_month - 1;
         }
-    });
-    
+        if (my_month < 10) {
+            my_month = "0" + my_month;
+        }
+
+        var my_date = mydate.getDate();
+
+
+        if (my_date < 10) {
+            my_date = "0" + my_date;
+        }
+
+        Issue.find({
+            "issue": req.body.issue, "create_at": {
+                $gte: my_year.toString() + "-" + my_month.toString() + "-" + my_date.toString()
+            }, "loc": {
+                $near: { //$nearSphere:
+                    $geometry: {
+                        type: "Point", coordinates: [req.body.long, req.body.lat]
+                    }, $minDistance: 10,
+                    $maxDistance: 10
+                }
+            }
+        }, function (req, resp) {
+
+            console.log("resp recommendation====>" + JSON.stringify(resp));
+
+            if (resp != undefined) {
+
+                var bugParams1 = "?f1=OP&j1=OR&f2=bug_status&o2=equals&v2=CONFIRMED&f3=bug_status&o3=equals&v3=IN_PROGRESS&f4=CP&f5=OP&j5=OR";
+
+                for (var i = 0; i < resp.length; i++) {
+                    console.log(i);
+                    bugParams1 += "&f" + (i + 6) + "=alias&o" + (i + 6) + "=equals&v" + (i + 6) + "=" + resp[i]._id;
+                }
+                bugParams1 += "&include_fields=alias,status,id,url,cf_city_address";
+
+
+
+
+                request({
+                    url: bugUrlRest + "/rest/bug" + bugParams1,
+                    method: "GET"
+                }, function (error, resp1, body) {
+                    if (error) { console.log(error); }
+
+                    //console.log(JSON.stringify(resp1));
+                    //console.log("==>" + body);
+                    res.send(body);
+                });
+
+
+            } else {
+                res.send([{}]);
+            }
+        });
+    }
 });
 
 router.get('/city_coordinates', function (req, res) {

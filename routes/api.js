@@ -4547,7 +4547,7 @@ router.post('/issue_recommendation', function (req, res) {
 
             console.log("resp recommendation====>" + JSON.stringify(resp));
             console.log("resp length====>" + resp.length);
-            if (resp != undefined || resp.length<1) {
+            if (resp != undefined || resp.length>0) {
 
                 var bugParams1 = "?f1=OP&j1=OR&f2=bug_status&o2=equals&v2=CONFIRMED&f3=bug_status&o3=equals&v3=IN_PROGRESS&f4=CP&f5=OP&j5=OR";
 

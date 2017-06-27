@@ -4567,7 +4567,7 @@ router.post('/issue_recommendation', function (req, res) {
 
                     //console.log(JSON.stringify(resp1));
                     //console.log("==>" + body);
-                    res.send(body);
+                    res.send("["+body+"]");
                 });
 
 

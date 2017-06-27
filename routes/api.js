@@ -3084,7 +3084,7 @@ router.get('/city_policy', function (req, res) {
     });
 });
 
-function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
+function return_fullissue_resp(id, alias, status, cf_city_address,department, callback) {
     console.log("dzfsdfsdfsd");
     console.log(bugUrlRest + "/rest/bug/" + id + "/comment" + id + alias + status + cf_city_address);
     request({
@@ -3107,7 +3107,7 @@ function return_fullissue_resp(id, alias, status, cf_city_address, callback) {
             console.log("issue" + JSON.stringify(issue));
 
             if (issue.length != 0) {
-                var issue_rtrn = '{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + status + '", "city_address":"' + cf_city_address + '","bug_id":"' + id + '","bugs":' + JSON.stringify(JSON.parse(response1.body).bugs) + '}';
+                var issue_rtrn = '{"_id":"' + issue[0]._id + '","municipality":"' + issue[0].municipality + '","issue":"' + issue[0].issue + '","device_id":"' + issue[0].device_id + '","value_desc":"' + issue[0].value_desc + '","comments":"' + issue[0].comments + '","create_at":"' + issue[0].create_at + '","loc":{"type":"Point","coordinates":[' + issue[0].loc.coordinates + ']},"status":"' + status + '", "city_address":"' + cf_city_address + '","bug_id":"' + id + '","department":"' + department + '","bugs":' + JSON.stringify(JSON.parse(response1.body).bugs) + '}';
                 console.log("issue_rtrn====>>>" + issue_rtrn);
 
                 callback(issue_rtrn);
@@ -3159,7 +3159,7 @@ router.get('/fullissue/:id', function (req, res) {
                 console.log("_counter---" + _counter);
                 console.log("id---" + JSON.parse(body).bugs[_counter].id);
                 console.log("alias---" + JSON.parse(body).bugs[_counter].alias[0]);
-                return_fullissue_resp(JSON.parse(body).bugs[_counter].id, JSON.parse(body).bugs[_counter].alias[0], JSON.parse(body).bugs[_counter].status, JSON.parse(body).bugs[_counter].cf_city_address, function (callback) {
+                return_fullissue_resp(JSON.parse(body).bugs[_counter].id, JSON.parse(body).bugs[_counter].alias[0], JSON.parse(body).bugs[_counter].status, JSON.parse(body).bugs[_counter].cf_city_address, component, function (callback) {
 
                     received_responses++;
                     console.log("13");
@@ -4502,7 +4502,11 @@ router.post('/issue_recommendation', function (req, res) {
 // ->req.query.lat
 // ->req.query.long
 // ->req.query.issue
-
+    console.log(""); console.log("");
+    console.log(req.query.lat); console.log(""); console.log("");
+    console.log(req.query.long); console.log(""); console.log("");
+    console.log(req.query.issue); console.log(""); console.log("");
+    console.log(""); console.log(""); console.log("");
     var mydate = new Date();
     var my_year = mydate.getFullYear();
     var my_month = mydate.getMonth() + 1;

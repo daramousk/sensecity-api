@@ -3159,7 +3159,7 @@ router.get('/fullissue/:id', function (req, res) {
                 console.log("_counter---" + _counter);
                 console.log("id---" + JSON.parse(body).bugs[_counter].id);
                 console.log("alias---" + JSON.parse(body).bugs[_counter].alias[0]);
-                return_fullissue_resp(JSON.parse(body).bugs[_counter].id, JSON.parse(body).bugs[_counter].alias[0], JSON.parse(body).bugs[_counter].status, JSON.parse(body).bugs[_counter].cf_city_address, component, function (callback) {
+                return_fullissue_resp(JSON.parse(body).bugs[_counter].id, JSON.parse(body).bugs[_counter].alias[0], JSON.parse(body).bugs[_counter].status, JSON.parse(body).bugs[_counter].cf_city_address, JSON.parse(body).bugs[_counter].component, function (callback) {
 
                     received_responses++;
                     console.log("13");

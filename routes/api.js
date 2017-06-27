@@ -4538,7 +4538,7 @@ router.post('/issue_recommendation', function (req, res) {
             }, "loc": {
                 $near: { //$nearSphere:
                     $geometry: {
-                        type: "Point", coordinates: [req.body.long, req.body.lat]
+                        type: "Point", coordinates: [req.body.lat, req.body.long]
                     }, $minDistance: 10,
                     $maxDistance: 10
                 }

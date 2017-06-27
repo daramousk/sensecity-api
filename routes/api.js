@@ -4539,7 +4539,7 @@ router.post('/issue_recommendation', function (req, res) {
                 $near: { //$nearSphere:
                     $geometry: {
                         type: "Point", coordinates: [req.body.long, req.body.lat]
-                    }, $maxDistance: 200
+                    }, $maxDistance: 50
                 }
             }
         }, function (req, resp) {

@@ -4510,7 +4510,7 @@ router.post('/issue_recommendation', function (req, res) {
 
 
     if (req.body.lat == undefined && req.body.long == undefined && req.body.issue == undefined) {
-        res.send([{}]);
+        res.send([]);
     }
     else {
         var mydate = new Date();
@@ -4539,7 +4539,7 @@ router.post('/issue_recommendation', function (req, res) {
                 $near: { //$nearSphere:
                     $geometry: {
                         type: "Point", coordinates: [req.body.long, req.body.lat]
-                    }, $maxDistance: 50
+                    }, $maxDistance: 20
                 }
             }
         }, function (req, resp) {
@@ -4572,7 +4572,7 @@ router.post('/issue_recommendation', function (req, res) {
 
 
             } else {
-                res.send([{}]);
+                res.send([]);
             }
         });
     }

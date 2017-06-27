@@ -4564,7 +4564,9 @@ router.post('/issue_recommendation', function (req, res) {
                     method: "GET"
                 }, function (error, resp1, body) {
                     if (error) { console.log(error); }
-
+                    console.log(""); console.log(""); console.log("");
+                    console.log(JSON.stringify(body));
+                    console.log(""); console.log(""); console.log("");
                     //console.log(JSON.stringify(resp1));
                     //console.log("==>" + body);
                     res.send("["+body+"]");

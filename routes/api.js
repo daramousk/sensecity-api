@@ -4509,7 +4509,7 @@ router.post('/issue_recommendation', function (req, res) {
     console.log(""); console.log(""); console.log("");
 
 
-    if (req.query.lat == undefined && req.query.long == undefined && req.query.issue == undefined) {
+    if (req.body.lat == undefined && req.body.long == undefined && req.body.issue == undefined) {
         res.send([{}]);
     }
     else {

@@ -8,7 +8,7 @@ var nodemailer = require('nodemailer');
 var querystring = require('querystring');
 var crypto = require('crypto-js');
 //var xml = require('xml');
-var sleep = require('sleep');
+
 var base64 = require('base-64');
 
 var config = require('app-config');

@@ -3293,7 +3293,11 @@ router.post('/is_activate_user', function (req, res) {
                     if (resp1.activate != 1) {
                         act_email.update({ "email": req.body.email }, {
                             $set: { "activate": "1" }
+                        }, function (err3, resp3) {
+                            res.send([{ "activate_email": "1", "activate_sms": "0" }]);
                         });
+                    } else {
+                        res.send([{ "activate_email": "1", "activate_sms": "0" }]);
                     }
                 } else {
 

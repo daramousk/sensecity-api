@@ -3304,7 +3304,7 @@ router.post('/is_activate_user', function (req, res) {
                     console.log("4"); console.log("");
 
                     var activate_email = new act_email({
-                        email: req.query.email,
+                        email: req.body.email,
                         activate: 1
                     });
 

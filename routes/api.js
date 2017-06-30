@@ -3296,7 +3296,7 @@ router.post('/is_activate_user', function (req, res) {
                 console.log("3"); console.log("");
                 if (resp1.length > 0) {
                     if (resp1.activate != 1) {
-                        resp1.update({ "email": req.body.email }, {
+                        act_email.update({ "email": req.body.email }, {
                             $set: { "activate": "1" }
                         });
                     }
@@ -3310,6 +3310,8 @@ router.post('/is_activate_user', function (req, res) {
 
                     activate_email.save(function (err2, resp2) {
                         console.log("5"); console.log("");
+
+                        if (err2) { console.log("err2===>"+err2); }
                         console.log(JSON.stringify(resp2));
                         res.send([{ "activate_email": "1", "activate_sms": "0" }]);
                     });

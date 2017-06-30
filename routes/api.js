@@ -4544,9 +4544,9 @@ router.post('/issue_recommendation', function (req, res) {
 // ->req.query.long
 // ->req.query.issue
     console.log(""); console.log("");
-    console.log(req.query.lat); console.log(""); console.log("");
-    console.log(req.query.long); console.log(""); console.log("");
-    console.log(req.query.issue); console.log(""); console.log("");
+    console.log(req.body.lat); console.log(""); console.log("");
+    console.log(req.body.long); console.log(""); console.log("");
+    console.log(req.body.issue); console.log(""); console.log("");
     console.log(""); console.log(""); console.log("");
 
 

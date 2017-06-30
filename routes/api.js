@@ -3288,12 +3288,7 @@ router.post('/is_activate_user', function (req, res) {
 
             //find email
             act_email.find({ "email": req.body.email }, function (err1, resp1) {
-
-                console.log("1"); console.log("");
-                console.log(JSON.stringify(resp1));
-                console.log("2"); console.log("");
-                console.log(resp1.length);
-                console.log("3"); console.log("");
+            
                 if (resp1.length > 0) {
                     if (resp1.activate != 1) {
                         act_email.update({ "email": req.body.email }, {
@@ -3301,7 +3296,6 @@ router.post('/is_activate_user', function (req, res) {
                         });
                     }
                 } else {
-                    console.log("4"); console.log("");
 
                     var activate_email = new act_email({
                         email: req.body.email,
@@ -3309,10 +3303,9 @@ router.post('/is_activate_user', function (req, res) {
                     });
 
                     activate_email.save(function (err2, resp2) {
-                        console.log("5"); console.log("");
 
-                        if (err2) { console.log("err2===>"+err2); }
-                        console.log(JSON.stringify(resp2));
+                        if (err2) { console.log("err2===>" + err2); }
+
                         res.send([{ "activate_email": "1", "activate_sms": "0" }]);
                     });
 

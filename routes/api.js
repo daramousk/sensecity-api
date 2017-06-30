@@ -3288,24 +3288,28 @@ router.post('/is_activate_user', function (req, res) {
 
             //find email
             act_email.find({ "email": req.body.email }, function (err1, resp1) {
-                console.log(""); console.log("");
+
+                console.log("1"); console.log("");
                 console.log(JSON.stringify(resp1));
-                console.log(""); console.log("");
+                console.log("2"); console.log("");
                 console.log(resp1.length);
-                console.log(""); console.log("");
+                console.log("3"); console.log("");
                 if (resp1.length > 0) {
                     if (resp1.activate != 1) {
                         resp1.update({ "email": req.body.email }, {
-                            $set: {"activate":"1"}
+                            $set: { "activate": "1" }
                         });
                     }
                 } else {
+                    console.log("4"); console.log("");
+
                     var activate_email = new act_email({
                         email: req.query.email,
                         activate: 1
                     });
 
-                    activate_email.save(function (err2, resp2) {                   
+                    activate_email.save(function (err2, resp2) {
+                        console.log("5"); console.log("");
                         console.log(JSON.stringify(resp2));
                         res.send([{ "activate_email": "1", "activate_sms": "0" }]);
                     });
@@ -3316,32 +3320,35 @@ router.post('/is_activate_user', function (req, res) {
 
 
         }
+    } else if (req.body.city != "london") {
+
+        if (req.body.email != undefined || req.body.email != '') {
+
+            act_email.find({ "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
+                console.log("res8" + res8.length);
+                if (res8.length > 0) {
+                    _activate_email = res8[0].activate;
+                }
+
+                if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
+
+                    act_mobile.find({ "mobile_num": req.body.mobile }, { "activate": 1 }, function (req9, res9) {
+                        console.log("res9" + res9);
+                        if (res9.length > 0) {
+                            _activate_sms = res9[0].activate;
+                        }
+                        console.log([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);
+
+                        res.send([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);
+
+                    });
+                }
+            });
+        }
+
+
     }
-    if (req.body.email != undefined || req.body.email != '') {
 
-        act_email.find({ "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
-            console.log("res8" + res8.length);
-            if (res8.length>0) {
-                _activate_email = res8[0].activate;
-            } 
-
-            if (req.body.mobile_num != undefined || req.body.mobile_num != '') {
-
-                act_mobile.find({ "mobile_num": req.body.mobile }, { "activate": 1 }, function (req9, res9) {
-                    console.log("res9" + res9);        
-                    if (res9.length > 0) {
-                        _activate_sms = res9[0].activate;
-                    }
-                    console.log([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);
-
-                    res.send([{ "activate_email": _activate_email, "activate_sms": _activate_sms }]);
-
-                });
-            }
-        });
-    }
-
-    
     /*
     if (req.body.email != undefined || req.body.email != '') {
         console.log("1");

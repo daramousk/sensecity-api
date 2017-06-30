@@ -3284,7 +3284,7 @@ router.post('/is_activate_user', function (req, res) {
     console.log(req);
 
     if (req.body.city != undefined || req.body.email != undefined || req.body.email != '') {
-        if (req.body.city != "london") {
+        if (req.body.city == "london") {
 
             //find email
             act_email.find({ "email": req.body.email }, function (err1, resp1) {
@@ -3300,7 +3300,11 @@ router.post('/is_activate_user', function (req, res) {
                         });
                     }
                 } else {
-                    act_email.insert({ "email": req.body.email,"activate":"1"})
+                    act_email.insert({ "email": req.body.email, "activate": "1" }, function (err2, resp2) {
+                        console.log(JSON.stringify(resp2));
+                        res.send([{ "activate_email": "1", "activate_sms": "0" }]);
+                    });
+
                 }
             });
             //if not exist insert with activate 1

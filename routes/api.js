@@ -3319,7 +3319,9 @@ router.post('/is_activate_user', function (req, res) {
 
 
         }
-    } else if (req.body.city != "london") {
+    }
+
+    if (req.body.city != "london") {
 
         if (req.body.email != undefined || req.body.email != '') {
 

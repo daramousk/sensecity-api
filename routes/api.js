@@ -3283,7 +3283,33 @@ router.post('/is_activate_user', function (req, res) {
     var _activate_sms = '';
     console.log(req);
 
+    if (req.body.city != undefined || req.body.email != undefined || req.body.email != '') {
+        if (req.body.city != "london") {
+
+            //find email
+            act_email.find({ "email": req.body.email }, function (err1, resp1) {
+                console.log(""); console.log("");
+                console.log(JSON.stringify(resp1));
+                console.log(""); console.log("");
+                console.log(resp1.length);
+                console.log(""); console.log("");
+                if (resp1.length > 0) {
+                    if (resp1.activate != 1) {
+                        resp1.update({ "email": req.body.email }, {
+                            $set: {"activate":"1"}
+                        });
+                    }
+                } else {
+                    act_email.insert({ "email": req.body.email,"activate":"1"})
+                }
+            });
+            //if not exist insert with activate 1
+
+
+        }
+    }
     if (req.body.email != undefined || req.body.email != '') {
+
         act_email.find({ "email": req.body.email }, { "activate": 1 }, function (req8, res8) {
             console.log("res8" + res8.length);
             if (res8.length>0) {

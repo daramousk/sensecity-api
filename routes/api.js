@@ -406,7 +406,7 @@ router.post('/issue', function (req, res) {
     var city_name = '';
     var city_address = '';
 
-    console.log(req);
+    //console.log(req);
 
     if (req.body.hasOwnProperty('city_address')) {
         city_address = req.body.city_address;
@@ -462,8 +462,8 @@ router.post('/issue', function (req, res) {
                     entry.image_name = '';
 
                     console.log(""); console.log(""); console.log(""); console.log("");
-                    console.log(req.body.image_name);
-                    console.log(""); console.log(""); console.log(""); console.log("");
+                    //console.log(req.body.image_name);
+                    //console.log(""); console.log(""); console.log(""); console.log("");
 
                     var has_img = 0;
                     if (req.body.image_name.indexOf("base64") !== -1) {

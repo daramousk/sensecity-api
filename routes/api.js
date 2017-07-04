@@ -461,6 +461,10 @@ router.post('/issue', function (req, res) {
 
                     entry.image_name = '';
 
+                    console.log(""); console.log(""); console.log(""); console.log("");
+                    console.log(req.body.image_name);
+                    console.log(""); console.log(""); console.log(""); console.log("");
+
                     var has_img = 0;
                     if (req.body.image_name.indexOf("base64") !== -1) {
                         has_img = 1;
@@ -487,29 +491,39 @@ router.post('/issue', function (req, res) {
                                 var source_img_file = config.config.img_path;
 
                                 require("fs").writeFile(source_img_file + "original/" + resp._id + "_" + default_img_id + ".png", base64Data[1], 'base64', function (err) {
-                                    console.log(err);
+                                    if (err) {
+                                        console.log(err);
+                                    }
 
+                                    console.log("----"); console.log("----"); console.log("----");
                                     resizeCrop({
                                         src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
                                         dest: source_img_file + "small/" + resp._id + "_" + default_img_id + "_144x144.png",
                                         height: 144,
                                         width: 144,
                                         gravity: "center"
-                                    }, function (err, filePath) {
-                                        // do something 
-                                        console.log(err);
+                                    }, function (err1, filePath) {
+                                        // do something
+                                        console.log("ok 144x144");
+                                        if (err1) {
+                                            console.log(err1);
+                                        }
+                                        
                                     });
 
-
+                                    console.log("----"); console.log("----"); console.log("----"); console.log("----");
                                     resizeCrop({
                                         src: source_img_file + "original/" + resp._id + "_" + default_img_id + ".png",
                                         dest: source_img_file + "medium/" + resp._id + "_" + default_img_id + "_450x450.png",
                                         height: 450,
                                         width: 450,
                                         gravity: "center"
-                                    }, function (err, filePath) {
+                                    }, function (err2, filePath) {
                                         // do something 
-                                        console.log(err);
+                                        console.log("ok 450x450");
+                                        if (err2) {
+                                            console.log(err2);
+                                        }
                                     });
 
                                 });

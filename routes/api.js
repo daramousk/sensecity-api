@@ -1745,7 +1745,7 @@ var get_issues = function (req, callback) {
             }
                
             /* --------- Priority ---------- */
-
+            
             if (!req.query.hasOwnProperty('priority')) {
                 _priority = "";
             } else {
@@ -1753,24 +1753,27 @@ var get_issues = function (req, callback) {
 
                 switch (priority_split.length) {
                     case 1:
-                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0];
+                        _priority = "&f9=priority&o9=anyexact&v9=" + priority_split[0];
                         break;
                     case 2:
-                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1];
+                        _priority = "&f9=priority&o9=anyexact&v9=" + priority_split[0] + ", " + priority_split[1];
                         break;
                     case 3:
-                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2];
+                        _priority = "&f9=priority&o9=anyexact&v9=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2];
                         break;
                     case 4:
-                        _priority = "&f8=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2] + ", " + priority_split[3];
+                        _priority = "&f8=priority&o9=anyexact&v9=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2] + ", " + priority_split[3];
                         break;
                     case 5:
-                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2] + ", " + priority_split[3] + ", " + priority_split[4];
+                        _priority = "&f9=priority&o9=anyexact&v9=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2] + ", " + priority_split[3] + ", " + priority_split[4];
                         break;
                     default:
                         _priority = "";
                         break;
-                }                
+                }
+
+                console.log(_priority);
+
             }
 
             /* --------- END Priority ---------- */
@@ -1784,30 +1787,31 @@ var get_issues = function (req, callback) {
 
                 switch (severity_split.length) {
                     case 1:
-                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0];
+                        _severity = "&f10=bug_severity&o10=anyexact&v10=" + severity_split[0];
                         break;
                     case 2:
-                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1];
+                        _severity = "&f10=bug_severity&o10=anyexact&v10=" + severity_split[0] + ", " + severity_split[1];
                         break;
                     case 3:
-                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2];
+                        _severity = "&f10=bug_severity&o10=anyexact&v10=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2];
                         break;
                     case 4:
-                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3];
+                        _severity = "&f10=bug_severity&o10=anyexact&v10=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3];
                         break;
                     case 5:
-                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4];
+                        _severity = "&f10=bug_severity&o10=anyexact&v10=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4];
                         break;
                     case 6:
-                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4] + ", " + severity_split[5];
+                        _severity = "&f10=bug_severity&o10=anyexact&v10=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4] + ", " + severity_split[5];
                         break;
                     case 7:
-                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4] + ", " + severity_split[5] + ", " + severity_split[6];
+                        _severity = "&f10=bug_severity&o10=anyexact&v10=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4] + ", " + severity_split[5] + ", " + severity_split[6];
                         break;
                     default:
                         _severity = "";
                         break;
                 }
+                console.log(_severity);
             }
 
            /* --------- END Severity ---------- */

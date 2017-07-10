@@ -764,7 +764,7 @@ router.post('/issue', function (req, res) {
 router.post('/issue/:id', function (req, res) {
     var bodyParams;
     console.log("- - - -  - - -  - - - - -  - - - - - -  - - - -  - - - -  - - - - -  -");
-    console.log("is=====>" + req);
+    console.log("is=====>" + JSON.stringify(req));
     console.log("- - - -  - - -  - - - - -  - - - - - -  - - - -  - - - -  - - - - -  -");
     Issue.find({ "_id": req.params.id }, { "municipality": 1, "issue": 1 }, function (req1, res1) {
         if (res1 != undefined) {
@@ -845,7 +845,7 @@ router.post('/issue/:id', function (req, res) {
                                     throw err;
 
                                 ///* Create user acount to bugzilla			
-                                var bugCreateuser1 = { "token": bugToken, "email": req.body.email.toString() };
+                                var bugCreateuser1 = { "token": bugToken, "email": req.body.email };
 
                                 request({
                                     url: bugUrlRest + "/rest/user",

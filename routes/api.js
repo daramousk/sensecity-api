@@ -505,6 +505,7 @@ router.post('/issue', function (req, res) {
                                     }, function (err1, filePath) {
                                         // do something
                                         console.log("ok 144x144");
+
                                         if (err1) {
                                             console.log(err1);
                                         }
@@ -1082,6 +1083,8 @@ var get_issues = function (req, callback) {
     var _bug_extra="";
     var _user_extra = 0;
 
+
+
     if (req.send_user == 1) {
         _user_extra = 1;
     } else {
@@ -1466,6 +1469,8 @@ var get_issues = function (req, callback) {
         var dd1;
         var dd2;
         var _resolution;
+        var _priority;
+        var _severity;
 
         if (!req.query.hasOwnProperty("city") && !req.query.hasOwnProperty("coordinates")) {
             res.send([{ "response": "no-data", "message": "You don't send city - coordinates values!" }]);
@@ -1712,38 +1717,101 @@ var get_issues = function (req, callback) {
                 }
             }
             
-                    var null_resolution = '';
-                    //if (req.query.hasOwnProperty('resolution')) {                    
-                        if (_status.indexOf("IN_PROGRESS") > -1 || _status.indexOf("CONFIRMED") > -1) {
-                            null_resolution = ",---";
-                        }
-                   // }
-                    
-
-                    if (!req.query.hasOwnProperty('resolution')) {
-                        _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
-                    } else {
-                        var resolution_split = req.query.resolution.split("|");
-
-                        switch (resolution_split.length) {
-                            case 1:
-                                _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + null_resolution;
-                                break;
-                            case 2:
-                                _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + null_resolution;
-                                break;
-                            case 3:
-                                _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + ", " + resolution_split[2] + null_resolution;
-                                break;
-                            default:
-                                _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
-                                break;
-                        }
-
-
-                    }
-               
+            var null_resolution = '';
             
+            if (_status.indexOf("IN_PROGRESS") > -1 || _status.indexOf("CONFIRMED") > -1) {
+                null_resolution = ",---";
+            }
+            
+            if (!req.query.hasOwnProperty('resolution')) {
+                _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
+            } else {
+                var resolution_split = req.query.resolution.split("|");
+
+                switch (resolution_split.length) {
+                    case 1:
+                        _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + null_resolution;
+                        break;
+                    case 2:
+                        _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + null_resolution;
+                        break;
+                    case 3:
+                        _resolution = "&f8=resolution&o8=anyexact&v8=" + resolution_split[0] + ", " + resolution_split[1] + ", " + resolution_split[2] + null_resolution;
+                        break;
+                    default:
+                        _resolution = "&f8=resolution&o8=anyexact&v8=FIXED,INVALID,WONTFIX,DUPLICATE" + null_resolution;
+                        break;
+                }
+            }
+               
+            /* --------- Priority ---------- */
+
+            if (!req.query.hasOwnProperty('priority')) {
+                _priority = "";
+            } else {
+                var priority_split = req.query.priority.split("|");
+
+                switch (priority_split.length) {
+                    case 1:
+                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0];
+                        break;
+                    case 2:
+                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1];
+                        break;
+                    case 3:
+                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2];
+                        break;
+                    case 4:
+                        _priority = "&f8=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2] + ", " + priority_split[3];
+                        break;
+                    case 5:
+                        _priority = "&f9=priority&o8=anyexact&v8=" + priority_split[0] + ", " + priority_split[1] + ", " + priority_split[2] + ", " + priority_split[3] + ", " + priority_split[4];
+                        break;
+                    default:
+                        _priority = "";
+                        break;
+                }                
+            }
+
+            /* --------- END Priority ---------- */
+
+            /* --------- Severity ---------- */
+
+            if (!req.query.hasOwnProperty('severity')) {
+                _severity = "";
+            } else {
+                var severity_split = req.query.severity.split("|");
+
+                switch (severity_split.length) {
+                    case 1:
+                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0];
+                        break;
+                    case 2:
+                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1];
+                        break;
+                    case 3:
+                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2];
+                        break;
+                    case 4:
+                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3];
+                        break;
+                    case 5:
+                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4];
+                        break;
+                    case 6:
+                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4] + ", " + severity_split[5];
+                        break;
+                    case 7:
+                        _severity = "&f10=bug_severity&o8=anyexact&v8=" + severity_split[0] + ", " + severity_split[1] + ", " + severity_split[2] + ", " + severity_split[3] + ", " + severity_split[4] + ", " + severity_split[5] + ", " + severity_split[6];
+                        break;
+                    default:
+                        _severity = "";
+                        break;
+                }
+            }
+
+           /* --------- END Severity ---------- */
+
 
             if (!req.query.hasOwnProperty('kml')) {
                 _kml = 0;
@@ -3397,7 +3465,7 @@ router.post('/activate_user', function (req, res) {
     if (req.query.uuid != undefined) {
         console.log("7");
         if (req.query.hasOwnProperty('uuid')) {
-            if (req.query.uuid == "web-site") {
+            //if (req.query.uuid == "web-site") {
                 if (req.query.email != undefined) {
                     //check email
                     act_email.find({ "email": req.query.email }, function (err, resp1) {
@@ -3557,10 +3625,11 @@ router.post('/activate_user', function (req, res) {
 
 
 
-            }
+            //}
         }
 
 
+        /*
 
         console.log("9");
 
@@ -3744,6 +3813,8 @@ router.post('/activate_user', function (req, res) {
             }
 
         }
+        */
+
     }
 });
 

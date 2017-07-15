@@ -23,7 +23,8 @@
     "path": "^0.12.7",
     "request": "^2.72.0",
     "resize-crop": "0.0.3",
-    "rotating-file-stream": "^1.2.1"
+    "rotating-file-stream": "^1.2.1",
+    "app-config": "latest"
   },
   "devDependencies": {
     "imagemagickresizer": "^1.0.3"

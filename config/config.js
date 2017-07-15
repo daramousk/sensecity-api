@@ -5,6 +5,7 @@ module.exports = {
 	login:'login-name',
 	pwd:'password',
 	bugUrl:'',
+	bugUrlRest:'',
 	bug_product: '',
 	bug_component: '',
     bug_cc: '',

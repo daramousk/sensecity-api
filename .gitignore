@@ -5,3 +5,5 @@
 /bin
 /sensecity-api-dev.njsproj
 /typings.json
+.project
+*.log

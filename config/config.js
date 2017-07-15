@@ -12,5 +12,5 @@ module.exports = {
     key_geocoding: '',
     email: '',
     password_email: '',
-    log_path: ''
+    log_path: '../logs'
 }
